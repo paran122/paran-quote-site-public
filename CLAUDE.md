@@ -10,9 +10,10 @@
 
 ## 개발 환경
 - 서버는 절대 시작하지 마. 다른 터미널에서 포트 4000으로 이미 실행 중이다.
-- GitHub (두 개의 리모트):
-  - origin: https://github.com/paran122/paran-quote-site
-  - personal: https://github.com/brix6190/paran-qoute-site-t- (Private)
+- GitHub 리모트:
+  - origin: https://github.com/paran122/paran-quote-site-public (Public, Netlify 배포)
+  - personal: https://github.com/brix6190/paran-qoute-site-t- (Private, 백업)
+  - (아카이브) https://github.com/paran122/paran-quote-site (Private, 이전 히스토리)
 
 ## 라우트 구조
 - `/` 랜딩 페이지
@@ -157,7 +158,36 @@ Storage 버킷: `portfolio`
 이미지 편집/보정: Replicate MCP (우선), 나노바나나 Pro MCP (폴백)
 라우터: `event-portfolio-update` (공유 리소스: db-schema, md-template, examples)
 
-## Git 규칙
+## Git 워크플로우
+
+### 브랜치 구조
+- `dev` — 작업용 브랜치 (항상 여기서 코드 수정)
+- `main` — 배포용 브랜치 (Netlify 자동 배포, 직접 push 금지)
+
+### 개발 흐름
+1. VS Code 왼쪽 하단이 `dev`인지 확인
+2. 코드 수정 → 커밋
+3. `git push origin dev`
+4. GitHub에서 PR 생성 (dev → main)
+5. PR에서 변경 내용 확인 후 Merge
+6. Netlify가 main 기준으로 자동 배포
+
+### 규칙
 - 커밋 메시지 형식: "번호. 변경 내용 설명" (예: "3. 글로벌 스타일 변경")
-- 주요 변경 전 반드시 git 백업
-- 푸시 시 두 리모트 모두에 푸시: `git push personal main` + `git push origin main`
+- main에 직접 push 금지 (Ruleset으로 차단됨)
+- push는 origin(public)에만: `git push origin dev`
+
+### 팀원 초기 설정
+```bash
+git clone https://github.com/paran122/paran-quote-site-public.git
+cd paran-quote-site-public
+git checkout dev
+npm install
+```
+
+### 레포 구성
+| 레포 | 상태 | 용도 |
+|------|------|------|
+| paran-quote-site-public | Public | 메인 개발 + Netlify 배포 |
+| paran-qoute-site-t- | Private | 백업 |
+| paran-quote-site | Private | 아카이브 (이전 히스토리) |
