@@ -1,6 +1,0 @@
-INSERT INTO quote_site.portfolio_media (portfolio_id, event_slug, type, label, url, sort_order) VALUES
-  ('549cd164-31e8-45ac-9e36-40f45143d047', 'jcs-sns', 'gallery', '기념일 콘텐츠', 'https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/jcs-sns/memorial.webp', 1),
-  ('549cd164-31e8-45ac-9e36-40f45143d047', 'jcs-sns', 'gallery', '서울 수복', 'https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/jcs-sns/seoul-liberation.webp', 3),
-  ('549cd164-31e8-45ac-9e36-40f45143d047', 'jcs-sns', 'gallery', '파병 기념', 'https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/jcs-sns/dispatch.webp', 4),
-  ('549cd164-31e8-45ac-9e36-40f45143d047', 'jcs-sns', 'gallery', '합참 창설', 'https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/jcs-sns/jcs-founding.webp', 5),
-  ('549cd164-31e8-45ac-9e36-40f45143d047', 'jcs-sns', 'gallery', '광복 80주년', 'https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/jcs-sns/liberation-80.webp', 6);
