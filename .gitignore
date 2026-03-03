@@ -1,0 +1,77 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Windows reserved names
+nul
+
+# nano-banana (API key)
+.nano-banana-config.json
+
+# MCP config (API keys)
+.mcp.json
+
+# Claude Code local settings (contains API keys, tokens)
+.claude/settings.local.json
+
+# Portfolio assets (migrated to Supabase Storage)
+/public/portfolio/
+
+# Temporary scripts (may contain keys)
+/scripts/upload-*.mjs
+/scripts/upload-*.sh
+/scripts/batch-correct.mjs
+/scripts/retry-correct.mjs
+
+# Playwright MCP cache
+.playwright-mcp/
+
+# Test screenshots
+test-screenshots/
+
+# Temporary delete reference images
+/temp-delete-refs/
+
+# Auto-memory (personal per machine)
+.claude/projects/
+
+# Git backup (old history)
+.git-backup/
+.git-original/
+
+# Temporary screenshots
+*.png
+!public/**/*.png

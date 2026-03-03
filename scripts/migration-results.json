@@ -1,0 +1,4264 @@
+{
+  "kls": [
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "Zoom 배경",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/zoom-bg.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "시안",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/draft.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "대형전시부스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/booth-large.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "대형전시부스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/booth-large-2.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "대형등신대",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/standee-large.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/leaflet.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/banner-misc.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/x-banner.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "유튜브 썸네일",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/yt-thumb.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "인포그래픽",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/infographic-2.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "명찰",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/badge.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "초대장",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/invitation.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "포디움",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/podium.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "gallery",
+      "label": "포토존",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-zone.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-01.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-02.webp",
+      "sort_order": 18
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-03.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-04.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-05.webp",
+      "sort_order": 21
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-06.webp",
+      "sort_order": 22
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-07.webp",
+      "sort_order": 23
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-08.webp",
+      "sort_order": 24
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-09.webp",
+      "sort_order": 25
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-10.webp",
+      "sort_order": 26
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-11.webp",
+      "sort_order": 27
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-12.webp",
+      "sort_order": 28
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-13.webp",
+      "sort_order": 29
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-14.webp",
+      "sort_order": 30
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-15.webp",
+      "sort_order": 31
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-16.webp",
+      "sort_order": 32
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-17.webp",
+      "sort_order": 33
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 18",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-18.webp",
+      "sort_order": 34
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 19",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-19.webp",
+      "sort_order": 35
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 20",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-20.webp",
+      "sort_order": 36
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 21",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-21.webp",
+      "sort_order": 37
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 22",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-22.webp",
+      "sort_order": 38
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 23",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-23.webp",
+      "sort_order": 39
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 24",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-24.webp",
+      "sort_order": 40
+    },
+    {
+      "portfolio_id": "c68874aa-5f8f-4816-97d2-6d29f8c58a5b",
+      "event_slug": "kls",
+      "type": "photo",
+      "label": "현장사진 25",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/photo-25.webp",
+      "sort_order": 41
+    }
+  ],
+  "gyeonggi-print": [
+    {
+      "portfolio_id": "__NEW__",
+      "event_slug": "gyeonggi-print",
+      "type": "gallery",
+      "label": "원페이퍼",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/gyeonggi-print/one-pager.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "__NEW__",
+      "event_slug": "gyeonggi-print",
+      "type": "gallery",
+      "label": "인포그래픽",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/gyeonggi-print/infographic.webp",
+      "sort_order": 2
+    }
+  ],
+  "goyang-conference": [
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "gallery",
+      "label": "PIP",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/pip.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/poster.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "gallery",
+      "label": "포토존",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-zone.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "gallery",
+      "label": "대형전시부스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/booth-large.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/leaflet.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/detail-page.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "gallery",
+      "label": "초대장",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/invitation.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/poster-2.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/poster-3.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-01.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-02.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-03.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-04.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-05.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-06.webp",
+      "sort_order": 18
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-07.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-08.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-09.webp",
+      "sort_order": 21
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-10.webp",
+      "sort_order": 22
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-11.webp",
+      "sort_order": 23
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-12.webp",
+      "sort_order": 24
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-13.webp",
+      "sort_order": 25
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-14.webp",
+      "sort_order": 26
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-15.webp",
+      "sort_order": 27
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-16.webp",
+      "sort_order": 28
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-17.webp",
+      "sort_order": 29
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 18",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-18.webp",
+      "sort_order": 30
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 19",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-19.webp",
+      "sort_order": 31
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 20",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-20.webp",
+      "sort_order": 32
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 21",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-21.webp",
+      "sort_order": 33
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 22",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-22.webp",
+      "sort_order": 34
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 23",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-23.webp",
+      "sort_order": 35
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 24",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-24.webp",
+      "sort_order": 36
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 25",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-25.webp",
+      "sort_order": 37
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 26",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-26.webp",
+      "sort_order": 38
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 27",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-27.webp",
+      "sort_order": 39
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 28",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-28.webp",
+      "sort_order": 40
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 29",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-29.webp",
+      "sort_order": 41
+    },
+    {
+      "portfolio_id": "c9f1fc3d-962c-4c1a-82e6-0f50f5ff5f1b",
+      "event_slug": "goyang-conference",
+      "type": "photo",
+      "label": "현장사진 30",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-30.webp",
+      "sort_order": 42
+    }
+  ],
+  "education-council-booth": [
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "gallery",
+      "label": "대형전시부스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/booth-large.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "gallery",
+      "label": "대형등신대",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/standee-large.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "gallery",
+      "label": "부스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/booth.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "gallery",
+      "label": "테이블 등신대",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/table-standee.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-01.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-02.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-03.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-04.webp",
+      "sort_order": 8
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-05.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-06.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-07.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-08.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-09.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-10.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-11.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-12.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-13.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-14.webp",
+      "sort_order": 18
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-15.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-16.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "96210ebf-fbdc-45aa-9093-f4e1acadcc0b",
+      "event_slug": "education-council-booth",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-17.webp",
+      "sort_order": 21
+    }
+  ],
+  "international-forum": [
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "기념품",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/souvenir.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "대형전시부스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/booth-large-2.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "대형전시부스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/booth-large-3.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/leaflet.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "아크릴 글자",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/acrylic-text.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/x-banner.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "웹페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/webpage.webp",
+      "sort_order": 8
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "유튜브 썸네일",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/yt-thumb.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "자료집",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/booklet.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "안내판",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/sign.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "캐릭터 등신대",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/character-standee.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "테이블 등신대",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/table-standee.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/poster.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "gallery",
+      "label": "포토존",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-zone.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-01.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-02.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-03.webp",
+      "sort_order": 18
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-04.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-05.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-06.webp",
+      "sort_order": 21
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-07.webp",
+      "sort_order": 22
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-08.webp",
+      "sort_order": 23
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-09.webp",
+      "sort_order": 24
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-10.webp",
+      "sort_order": 25
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-11.webp",
+      "sort_order": 26
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-12.webp",
+      "sort_order": 27
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-13.webp",
+      "sort_order": 28
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-14.webp",
+      "sort_order": 29
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-15.webp",
+      "sort_order": 30
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-16.webp",
+      "sort_order": 31
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-17.webp",
+      "sort_order": 32
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 18",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-18.webp",
+      "sort_order": 33
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 19",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-19.webp",
+      "sort_order": 34
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 20",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-20.webp",
+      "sort_order": 35
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 21",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-21.webp",
+      "sort_order": 36
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 22",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-22.webp",
+      "sort_order": 37
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 23",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-23.webp",
+      "sort_order": 38
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 24",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-24.webp",
+      "sort_order": 39
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 25",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-25.webp",
+      "sort_order": 40
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 26",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-26.webp",
+      "sort_order": 41
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 27",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-27.webp",
+      "sort_order": 42
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 28",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-28.webp",
+      "sort_order": 43
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 29",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-29.webp",
+      "sort_order": 44
+    },
+    {
+      "portfolio_id": "16cf9a98-ad11-495f-a4f1-83b130ea7920",
+      "event_slug": "international-forum",
+      "type": "photo",
+      "label": "현장사진 30",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-30.webp",
+      "sort_order": 45
+    }
+  ],
+  "culture-club-showcase": [
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/poster.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "포토존",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-zone.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "벽면현수막",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/wall-banner.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "실물 스탠딩",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/standing.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "ABC타입",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/abc-type.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "기념품",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/souvenir.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "문화예술클럽 타입",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/club-type.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "대형등신대",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/standee-large.webp",
+      "sort_order": 8
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "대형현수막",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/banner-large.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "엽서",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/postcard.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "럭키드로우 명함",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/lucky-draw.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "엽서",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/postcard-2.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/detail-page.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/x-banner.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "카드뉴스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/card-news.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "테이블 등신대",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/table-standee.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "gallery",
+      "label": "포토존",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-zone-2.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-01.webp",
+      "sort_order": 18
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-02.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-03.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-04.webp",
+      "sort_order": 21
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-05.webp",
+      "sort_order": 22
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-06.webp",
+      "sort_order": 23
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-07.webp",
+      "sort_order": 24
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-08.webp",
+      "sort_order": 25
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-09.webp",
+      "sort_order": 26
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-10.webp",
+      "sort_order": 27
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-11.webp",
+      "sort_order": 28
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-12.webp",
+      "sort_order": 29
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-13.webp",
+      "sort_order": 30
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-14.webp",
+      "sort_order": 31
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-15.webp",
+      "sort_order": 32
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-16.webp",
+      "sort_order": 33
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-17.webp",
+      "sort_order": 34
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 18",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-18.webp",
+      "sort_order": 35
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 19",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-19.webp",
+      "sort_order": 36
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 20",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-20.webp",
+      "sort_order": 37
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 21",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-21.webp",
+      "sort_order": 38
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 22",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-22.webp",
+      "sort_order": 39
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 23",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-23.webp",
+      "sort_order": 40
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 24",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-24.webp",
+      "sort_order": 41
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 25",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-25.webp",
+      "sort_order": 42
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 26",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-26.webp",
+      "sort_order": 43
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 27",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-27.webp",
+      "sort_order": 44
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 28",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-28.webp",
+      "sort_order": 45
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 29",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-29.webp",
+      "sort_order": 46
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 30",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-30.webp",
+      "sort_order": 47
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 31",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-31.webp",
+      "sort_order": 48
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 32",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-32.webp",
+      "sort_order": 49
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 33",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-33.webp",
+      "sort_order": 50
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 34",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-34.webp",
+      "sort_order": 51
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 35",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-35.webp",
+      "sort_order": 52
+    },
+    {
+      "portfolio_id": "c42d3b1a-8026-4ae0-96b8-0e1f219fb9a1",
+      "event_slug": "culture-club-showcase",
+      "type": "photo",
+      "label": "현장사진 36",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-showcase/photo-36.webp",
+      "sort_order": 53
+    }
+  ],
+  "culture-club-operation": [
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/poster.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/detail-page.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "gallery",
+      "label": "네이버 배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/naver-banner.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/leaflet.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "gallery",
+      "label": "안전한 문화예술 배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/safe-culture-banner.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/x-banner.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "gallery",
+      "label": "예술교육가 풀 모집",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/educator-recruit.webp",
+      "sort_order": 8
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "gallery",
+      "label": "인스타그램",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/instagram.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "gallery",
+      "label": "카드뉴스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/card-news.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/photo-01.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/photo-02.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/photo-03.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/photo-04.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/photo-05.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/photo-06.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/photo-07.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "1ec0e78e-2c25-4d89-96d8-1d78b722a78a",
+      "event_slug": "culture-club-operation",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/photo-08.webp",
+      "sort_order": 18
+    }
+  ],
+  "community-energy": [
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/poster.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/detail-page.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "gallery",
+      "label": "쇼핑백",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/shopping-bag.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "gallery",
+      "label": "이벤터스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/eventus.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "gallery",
+      "label": "현수막",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/banner.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-01.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-02.webp",
+      "sort_order": 8
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-03.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-04.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-05.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-06.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-07.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-08.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-09.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-10.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-11.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-12.webp",
+      "sort_order": 18
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-13.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-14.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-15.webp",
+      "sort_order": 21
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-16.webp",
+      "sort_order": 22
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-17.webp",
+      "sort_order": 23
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 18",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-18.webp",
+      "sort_order": 24
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 19",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-19.webp",
+      "sort_order": 25
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 20",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-20.webp",
+      "sort_order": 26
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 21",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-21.webp",
+      "sort_order": 27
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 22",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-22.webp",
+      "sort_order": 28
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 23",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-23.webp",
+      "sort_order": 29
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 24",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-24.webp",
+      "sort_order": 30
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 25",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-25.webp",
+      "sort_order": 31
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 26",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-26.webp",
+      "sort_order": 32
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 27",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-27.webp",
+      "sort_order": 33
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 28",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-28.webp",
+      "sort_order": 34
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 29",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-29.webp",
+      "sort_order": 35
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 30",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-30.webp",
+      "sort_order": 36
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 31",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-31.webp",
+      "sort_order": 37
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 32",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-32.webp",
+      "sort_order": 38
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 33",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-33.webp",
+      "sort_order": 39
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 34",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-34.webp",
+      "sort_order": 40
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 35",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-35.webp",
+      "sort_order": 41
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 36",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-36.webp",
+      "sort_order": 42
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 37",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-37.webp",
+      "sort_order": 43
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 38",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-38.webp",
+      "sort_order": 44
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 39",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-39.webp",
+      "sort_order": 45
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 40",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-40.webp",
+      "sort_order": 46
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 41",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-41.webp",
+      "sort_order": 47
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 42",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-42.webp",
+      "sort_order": 48
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 43",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-43.webp",
+      "sort_order": 49
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 44",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-44.webp",
+      "sort_order": 50
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 45",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-45.webp",
+      "sort_order": 51
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 46",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-46.webp",
+      "sort_order": 52
+    },
+    {
+      "portfolio_id": "1007f849-06b3-49d8-89cf-49bd3137cfdd",
+      "event_slug": "community-energy",
+      "type": "photo",
+      "label": "현장사진 47",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-47.webp",
+      "sort_order": 53
+    }
+  ],
+  "parent-education": [
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "LED Wall",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/led-wall.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "가로현수막",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/banner-horizontal.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet-2.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/detail-page.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "아크릴 글자",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/acrylic-text.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/x-banner.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/poster.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/poster-2.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "LED Wall",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/led-wall-2.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "가로현수막",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/banner-horizontal-2.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet-3.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet-4.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/detail-page-2.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "아크릴 글자",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/acrylic-text-2.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/x-banner-2.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/poster-3.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/poster-4.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "LED Wall",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/led-wall-3.webp",
+      "sort_order": 21
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "가로현수막",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/banner-horizontal-3.webp",
+      "sort_order": 22
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet-5.webp",
+      "sort_order": 23
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet-6.webp",
+      "sort_order": 24
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/detail-page-3.webp",
+      "sort_order": 25
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "아크릴 글자",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/acrylic-text-3.webp",
+      "sort_order": 26
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/x-banner-3.webp",
+      "sort_order": 27
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/poster-5.webp",
+      "sort_order": 29
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/poster-6.webp",
+      "sort_order": 30
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "LED Wall",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/led-wall-4.webp",
+      "sort_order": 31
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "가로현수막",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/banner-horizontal-4.webp",
+      "sort_order": 32
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet-7.webp",
+      "sort_order": 33
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet-8.webp",
+      "sort_order": 34
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/detail-page-4.webp",
+      "sort_order": 35
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "아크릴 글자",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/acrylic-text-4.webp",
+      "sort_order": 36
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/x-banner-4.webp",
+      "sort_order": 37
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/poster-7.webp",
+      "sort_order": 39
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/poster-8.webp",
+      "sort_order": 40
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "LED Wall",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/led-wall-5.webp",
+      "sort_order": 41
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "가로현수막",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/banner-horizontal-5.webp",
+      "sort_order": 42
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet-9.webp",
+      "sort_order": 43
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet-10.webp",
+      "sort_order": 44
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/detail-page-5.webp",
+      "sort_order": 45
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "아크릴 글자",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/acrylic-text-5.webp",
+      "sort_order": 46
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/x-banner-5.webp",
+      "sort_order": 47
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/poster-9.webp",
+      "sort_order": 49
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/poster-10.webp",
+      "sort_order": 50
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-01.webp",
+      "sort_order": 51
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-02.webp",
+      "sort_order": 52
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-03.webp",
+      "sort_order": 53
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-04.webp",
+      "sort_order": 54
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-05.webp",
+      "sort_order": 55
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-06.webp",
+      "sort_order": 56
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-07.webp",
+      "sort_order": 57
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-08.webp",
+      "sort_order": 58
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-09.webp",
+      "sort_order": 59
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-10.webp",
+      "sort_order": 60
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-11.webp",
+      "sort_order": 61
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-12.webp",
+      "sort_order": 62
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-13.webp",
+      "sort_order": 63
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-14.webp",
+      "sort_order": 64
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-15.webp",
+      "sort_order": 65
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-16.webp",
+      "sort_order": 66
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-17.webp",
+      "sort_order": 67
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 18",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-18.webp",
+      "sort_order": 68
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 19",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-19.webp",
+      "sort_order": 69
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 20",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-20.webp",
+      "sort_order": 70
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 21",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-21.webp",
+      "sort_order": 71
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 22",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-22.webp",
+      "sort_order": 72
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 23",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-23.webp",
+      "sort_order": 73
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 24",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-24.webp",
+      "sort_order": 74
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 25",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-25.webp",
+      "sort_order": 75
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 26",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-26.webp",
+      "sort_order": 76
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 27",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-27.webp",
+      "sort_order": 77
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 28",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-28.webp",
+      "sort_order": 78
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 29",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-29.webp",
+      "sort_order": 79
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 30",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-30.webp",
+      "sort_order": 80
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 31",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-31.webp",
+      "sort_order": 81
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 32",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-32.webp",
+      "sort_order": 82
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 33",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-33.webp",
+      "sort_order": 83
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 34",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-34.webp",
+      "sort_order": 84
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 35",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-35.webp",
+      "sort_order": 85
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 36",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-36.webp",
+      "sort_order": 86
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 37",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-37.webp",
+      "sort_order": 87
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 38",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-38.webp",
+      "sort_order": 88
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 39",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-39.webp",
+      "sort_order": 89
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 40",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-40.webp",
+      "sort_order": 90
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 41",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-41.webp",
+      "sort_order": 91
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 42",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-42.webp",
+      "sort_order": 92
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 43",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-43.webp",
+      "sort_order": 93
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 44",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-44.webp",
+      "sort_order": 94
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 45",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-45.webp",
+      "sort_order": 95
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 46",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-46.webp",
+      "sort_order": 96
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 47",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-47.webp",
+      "sort_order": 97
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 48",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-48.webp",
+      "sort_order": 98
+    },
+    {
+      "portfolio_id": "22d26d86-8517-4d8d-a115-fbef6acdbed6",
+      "event_slug": "parent-education",
+      "type": "photo",
+      "label": "현장사진 49",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-49.webp",
+      "sort_order": 99
+    }
+  ],
+  "artist-rights": [
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "01",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/01.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "02",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/02.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "04",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/04.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/leaflet.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "리플렛",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/leaflet-2.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/detail-page.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/poster.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/x-banner.webp",
+      "sort_order": 8
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "웹 배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/web-banner.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "카드뉴스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/card-news.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "카드뉴스",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/card-news-2.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/poster-2.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/photo-01.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/photo-02.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/photo-03.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/photo-04.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/photo-05.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "754a63d8-d150-4533-866f-e4b183544922",
+      "event_slug": "artist-rights",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/artist-rights/photo-06.webp",
+      "sort_order": 18
+    }
+  ],
+  "auto-seminar-fall": [
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "gallery",
+      "label": "DID",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/did.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "gallery",
+      "label": "가로현수막",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/banner-horizontal.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "gallery",
+      "label": "감사메일",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/thanks-email.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/detail-page.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/x-banner.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "gallery",
+      "label": "전시패널",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/panel.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "gallery",
+      "label": "포디움",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/podium.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-01.webp",
+      "sort_order": 8
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-02.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-03.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-04.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-05.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-06.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-07.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-08.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-09.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-10.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-11.webp",
+      "sort_order": 18
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-12.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-13.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-14.webp",
+      "sort_order": 21
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-15.webp",
+      "sort_order": 22
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-16.webp",
+      "sort_order": 23
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-17.webp",
+      "sort_order": 24
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 18",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-18.webp",
+      "sort_order": 25
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 19",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-19.webp",
+      "sort_order": 26
+    },
+    {
+      "portfolio_id": "d69c6df4-ef38-4403-9a1e-d93f5f3c86ff",
+      "event_slug": "auto-seminar-fall",
+      "type": "photo",
+      "label": "현장사진 20",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-20.webp",
+      "sort_order": 27
+    }
+  ],
+  "auto-seminar-spring": [
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "gallery",
+      "label": "DID",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/did.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "gallery",
+      "label": "LED 전광판",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/led-board.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "gallery",
+      "label": "가로현수막",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/banner-horizontal.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "gallery",
+      "label": "대봉투",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/envelope.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/detail-page.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/x-banner.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "gallery",
+      "label": "초대장",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/invitation.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/poster.webp",
+      "sort_order": 8
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-01.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-02.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-03.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-04.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-05.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-06.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-07.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-08.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-09.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-10.webp",
+      "sort_order": 18
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-11.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-12.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-13.webp",
+      "sort_order": 21
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-14.webp",
+      "sort_order": 22
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-15.webp",
+      "sort_order": 23
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-16.webp",
+      "sort_order": 24
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-17.webp",
+      "sort_order": 25
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 18",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-18.webp",
+      "sort_order": 26
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 19",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-19.webp",
+      "sort_order": 27
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 20",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-20.webp",
+      "sort_order": 28
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 21",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-21.webp",
+      "sort_order": 29
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 22",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-22.webp",
+      "sort_order": 30
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 23",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-23.webp",
+      "sort_order": 31
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 24",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-24.webp",
+      "sort_order": 32
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 25",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-25.webp",
+      "sort_order": 33
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 26",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-26.webp",
+      "sort_order": 34
+    },
+    {
+      "portfolio_id": "696835c3-69fd-4490-b66e-c8ca73884ee1",
+      "event_slug": "auto-seminar-spring",
+      "type": "photo",
+      "label": "현장사진 27",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-27.webp",
+      "sort_order": 35
+    }
+  ],
+  "navy-camp": [
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "gallery",
+      "label": "PPT 배경",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/ppt-bg.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/x-banner.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "gallery",
+      "label": "일력",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/calendar.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "gallery",
+      "label": "일력",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/calendar-2.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "gallery",
+      "label": "일력",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/calendar-3.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "gallery",
+      "label": "일력",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/calendar-4.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/poster.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/poster-2.webp",
+      "sort_order": 8
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "gallery",
+      "label": "폼보드",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/foam-board.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "gallery",
+      "label": "키링",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/keyring.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-01.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-02.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-03.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-04.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-05.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-06.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-07.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-08.webp",
+      "sort_order": 18
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-09.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-10.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-11.webp",
+      "sort_order": 21
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-12.webp",
+      "sort_order": 22
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-13.webp",
+      "sort_order": 23
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-14.webp",
+      "sort_order": 24
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-15.webp",
+      "sort_order": 25
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-16.webp",
+      "sort_order": 26
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-17.webp",
+      "sort_order": 27
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 18",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-18.webp",
+      "sort_order": 28
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 19",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-19.webp",
+      "sort_order": 29
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 20",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-20.webp",
+      "sort_order": 30
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 21",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-21.webp",
+      "sort_order": 31
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 22",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-22.webp",
+      "sort_order": 32
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 23",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-23.webp",
+      "sort_order": 33
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 24",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-24.webp",
+      "sort_order": 34
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 25",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-25.webp",
+      "sort_order": 35
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 26",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-26.webp",
+      "sort_order": 36
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 27",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-27.webp",
+      "sort_order": 37
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 28",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-28.webp",
+      "sort_order": 38
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 29",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-29.webp",
+      "sort_order": 39
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 30",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-30.webp",
+      "sort_order": 40
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 31",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-31.webp",
+      "sort_order": 41
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 32",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-32.webp",
+      "sort_order": 42
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 33",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-33.webp",
+      "sort_order": 43
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 34",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-34.webp",
+      "sort_order": 44
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 35",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-35.webp",
+      "sort_order": 45
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 36",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-36.webp",
+      "sort_order": 46
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 37",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-37.webp",
+      "sort_order": 47
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 38",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-38.webp",
+      "sort_order": 48
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 39",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-39.webp",
+      "sort_order": 49
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 40",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-40.webp",
+      "sort_order": 50
+    },
+    {
+      "portfolio_id": "21f7f57e-b633-4ac6-9167-96bcad8552d8",
+      "event_slug": "navy-camp",
+      "type": "photo",
+      "label": "현장사진 41",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-41.webp",
+      "sort_order": 51
+    }
+  ],
+  "auto-seminar-summer": [
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "gallery",
+      "label": "DID",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/did.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "gallery",
+      "label": "VIP 대기실",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/vip-room.webp",
+      "sort_order": 2
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "gallery",
+      "label": "감사메일",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/thanks-email.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "gallery",
+      "label": "상세페이지",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/detail-page.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "gallery",
+      "label": "엑스배너",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/x-banner.webp",
+      "sort_order": 5
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "gallery",
+      "label": "유튜브 썸네일",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/yt-thumb.webp",
+      "sort_order": 6
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "gallery",
+      "label": "포스터",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/poster.webp",
+      "sort_order": 7
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 1",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-01.webp",
+      "sort_order": 8
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 2",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-02.webp",
+      "sort_order": 9
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 3",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-03.webp",
+      "sort_order": 10
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 4",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-04.webp",
+      "sort_order": 11
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 5",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-05.webp",
+      "sort_order": 12
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 6",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-06.webp",
+      "sort_order": 13
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 7",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-07.webp",
+      "sort_order": 14
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 8",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-08.webp",
+      "sort_order": 15
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 9",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-09.webp",
+      "sort_order": 16
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 10",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-10.webp",
+      "sort_order": 17
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 11",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-11.webp",
+      "sort_order": 18
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 12",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-12.webp",
+      "sort_order": 19
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 13",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-13.webp",
+      "sort_order": 20
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 14",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-14.webp",
+      "sort_order": 21
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 15",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-15.webp",
+      "sort_order": 22
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 16",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-16.webp",
+      "sort_order": 23
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 17",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-17.webp",
+      "sort_order": 24
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 18",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-18.webp",
+      "sort_order": 25
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 19",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-19.webp",
+      "sort_order": 26
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 20",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-20.webp",
+      "sort_order": 27
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 21",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-21.webp",
+      "sort_order": 28
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 22",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-22.webp",
+      "sort_order": 29
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 23",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-23.webp",
+      "sort_order": 30
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 24",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-24.webp",
+      "sort_order": 31
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 25",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-25.webp",
+      "sort_order": 32
+    },
+    {
+      "portfolio_id": "79e5ff35-045a-4894-a672-121ed8e7ef9b",
+      "event_slug": "auto-seminar-summer",
+      "type": "photo",
+      "label": "현장사진 26",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-26.webp",
+      "sort_order": 33
+    }
+  ],
+  "jcs-sns": [
+    {
+      "portfolio_id": "549cd164-31e8-45ac-9e36-40f45143d047",
+      "event_slug": "jcs-sns",
+      "type": "gallery",
+      "label": "기념일 콘텐츠",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/jcs-sns/memorial.webp",
+      "sort_order": 1
+    },
+    {
+      "portfolio_id": "549cd164-31e8-45ac-9e36-40f45143d047",
+      "event_slug": "jcs-sns",
+      "type": "gallery",
+      "label": "서울 수복",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/jcs-sns/seoul-liberation.webp",
+      "sort_order": 3
+    },
+    {
+      "portfolio_id": "549cd164-31e8-45ac-9e36-40f45143d047",
+      "event_slug": "jcs-sns",
+      "type": "gallery",
+      "label": "파병 기념",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/jcs-sns/dispatch.webp",
+      "sort_order": 4
+    },
+    {
+      "portfolio_id": "549cd164-31e8-45ac-9e36-40f45143d047",
+      "event_slug": "jcs-sns",
+      "type": "gallery",
+      "label": "합참 창설",
+      "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/jcs-sns/jcs-founding.webp",
+      "sort_order": 5
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+[
+  {
+    "event_slug": "kls",
+    "type": "gallery",
+    "label": "상세페이지",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/detail-page.webp"
+  },
+  {
+    "event_slug": "kls",
+    "type": "gallery",
+    "label": "인포그래픽 2",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/kls/infographic-2.webp"
+  },
+  {
+    "event_slug": "gyeonggi-print",
+    "type": "gallery",
+    "label": "인포그래픽 2",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/gyeonggi-print/infographic-2.webp"
+  },
+  {
+    "event_slug": "goyang-conference",
+    "type": "gallery",
+    "label": "대형등신대",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/standee-large.webp"
+  },
+  {
+    "event_slug": "goyang-conference",
+    "type": "gallery",
+    "label": "세로현수막",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/banner-vertical.webp"
+  },
+  {
+    "event_slug": "goyang-conference",
+    "type": "gallery",
+    "label": "엑스배너",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/goyang-conference/x-banner.webp"
+  },
+  {
+    "event_slug": "international-forum",
+    "type": "gallery",
+    "label": "전시부스 미리보기존",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/booth-preview.webp"
+  },
+  {
+    "event_slug": "culture-club-operation",
+    "type": "gallery",
+    "label": "상세페이지",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/culture-club-operation/detail-page.webp"
+  },
+  {
+    "event_slug": "community-energy",
+    "type": "gallery",
+    "label": "엑스배너",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/community-energy/x-banner.webp"
+  },
+  {
+    "event_slug": "parent-education",
+    "type": "gallery",
+    "label": "카드뉴스",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/parent-education/card-news.webp"
+  },
+  {
+    "event_slug": "jcs-sns",
+    "type": "gallery",
+    "label": "광복 80주년",
+    "url": "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/jcs-sns/liberation-80.webp"
+  }
+]

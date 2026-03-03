@@ -1,0 +1,4 @@
+INSERT INTO quote_site.portfolio_media (portfolio_id, event_slug, type, label, url, sort_order) VALUES
+  ('de0bb921-6d89-4af9-8733-1aa4a7ae9212', 'gyeonggi-print', 'gallery', '원페이퍼', 'https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/gyeonggi-print/one-pager.webp', 1),
+  ('de0bb921-6d89-4af9-8733-1aa4a7ae9212', 'gyeonggi-print', 'gallery', '인포그래픽', 'https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/gyeonggi-print/infographic.webp', 2),
+  ('de0bb921-6d89-4af9-8733-1aa4a7ae9212', 'gyeonggi-print', 'gallery', '인포그래픽 2', 'https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/gyeonggi-print/infographic-2.webp', 3);
