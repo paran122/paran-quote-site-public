@@ -656,7 +656,7 @@ function LazyVideo({ src, className }: { src: string; className?: string }) {
 }
 
 /** Card thumbnail: soft zoom + dissolve (Ken Burns lite) */
-function CardPhotoRotator({ photos, sizes, stagger = 0 }: { photos: { src: string; label: string }[]; sizes: string; stagger?: number }) {
+function CardPhotoRotator({ photos, sizes, stagger = 0, priority = false }: { photos: { src: string; label: string }[]; sizes: string; stagger?: number; priority?: boolean }) {
   const [idx, setIdx] = useState(0);
   const [inView, setInView] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -714,6 +714,7 @@ function CardPhotoRotator({ photos, sizes, stagger = 0 }: { photos: { src: strin
             fill
             className="object-cover"
             sizes={sizes}
+            priority={priority}
           />
         </motion.div>
       </AnimatePresence>
@@ -989,7 +990,7 @@ export default function Portfolio() {
                   {project.video ? (
                     <LazyVideo src={project.video} className="h-full w-full object-cover" />
                   ) : (
-                    <CardPhotoRotator photos={project.photos.length > 0 ? project.photos : project.images} sizes="(max-width: 768px) 50vw, 33vw" stagger={i * 1200} />
+                    <CardPhotoRotator photos={project.photos.length > 0 ? project.photos : project.images} sizes="(max-width: 768px) 50vw, 33vw" stagger={i * 1200} priority={i < 3} />
                   )}
                 </div>
 

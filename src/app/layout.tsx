@@ -10,6 +10,7 @@ import SiteShell from "@/components/layout/SiteShell";
 import ToastContainer from "@/components/ui/Toast";
 import KakaoChatButton from "@/components/common/KakaoChatButton";
 import SiteDataLoader from "@/components/SiteDataLoader";
+import PublicShell from "@/components/layout/PublicShell";
 import JsonLd from "./JsonLd";
 
 const notoSansKR = Noto_Sans_KR({
@@ -143,15 +144,19 @@ export default function RootLayout({
         `}
       </Script>
       <body className="font-body antialiased min-h-screen flex flex-col">
-        <JsonLd />
-        <SiteDataLoader />
-        <GNB />
+        <PublicShell>
+          <JsonLd />
+          <SiteDataLoader />
+          <GNB />
+        </PublicShell>
         <SiteShell>
           <main className="flex-1">{children}</main>
         </SiteShell>
-        <Footer />
+        <PublicShell>
+          <Footer />
+          <KakaoChatButton />
+        </PublicShell>
         <ToastContainer />
-        <KakaoChatButton />
       </body>
     </html>
   );

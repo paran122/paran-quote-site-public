@@ -1,0 +1,63 @@
+"use client";
+
+import { useRouter, usePathname } from "next/navigation";
+import { LogOut, ExternalLink } from "lucide-react";
+
+const PAGE_TITLES: Record<string, string> = {
+  "/admin": "대시보드",
+  "/admin/blog": "블로그 관리",
+  "/admin/blog/new": "새 글 작성",
+  "/admin/portfolio": "포트폴리오 관리",
+  "/admin/portfolio/new": "새 포트폴리오",
+  "/admin/photos": "사진 관리",
+};
+
+function getTitle(pathname: string): string {
+  // 정확한 매칭 우선
+  if (PAGE_TITLES[pathname]) return PAGE_TITLES[pathname];
+
+  // /admin/blog/[id]/edit 패턴
+  if (/^\/admin\/blog\/[^/]+\/edit$/.test(pathname)) return "글 수정";
+  if (/^\/admin\/portfolio\/[^/]+\/edit$/.test(pathname)) return "포트폴리오 수정";
+  if (/^\/admin\/portfolio\/[^/]+\/media$/.test(pathname)) return "사진 관리";
+  if (/^\/admin\/portfolio\/[^/]+\/reviews$/.test(pathname)) return "후기 관리";
+
+  return "관리자";
+}
+
+export default function AdminHeader() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const title = getTitle(pathname);
+
+  async function handleLogout() {
+    await fetch("/api/admin/auth", { method: "DELETE" });
+    router.push("/admin/login");
+    router.refresh();
+  }
+
+  return (
+    <header className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0">
+      <h1 className="text-base font-semibold text-slate-900">{title}</h1>
+
+      <div className="flex items-center gap-3">
+        <a
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1"
+        >
+          사이트 보기
+          <ExternalLink className="w-3.5 h-3.5" />
+        </a>
+        <button
+          onClick={handleLogout}
+          className="text-sm text-slate-500 hover:text-red-500 flex items-center gap-1 transition-colors"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          로그아웃
+        </button>
+      </div>
+    </header>
+  );
+}

@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# media (업로드용 임시 폴더)
+/videos
+
 # dependencies
 /node_modules
 /.pnp
@@ -75,3 +78,4 @@ test-screenshots/
 # Temporary screenshots
 *.png
 !public/**/*.png
+.git-private-backup/

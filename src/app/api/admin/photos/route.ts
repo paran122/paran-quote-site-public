@@ -9,32 +9,25 @@ function getClient() {
   return createClient(url, key, { db: { schema: "quote_site" } });
 }
 
-/** Storage 파일 삭제 (서버 사이드 fetch) */
-async function deleteStorageFiles(paths: string[]) {
+/** 서버 전용 Supabase 클라이언트 (service_role 키) */
+function getAdminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key || paths.length === 0) return [];
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) throw new Error("Missing Supabase admin env vars");
+  return createClient(url, key, { db: { schema: "quote_site" } });
+}
 
+/** Storage 파일 삭제 (Supabase SDK) */
+async function deleteStorageFiles(paths: string[]) {
+  if (paths.length === 0) return [];
   const errors: string[] = [];
+  const admin = getAdminClient();
   // 50개씩 배치
   for (let i = 0; i < paths.length; i += 50) {
     const batch = paths.slice(i, i + 50);
-    try {
-      const res = await fetch(`${url}/storage/v1/object/portfolio`, {
-        method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${key}`,
-          "apikey": key,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prefixes: batch }),
-      });
-      if (!res.ok) {
-        const txt = await res.text();
-        errors.push(`Storage batch ${i}: ${txt}`);
-      }
-    } catch (e) {
-      errors.push(`Storage batch ${i}: ${e instanceof Error ? e.message : "unknown"}`);
+    const { error } = await admin.storage.from("portfolio").remove(batch);
+    if (error) {
+      errors.push(`Storage batch ${i}: ${error.message}`);
     }
   }
   return errors;

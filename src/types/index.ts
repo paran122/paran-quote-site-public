@@ -157,3 +157,24 @@ export interface Stat {
   suffix: string;
   label: string;
 }
+
+// 블로그 포스트
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  excerpt?: string;
+  thumbnailUrl?: string;
+  category?: string;
+  tags: string[];
+  seoTitle?: string;
+  seoDescription?: string;
+  ogImageUrl?: string;
+  isPublished: boolean;
+  isFeatured: boolean;
+  sortOrder: number;
+  publishedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}

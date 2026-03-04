@@ -74,14 +74,7 @@ export async function GET() {
       <pubDate>${new Date().toUTCString()}</pubDate>
       <guid>${siteUrl}</guid>
     </item>
-    <item>
-      <title>파란컴퍼니 서비스 안내</title>
-      <link>${siteUrl}/services</link>
-      <description>세미나, 컨퍼런스, 포럼, 축제, 전시회 등 다양한 행사 서비스를 제공합니다.</description>
-      <pubDate>${new Date().toUTCString()}</pubDate>
-      <guid>${siteUrl}/services</guid>
-    </item>
-    <item>
+<item>
       <title>파란컴퍼니 포트폴리오</title>
       <link>${siteUrl}/work</link>
       <description>파란컴퍼니가 수행한 행사 포트폴리오를 확인하세요.</description>
