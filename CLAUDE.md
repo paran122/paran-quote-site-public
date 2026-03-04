@@ -28,6 +28,12 @@
 - catalogStore가 Supabase에서 데이터를 먼저 조회하고, 실패 시 constants.ts 폴백 데이터를 사용
 - 스토어: cartStore, catalogStore, siteDataStore, themeStore
 
+## 보안 (Public 레포 주의)
+- origin은 Public 레포이므로 커밋/푸시 전 민감 파일 반드시 확인
+- 절대 커밋 금지: `.env.local`, API 키, 시크릿, 비밀번호, credentials, 토큰
+- `.git-private-backup/`, 스크린샷(*.jpeg), 목업(*.html)은 커밋하지 않음
+- 커밋 전 `git diff --staged`로 민감 정보 포함 여부 확인
+
 ## 규칙
 - TypeScript 필수, any 사용 금지
 - Tailwind CSS로만 스타일링 (인라인 style 금지)
