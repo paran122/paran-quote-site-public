@@ -124,17 +124,6 @@ export default function HeroParticle() {
             <div className="absolute -inset-4 rounded-3xl bg-blue-500/10 blur-2xl" />
 
             <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-2xl shadow-blue-900/30 backdrop-blur-sm">
-              {/* Browser-style top bar */}
-              <div className="flex items-center gap-2 border-b border-white/5 bg-white/[0.03] px-4 py-2.5">
-                <div className="flex gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-red-400/60" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/60" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-green-400/60" />
-                </div>
-                <div className="ml-3 flex-1 rounded-md bg-white/5 px-3 py-1 font-mono text-[10px] text-white/30">
-                  youtu.be/dP-3ZtYs7Bs
-                </div>
-              </div>
 
               {/* Video — deferred load for faster initial page render */}
               <div className="relative aspect-video w-full bg-black/60">

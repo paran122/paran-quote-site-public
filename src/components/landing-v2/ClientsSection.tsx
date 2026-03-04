@@ -220,15 +220,19 @@ export default function Clients() {
               </div>
             </div>
           </div>
-          <div className="relative bg-[#eef3ff] py-2 md:py-4">
+          <div className="relative bg-[#eef3ff] py-3 md:py-5">
             <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 bg-gradient-to-r from-[#eef3ff] to-transparent md:w-24" />
             <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 bg-gradient-to-l from-[#eef3ff] to-transparent md:w-24" />
             <div className="overflow-hidden">
-              <div className="flex items-center" style={{ animation: "cr 30s linear infinite", ...animState }}>
-                {repeated.map((c, i) => (
-                  <div key={i} className="flex flex-shrink-0 items-center gap-1.5 px-4 md:gap-2 md:px-8">
-                    <span className="h-0.5 w-2 rounded-full bg-blue-400/60 md:h-1 md:w-3" />
-                    <span className="whitespace-nowrap text-[10px] font-semibold text-blue-900/50 md:text-[13px]">{c.name}</span>
+              <div className="flex items-center" style={{ animation: "cr 35s linear infinite", ...animState }}>
+                {[...reviews, ...reviews].map((r, i) => (
+                  <div key={i} className="flex-shrink-0 px-4 md:px-6" style={{ width: "260px" }}>
+                    <p className="line-clamp-2 text-[11px] leading-snug text-blue-900/70 md:text-[13px]">
+                      &ldquo;{r.content}&rdquo;
+                    </p>
+                    <p className="mt-0.5 text-[10px] font-semibold text-blue-500/60 md:text-[11px]">
+                      {maskName(r.reviewerName)} · {r.organization}
+                    </p>
                   </div>
                 ))}
               </div>

@@ -3,7 +3,6 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
@@ -385,20 +384,22 @@ function BuildPageContent() {
                       추천
                     </span>
                   </button>
-                  <button
-                    onClick={() => router.push("/services")}
+                  <a
+                    href="https://pf.kakao.com/_xkexdLG"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="p-6 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-white/5 hover:border-slate-300 rounded-[6px] text-left transition-all"
                   >
-                    <span className="text-[2rem]">✏️</span>
-                    <p className="font-bold text-slate-900 dark:text-white mt-2">직접 구성</p>
+                    <span className="text-[2rem]">💬</span>
+                    <p className="font-bold text-slate-900 dark:text-white mt-2">맞춤 상담</p>
                     <p className="text-[12px]text-slate-500 mt-1">
-                      원하는 서비스를 자유롭게 선택
+                      카카오톡으로 맞춤 견적 상담
                     </p>
                     <span className="inline-flex items-center gap-1 mt-2 text-[12px] font-medium text-primary">
-                      서비스 목록 보기
-                      <ArrowRight size={12} />
+                      카카오톡 상담하기
+                      <ExternalLink size={12} />
                     </span>
-                  </button>
+                  </a>
                 </div>
 
                 {/* 패키지 선택 */}
@@ -411,13 +412,14 @@ function BuildPageContent() {
                       <div className="text-center py-8 text-slate-400 text-sm">
                         선택한 행사 유형에 맞는 패키지가 없습니다.
                         <br />
-                        <button
-                          type="button"
-                          onClick={() => router.push("/services")}
-                          className="mt-2 text-primary font-medium underline"
+                        <a
+                          href="https://pf.kakao.com/_xkexdLG"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-2 inline-block text-primary font-medium underline"
                         >
-                          개별 서비스에서 직접 구성하기
-                        </button>
+                          카카오톡으로 맞춤 상담하기
+                        </a>
                       </div>
                     )}
                     {PACKAGES.map((pkg) => {
@@ -558,13 +560,15 @@ function BuildPageContent() {
                 {/* 추가 서비스 */}
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-[13px] font-semibold text-slate-900">추가 서비스 선택</h3>
-                  <Link
-                    href="/services"
+                  <a
+                    href="https://pf.kakao.com/_xkexdLG"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-1 text-[12px]text-slate-500 hover:text-primary transition-colors"
                   >
-                    그 외 서비스는 개별 서비스에서 선택하세요
+                    그 외 서비스는 카카오톡으로 상담하세요
                     <ExternalLink size={12} />
-                  </Link>
+                  </a>
                 </div>
                 <div className="space-y-3">
                   {ADDITIONAL_SERVICES.map((svc) => {

@@ -37,19 +37,7 @@ test.describe('메인페이지 (/) E2E 테스트', () => {
   });
 
   test.describe('2. 네비게이션 링크 정상 작동', () => {
-    test('서비스 링크가 /services로 이동한다', async ({ page, viewport }) => {
-      await page.goto('/');
-      if (viewport && viewport.width < 768) {
-        await page.getByRole('button', { name: '메뉴 열기' }).click();
-        await page.getByRole('banner').getByRole('link', { name: '서비스', exact: true }).click();
-      } else {
-        await page.getByRole('navigation').getByRole('link', { name: '서비스' }).click();
-      }
-      await expect(page).toHaveURL('/services');
-      await expect(page).toHaveTitle(/서비스/);
-    });
-
-    test('포트폴리오 링크가 /work로 이동한다', async ({ page, viewport }) => {
+test('포트폴리오 링크가 /work로 이동한다', async ({ page, viewport }) => {
       await page.goto('/');
       if (viewport && viewport.width < 768) {
         await page.getByRole('button', { name: '메뉴 열기' }).click();
@@ -73,45 +61,15 @@ test.describe('메인페이지 (/) E2E 테스트', () => {
     });
 
     test('로고 클릭 시 홈으로 이동한다', async ({ page }) => {
-      await page.goto('/services');
+      await page.goto('/work');
       await page.getByRole('link', { name: '파란컴퍼니' }).click();
       await expect(page).toHaveURL('/');
     });
 
-    test('인기 서비스 카드 클릭 시 상세 페이지로 이동한다', async ({ page }) => {
-      await page.goto('/');
-      await page.getByRole('link', { name: /컨퍼런스 기획서/ }).first().click();
-      await expect(page).toHaveURL(/\/services\/svc-/);
-    });
   });
 
   test.describe('3. 버튼 클릭 및 이벤트 동작', () => {
-    test('서비스 상세에서 수량 증가/감소 버튼이 동작한다', async ({ page, viewport }) => {
-      test.skip(viewport !== null && viewport.width < 768, '사이드바가 모바일에서 하단 고정이므로 별도 테스트');
-      await page.goto('/services/svc-1');
-      // 초기 합계 확인
-      await expect(page.getByRole('paragraph').filter({ hasText: /^1,500,000원$/ })).toBeVisible();
-      // + 버튼 클릭 (수량 영역의 두 번째 아이콘 버튼)
-      await page.evaluate(() => {
-        const asides = document.querySelectorAll('aside');
-        const priceSidebar = asides[asides.length - 1];
-        const buttons = priceSidebar.querySelectorAll('button');
-        const iconOnlyButtons = Array.from(buttons).filter(btn => !btn.textContent?.trim());
-        if (iconOnlyButtons.length >= 2) {
-          (iconOnlyButtons[1] as HTMLButtonElement).click();
-        }
-      });
-      await expect(page.getByRole('paragraph').filter({ hasText: /^3,000,000원$/ })).toBeVisible();
-    });
-
-    test('장바구니 담기 버튼이 동작한다', async ({ page, viewport }) => {
-      test.skip(viewport !== null && viewport.width < 768, '사이드바가 모바일에서 하단 고정이므로 별도 테스트');
-      await page.goto('/services/svc-1');
-      await page.getByRole('button', { name: '장바구니 담기' }).click();
-      await expect(page.getByText('담기 완료')).toBeVisible({ timeout: 5000 });
-    });
-
-    test('카카오톡 상담 링크가 올바른 URL을 가진다', async ({ page }) => {
+test('카카오톡 상담 링크가 올바른 URL을 가진다', async ({ page }) => {
       await page.goto('/');
       const kakaoLink = page.getByRole('link', { name: '카카오톡 무료 상담' });
       await expect(kakaoLink).toHaveAttribute('href', 'https://pf.kakao.com/_xkexdLG');
@@ -157,12 +115,7 @@ test.describe('메인페이지 (/) E2E 테스트', () => {
   });
 
   test.describe('6. API/페이지 응답 확인', () => {
-    test('/services 페이지가 정상 응답한다', async ({ page }) => {
-      const response = await page.goto('/services');
-      expect(response?.status()).toBe(200);
-    });
-
-    test('/work 페이지가 정상 응답한다', async ({ page }) => {
+test('/work 페이지가 정상 응답한다', async ({ page }) => {
       const response = await page.goto('/work');
       expect(response?.status()).toBe(200);
     });
@@ -172,9 +125,5 @@ test.describe('메인페이지 (/) E2E 테스트', () => {
       expect(response?.status()).toBe(200);
     });
 
-    test('/services/svc-1 상세 페이지가 정상 응답한다', async ({ page }) => {
-      const response = await page.goto('/services/svc-1');
-      expect(response?.status()).toBe(200);
-    });
   });
 });

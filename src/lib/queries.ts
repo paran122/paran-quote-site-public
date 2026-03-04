@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Category, Service, Package as PkgType, Portfolio, EventType, EventPhoto, EventReview, PortfolioMedia } from "@/types";
+import { Category, Service, Package as PkgType, Portfolio, EventType, EventPhoto, EventReview, PortfolioMedia, BlogPost } from "@/types";
 
 /** Supabase 클라이언트를 반환하거나, 미연결 시 에러를 throw (catalogStore catch에서 처리) */
 function requireClient() {
@@ -503,6 +503,123 @@ export async function fetchRecentQuotes(
     .limit(limit);
   if (error) throw error;
   return (data ?? []).map((r) => mapRow<QuoteRow>(r));
+}
+
+// ── 블로그 포스트 ──
+export async function fetchPublishedBlogPosts(
+  category?: string,
+  limit = 20,
+  offset = 0,
+): Promise<BlogPost[]> {
+  const db = requireClient();
+  let query = db
+    .from("blog_posts")
+    .select("*")
+    .eq("is_published", true)
+    .lte("published_at", new Date().toISOString())
+    .order("published_at", { ascending: false })
+    .range(offset, offset + limit - 1);
+
+  if (category) query = query.eq("category", category);
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data ?? []).map((r) => mapRow<BlogPost>(r));
+}
+
+export async function fetchFeaturedBlogPosts(): Promise<BlogPost[]> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("blog_posts")
+    .select("*")
+    .eq("is_published", true)
+    .eq("is_featured", true)
+    .lte("published_at", new Date().toISOString())
+    .order("sort_order", { ascending: true });
+  if (error) throw error;
+  return (data ?? []).map((r) => mapRow<BlogPost>(r));
+}
+
+export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("blog_posts")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+  if (error) {
+    if (error.code === "PGRST116") return null;
+    throw error;
+  }
+  return mapRow<BlogPost>(data);
+}
+
+export async function fetchAllBlogPosts(): Promise<BlogPost[]> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("blog_posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map((r) => mapRow<BlogPost>(r));
+}
+
+export async function fetchBlogPostById(id: string): Promise<BlogPost | null> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("blog_posts")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (error) {
+    if (error.code === "PGRST116") return null;
+    throw error;
+  }
+  return mapRow<BlogPost>(data);
+}
+
+export async function createBlogPost(input: Record<string, unknown>): Promise<BlogPost> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("blog_posts")
+    .insert(input)
+    .select()
+    .single();
+  if (error) throw error;
+  return mapRow<BlogPost>(data);
+}
+
+export async function updateBlogPost(id: string, updates: Record<string, unknown>): Promise<BlogPost> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("blog_posts")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return mapRow<BlogPost>(data);
+}
+
+export async function deleteBlogPost(id: string) {
+  const db = requireClient();
+  const { error } = await db
+    .from("blog_posts")
+    .delete()
+    .eq("id", id);
+  if (error) throw error;
+}
+
+export async function fetchBlogCategories(): Promise<string[]> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("blog_posts")
+    .select("category")
+    .not("category", "is", null)
+    .order("category");
+  if (error) throw error;
+  const categories = Array.from(new Set((data ?? []).map((r) => r.category as string).filter(Boolean)));
+  return categories;
 }
 
 // ── 사이트 설정 업데이트 ──

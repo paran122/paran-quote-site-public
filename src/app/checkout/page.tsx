@@ -161,7 +161,7 @@ export default function CheckoutPage() {
           <p className="text-[13px] text-slate-500 mb-6">
             서비스를 추가하고 견적을 요청해보세요
           </p>
-          <Link href="/services" className="btn-primary btn-lg justify-center">
+          <Link href="/build" className="btn-primary btn-lg justify-center">
             서비스 둘러보기
             <ArrowRight size={18} />
           </Link>
@@ -383,7 +383,7 @@ export default function CheckoutPage() {
 
             {/* 서비스 더 추가하기 */}
             <Link
-              href="/services"
+              href="/build"
               className="mt-4 block text-center text-[13px] text-slate-500 font-medium hover:text-slate-700"
             >
               + 서비스 더 추가하기
