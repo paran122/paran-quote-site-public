@@ -37,19 +37,6 @@ function getBadgeColor(category?: string) {
   return BADGE_COLORS[category] ?? "bg-slate-100 text-slate-500";
 }
 
-/* ── 플레이스홀더 그래디언트 (통일된 네이비) ── */
-const PH_GRADIENTS = [
-  "from-[#1a2744] to-[#0f1a2e]",
-  "from-[#1e2d4a] to-[#131f35]",
-  "from-[#1a2a45] to-[#0e1828]",
-  "from-[#1c2e4c] to-[#111d33]",
-  "from-[#182640] to-[#0d1726]",
-  "from-[#1f3050] to-[#142238]",
-  "from-[#1b2b48] to-[#101c30]",
-  "from-[#1d2f4e] to-[#122036]",
-  "from-[#192843] to-[#0f192c]",
-];
-
 /* ── 플레이스홀더 데이터 ── */
 const PH_FEATURED: BlogPost = {
   id: "placeholder-featured",
@@ -202,7 +189,6 @@ export default function BlogListClient({ posts, featuredPosts = [], categories }
           description={featured.excerpt || ""}
           imageUrl={featured.thumbnailUrl}
           href={isPh(featured) ? "" : `/blog/${featured.slug}`}
-          gradientClass={PH_GRADIENTS[0]}
         />
 
         {/* ═══ Sub-Featured (Best 4 중 하단 3개) ═══ */}
