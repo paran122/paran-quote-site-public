@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Star } from "lucide-react";
 import type { BlogPost } from "@/types";
 
 export default function AdminBlogPage() {
@@ -11,12 +11,19 @@ export default function AdminBlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [error, setError] = useState("");
+
   useEffect(() => {
     fetch("/api/admin/blog")
-      .then((res) => res.json())
-      .then((data) => {
+      .then(async (res) => {
+        const text = await res.text();
+        console.log("[admin/blog] status:", res.status, "body:", text);
+        if (!res.ok) throw new Error(res.status === 401 ? "로그인이 필요합니다" : `불러오기 실패 (${res.status})`);
+        const data = JSON.parse(text);
         if (Array.isArray(data)) setPosts(data);
+        else setError(data?.error || "응답 형식 오류");
       })
+      .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
@@ -43,7 +50,9 @@ export default function AdminBlogPage() {
     <div className="max-w-4xl">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="text-sm text-slate-500">총 {posts.length}개의 글</p>
+          <p className="text-sm text-slate-500">
+            {loading ? "불러오는 중..." : error ? "조회 실패" : `총 ${posts.length}개의 글`}
+          </p>
         </div>
         <Link href="/admin/blog/new" className="btn-primary btn-sm">
           <Plus className="w-3.5 h-3.5" />
@@ -51,7 +60,16 @@ export default function AdminBlogPage() {
         </Link>
       </div>
 
-      {loading ? (
+      {error ? (
+        <div className="text-center py-12">
+          <p className="text-sm text-red-500 mb-3">{error}</p>
+          {error.includes("로그인") && (
+            <Link href="/admin/login" className="text-sm text-primary hover:underline">
+              로그인 페이지로 이동
+            </Link>
+          )}
+        </div>
+      ) : loading ? (
         <div className="text-center py-12 text-sm text-slate-400">불러오는 중...</div>
       ) : posts.length === 0 ? (
         <div className="text-center py-12">
@@ -87,17 +105,24 @@ export default function AdminBlogPage() {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    {post.isPublished ? (
-                      <span className="inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                        <Eye className="w-3 h-3" />
-                        발행
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
-                        <EyeOff className="w-3 h-3" />
-                        임시
-                      </span>
-                    )}
+                    <div className="flex items-center gap-1.5">
+                      {post.isPublished ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                          <Eye className="w-3 h-3" />
+                          발행
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+                          <EyeOff className="w-3 h-3" />
+                          임시
+                        </span>
+                      )}
+                      {post.isFeatured && (
+                        <span className="inline-flex items-center gap-0.5 text-xs text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full" title={`추천 순서: ${post.sortOrder}`}>
+                          <Star className="w-3 h-3" />
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-slate-500">{post.category || "-"}</td>
                   <td className="px-4 py-3 text-slate-500">

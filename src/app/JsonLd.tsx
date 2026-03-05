@@ -7,7 +7,7 @@ export default function JsonLd() {
     "@type": "Organization",
     name: "파란컴퍼니",
     url: siteUrl,
-    logo: `${siteUrl}/og-image.png`,
+    logo: `${siteUrl}/logo.svg`,
     description:
       "공공기관·기업 행사 전문 에이전시. 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지.",
     contactPoint: {

@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       const sharp = (await import("sharp")).default;
       optimized = await sharp(buffer)
         .resize(1200, undefined, { withoutEnlargement: true })
-        .webp({ quality: 80 })
+        .webp({ quality: 90 })
         .toBuffer();
     } catch {
       // sharp 사용 불가 시 원본 업로드

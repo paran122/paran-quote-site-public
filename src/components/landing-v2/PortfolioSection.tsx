@@ -620,6 +620,8 @@ function PortfolioModal({
 function LazyVideo({ src, className }: { src: string; className?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [inView, setInView] = useState(false);
+  const [opacity, setOpacity] = useState(1);
+  const fadeTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -642,6 +644,32 @@ function LazyVideo({ src, className }: { src: string; className?: string }) {
     }
   }, [inView]);
 
+  // Crossfade: fade out near the end, fade back in at the start
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const FADE_DURATION = 0.5; // seconds before end to start fading
+
+    const onTimeUpdate = () => {
+      if (!el.duration || !isFinite(el.duration)) return;
+      const remaining = el.duration - el.currentTime;
+      if (remaining <= FADE_DURATION) {
+        setOpacity(remaining / FADE_DURATION);
+      } else if (el.currentTime <= FADE_DURATION) {
+        setOpacity(Math.min(1, el.currentTime / FADE_DURATION));
+      } else {
+        setOpacity(1);
+      }
+    };
+
+    el.addEventListener("timeupdate", onTimeUpdate);
+    return () => {
+      el.removeEventListener("timeupdate", onTimeUpdate);
+      if (fadeTimerRef.current) clearInterval(fadeTimerRef.current);
+    };
+  }, []);
+
   return (
     <video
       ref={ref}
@@ -651,6 +679,7 @@ function LazyVideo({ src, className }: { src: string; className?: string }) {
       playsInline
       preload="none"
       className={className}
+      style={{ opacity, transition: "opacity 0.15s ease" }}
     />
   );
 }

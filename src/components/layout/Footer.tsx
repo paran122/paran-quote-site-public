@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -13,8 +14,14 @@ export default function Footer() {
         <div className="flex items-start justify-between gap-4 md:gap-8">
           {/* Logo & Info */}
           <div>
-            <div className="mb-1.5 text-[10px] font-bold tracking-tight text-white md:mb-4 md:text-lg">
-              PARAN<span className="text-blue-400">.</span>
+            <div className="mb-1.5 md:mb-4">
+              <Image
+                src="/logo-white.svg"
+                alt="파란컴퍼니"
+                width={120}
+                height={53}
+                className="h-5 w-auto md:h-8"
+              />
             </div>
             <div className="space-y-0.5 text-[7px] leading-relaxed text-white/40 md:space-y-1 md:text-xs">
               <p>파란컴퍼니 주식회사 | 대표 김미경</p>

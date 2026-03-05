@@ -32,7 +32,8 @@
 - origin은 Public 레포이므로 커밋/푸시 전 민감 파일 반드시 확인
 - 절대 커밋 금지: `.env.local`, API 키, 시크릿, 비밀번호, credentials, 토큰
 - `.git-private-backup/`, 스크린샷(*.jpeg), 목업(*.html)은 커밋하지 않음
-- 커밋 전 `git diff --staged`로 민감 정보 포함 여부 확인
+- **매 커밋/푸시 전 반드시 `git diff --staged`로 민감 정보(API 키, 시크릿, 토큰, 비밀번호) 포함 여부 확인할 것**
+- 민감 정보가 발견되면 커밋 중단하고 사용자에게 알릴 것
 
 ## 규칙
 - TypeScript 필수, any 사용 금지
@@ -163,6 +164,46 @@ Supabase MCP 프로젝트: `aiarnrhftmuffmcninyl` / 스키마: `quote_site`
 Storage 버킷: `portfolio`
 이미지 편집/보정: Replicate MCP (우선), 나노바나나 Pro MCP (폴백)
 라우터: `event-portfolio-update` (공유 리소스: db-schema, md-template, examples)
+
+## 블로그 MD 업로드 (직원용 가이드)
+
+MD 파일 하나로 블로그 글을 등록할 수 있습니다.
+MD 작성법: `.claude/skills/blog-post/md-template.md`
+
+> **"블로그"** 키워드를 반드시 포함해야 스킬이 작동합니다.
+
+### 블로그 글 등록 (`blog-post`)
+
+**트리거:**
+- `"블로그 글 올려줘"` + MD 파일 경로
+- `"블로그 등록해줘"`
+- `"블로그 포스트 추가해줘"`
+- `"블로그 글 작성해줘"`
+
+**자동 처리:**
+- slug 자동 생성 (제목에서 변환)
+- 마크다운 → HTML 변환
+- 로컬 이미지 → Supabase Storage 업로드 (WebP quality 90, 최대 1200px)
+- SEO 필드 자동 설정 (title → seo_title, excerpt → seo_description)
+
+**예시:**
+```
+블로그 글 올려줘 .claude/skills/blog-post/examples/행사-기획-체크리스트.md
+```
+
+### 알아두면 좋은 것
+- 같은 슬러그의 글이 이미 있으면 덮어쓸지 물어봅니다
+- 등록 결과는 `/admin/blog`에서 확인, `/blog/{slug}`에서 미리보기
+- excerpt는 SNS 공유 시 요약문으로 사용됩니다
+- MD 파일 샘플: `.claude/skills/blog-post/examples/`
+- 어드민 UI: "저장" 버튼 1개, 발행 여부는 체크박스로 제어 (체크=공개, 미체크=초안)
+
+### 스킬 시스템 (개발자용)
+Supabase MCP 프로젝트: `aiarnrhftmuffmcninyl` / 스키마: `quote_site`
+테이블: `blog_posts`
+Storage 버킷: `blog` / 경로: `images/{timestamp}.webp`
+이미지 업로드: `/api/admin/blog/upload` (Sharp WebP quality 90, 최대 1200px)
+마크다운 변환: `marked` (devDependency)
 
 ## Git 워크플로우
 

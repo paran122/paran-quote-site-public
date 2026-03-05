@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
@@ -9,7 +10,7 @@ const navItems = [
   { label: "포트폴리오", anchor: "#portfolio" },
   { label: "프로세스", anchor: "#process" },
   { label: "고객사", anchor: "#clients" },
-  { label: "블로그", anchor: "/blog", isPage: true },
+  // { label: "블로그", anchor: "/blog", isPage: true }, // TODO: 블로그 콘텐츠 준비 후 활성화
 ];
 
 export default function GNB() {
@@ -18,6 +19,7 @@ export default function GNB() {
   const router = useRouter();
 
   const isLanding = pathname === "/";
+  const isBlog = pathname.startsWith("/blog");
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, item: typeof navItems[number]) => {
     e.preventDefault();
@@ -51,15 +53,26 @@ export default function GNB() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-blue-400/10 bg-[#0f1a3c] backdrop-blur-xl">
+    <header className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-xl ${
+      isBlog
+        ? "border-transparent bg-white/90"
+        : "border-blue-400/10 bg-[#0f1a3c]"
+    }`}>
       <div className="flex items-center justify-between px-6 py-3 md:px-8 lg:pl-44">
         {/* Logo */}
         <a
           href="/"
           onClick={handleLogoClick}
-          className="font-mono text-lg font-bold tracking-widest text-white"
+          className="relative block"
         >
-          PARAN<span className="text-blue-400">.</span>
+          <Image
+            src={isBlog ? "/logo.svg" : "/logo-white.svg"}
+            alt="파란컴퍼니"
+            width={120}
+            height={53}
+            className="h-8 w-auto md:h-9"
+            priority
+          />
         </a>
 
         {/* Desktop Nav */}
@@ -69,10 +82,18 @@ export default function GNB() {
               key={item.anchor}
               href={item.anchor}
               onClick={(e) => handleNavClick(e, item)}
-              className={`text-xs font-medium transition-colors hover:text-white/80 ${
-                item.isPage && pathname.startsWith(item.anchor)
-                  ? "text-white"
-                  : "text-white/40"
+              className={`text-xs font-medium transition-colors ${
+                isBlog
+                  ? `hover:text-slate-900 ${
+                      item.isPage && pathname.startsWith(item.anchor)
+                        ? "text-slate-900 font-semibold"
+                        : "text-slate-500"
+                    }`
+                  : `hover:text-white/80 ${
+                      item.isPage && pathname.startsWith(item.anchor)
+                        ? "text-white"
+                        : "text-white/40"
+                    }`
               }`}
             >
               {item.label}
@@ -96,15 +117,15 @@ export default function GNB() {
           >
             <motion.span
               animate={mobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-              className="block h-0.5 w-6 bg-white/70"
+              className={`block h-0.5 w-6 ${isBlog ? "bg-slate-700" : "bg-white/70"}`}
             />
             <motion.span
               animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="block h-0.5 w-6 bg-white/70"
+              className={`block h-0.5 w-6 ${isBlog ? "bg-slate-700" : "bg-white/70"}`}
             />
             <motion.span
               animate={mobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-              className="block h-0.5 w-6 bg-white/70"
+              className={`block h-0.5 w-6 ${isBlog ? "bg-slate-700" : "bg-white/70"}`}
             />
           </button>
         </div>
@@ -117,7 +138,11 @@ export default function GNB() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden border-t border-blue-400/10 bg-[#0f1a3c] backdrop-blur-xl md:hidden"
+            className={`overflow-hidden border-t backdrop-blur-xl md:hidden ${
+              isBlog
+                ? "border-slate-200/60 bg-white/95"
+                : "border-blue-400/10 bg-[#0f1a3c]"
+            }`}
           >
             <div className="flex flex-col gap-4 px-6 py-6">
               {navItems.map((item) => (
@@ -125,10 +150,18 @@ export default function GNB() {
                   key={item.anchor}
                   href={item.anchor}
                   onClick={(e) => handleNavClick(e, item)}
-                  className={`text-sm transition-colors hover:text-white ${
-                    item.isPage && pathname.startsWith(item.anchor)
-                      ? "text-white"
-                      : "text-white/50"
+                  className={`text-sm transition-colors ${
+                    isBlog
+                      ? `hover:text-slate-900 ${
+                          item.isPage && pathname.startsWith(item.anchor)
+                            ? "text-slate-900 font-semibold"
+                            : "text-slate-500"
+                        }`
+                      : `hover:text-white ${
+                          item.isPage && pathname.startsWith(item.anchor)
+                            ? "text-white"
+                            : "text-white/50"
+                        }`
                   }`}
                 >
                   {item.label}

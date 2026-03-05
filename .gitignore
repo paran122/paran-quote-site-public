@@ -71,6 +71,15 @@ test-screenshots/
 # Auto-memory (personal per machine)
 .claude/projects/
 
+# bkit plugin state (auto-generated)
+.bkit/
+docs/.pdca-snapshots/
+docs/.pdca-status.json
+docs/.bkit-memory.json
+
+# Designer source files
+/SVG/
+
 # Git backup (old history)
 .git-backup/
 .git-original/
@@ -78,4 +87,5 @@ test-screenshots/
 # Temporary screenshots
 *.png
 !public/**/*.png
+!src/app/apple-icon.png
 .git-private-backup/

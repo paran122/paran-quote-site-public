@@ -85,6 +85,11 @@ const config: Config = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        "border-beam": {
+          "100%": {
+            "offset-distance": "100%",
+          },
+        },
       },
       animation: {
         blink: "blink 1s step-end infinite",
@@ -95,6 +100,7 @@ const config: Config = {
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         "light-sweep": "light-sweep 3s ease-in-out infinite",
         marquee: "marquee 30s linear infinite",
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
       },
       boxShadow: {
         subtle:

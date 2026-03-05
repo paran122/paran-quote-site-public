@@ -330,7 +330,14 @@ body {
     px-6 py-4 my-6 text-base text-slate-700 italic leading-[1.8];
 }
 .prose-blog img {
-  @apply w-full rounded-lg my-7;
+  @apply w-full rounded-lg my-7 transition-opacity hover:opacity-80;
+}
+/* 사진 그리드: .blog-photo-grid 클래스가 있으면 3열 썸네일 */
+.prose-blog .blog-photo-grid {
+  @apply grid grid-cols-3 gap-2 my-6 sm:gap-3;
+}
+.prose-blog .blog-photo-grid img {
+  @apply w-full aspect-[4/3] object-cover rounded-lg my-0 cursor-pointer;
 }
 .prose-blog a {
   @apply text-primary underline underline-offset-2 hover:text-primary-600;

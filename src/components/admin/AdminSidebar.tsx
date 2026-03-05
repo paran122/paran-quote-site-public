@@ -7,6 +7,7 @@ import {
   FileText,
   Briefcase,
   ImageIcon,
+  Component,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -17,6 +18,7 @@ const NAV_ITEMS = [
   { href: "/admin/blog", label: "블로그", icon: FileText },
   { href: "/admin/portfolio", label: "포트폴리오", icon: Briefcase },
   { href: "/admin/photos", label: "사진 관리", icon: ImageIcon },
+  { href: "/admin/components", label: "컴포넌트", icon: Component },
 ];
 
 export default function AdminSidebar() {
