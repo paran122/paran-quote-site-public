@@ -28,17 +28,6 @@ function getBadgeColor(category?: string) {
   return BADGE_COLORS[category] ?? "bg-slate-100 text-slate-500";
 }
 
-const PH_GRADIENTS = [
-  "from-[#1a2744] to-[#0f1a2e]",
-  "from-[#1e2d4a] to-[#131f35]",
-  "from-[#1a2a45] to-[#0e1828]",
-  "from-[#1c2e4c] to-[#111d33]",
-  "from-[#182640] to-[#0d1726]",
-  "from-[#1f3050] to-[#142238]",
-  "from-[#1b2b48] to-[#101c30]",
-  "from-[#1d2f4e] to-[#122036]",
-  "from-[#192843] to-[#0f192c]",
-];
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -148,7 +137,7 @@ export default function BlogArchiveClient({
 }
 
 /* ── Archive Card ── */
-function ArchiveCard({ post, index }: { post: BlogPost; index: number }) {
+function ArchiveCard({ post }: { post: BlogPost; index?: number }) {
   return (
     <Link href={`/blog/${post.slug}`}>
       <div className="group grid h-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-lg border border-slate-100 bg-white transition-all hover:-translate-y-0.5 hover:border-transparent hover:shadow-lg">

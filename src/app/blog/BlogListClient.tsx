@@ -103,11 +103,10 @@ function isPh(post: BlogPost) {
 /* ── 이미지 or 그래디언트 ── */
 function CardImage({
   post,
-  index,
   sizes = "400px",
 }: {
   post: BlogPost;
-  index: number;
+  index?: number;
   sizes?: string;
 }) {
   return (
