@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronRight, AlertTriangle, Save, X, Mail, Loader2, ArrowRight, CheckCircle } from "lucide-react";
+import { ChevronDown, ChevronRight, AlertTriangle, Save, X, Mail, ArrowRight, CheckCircle } from "lucide-react";
 import { PulsatingButton } from "@/components/ui/pulsating-button";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import MovingBorderButton from "@/components/ui/MovingBorderButton";

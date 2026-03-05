@@ -48,7 +48,7 @@ const BlogPostCard = React.forwardRef<HTMLDivElement, BlogPostCardProps>(
       imageUrl,
       href,
       readMoreText = "자세히 보기",
-      gradientClass,
+      gradientClass: _gradientClass,
     },
     ref
   ) => {
