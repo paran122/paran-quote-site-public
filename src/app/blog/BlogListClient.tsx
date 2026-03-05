@@ -195,9 +195,11 @@ export default function BlogListClient({ posts, featuredPosts = [], categories }
         />
 
         {/* ═══ Sub-Featured (Best 4 중 하단 3개) ═══ */}
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="-mx-6 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 scrollbar-hide sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
           {subCards.map((post, i) => (
-            <HoverRevealCard key={post.id} post={post} index={i + 1} />
+            <div key={post.id} className="w-[80%] flex-shrink-0 snap-start sm:w-auto">
+              <HoverRevealCard post={post} index={i + 1} />
+            </div>
           ))}
         </div>
 
