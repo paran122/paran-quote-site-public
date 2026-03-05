@@ -49,8 +49,8 @@ const PH_FEATURED: BlogPost = {
   isPublished: true,
   isFeatured: false,
   sortOrder: 0,
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
+  createdAt: "2024-01-01",
+  updatedAt: "2024-01-01",
 };
 
 const PH_SUB: BlogPost[] = [
@@ -70,15 +70,18 @@ const PH_LATEST: (BlogPost & { authorName: string })[] = [
 ];
 
 /* ── 유틸 ── */
-function formatDate(dateStr: string) {
+function formatDate(dateStr?: string) {
+  if (!dateStr) return "";
   const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "";
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   return `${y}.${m}.${day}`;
 }
 
-function readTime(content: string): number {
+function readTime(content?: string): number {
+  if (!content) return 5;
   const text = content.replace(/<[^>]*>/g, "");
   return Math.max(1, Math.round(text.length / 500));
 }
