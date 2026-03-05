@@ -89,3 +89,6 @@ docs/.bkit-memory.json
 !public/**/*.png
 !src/app/apple-icon.png
 .git-private-backup/
+
+# Local Netlify folder
+.netlify

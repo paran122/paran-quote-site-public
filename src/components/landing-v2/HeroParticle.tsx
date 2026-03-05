@@ -125,7 +125,8 @@ export default function HeroParticle() {
                   muted
                   loop
                   playsInline
-                  preload="auto"
+                  preload="metadata"
+                  poster="/hero-poster.jpg"
                   className="absolute inset-0 h-full w-full object-cover"
                 >
                   <source src="/hero-video.mp4" type="video/mp4" />
