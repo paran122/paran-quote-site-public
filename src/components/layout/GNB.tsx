@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-const navItems = [
+const navItems: { label: string; anchor: string; isPage?: boolean }[] = [
   { label: "홈", anchor: "#hero" },
   { label: "포트폴리오", anchor: "#portfolio" },
   { label: "프로세스", anchor: "#process" },

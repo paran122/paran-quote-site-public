@@ -246,7 +246,6 @@ function PreviewBlogPostCard() {
         title="2026년 기업 행사 트렌드"
         description="올해 주목해야 할 행사 트렌드를 분석합니다."
         href=""
-        gradientClass="from-[#1a2744] to-[#0f1a2e]"
       />
     </div>
   );
