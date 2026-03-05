@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { fetchBlogPostById, updateBlogPost, deleteBlogPost } from "@/lib/queries";
+import { fetchBlogPostById, updateBlogPost, deleteBlogPost, fetchBlogPostBySlug } from "@/lib/queries";
 import { blogPostSchema } from "@/lib/validators/blog";
 
 export async function GET(
@@ -26,9 +26,22 @@ export async function PATCH(
     const body = await request.json();
     const parsed = blogPostSchema.partial().parse(body);
 
-    // 발행 상태로 변경 시 published_at 자동 설정
+    // 슬러그 변경 시 중복 체크
+    if (parsed.slug) {
+      const existing = await fetchBlogPostBySlug(parsed.slug);
+      if (existing && existing.id !== params.id) {
+        return NextResponse.json({ error: `이미 같은 슬러그(${parsed.slug})를 사용하는 글이 있습니다` }, { status: 409 });
+      }
+    }
+
+    // 발행 상태로 변경 시 published_at 자동 설정 (기존에 이미 발행된 글은 건드리지 않음)
     if (parsed.is_published && !parsed.published_at) {
-      parsed.published_at = new Date().toISOString();
+      const current = await fetchBlogPostById(params.id);
+      if (!current?.publishedAt) {
+        parsed.published_at = new Date().toISOString();
+      } else {
+        delete parsed.published_at;
+      }
     }
 
     const post = await updateBlogPost(params.id, parsed as unknown as Record<string, unknown>);

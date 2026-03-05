@@ -6,6 +6,7 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import { Mic, MessageSquare, PartyPopper, PenTool, Check, Plus, Minus, X, ChevronDown, Loader2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { showToast } from "@/components/ui/Toast";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 interface EstimateItem {
   name: string;
@@ -449,9 +450,10 @@ export default function Estimate() {
                           whileHover={{ scale: 1.01 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => setShowOrder(true)}
-                          className="mt-3 w-full rounded-xl bg-gray-300 py-3.5 text-base font-bold text-gray-600 shadow-sm transition-shadow hover:bg-gray-400 hover:text-gray-700 hover:shadow-md"
+                          className="relative mt-3 w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 py-3.5 text-base font-bold text-white shadow-sm transition-shadow hover:shadow-md"
                         >
                           견적내기
+                          <BorderBeam size={120} duration={8} colorFrom="#93c5fd" colorTo="#a5b4fc" borderWidth={1.5} />
                         </motion.button>
                       </motion.div>
                     )}
@@ -466,9 +468,10 @@ export default function Estimate() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
-                      className="rounded-md bg-gradient-to-r from-blue-500 to-indigo-500 px-4 py-2 text-xs font-semibold text-white shadow-md transition-shadow hover:shadow-lg md:rounded-lg md:px-6 md:py-2.5 md:text-sm"
+                      className="relative overflow-hidden rounded-md bg-gradient-to-r from-blue-500 to-indigo-500 px-4 py-2 text-xs font-semibold text-white shadow-md transition-shadow hover:shadow-lg md:rounded-lg md:px-6 md:py-2.5 md:text-sm"
                     >
                       상담 요청하기
+                      <BorderBeam size={80} duration={6} colorFrom="#93c5fd" colorTo="#a5b4fc" borderWidth={1} />
                     </motion.button>
                   </div>
                 </div>

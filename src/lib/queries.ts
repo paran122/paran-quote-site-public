@@ -554,6 +554,22 @@ export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null
   return mapRow<BlogPost>(data);
 }
 
+export async function fetchPublishedBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("blog_posts")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_published", true)
+    .lte("published_at", new Date().toISOString())
+    .single();
+  if (error) {
+    if (error.code === "PGRST116") return null;
+    throw error;
+  }
+  return mapRow<BlogPost>(data);
+}
+
 export async function fetchAllBlogPosts(): Promise<BlogPost[]> {
   const db = requireClient();
   const { data, error } = await db
@@ -610,11 +626,28 @@ export async function deleteBlogPost(id: string) {
   if (error) throw error;
 }
 
+export async function fetchPublishedBlogPostCount(category?: string): Promise<number> {
+  const db = requireClient();
+  let query = db
+    .from("blog_posts")
+    .select("id", { count: "exact", head: true })
+    .eq("is_published", true)
+    .lte("published_at", new Date().toISOString());
+
+  if (category) query = query.eq("category", category);
+
+  const { count, error } = await query;
+  if (error) throw error;
+  return count ?? 0;
+}
+
 export async function fetchBlogCategories(): Promise<string[]> {
   const db = requireClient();
   const { data, error } = await db
     .from("blog_posts")
     .select("category")
+    .eq("is_published", true)
+    .lte("published_at", new Date().toISOString())
     .not("category", "is", null)
     .order("category");
   if (error) throw error;

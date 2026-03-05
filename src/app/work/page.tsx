@@ -1,20 +1,13 @@
 "use client";
 
 import { useState, useMemo, useEffect, useCallback } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { Search, X, MapPin, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import ContactModal from "@/components/ui/ContactModal";
 import Masonry from "react-masonry-css";
 import { GRADIENT_MAP } from "@/lib/portfolioData";
 import { useCatalogStore } from "@/stores/catalogStore";
 import type { Portfolio } from "@/types";
-
-const EVENT_TYPE_KEY_MAP: Record<string, string> = {
-  "컨퍼런스": "conference",
-  "세미나": "seminar",
-  "기업행사": "corporate",
-  "축제": "festival",
-};
 
 export default function WorkPage() {
   const portfolios = useCatalogStore((s) => s.portfolios);
@@ -33,6 +26,7 @@ export default function WorkPage() {
     years.sort((a, b) => Number(b) - Number(a));
     return ["전체", ...years];
   }, [portfolios]);
+  const [contactOpen, setContactOpen] = useState(false);
   const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio | null>(
     null
   );
@@ -338,15 +332,17 @@ export default function WorkPage() {
           <p className="text-slate-400 text-[13px] mt-2">
             파란컴퍼니와 함께라면 성공적인 행사를 만들 수 있습니다
           </p>
-          <Link
-            href="/checkout"
+          <button
+            onClick={() => setContactOpen(true)}
             className="btn-white btn-lg justify-center mt-6 inline-flex"
           >
             무료 견적 시작하기
             <ArrowRight size={18} />
-          </Link>
+          </button>
         </div>
       </div>
+
+      <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
 
       {/* 상세 모달 */}
       {selectedPortfolio && (
@@ -552,13 +548,15 @@ export default function WorkPage() {
               )}
 
               <div className="mt-6 flex gap-3">
-                <Link
-                  href={`/build?eventType=${EVENT_TYPE_KEY_MAP[selectedPortfolio.eventType] ?? "other"}`}
+                <button
                   className="btn-primary btn-md flex-1 justify-center"
-                  onClick={() => setSelectedPortfolio(null)}
+                  onClick={() => {
+                    setSelectedPortfolio(null);
+                    setContactOpen(true);
+                  }}
                 >
                   비슷한 행사 견적 요청
-                </Link>
+                </button>
                 <button
                   onClick={() => setSelectedPortfolio(null)}
                   className="btn-ghost btn-md"

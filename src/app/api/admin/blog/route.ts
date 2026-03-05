@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { fetchAllBlogPosts, createBlogPost } from "@/lib/queries";
+import { fetchAllBlogPosts, createBlogPost, fetchBlogPostBySlug } from "@/lib/queries";
 import { blogPostSchema } from "@/lib/validators/blog";
 
 export async function GET() {
@@ -16,6 +16,12 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const parsed = blogPostSchema.parse(body);
+
+    // 슬러그 중복 체크
+    const existing = await fetchBlogPostBySlug(parsed.slug);
+    if (existing) {
+      return NextResponse.json({ error: `이미 같은 슬러그(${parsed.slug})를 사용하는 글이 있습니다` }, { status: 409 });
+    }
 
     // 발행 시 published_at 자동 설정
     if (parsed.is_published && !parsed.published_at) {

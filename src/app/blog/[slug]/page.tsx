@@ -4,16 +4,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import {
-  fetchBlogPostBySlug,
+  fetchPublishedBlogPostBySlug,
   fetchPublishedBlogPosts,
 } from "@/lib/queries";
+import BlogContent from "@/components/blog/BlogContent";
 
 interface Props {
   params: { slug: string };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await fetchBlogPostBySlug(params.slug);
+  const post = await fetchPublishedBlogPostBySlug(decodeURIComponent(params.slug));
   if (!post) return {};
 
   return {
@@ -24,9 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: post.seoDescription || post.excerpt || "",
       type: "article",
       publishedTime: post.publishedAt || post.createdAt,
-      ...(post.ogImageUrl || post.thumbnailUrl
-        ? { images: [{ url: post.ogImageUrl || post.thumbnailUrl || "" }] }
-        : {}),
+      images: [{ url: post.ogImageUrl || post.thumbnailUrl || "/og-image.png" }],
     },
   };
 }
@@ -45,7 +44,7 @@ function estimateReadTime(content: string): number {
 }
 
 export default async function BlogDetailPage({ params }: Props) {
-  const post = await fetchBlogPostBySlug(params.slug);
+  const post = await fetchPublishedBlogPostBySlug(decodeURIComponent(params.slug));
   if (!post) notFound();
 
   // Get related posts (same category, excluding current)
@@ -87,27 +86,14 @@ export default async function BlogDetailPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Hero Image */}
-      {post.thumbnailUrl && (
-        <div className="mx-auto mb-12 max-w-[960px] px-6">
-          <div className="relative aspect-[2/1] overflow-hidden rounded-2xl">
-            <Image
-              src={post.thumbnailUrl}
-              alt={post.title}
-              fill
-              className="object-cover"
-              sizes="960px"
-              priority
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Prose Content */}
-      <div
-        className="prose-blog mx-auto max-w-[720px] px-6 pb-12"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
+      {/* Hero Image + Prose Content (라이트박스 통합) */}
+      <div className="px-6 pb-12">
+        <BlogContent
+          html={post.content}
+          thumbnailUrl={post.thumbnailUrl}
+          title={post.title}
+        />
+      </div>
 
       {/* Tags */}
       {post.tags && post.tags.length > 0 && (
@@ -137,17 +123,13 @@ export default async function BlogDetailPage({ params }: Props) {
                 className="group overflow-hidden rounded-2xl border border-slate-100 bg-white transition-all hover:-translate-y-0.5 hover:border-transparent hover:shadow-lg"
               >
                 <div className="relative aspect-[16/10]">
-                  {rp.thumbnailUrl ? (
-                    <Image
-                      src={rp.thumbnailUrl}
-                      alt={rp.title}
-                      fill
-                      className="object-cover"
-                      sizes="400px"
-                    />
-                  ) : (
-                    <div className="h-full w-full bg-gradient-to-br from-[#1a365d] to-[#2d3748]" />
-                  )}
+                  <Image
+                    src={rp.thumbnailUrl || "/blog-default-thumbnail.png"}
+                    alt={rp.title}
+                    fill
+                    className="object-cover"
+                    sizes="400px"
+                  />
                 </div>
                 <div className="px-5 pb-5 pt-4">
                   <div className="mb-2 flex items-center gap-2">

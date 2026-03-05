@@ -1,13 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
+"use client";
+
+import { useState, useEffect } from "react";
 import { FileText, Briefcase, ImageIcon, ClipboardList } from "lucide-react";
 import Link from "next/link";
-
-function getClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key, { db: { schema: "quote_site" } });
-}
 
 interface StatCardProps {
   label: string;
@@ -31,34 +26,25 @@ function StatCard({ label, value, icon: Icon, href }: StatCardProps) {
   );
 }
 
-export default async function AdminDashboard() {
-  const db = getClient();
+export default function AdminDashboard() {
+  const [counts, setCounts] = useState({ blog: 0, portfolio: 0, media: 0, quote: 0 });
+  const [loading, setLoading] = useState(true);
 
-  let blogCount = 0;
-  let portfolioCount = 0;
-  let mediaCount = 0;
-  let quoteCount = 0;
-
-  if (db) {
-    const [blogRes, portfolioRes, mediaRes, quoteRes] = await Promise.all([
-      db.from("blog_posts").select("id", { count: "exact", head: true }),
-      db.from("portfolios").select("id", { count: "exact", head: true }),
-      db.from("portfolio_media").select("id", { count: "exact", head: true }),
-      db.from("quotes").select("id", { count: "exact", head: true }),
-    ]);
-    blogCount = blogRes.count ?? 0;
-    portfolioCount = portfolioRes.count ?? 0;
-    mediaCount = mediaRes.count ?? 0;
-    quoteCount = quoteRes.count ?? 0;
-  }
+  useEffect(() => {
+    fetch("/api/dashboard")
+      .then((res) => res.ok ? res.json() : Promise.reject())
+      .then((data) => setCounts(data))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="max-w-5xl">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard label="블로그 글" value={blogCount} icon={FileText} href="/admin/blog" />
-        <StatCard label="포트폴리오" value={portfolioCount} icon={Briefcase} href="/admin/portfolio" />
-        <StatCard label="미디어" value={mediaCount} icon={ImageIcon} href="/admin/photos" />
-        <StatCard label="견적 요청" value={quoteCount} icon={ClipboardList} href="/admin" />
+        <StatCard label="블로그 글" value={loading ? "-" : counts.blog} icon={FileText} href="/admin/blog" />
+        <StatCard label="포트폴리오" value={loading ? "-" : counts.portfolio} icon={Briefcase} href="/admin/portfolio" />
+        <StatCard label="미디어" value={loading ? "-" : counts.media} icon={ImageIcon} href="/admin/photos" />
+        <StatCard label="견적 요청" value={loading ? "-" : counts.quote} icon={ClipboardList} href="/admin" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

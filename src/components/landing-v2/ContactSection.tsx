@@ -7,17 +7,23 @@ import { Phone, Mail, Printer, MapPin, Loader2 } from "lucide-react";
 import { showToast } from "@/components/ui/Toast";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^[\d\-]{9,15}$/;
 
 interface ContactForm {
   contactName: string;
+  phone: string;
   email: string;
   message: string;
 }
 
-const INITIAL_FORM: ContactForm = { contactName: "", email: "", message: "" };
+const INITIAL_FORM: ContactForm = { contactName: "", phone: "", email: "", message: "" };
 
 function getFieldError(form: ContactForm, key: string): string | null {
   if (key === "contactName" && !form.contactName.trim()) return "이름을 입력해주세요";
+  if (key === "phone") {
+    if (!form.phone.trim()) return "연락처를 입력해주세요";
+    if (!PHONE_REGEX.test(form.phone.replace(/\s/g, ""))) return "올바른 전화번호를 입력해주세요";
+  }
   if (key === "email") {
     if (!form.email.trim()) return "이메일을 입력해주세요";
     if (!EMAIL_REGEX.test(form.email.trim())) return "올바른 이메일 형식 (예: email@company.com)";
@@ -26,7 +32,7 @@ function getFieldError(form: ContactForm, key: string): string | null {
   return null;
 }
 
-const REQUIRED_FIELDS = ["contactName", "email", "message"] as const;
+const REQUIRED_FIELDS = ["contactName", "phone", "email", "message"] as const;
 
 export default function Contact() {
   const [form, setForm] = useState<ContactForm>(INITIAL_FORM);
@@ -61,7 +67,7 @@ export default function Contact() {
         quote_number: quoteNumber,
         contact_name: form.contactName,
         organization: "문의",
-        phone: "-",
+        phone: form.phone,
         email: form.email,
         event_name: "문의",
         event_date: new Date().toISOString().slice(0, 10),
@@ -151,18 +157,32 @@ export default function Contact() {
                 {/* 담당자 정보 */}
                 <div className="mb-2 md:mb-8">
                   <h3 className="mb-1 text-[10px] font-bold text-gray-900 md:mb-4 md:text-base">담당자 정보</h3>
-                  <div className="grid grid-cols-2 gap-1.5 md:gap-5">
-                    <div>
-                      <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">이름 <span className="text-red-400">*</span></label>
-                      <input
-                        type="text"
-                        placeholder="홍길동"
-                        value={form.contactName}
-                        onChange={(e) => updateField("contactName", e.target.value)}
-                        onBlur={() => handleBlur("contactName")}
-                        className={`w-full rounded border bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.contactName && getFieldError(form, "contactName") ? "border-red-300" : "border-gray-200"}`}
-                      />
-                      {touched.contactName && getFieldError(form, "contactName") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "contactName")}</p>}
+                  <div className="space-y-1.5 md:space-y-5">
+                    <div className="grid grid-cols-2 gap-1.5 md:gap-5">
+                      <div>
+                        <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">이름 <span className="text-red-400">*</span></label>
+                        <input
+                          type="text"
+                          placeholder="홍길동"
+                          value={form.contactName}
+                          onChange={(e) => updateField("contactName", e.target.value)}
+                          onBlur={() => handleBlur("contactName")}
+                          className={`w-full rounded border bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.contactName && getFieldError(form, "contactName") ? "border-red-300" : "border-gray-200"}`}
+                        />
+                        {touched.contactName && getFieldError(form, "contactName") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "contactName")}</p>}
+                      </div>
+                      <div>
+                        <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">연락처 <span className="text-red-400">*</span></label>
+                        <input
+                          type="tel"
+                          placeholder="010-1234-5678"
+                          value={form.phone}
+                          onChange={(e) => updateField("phone", e.target.value)}
+                          onBlur={() => handleBlur("phone")}
+                          className={`w-full rounded border bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.phone && getFieldError(form, "phone") ? "border-red-300" : "border-gray-200"}`}
+                        />
+                        {touched.phone && getFieldError(form, "phone") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "phone")}</p>}
+                      </div>
                     </div>
                     <div>
                       <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">이메일 <span className="text-red-400">*</span></label>
