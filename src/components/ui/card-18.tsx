@@ -33,7 +33,6 @@ export interface BlogPostCardProps
   imageUrl?: string;
   href: string;
   readMoreText?: string;
-  gradientClass?: string;
 }
 
 const BlogPostCard = React.forwardRef<HTMLDivElement, BlogPostCardProps>(
@@ -48,7 +47,6 @@ const BlogPostCard = React.forwardRef<HTMLDivElement, BlogPostCardProps>(
       imageUrl,
       href,
       readMoreText = "자세히 보기",
-      gradientClass: _gradientClass,
     },
     ref
   ) => {

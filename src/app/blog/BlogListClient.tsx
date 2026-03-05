@@ -202,7 +202,6 @@ export default function BlogListClient({ posts, featuredPosts = [], categories }
           description={featured.excerpt || ""}
           imageUrl={featured.thumbnailUrl}
           href={isPh(featured) ? "" : `/blog/${featured.slug}`}
-          gradientClass={PH_GRADIENTS[0]}
         />
 
         {/* ═══ Sub-Featured (Best 4 중 하단 3개) ═══ */}
