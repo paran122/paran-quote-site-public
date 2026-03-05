@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Particles } from "@/components/ui/particles";
 import { PulsatingButton } from "@/components/ui/pulsating-button";
@@ -8,12 +7,6 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import { TitleGlitchReveal } from "./HeroTitleAnimations";
 
 export default function HeroParticle() {
-  const [loadVideo, setLoadVideo] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoadVideo(true), 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <section id="hero" className="relative flex min-h-screen items-center overflow-hidden bg-[#050510]">
@@ -125,22 +118,18 @@ export default function HeroParticle() {
 
             <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-2xl shadow-blue-900/30 backdrop-blur-sm">
 
-              {/* Video — deferred load for faster initial page render */}
+              {/* Self-hosted video */}
               <div className="relative aspect-video w-full bg-black/60">
-                {loadVideo ? (
-                  <iframe
-                    src="https://www.youtube.com/embed/dP-3ZtYs7Bs?autoplay=1&mute=1&loop=1&playlist=dP-3ZtYs7Bs&controls=0&showinfo=0&rel=0"
-                    allow="autoplay; encrypted-media"
-                    allowFullScreen
-                    loading="lazy"
-                    title="파란컴퍼니 소개 영상"
-                    className="absolute inset-0 h-full w-full border-0"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="h-8 w-8 animate-pulse rounded-full bg-white/10" />
-                  </div>
-                )}
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  className="absolute inset-0 h-full w-full object-cover"
+                >
+                  <source src="/hero-video.mp4" type="video/mp4" />
+                </video>
               </div>
             </div>
           </motion.div>
