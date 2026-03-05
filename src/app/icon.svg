@@ -1,4 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-  <circle cx="64" cy="64" r="60" fill="#0f1a3c"/>
-  <text x="64" y="68" text-anchor="middle" dominant-baseline="central" font-family="'SF Mono','Consolas','Monaco',monospace" font-weight="800" font-size="72" fill="white">P</text>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_레이어_1" data-name="레이어 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-0.2 -0.75 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #000c40;
+      }
+
+      .cls-2 {
+        opacity: .74;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        fill: url(#_未命名漸層_3-3);
+      }
+
+      .cls-5 {
+        fill: url(#_무제_그라디언트_636);
+        opacity: .85;
+      }
+
+      .cls-6 {
+        fill: url(#_무제_그라디언트_982);
+      }
+
+      .cls-7 {
+        fill: url(#_未命名漸層_3);
+      }
+
+      .cls-8 {
+        fill: url(#_未命名漸層_3-2);
+      }
+    </style>
+    <linearGradient id="_무제_그라디언트_982" data-name="무제 그라디언트 982" x1="-12.22" y1="31.92" x2="24.05" y2="41.16" gradientTransform="translate(9.2 -20.5) rotate(1.39)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4a4fe8"/>
+      <stop offset=".18" stop-color="#255fef"/>
+      <stop offset=".34" stop-color="#0a6cf4"/>
+      <stop offset=".44" stop-color="#0071f7"/>
+      <stop offset=".52" stop-color="#0878f7"/>
+      <stop offset=".64" stop-color="#1e8cf8"/>
+      <stop offset=".79" stop-color="#43adfb"/>
+      <stop offset=".96" stop-color="#75dafe"/>
+      <stop offset="1" stop-color="#82e6ff"/>
+    </linearGradient>
+    <linearGradient id="_未命名漸層_3" data-name="未命名漸層 3" x1="-339.2" y1="-95.69" x2="-338.32" y2="-95.69" gradientTransform="translate(369.78 94.54) rotate(-4.29)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#23acba"/>
+      <stop offset=".25" stop-color="#3ec9d3"/>
+      <stop offset=".55" stop-color="#59e5eb"/>
+      <stop offset=".81" stop-color="#69f6f9"/>
+      <stop offset="1" stop-color="#6ffcff"/>
+    </linearGradient>
+    <linearGradient id="_未命名漸層_3-2" data-name="未命名漸層 3" x1="-335.9" x2="-335.03" xlink:href="#_未命名漸層_3"/>
+    <linearGradient id="_未命名漸層_3-3" data-name="未命名漸層 3" x1="-337.55" y1="-95.69" x2="-336.68" y2="-95.69" xlink:href="#_未命名漸層_3"/>
+    <linearGradient id="_무제_그라디언트_636" data-name="무제 그라디언트 636" x1="-349.62" y1="-103.08" x2="-336.03" y2="-103.08" gradientTransform="translate(369.78 94.54) rotate(-4.29)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#07ebca"/>
+      <stop offset=".09" stop-color="#15edd1"/>
+      <stop offset=".36" stop-color="#3cf3e5"/>
+      <stop offset=".62" stop-color="#58f8f3"/>
+      <stop offset=".84" stop-color="#68fbfb"/>
+      <stop offset="1" stop-color="#6ffcff"/>
+    </linearGradient>
+  </defs>
+  <rect class="cls-1" x="-1" y="-1" width="34" height="34"/>
+  <g class="cls-2">
+    <path class="cls-6" d="M21.99,5.59l-13.67,1.03c-1.25.09-2.27,1.02-2.49,2.25l-1.35,7.44h0s-.28,1.54-.28,1.54c-.02.12-.03.23-.04.35l-1.14,6.72h.02c0,.07,0,.13,0,.19.05.7.66,1.22,1.36,1.17.32-.02.61-.17.82-.39h0s4.77-5.03,4.77-5.03l10.79-.81c1.25-.09,2.27-1.02,2.49-2.25l1.63-8.98c.32-1.77-1.11-3.36-2.9-3.22Z"/>
+    <g>
+      <circle class="cls-7" cx="24.8" cy="24.47" r=".44"/>
+      <circle class="cls-8" cx="28.09" cy="24.23" r=".44"/>
+      <circle class="cls-4" cx="26.45" cy="24.35" r=".44"/>
+    </g>
+    <path class="cls-5" d="M27.4,22.65l-4.21.32-2.08.16-3.45.26c-1.47.11-2.84-1.07-3.3-2.84l-.92-3.52c-.64-2.45.68-4.93,2.71-5.08l5.53-.42c1.47-.11,2.84,1.07,3.3,2.84"/>
+    <polygon class="cls-1" points="24.77 22.07 22.93 24.26 26.72 23.01 24.77 22.07"/>
+  </g>
+  <path class="cls-3" d="M16.06,20.38h-4.08l-1.01,4.03h-4l3.7-14.84h8.09c3.35,0,4.45,2.57,3.75,5.4-.71,2.83-3.09,5.4-6.44,5.4ZM15.93,17.09c1.22,0,2.24-.85,2.56-2.11s-.29-2.11-1.51-2.11h-3.14l-1.05,4.23h3.14Z"/>
 </svg>
