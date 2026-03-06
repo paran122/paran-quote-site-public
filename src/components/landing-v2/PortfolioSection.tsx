@@ -974,8 +974,8 @@ export default function Portfolio() {
         <BlurFade delay={0.1}>
           <div className="mb-1 text-center font-[var(--font-inter)] text-xs font-extrabold tracking-[0.25em] text-blue-500/80 md:text-left md:text-base">PORTFOLIO</div>
           <div className="mx-auto mb-2 h-[2px] w-8 rounded-full bg-blue-400 md:mx-0 md:mb-4 md:w-10" />
-          <h2 className="mb-2 text-center text-xl font-bold text-gray-900 md:mb-4 md:text-left md:text-5xl">포트폴리오</h2>
-          <p className="mb-4 text-center text-xs text-gray-400 md:mb-10 md:text-left md:text-base">파란컴퍼니가 만들어온 행사의 순간들 (2025~2026)</p>
+          <h2 className="mb-2 text-center text-xl font-bold text-gray-900 md:mb-4 md:text-left md:text-5xl">주요 프로젝트</h2>
+          <p className="mb-4 text-center text-xs text-gray-400 md:mb-10 md:text-left md:text-base">(2025~2026)</p>
         </BlurFade>
 
         {/* Filter tabs */}

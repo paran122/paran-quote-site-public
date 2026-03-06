@@ -119,7 +119,7 @@ export default function Contact() {
                     <Phone className="h-2.5 w-2.5 text-blue-500 md:h-[18px] md:w-[18px]" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[9px] font-bold text-gray-800 md:text-sm">02-6342-2801</div>
+                    <div className="text-[9px] font-bold text-gray-800 md:text-sm">02-6342-2800</div>
                     <div className="text-[8px] text-gray-400 md:text-[11px]">평일 9:00~18:00</div>
                   </div>
                 </div>

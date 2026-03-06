@@ -10,7 +10,7 @@ import type { EventReview } from "@/types";
 const clients = [
   { name: "경기도교육청", logo: "/logos/gyeonggido-edu.jpg" },
   { name: "합동참모본부", logo: "/logos/jcs.png" },
-  { name: "해군 작전사령부", logo: "/logos/navy-ops.png" },
+  { name: "해군", logo: "/logos/navy-ops.png" },
   { name: "자동차부품산업진흥재단", logo: "/logos/kapf.svg" },
   { name: "한국에너지정보문화재단", logo: "/logos/keicf.png" },
   { name: "한국문화예술교육진흥원", logo: "/logos/arte.png" },

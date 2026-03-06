@@ -173,9 +173,8 @@ export default function About() {
 
         <BlurFade delay={0.2}>
           <p className="mb-8 max-w-2xl text-sm leading-relaxed text-gray-500 md:mb-14 md:text-base" style={{ wordBreak: "keep-all" }}>
-            창의적 기획과 전문적 실행력을 바탕으로 세미나·컨퍼런스·포럼·축제 등
-            행사 기획·운영부터 로비·조형물·체험존 등 공간 디자인, 콘텐츠 제작까지
-            원스톱으로 제공하는 행사 전문 에이전시입니다.
+            세미나·컨퍼런스·포럼·축제 등 행사 기획·운영을 전문으로 하는 행사 에이전시입니다.
+            공간 디자인부터 콘텐츠 제작까지, 창의적 기획과 전문적 실행력으로 완성합니다.
           </p>
         </BlurFade>
 
