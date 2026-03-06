@@ -3,8 +3,8 @@
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useEffect, useState, useCallback } from "react";
 
-const words = ["세미나", "컨퍼런스", "포럼", "축제", "전시회"];
-const suffix = "의 미래를 설계합니다";
+const words = ["세미나", "컨퍼런스", "포럼", "축제", "교육"];
+const suffix = "를 성공으로 이끕니다";
 
 function useFlipWord(duration = 2500) {
   const [index, setIndex] = useState(0);
@@ -210,7 +210,7 @@ export function TitleWaveCascade() {
    ───────────────────────────────────────────── */
 function useScramble(text: string, duration = 1500) {
   const [display, setDisplay] = useState(text);
-  const chars = "가나다라마바사아자차카타파하행사기획의미래설계";
+  const chars = "가나다라마바사아자차카타파하행사기획을성공으로이끕니다";
 
   useEffect(() => {
     const steps = 20;

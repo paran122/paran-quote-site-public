@@ -52,7 +52,7 @@ export default function HeroParticle() {
           <BlurFade delay={0.3}>
             <div className="mb-8 text-sm leading-relaxed text-white/40 md:text-base md:leading-relaxed">
               <span className="block tracking-[0.2em]">파란컴퍼니 | 행사 전문 에이전시</span>
-              <span className="block tracking-[0.15em] sm:tracking-normal sm:text-justify sm:[text-align-last:justify]">기획 → 디자인 → 운영 → 평가 → 완성</span>
+              <span className="block tracking-[0.15em] sm:tracking-normal sm:text-justify sm:[text-align-last:justify]">기획 → 준비 → 운영 → 평가 → 후속관리</span>
             </div>
           </BlurFade>
 
