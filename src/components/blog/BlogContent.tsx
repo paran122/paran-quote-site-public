@@ -9,6 +9,7 @@ interface Props {
   html: string;
   thumbnailUrl?: string | null;
   title?: string;
+  afterHero?: React.ReactNode;
 }
 
 /* HTML에서 blog-photo-grid 이미지를 분리 */
@@ -28,7 +29,7 @@ function extractPhotoGrid(html: string) {
   return { cleanHtml, gridImages };
 }
 
-export default function BlogContent({ html, thumbnailUrl, title }: Props) {
+export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Props) {
   const contentRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [images, setImages] = useState<{ src: string; alt: string }[]>([]);
@@ -128,9 +129,9 @@ export default function BlogContent({ html, thumbnailUrl, title }: Props) {
     <>
       {/* 히어로 캐러셀 */}
       {images.length > 0 && heroImage && (
-        <div className="group relative mx-auto mb-12 max-w-[960px]">
+        <div className="group relative mx-auto mb-12 max-w-[1100px]">
           <div
-            className="relative aspect-[2/1] cursor-pointer overflow-hidden rounded-2xl"
+            className="relative aspect-[2.2/1] cursor-pointer overflow-hidden"
             onClick={() => setLightboxIndex(heroIndex)}
           >
             <Image
@@ -167,7 +168,8 @@ export default function BlogContent({ html, thumbnailUrl, title }: Props) {
       )}
 
       {/* 본문 (사진 그리드 제거된 HTML) */}
-      <div className="mx-auto max-w-[720px]">
+      <div className="relative mx-auto mt-14 max-w-[640px]">
+        {afterHero}
         <div
           ref={contentRef}
           className="prose-blog"
@@ -177,7 +179,7 @@ export default function BlogContent({ html, thumbnailUrl, title }: Props) {
 
       {/* 현장 사진 가로 캐러셀 */}
       {gridImages.length > 0 && (
-        <div className="mx-auto mt-10 max-w-[720px]">
+        <div className="mx-auto mt-10 max-w-[640px]">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-bold tracking-tight text-slate-900">
               현장 사진
@@ -213,7 +215,7 @@ export default function BlogContent({ html, thumbnailUrl, title }: Props) {
                 transition={{ duration: 0.4, delay: i * 0.08, ease: "easeOut" }}
                 whileHover={{ scale: 1.03, rotate: 1, transition: { duration: 0.25 } }}
                 onClick={() => setLightboxIndex(gridOffset + i)}
-                className="relative h-[140px] w-[200px] flex-shrink-0 cursor-pointer overflow-hidden rounded-xl shadow-sm sm:h-[160px] sm:w-[230px]"
+                className="relative h-[140px] w-[200px] flex-shrink-0 cursor-pointer overflow-hidden rounded-lg shadow-sm sm:h-[160px] sm:w-[230px]"
               >
                 <Image
                   src={img.src}

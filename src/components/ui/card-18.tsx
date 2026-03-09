@@ -1,31 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 
-const cardVariants = cva(
-  "group relative flex flex-col overflow-hidden rounded-lg border bg-white text-slate-900 shadow-sm transition-all duration-300 ease-in-out hover:shadow-md",
-  {
-    variants: {
-      variant: {
-        default: "border-slate-100 p-6",
-        featured: "border-slate-200/60 flex-col md:flex-row",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-);
+/* ── 카테고리 색상 (Pitch 스타일: 눈에 띄게) ── */
+const CATEGORY_COLOR = "text-[13px] font-semibold text-[#4B5EDB]";
 
-export interface BlogPostCardProps
-  extends VariantProps<typeof cardVariants> {
+export interface BlogPostCardProps {
   className?: string;
+  variant?: "default" | "featured";
   tag: string;
   date: string;
   title: string;
@@ -39,7 +25,7 @@ const BlogPostCard = React.forwardRef<HTMLDivElement, BlogPostCardProps>(
   (
     {
       className,
-      variant,
+      variant = "default",
       tag,
       date,
       title,
@@ -50,88 +36,98 @@ const BlogPostCard = React.forwardRef<HTMLDivElement, BlogPostCardProps>(
     },
     ref
   ) => {
-    const cardHover = {
-      hover: {
-        y: -4,
-        transition: { duration: 0.2, ease: "easeInOut" as const },
-      },
-    };
-
-    const content = (
-      <>
-        {variant === "featured" && (
-          <div className="relative aspect-[16/9] w-full overflow-hidden md:w-1/2 lg:w-3/5">
-            <Image
-              src={imageUrl || "/blog-default-thumbnail.png"}
-              alt={title}
-              fill
-              className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, 60vw"
-            />
-          </div>
-        )}
-
-        <div className="flex flex-1 flex-col justify-between p-6 md:p-8">
-          <div>
-            <div className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase">
-              <span className="rounded-full bg-primary-50 px-3 py-1 text-primary">
-                {tag}
-              </span>
-              <span className="text-slate-400">{date}</span>
-            </div>
-
-            <h3 className="mb-3 text-xl font-bold leading-tight text-slate-900 lg:text-2xl">
-              <span className="bg-gradient-to-r from-primary to-primary bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 group-hover:bg-[length:100%_2px]">
-                {title}
-              </span>
-            </h3>
-
-            <p className="text-[14px] leading-[1.7] text-slate-500">
-              {description}
-            </p>
-          </div>
-
-          {variant === "featured" && (
-            <div className="mt-6">
-              <span className="relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-slate-900 px-5 py-2.5 text-[13px] font-semibold text-white transition-all group-hover:gap-3">
-                <span className="relative z-10 flex items-center gap-2">
-                  {readMoreText}
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-                <span
-                  className="absolute inset-0 animate-[light-sweep_3s_ease-in-out_infinite] opacity-40"
-                  style={{
-                    background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%)",
-                    backgroundSize: "200% 100%",
-                  }}
-                />
-              </span>
-            </div>
-          )}
-        </div>
-      </>
-    );
-
     const isPlaceholder = !href;
 
+    if (variant === "featured") {
+      /* ═══ Pitch Hero 스타일: 왼쪽 텍스트 + 오른쪽 이미지 ═══ */
+      const content = (
+        <div className={`group relative overflow-hidden rounded-lg bg-white ${className || ""}`}>
+          <div className="grid items-stretch md:grid-cols-2">
+            {/* 텍스트 영역 */}
+            <div className="flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-12 md:py-16">
+              {/* 카테고리 + 날짜 */}
+              <div className="mb-5 flex items-center gap-3 text-[12px]">
+                <span className={`${CATEGORY_COLOR}`}>{tag}</span>
+                <span className="text-slate-400">{date}</span>
+              </div>
+
+              {/* 제목 (기본: 밑줄 없음 → hover: 밑줄 애니메이션 + primary 색) */}
+              <h2 className="text-[26px] font-extrabold leading-[1.15] tracking-[-0.02em] text-slate-900 transition-colors duration-300 group-hover:text-primary sm:text-[30px] lg:text-[32px]">
+                <span className="bg-gradient-to-r from-primary to-primary bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 group-hover:bg-[length:100%_2px]">
+                  {title}
+                </span>
+              </h2>
+
+              {/* 설명 */}
+              {description && (
+                <p className="mt-4 line-clamp-2 text-[15px] leading-[1.7] text-slate-500">
+                  {description}
+                </p>
+              )}
+
+              {/* CTA 버튼 */}
+              <div className="mt-8">
+                <span className="inline-flex items-center gap-2 text-[14px] font-semibold text-slate-800 transition-colors group-hover:text-primary">
+                  {readMoreText}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </div>
+            </div>
+
+            {/* 이미지 영역 */}
+            <div className="relative aspect-[4/3] overflow-hidden md:aspect-auto md:min-h-[360px]">
+              <Image
+                src={imageUrl || "/blog-default-thumbnail.png"}
+                alt={title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+              <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
+            </div>
+          </div>
+
+          {/* 링크 오버레이 */}
+          {!isPlaceholder && (
+            <Link href={href} className="absolute inset-0 z-10" aria-label={title}>
+              <span className="sr-only">{title}</span>
+            </Link>
+          )}
+        </div>
+      );
+
+      return (
+        <div ref={ref}>
+          {content}
+        </div>
+      );
+    }
+
+    /* ═══ Default variant (카드) ═══ */
     return (
       <motion.div
         ref={ref}
-        className={cn(cardVariants({ variant, className }))}
-        variants={cardHover}
+        className={`group relative overflow-hidden rounded-md border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:shadow-md ${className || ""}`}
+        variants={{ hover: { y: -4, transition: { duration: 0.2, ease: "easeInOut" as const } } }}
         whileHover="hover"
       >
         {!isPlaceholder && (
-          <Link
-            href={href}
-            className="absolute inset-0 z-10"
-            aria-label={title}
-          >
+          <Link href={href} className="absolute inset-0 z-10" aria-label={title}>
             <span className="sr-only">{title}</span>
           </Link>
         )}
-        <div className="relative z-0 flex h-full w-full flex-col md:flex-row">
-          {content}
+        <div className="p-6">
+          <div className="mb-4 flex items-center gap-3 text-[12px]">
+            <span className={`font-normal ${CATEGORY_COLOR}`}>{tag}</span>
+            <span className="text-slate-400">{date}</span>
+          </div>
+          <h3 className="mb-3 text-xl font-bold leading-tight text-slate-900">
+            <span className="underline decoration-slate-900/20 underline-offset-2 transition-all duration-300 group-hover:text-primary group-hover:decoration-transparent">
+              {title}
+            </span>
+          </h3>
+          <p className="text-[14px] leading-[1.7] text-slate-500">{description}</p>
         </div>
       </motion.div>
     );

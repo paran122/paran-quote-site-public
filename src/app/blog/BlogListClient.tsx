@@ -1,17 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { BlogPostCard } from "@/components/ui/card-18";
 import ContactModal from "@/components/ui/ContactModal";
 import type { BlogPost } from "@/types";
 
+/* ── Framer-style staggered fade-in from left ── */
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.3 } },
+};
+const fadeIn = {
+  hidden: { opacity: 0, x: -20 },
+  show: { opacity: 1, x: 0, transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const } },
+};
+const itemFadeIn = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } },
+};
+
 interface Props {
   posts: BlogPost[];
   featuredPosts?: BlogPost[];
   categories: string[];
+  totalCount: number;
 }
 
 /* ── 기본 카테고리 ── */
@@ -23,19 +39,8 @@ const DEFAULT_CATEGORIES = [
   "장비/기술",
 ];
 
-/* ── 뱃지 색상 매핑 ── */
-const BADGE_COLORS: Record<string, string> = {
-  "체크리스트": "bg-blue-50 text-blue-600",
-  "행사 후기": "bg-emerald-50 text-emerald-600",
-  "장비/기술": "bg-violet-50 text-violet-600",
-  "트렌드": "bg-rose-50 text-rose-600",
-  "행사 기획": "bg-amber-50 text-amber-600",
-};
-
-function getBadgeColor(category?: string) {
-  if (!category) return "bg-slate-100 text-slate-500";
-  return BADGE_COLORS[category] ?? "bg-slate-100 text-slate-500";
-}
+/* ── 카테고리 색상 (Pitch 스타일: 눈에 띄게) ── */
+const CATEGORY_COLOR = "text-[13px] font-semibold text-[#4B5EDB]";
 
 /* ── 플레이스홀더 데이터 ── */
 const PH_FEATURED: BlogPost = {
@@ -63,10 +68,10 @@ const PH_EDITOR: BlogPost = {
   id: "ph-e1", title: "중앙아시아 교육협력포럼 행사 후기: 5개국 교육 전문가 한자리에", slug: "", content: "", excerpt: "중앙아시아 5개국 교육 전문가들이 모인 국제 포럼의 기획부터 현장 운영까지, 대규모 국제행사의 노하우를 공유합니다.", thumbnailUrl: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-06.webp", category: "행사 후기", tags: ["국제행사", "포럼"], isPublished: true, isFeatured: false, sortOrder: 0, createdAt: "2024-03-01", updatedAt: "2024-03-01",
 };
 
-const PH_LATEST: (BlogPost & { authorName: string })[] = [
-  { id: "ph-r1", title: "워크숍 기획 A to Z: 참여율 90% 만드는 비법", slug: "", content: "", excerpt: "참여형 워크숍을 설계하고 실행하는 단계별 가이드와 현장 팁을 공유합니다.", category: "행사 기획", tags: [], isPublished: true, isFeatured: false, sortOrder: 0, createdAt: "2024-01-18", updatedAt: "2024-01-18", authorName: "박지현" },
-  { id: "ph-r2", title: "메타버스 행사의 현실: 성공과 실패 사례 분석", slug: "", content: "", excerpt: "가상 공간 행사의 실제 운영 사례와 참석자 반응, 그리고 개선 방향을 정리했습니다.", category: "트렌드", tags: [], isPublished: true, isFeatured: false, sortOrder: 0, createdAt: "2024-01-12", updatedAt: "2024-01-12", authorName: "이서연" },
-  { id: "ph-r3", title: "음향 시스템 완벽 가이드: 공간별 최적 세팅", slug: "", content: "", excerpt: "소규모 회의실부터 대형 홀까지, 공간 특성에 맞는 음향 장비 선택과 세팅법.", category: "장비/기술", tags: [], isPublished: true, isFeatured: false, sortOrder: 0, createdAt: "2024-01-05", updatedAt: "2024-01-05", authorName: "김태호" },
+const PH_MORE: BlogPost[] = [
+  { id: "ph-r1", title: "워크숍 기획 A to Z: 참여율 90% 만드는 비법", slug: "", content: "", excerpt: "참여형 워크숍을 설계하고 실행하는 단계별 가이드와 현장 팁을 공유합니다.", category: "행사 기획", tags: [], isPublished: true, isFeatured: false, sortOrder: 0, createdAt: "2024-01-18", updatedAt: "2024-01-18" },
+  { id: "ph-r2", title: "메타버스 행사의 현실: 성공과 실패 사례 분석", slug: "", content: "", excerpt: "가상 공간 행사의 실제 운영 사례와 참석자 반응, 그리고 개선 방향을 정리했습니다.", category: "트렌드", tags: [], isPublished: true, isFeatured: false, sortOrder: 0, createdAt: "2024-01-12", updatedAt: "2024-01-12" },
+  { id: "ph-r3", title: "음향 시스템 완벽 가이드: 공간별 최적 세팅", slug: "", content: "", excerpt: "소규모 회의실부터 대형 홀까지, 공간 특성에 맞는 음향 장비 선택과 세팅법.", category: "장비/기술", tags: [], isPublished: true, isFeatured: false, sortOrder: 0, createdAt: "2024-01-05", updatedAt: "2024-01-05" },
 ];
 
 /* ── 유틸 ── */
@@ -80,49 +85,26 @@ function formatDate(dateStr?: string) {
   return `${y}.${m}.${day}`;
 }
 
-function readTime(content?: string): number {
-  if (!content) return 5;
-  const text = content.replace(/<[^>]*>/g, "");
-  return Math.max(1, Math.round(text.length / 500));
-}
-
 function isPh(post: BlogPost) {
   return post.id.startsWith("ph") || post.id === "placeholder-featured";
-}
-
-/* ── 이미지 or 그래디언트 ── */
-function CardImage({
-  post,
-  sizes = "400px",
-}: {
-  post: BlogPost;
-  index?: number;
-  sizes?: string;
-}) {
-  return (
-    <Image
-      src={post.thumbnailUrl || "/blog-default-thumbnail.png"}
-      alt={post.title}
-      fill
-      className="object-cover"
-      sizes={sizes}
-    />
-  );
 }
 
 /* ════════════════════════════════════════════════════════
    메인 컴포넌트
    ════════════════════════════════════════════════════════ */
-export default function BlogListClient({ posts, featuredPosts = [], categories }: Props) {
+export default function BlogListClient({ posts: initialPosts, featuredPosts = [], categories, totalCount }: Props) {
   const [activeCategory, setActiveCategory] = useState("전체");
   const [contactOpen, setContactOpen] = useState(false);
+  const [morePosts, setMorePosts] = useState<BlogPost[]>([]);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [morePage, setMorePage] = useState(1);
 
   const mergedCategories = Array.from(
     new Set([...DEFAULT_CATEGORIES, ...categories]),
   );
   const allCategories = ["전체", ...mergedCategories];
 
-  const filtered = posts.filter(
+  const filtered = initialPosts.filter(
     (post) => activeCategory === "전체" || post.category === activeCategory,
   );
 
@@ -132,7 +114,7 @@ export default function BlogListClient({ posts, featuredPosts = [], categories }
   const featuredIds = new Set(featuredPosts.map((p) => p.id));
   const nonFeatured = filtered.filter((p) => !featuredIds.has(p.id));
 
-  // 데이터 분배: 메가(1) + 서브(3) = Best 4 + 에디터(1) + 최신(나머지)
+  // 데이터 분배: 메가(1) + 서브(3) = Best 4 + 에디터(1) + 나머지는 More articles
   const featured = hasData ? (nonFeatured[0] ?? filtered[0]) : PH_FEATURED;
   const subCards = hasData ? nonFeatured.slice(1, 4) : PH_SUB;
 
@@ -144,148 +126,178 @@ export default function BlogListClient({ posts, featuredPosts = [], categories }
     ? filteredFeatured[0]
     : (nonFeatured[4] ?? PH_EDITOR);
 
-  // 최신 글: 메가+서브에 사용된 글 제외
+  // More articles: 메가+서브에 사용된 글 제외
   const usedIds = new Set([featured.id, ...subCards.map((p) => p.id)]);
   const remaining = nonFeatured.filter((p) => !usedIds.has(p.id));
-  const latestPosts = hasData
-    ? remaining.slice(0, 6).map((p) => ({ ...p, authorName: "" }))
-    : PH_LATEST;
+  const moreArticles = hasData
+    ? [...remaining, ...morePosts]
+    : PH_MORE;
+
+  // 이미 표시된 총 갯수로 "더 보기" 가능 여부 계산
+  const displayedCount = usedIds.size + moreArticles.length + (editorPick ? 1 : 0);
+  const hasMoreToLoad = activeCategory === "전체" && displayedCount < totalCount;
+
+  const loadMore = useCallback(async () => {
+    if (loadingMore) return;
+    setLoadingMore(true);
+    try {
+      const nextPage = morePage + 1;
+      const params = new URLSearchParams();
+      params.set("page", String(nextPage));
+      if (activeCategory !== "전체") params.set("category", activeCategory);
+
+      const res = await fetch(`/api/blog?${params.toString()}`);
+      const data = await res.json() as { posts: BlogPost[] };
+
+      setMorePosts((prev) => [...prev, ...data.posts]);
+      setMorePage(nextPage);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [loadingMore, morePage, activeCategory]);
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-14">
+    <motion.div
+      className="min-h-screen bg-white pb-20 pt-14 sm:pb-28"
+      initial="hidden"
+      animate="show"
+      variants={stagger}
+    >
       {/* ═══ Hero ═══ */}
-      <div className="bg-white pb-10 pt-16 sm:pb-14">
+      <motion.div
+        className="pb-10 pt-16 sm:pb-14"
+        initial="hidden"
+        animate="show"
+        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.2 } } }}
+      >
         <div className="mx-auto max-w-[1200px] px-6">
-          <h1 className="text-[28px] font-black leading-[1.1] tracking-[-0.025em] text-slate-900 sm:text-[36px]">
-            PARAN Blog
-          </h1>
-          <p className="mt-2 text-[14px] leading-relaxed text-slate-400">
+          <motion.h1
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
+            className="text-[28px] font-black leading-[1.1] tracking-[-0.025em] text-slate-900 sm:text-[36px]"
+          >
+            {"PARAN Blog".split("").map((ch, i) => (
+              <motion.span
+                key={i}
+                variants={{ hidden: { opacity: 0, x: -8 }, show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const } } }}
+                className="inline-block"
+                style={ch === " " ? { width: "0.25em" } : undefined}
+              >
+                {ch === " " ? "\u00A0" : ch}
+              </motion.span>
+            ))}
+          </motion.h1>
+          <motion.p
+            variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] as const } } }}
+            className="mt-2 text-[14px] leading-relaxed text-slate-400"
+          >
             Insights for Successful Event Planning
-          </p>
+          </motion.p>
 
           {/* Category Tabs */}
-          <div className="mt-7 flex gap-1.5 overflow-x-auto scrollbar-hide">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const } } }}
+            className="mt-7 flex gap-1.5 overflow-x-auto scrollbar-hide"
+          >
             {allCategories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors ${
+                className={`whitespace-nowrap rounded-md px-2.5 py-1 text-[15px] transition-colors ${
                   activeCategory === cat
-                    ? "bg-slate-800 text-white"
-                    : "bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                    ? "bg-indigo-50 font-medium text-indigo-600"
+                    : "text-slate-800 hover:bg-slate-50"
                 }`}
               >
                 {cat}
               </button>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="mx-auto max-w-[1200px] px-6">
-        {/* ═══ Mega Featured (card-18 featured) ═══ */}
-        <BlogPostCard
-          variant="featured"
-          tag={featured.category || "트렌드"}
-          date={formatDate(featured.publishedAt || featured.createdAt)}
-          title={featured.title}
-          description={featured.excerpt || ""}
-          imageUrl={featured.thumbnailUrl}
-          href={isPh(featured) ? "" : `/blog/${featured.slug}`}
-        />
+        {/* ═══ Mega Featured (Pitch Hero 스타일) ═══ */}
+        <motion.div variants={fadeIn} className="mt-2">
+          <BlogPostCard
+            variant="featured"
+            tag={featured.category || "트렌드"}
+            date={formatDate(featured.publishedAt || featured.createdAt)}
+            title={featured.title}
+            description={featured.excerpt || ""}
+            imageUrl={featured.thumbnailUrl}
+            href={isPh(featured) ? "" : `/blog/${featured.slug}`}
+          />
+        </motion.div>
 
-        {/* ═══ Sub-Featured (Best 4 중 하단 3개) ═══ */}
-        <div className="-mx-6 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 scrollbar-hide sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
+        {/* ═══ Sub-Featured (3열 이미지 카드) ═══ */}
+        <motion.div variants={fadeIn} className="-mx-6 mt-20 flex snap-x sm:mt-24 snap-mandatory gap-6 overflow-x-auto px-6 pb-2 scrollbar-hide sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-10 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
           {subCards.map((post, i) => (
             <div key={post.id} className="w-[80%] flex-shrink-0 snap-start sm:w-auto">
-              <HoverRevealCard post={post} index={i + 1} />
+              <ArticleCard post={post} index={i + 1} />
             </div>
           ))}
-        </div>
+        </motion.div>
 
         {/* ═══ 에디터 추천 ═══ */}
         {editorPick && (
-          <div className="mt-14 border-t border-slate-100 pt-10 sm:mt-16 sm:pt-12">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-[18px] font-bold tracking-[-0.01em] text-slate-900">
-                에디터 추천
+          <motion.div variants={fadeIn} className="mt-20 pt-12 sm:mt-24 sm:pt-16">
+            <div className="mb-10">
+              <h2 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
+                EDITOR&apos;S PICK
               </h2>
-              <Link href="/blog/all" className="text-[13px] font-medium text-slate-400 transition-colors hover:text-slate-600">
-                전체보기
-              </Link>
             </div>
             <EditorPickHero post={editorPick} />
-          </div>
+          </motion.div>
         )}
 
-        {/* ═══ 최신 글 (리스트 + 하이라이트 사이드) ═══ */}
-        <div className="mt-14 border-t border-slate-100 pt-10 sm:mt-16 sm:pt-12">
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-[18px] font-bold tracking-[-0.01em] text-slate-900">
-              최신 글
+        {/* ═══ More Articles (Pitch 스타일 3열 이미지 카드 그리드) ═══ */}
+        <motion.div variants={fadeIn} className="mt-20 pt-12 sm:mt-24 sm:pt-16">
+          <div className="mb-10">
+            <h2 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
+              MORE ARTICLES
             </h2>
-            <Link href="/blog/all" className="text-[13px] font-medium text-slate-400 transition-colors hover:text-slate-600">
-              전체보기
-            </Link>
           </div>
 
-          <div className="grid sm:grid-cols-2 sm:gap-x-8">
-            {latestPosts.slice(0, 6).map((post, i) => (
-              <div key={post.id} className="border-b border-slate-100 last:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0">
-                <LatestListItem post={post} index={i + 7} />
-              </div>
+          <motion.div
+            initial="hidden"
+            animate="show"
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+            className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {moreArticles.map((post, i) => (
+              <MoreArticleItem
+                key={post.id}
+                post={post}
+                index={i}
+                onContactOpen={() => setContactOpen(true)}
+              />
             ))}
-          </div>
-        </div>
+          </motion.div>
+
+          {/* 더 보기 버튼 */}
+          {hasMoreToLoad && (
+            <div className="mt-12 text-center">
+              <button
+                onClick={loadMore}
+                disabled={loadingMore}
+                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-8 py-3 text-[14px] font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 disabled:opacity-50"
+              >
+                {loadingMore ? (
+                  <>
+                    <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-600" />
+                    로딩 중...
+                  </>
+                ) : (
+                  "더 보기"
+                )}
+              </button>
+            </div>
+          )}
+        </motion.div>
 
         <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
-
-        {/* ═══ CTA 섹션 ═══ */}
-        <div className="mb-16 mt-16 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 px-8 py-12 text-center sm:mb-20 sm:mt-20 sm:py-14">
-          <h2 className="text-[22px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[28px]">
-            행사 기획이 필요하신가요?
-          </h2>
-          <p className="mx-auto mt-3 max-w-md text-[14px] leading-[1.7] text-slate-400">
-            기업행사, 세미나, 컨퍼런스 등 어떤 행사든
-            <br />
-            견적부터 실행까지 전문 팀이 함께합니다.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <button
-              onClick={() => setContactOpen(true)}
-              className="relative overflow-hidden rounded-lg bg-primary px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-primary-600"
-            >
-              <span className="relative z-10">무료 견적요청</span>
-              <span
-                className="absolute inset-0 animate-[light-sweep_2.5s_ease-in-out_infinite] opacity-40"
-                style={{
-                  background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%)",
-                  backgroundSize: "200% 100%",
-                }}
-              />
-            </button>
-            <a
-              href="https://pf.kakao.com/_xkexdLG/chat"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-[#FEE500] px-6 py-3 text-[14px] font-semibold text-[#3C1E1E] transition-opacity hover:opacity-90"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="relative z-10 h-4 w-4">
-                <path d="M12 3C6.48 3 2 6.58 2 10.9c0 2.78 1.86 5.22 4.65 6.6l-.96 3.56c-.08.3.26.54.52.37l4.23-2.82c.5.05 1.02.09 1.56.09 5.52 0 10-3.58 10-7.9C22 6.58 17.52 3 12 3z" />
-              </svg>
-              <span className="relative z-10">카카오톡 상담</span>
-              <span
-                className="absolute inset-0 animate-[light-sweep_4s_ease-in-out_infinite] opacity-50"
-                style={{
-                  background: "linear-gradient(105deg, transparent 40%, rgba(180,120,0,0.35) 50%, transparent 60%)",
-                  backgroundSize: "200% 100%",
-                }}
-              />
-            </a>
-          </div>
-        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -293,40 +305,46 @@ export default function BlogListClient({ posts, featuredPosts = [], categories }
    Sub-components
    ════════════════════════════════════════════════════════ */
 
-/** Hover Reveal Card — 옵션 2: 흰배경 낮게 유지, 텍스트 상시 노출 */
-function HoverRevealCard({ post, index }: { post: BlogPost; index: number }) {
+/** Article Card — Pitch 스타일: 이미지 → 제목(밑줄) → 카테고리 → 설명
+ *  hover: 밑줄 사라짐 + 텍스트 primary 색 */
+function ArticleCard({ post, index }: { post: BlogPost; index: number }) {
   const placeholder = isPh(post);
 
   const card = (
-    <div className="group overflow-hidden rounded-xl border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-lg">
-      {/* 이미지 — hover 시 살짝 확대 */}
-      <div className="relative aspect-[5/3] overflow-hidden">
-        <div className="h-full w-full transition-transform duration-500 ease-out group-hover:scale-105">
-          <CardImage post={post} index={index} sizes="400px" />
-        </div>
-        {/* 모바일 전용 하단 그래디언트 */}
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent sm:hidden" />
-        <div className="absolute inset-x-0 bottom-0 z-10 p-4 sm:hidden">
-          <h3 className="line-clamp-2 text-[15px] font-bold leading-tight text-white">
-            {post.title}
-          </h3>
-        </div>
+    <div className="group">
+      {/* 이미지 블록 */}
+      <div className="relative aspect-[3/2] overflow-hidden rounded-md">
+        <Image
+          src={post.thumbnailUrl || "/blog-default-thumbnail.png"}
+          alt={post.title}
+          fill
+          className="object-cover"
+          sizes="400px"
+          priority={index < 3}
+        />
+        <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
       </div>
 
-      {/* 하단 텍스트 패널 — 데스크톱 상시 노출, 콤팩트 */}
-      <div className="hidden bg-white px-4 py-3 sm:block">
-        {post.category && (
-          <span className={`mb-1.5 inline-block rounded px-2 py-0.5 text-[11px] font-semibold ${getBadgeColor(post.category)}`}>
-            {post.category}
-          </span>
-        )}
-        <h3 className="line-clamp-2 text-[14px] font-bold leading-snug text-slate-900">
+      {/* 제목 (이미지 아래, 밑줄 기본 → hover시 밑줄 사라짐 + primary) */}
+      <h3 className="mt-5 text-[20px] font-semibold leading-snug tracking-[-0.02em] text-slate-900 sm:text-[22px]">
+        <span className="underline decoration-slate-900/40 underline-offset-[3px] transition-all duration-300 group-hover:text-primary group-hover:decoration-transparent">
           {post.title}
-        </h3>
-        <span className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-medium text-slate-400 transition-colors group-hover:text-primary">
-          자세히 보기 <ArrowRight className="h-3 w-3" />
         </span>
-      </div>
+      </h3>
+
+      {/* 카테고리 (텍스트만) */}
+      {post.category && (
+        <span className={`mt-2 inline-block ${CATEGORY_COLOR}`}>
+          {post.category}
+        </span>
+      )}
+
+      {/* 설명 */}
+      {post.excerpt && (
+        <p className="mt-1 line-clamp-2 text-[14px] leading-relaxed text-slate-500">
+          {post.excerpt}
+        </p>
+      )}
     </div>
   );
 
@@ -334,40 +352,38 @@ function HoverRevealCard({ post, index }: { post: BlogPost; index: number }) {
   return <Link href={`/blog/${post.slug}`}>{card}</Link>;
 }
 
-/** Editor Pick Hero — 가로형 이미지 + 텍스트 (Blog8 스타일) */
+/** Editor Pick Hero — 가로형 이미지 + 텍스트 */
 function EditorPickHero({ post }: { post: BlogPost }) {
   const placeholder = isPh(post);
 
   const content = (
-    <div className="group overflow-hidden rounded-lg border border-slate-100 bg-white transition-all hover:border-transparent hover:shadow-lg">
+    <div className="group overflow-hidden rounded-md bg-white transition-all hover:shadow-lg">
       <div className="grid items-center gap-0 sm:grid-cols-2">
-        {/* 이미지 — hover 시 확대 */}
-        <div className="relative aspect-[16/9] overflow-hidden">
-          <div className="relative h-full w-full transition-transform duration-500 ease-in-out group-hover:scale-105">
-            <CardImage post={post} index={4} sizes="(max-width: 640px) 100vw, 600px" />
-          </div>
+        {/* 이미지 */}
+        <div className="relative aspect-[16/9] overflow-hidden rounded-md">
+          <Image
+            src={post.thumbnailUrl || "/blog-default-thumbnail.png"}
+            alt={post.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, 600px"
+          />
+          <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
         </div>
         {/* 텍스트 */}
         <div className="flex flex-col justify-center px-6 py-5 sm:px-8 sm:py-8">
-          <div className="mb-3 flex flex-wrap items-center gap-3">
-            {post.category && (
-              <span className={`inline-block rounded px-2.5 py-0.5 text-[11px] font-semibold ${getBadgeColor(post.category)}`}>
-                {post.category}
-              </span>
-            )}
-            {post.tags && post.tags.length > 0 && post.tags.slice(0, 2).map((tag) => (
-              <span key={tag} className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                {tag}
-              </span>
-            ))}
-          </div>
-          <h3 className="line-clamp-2 text-[18px] font-extrabold leading-[1.35] tracking-[-0.01em] text-slate-900 sm:text-[22px]">
-            <span className="bg-gradient-to-r from-primary to-primary bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 group-hover:bg-[length:100%_2px]">
+          {post.category && (
+            <span className={`mb-3 ${CATEGORY_COLOR}`}>
+              {post.category}
+            </span>
+          )}
+          <h3 className="line-clamp-2 text-[22px] font-semibold leading-snug tracking-[-0.02em] text-slate-900 sm:text-[26px]">
+            <span className="underline decoration-slate-900/40 underline-offset-[3px] transition-all duration-300 group-hover:text-primary group-hover:decoration-transparent">
               {post.title}
             </span>
           </h3>
           {post.excerpt && (
-            <p className="mt-2.5 line-clamp-2 text-[14px] leading-[1.7] text-slate-500">
+            <p className="mt-3 line-clamp-2 text-[15px] leading-[1.8] text-slate-600">
               {post.excerpt}
             </p>
           )}
@@ -387,42 +403,53 @@ function EditorPickHero({ post }: { post: BlogPost }) {
   return <Link href={`/blog/${post.slug}`}>{content}</Link>;
 }
 
-/** Latest List Item — 왼쪽 썸네일 + 오른쪽 텍스트 (Siege Media 스타일) */
-function LatestListItem({
+/** More Article Item — 매 6번째(2행) 뒤에 인라인 CTA 삽입 */
+function MoreArticleItem({
   post,
   index,
+  onContactOpen,
 }: {
-  post: BlogPost & { authorName?: string };
+  post: BlogPost;
   index: number;
+  onContactOpen: () => void;
 }) {
-  const placeholder = isPh(post);
+  const showCta = index > 0 && (index + 1) % 6 === 0;
 
-  const content = (
-    <div className="group flex gap-5 py-6 sm:gap-6">
-      {/* 왼쪽 썸네일 */}
-      <div className="relative h-[100px] w-[150px] flex-shrink-0 overflow-hidden rounded-lg sm:h-[130px] sm:w-[200px]">
-        <CardImage post={post} index={index} sizes="200px" />
-      </div>
-      {/* 오른쪽 텍스트 */}
-      <div className="flex min-w-0 flex-col justify-center">
-        {post.category && (
-          <span className="mb-1.5 text-[12px] font-semibold text-primary">
-            {post.category}
-          </span>
-        )}
-        <h4 className="line-clamp-2 text-[16px] font-bold leading-[1.4] tracking-[-0.01em] text-slate-900 transition-colors group-hover:text-primary sm:text-[18px]">
-          {post.title}
-        </h4>
-        <div className="mt-2 text-[13px] text-slate-400">
-          {formatDate(post.publishedAt || post.createdAt)}
-          <span className="mx-1.5">·</span>
-          {readTime(post.content) || 5}분 읽기
-        </div>
-      </div>
-    </div>
+  return (
+    <>
+      <motion.div variants={itemFadeIn}>
+        <ArticleCard post={post} index={index + 5} />
+      </motion.div>
+      {showCta && (
+        <motion.div
+          variants={itemFadeIn}
+          className="col-span-full rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 px-8 py-10 text-center sm:py-12"
+        >
+          <h3 className="text-[20px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[24px]">
+            행사 기획이 필요하신가요?
+          </h3>
+          <p className="mx-auto mt-2 max-w-md text-[14px] leading-[1.7] text-slate-400">
+            기업행사, 세미나, 컨퍼런스 등 어떤 행사든
+            <br />
+            견적부터 실행까지 전문 팀이 함께합니다.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={onContactOpen}
+              className="relative overflow-hidden rounded-lg bg-primary px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-primary-600"
+            >
+              <span className="relative z-10">무료 견적요청</span>
+              <span
+                className="absolute inset-0 animate-[light-sweep_2.5s_ease-in-out_infinite] opacity-40"
+                style={{
+                  background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%)",
+                  backgroundSize: "200% 100%",
+                }}
+              />
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </>
   );
-
-  if (placeholder) return <div>{content}</div>;
-  return <Link href={`/blog/${post.slug}`}>{content}</Link>;
 }
-
