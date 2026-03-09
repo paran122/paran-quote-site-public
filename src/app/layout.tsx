@@ -90,7 +90,7 @@ export const metadata: Metadata = {
       "공공기관·기업 행사 전문 에이전시. 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지. 250+ 프로젝트 수행 실적.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.png?v=2",
         width: 1200,
         height: 630,
         alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
@@ -102,7 +102,7 @@ export const metadata: Metadata = {
     title: "파란컴퍼니 - 행사 전문 에이전시",
     description:
       "공공기관·기업 행사 전문 에이전시. 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지.",
-    images: ["/og-image.png"],
+    images: ["/og-image.png?v=2"],
   },
   robots: {
     index: true,
