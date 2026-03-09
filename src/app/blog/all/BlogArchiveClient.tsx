@@ -1,11 +1,25 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { ChevronLeft } from "lucide-react";
 import type { BlogPost } from "@/types";
 
-const PER_PAGE = 9;
+/* ── Framer-style staggered fade-in from left ── */
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.25 } },
+};
+const fadeIn = {
+  hidden: { opacity: 0, x: -20 },
+  show: { opacity: 1, x: 0, transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const } },
+};
+const itemFadeIn = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } },
+};
 
 const DEFAULT_CATEGORIES = [
   "행사 기획",
@@ -15,19 +29,8 @@ const DEFAULT_CATEGORIES = [
   "장비/기술",
 ];
 
-const BADGE_COLORS: Record<string, string> = {
-  "체크리스트": "bg-blue-50 text-blue-600",
-  "행사 후기": "bg-emerald-50 text-emerald-600",
-  "장비/기술": "bg-violet-50 text-violet-600",
-  "트렌드": "bg-rose-50 text-rose-600",
-  "행사 기획": "bg-amber-50 text-amber-600",
-};
-
-function getBadgeColor(category?: string) {
-  if (!category) return "bg-slate-100 text-slate-500";
-  return BADGE_COLORS[category] ?? "bg-slate-100 text-slate-500";
-}
-
+/* ── 카테고리 색상 (Pitch 스타일: 약간 두껍게) ── */
+const CATEGORY_COLOR = "font-medium text-[#586EE0]";
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -40,36 +43,59 @@ function formatDate(dateStr: string) {
 interface Props {
   posts: BlogPost[];
   totalCount: number;
-  currentPage: number;
   currentCategory: string;
   categories: string[];
 }
 
-function buildHref(category: string, page: number) {
-  const params = new URLSearchParams();
-  if (category !== "전체") params.set("category", category);
-  if (page > 1) params.set("page", String(page));
-  const qs = params.toString();
-  return `/blog/all${qs ? `?${qs}` : ""}`;
-}
-
 export default function BlogArchiveClient({
-  posts,
+  posts: initialPosts,
   totalCount,
-  currentPage,
   currentCategory,
   categories,
 }: Props) {
+  const [posts, setPosts] = useState(initialPosts);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const hasMore = posts.length < totalCount;
+
   const mergedCategories = Array.from(
     new Set([...DEFAULT_CATEGORIES, ...categories]),
   );
   const allCategories = ["전체", ...mergedCategories];
-  const totalPages = Math.max(1, Math.ceil(totalCount / PER_PAGE));
+
+  const loadMore = useCallback(async () => {
+    if (loading || !hasMore) return;
+    setLoading(true);
+    try {
+      const nextPage = page + 1;
+      const params = new URLSearchParams();
+      params.set("page", String(nextPage));
+      if (currentCategory !== "전체") params.set("category", currentCategory);
+
+      const res = await fetch(`/api/blog?${params.toString()}`);
+      const data = await res.json() as { posts: BlogPost[] };
+
+      setPosts((prev) => [...prev, ...data.posts]);
+      setPage(nextPage);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, hasMore, page, currentCategory]);
+
+  function buildCategoryHref(category: string) {
+    if (category === "전체") return "/blog/all";
+    return `/blog/all?category=${encodeURIComponent(category)}`;
+  }
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-14">
+    <motion.div
+      className="min-h-screen bg-slate-50 pt-14"
+      initial="hidden"
+      animate="show"
+      variants={stagger}
+    >
       {/* Header */}
-      <div className="bg-white pb-10 pt-16 sm:pb-14">
+      <motion.div variants={fadeIn} className="bg-white pb-10 pt-16 sm:pb-14">
         <div className="mx-auto max-w-[1200px] px-6">
           <div className="flex items-center gap-3">
             <Link
@@ -79,25 +105,25 @@ export default function BlogArchiveClient({
               <ChevronLeft className="h-5 w-5" />
             </Link>
             <div>
-              <h1 className="text-[24px] font-black leading-[1.1] tracking-[-0.025em] text-slate-900 sm:text-[30px]">
-                All Articles
+              <h1 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
+                ALL ARTICLES
               </h1>
-              <p className="mt-1 text-[13px] text-slate-400">
+              <p className="mt-1.5 text-[13px] text-slate-400">
                 총 {totalCount}개의 글
               </p>
             </div>
           </div>
 
           {/* Category Tabs */}
-          <div className="mt-7 flex gap-1.5 overflow-x-auto scrollbar-hide">
+          <div className="mt-7 flex gap-1 overflow-x-auto scrollbar-hide">
             {allCategories.map((cat) => (
               <Link
                 key={cat}
-                href={buildHref(cat, 1)}
-                className={`whitespace-nowrap rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors ${
+                href={buildCategoryHref(cat)}
+                className={`whitespace-nowrap rounded-md px-2.5 py-1 text-[15px] transition-colors ${
                   currentCategory === cat
-                    ? "bg-slate-800 text-white"
-                    : "bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                    ? "bg-indigo-50 font-medium text-indigo-600"
+                    : "text-slate-800 hover:bg-slate-50"
                 }`}
               >
                 {cat}
@@ -105,16 +131,26 @@ export default function BlogArchiveClient({
             ))}
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="mx-auto max-w-[1200px] px-6 pb-16 pt-6">
-        {/* Grid */}
+      <div className="mx-auto max-w-[1200px] px-6 pb-20 pt-10">
         {posts.length > 0 ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          <motion.div
+            initial="hidden"
+            animate="show"
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
+          >
             {posts.map((post, i) => (
-              <ArchiveCard key={post.id} post={post} index={i} />
+              <motion.div key={post.id} variants={itemFadeIn}>
+                {/* 매 5번째(0-indexed: 4, 9, 14...)에 이미지 카드 */}
+                {i > 0 && i % 5 === 4 ? (
+                  <BentoImageRow post={post} />
+                ) : (
+                  <TextRow post={post} />
+                )}
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         ) : (
           <div className="py-20 text-center text-slate-400">
             {currentCategory !== "전체"
@@ -123,59 +159,50 @@ export default function BlogArchiveClient({
           </div>
         )}
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            category={currentCategory}
-          />
+        {/* 더 보기 버튼 */}
+        {hasMore && (
+          <motion.div variants={fadeIn} className="mt-10 text-center">
+            <button
+              onClick={loadMore}
+              disabled={loading}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-8 py-3 text-[14px] font-medium text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 disabled:opacity-50"
+            >
+              {loading ? (
+                <>
+                  <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-600" />
+                  로딩 중...
+                </>
+              ) : (
+                "더 보기"
+              )}
+            </button>
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-/* ── Archive Card ── */
-function ArchiveCard({ post }: { post: BlogPost; index?: number }) {
+/* ── Text Row — 텍스트 리스트 행 (Pitch 스타일) ── */
+function TextRow({ post }: { post: BlogPost }) {
   return (
     <Link href={`/blog/${post.slug}`}>
-      <div className="group grid h-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-lg border border-slate-100 bg-white transition-all hover:-translate-y-0.5 hover:border-transparent hover:shadow-lg">
-        {/* 이미지 */}
-        <div className="relative aspect-[16/9] overflow-hidden">
-          <Image
-            src={post.thumbnailUrl || "/blog-default-thumbnail.png"}
-            alt={post.title}
-            fill
-            className="object-cover transition-opacity duration-200 group-hover:opacity-80"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-        </div>
-
-        {/* 본문 */}
-        <div className="px-4 pb-1 pt-3.5 sm:px-5 sm:pt-4">
-          <div className="mb-2 flex items-center gap-2">
-            {post.category && (
-              <span
-                className={`inline-block rounded px-2 py-0.5 text-[11px] font-semibold ${getBadgeColor(post.category)}`}
-              >
-                {post.category}
-              </span>
-            )}
-            <span className="text-[11px] text-slate-400">
-              {formatDate(post.publishedAt || post.createdAt)}
+      <div className="group flex items-center justify-between gap-4 border-b border-slate-100 py-5 sm:py-6">
+        <div className="min-w-0 flex-1">
+          <h3 className="line-clamp-1 text-[16px] font-semibold leading-snug tracking-[-0.02em] text-slate-900 sm:text-[18px]">
+            <span className="underline decoration-slate-900/20 underline-offset-2 transition-colors group-hover:text-primary group-hover:decoration-primary/40">
+              {post.title}
             </span>
-          </div>
-          <h3 className="line-clamp-2 min-h-[calc(2*15px*1.4)] text-[15px] font-bold leading-[1.4] tracking-[-0.01em] text-slate-900">
-            {post.title}
           </h3>
         </div>
-
-        {/* 푸터 */}
-        <div className="flex items-center px-4 pb-4 pt-2 sm:px-5">
-          <span className="flex items-center gap-1 text-[12px] font-medium text-slate-400 transition-colors group-hover:text-primary">
-            자세히 보기
-            <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+        <div className="flex flex-shrink-0 items-center gap-3">
+          {post.category && (
+            <span className={`text-[12px] font-normal ${CATEGORY_COLOR}`}>
+              {post.category}
+            </span>
+          )}
+          <span className="whitespace-nowrap text-[12px] text-slate-400">
+            {formatDate(post.publishedAt || post.createdAt)}
           </span>
         </div>
       </div>
@@ -183,97 +210,47 @@ function ArchiveCard({ post }: { post: BlogPost; index?: number }) {
   );
 }
 
-/* ── Pagination ── */
-function Pagination({
-  currentPage,
-  totalPages,
-  category,
-}: {
-  currentPage: number;
-  totalPages: number;
-  category: string;
-}) {
-  const pages = buildPageNumbers(currentPage, totalPages);
-
+/* ── Bento Image Row — 이미지 카드 (매 5번째 항목, Pitch 스타일) ── */
+function BentoImageRow({ post }: { post: BlogPost }) {
   return (
-    <nav className="mt-10 flex items-center justify-center gap-1">
-      {/* Prev */}
-      {currentPage > 1 ? (
-        <Link
-          href={buildHref(category, currentPage - 1)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Link>
-      ) : (
-        <span className="flex h-9 w-9 items-center justify-center text-slate-200">
-          <ChevronLeft className="h-4 w-4" />
-        </span>
-      )}
-
-      {/* Page numbers */}
-      {pages.map((p, i) =>
-        p === "..." ? (
-          <span
-            key={`ellipsis-${i}`}
-            className="flex h-9 w-9 items-center justify-center text-[13px] text-slate-300"
-          >
-            ...
-          </span>
-        ) : (
-          <Link
-            key={p}
-            href={buildHref(category, p as number)}
-            className={`flex h-9 w-9 items-center justify-center rounded-lg text-[13px] font-medium transition-colors ${
-              p === currentPage
-                ? "bg-slate-800 text-white"
-                : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"
-            }`}
-          >
-            {p}
-          </Link>
-        ),
-      )}
-
-      {/* Next */}
-      {currentPage < totalPages ? (
-        <Link
-          href={buildHref(category, currentPage + 1)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Link>
-      ) : (
-        <span className="flex h-9 w-9 items-center justify-center text-slate-200">
-          <ChevronRight className="h-4 w-4" />
-        </span>
-      )}
-    </nav>
+    <Link href={`/blog/${post.slug}`}>
+      <div className="group my-6 overflow-hidden sm:my-8">
+        <div className="grid items-center sm:grid-cols-2">
+          {/* 이미지 */}
+          <div className="relative aspect-[16/9] overflow-hidden rounded-md">
+            <Image
+              src={post.thumbnailUrl || "/blog-default-thumbnail.png"}
+              alt={post.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, 600px"
+            />
+          </div>
+          {/* 텍스트 */}
+          <div className="px-0 py-4 sm:px-10 sm:py-6">
+            <h3 className="line-clamp-2 text-[20px] font-semibold leading-snug tracking-[-0.02em] text-slate-900 sm:text-[24px]">
+              <span className="underline decoration-slate-900/20 underline-offset-2 transition-colors group-hover:text-primary group-hover:decoration-primary/40">
+                {post.title}
+              </span>
+            </h3>
+            {post.excerpt && (
+              <p className="mt-3 line-clamp-2 text-[15px] leading-relaxed text-slate-600">
+                {post.excerpt}
+              </p>
+            )}
+            <div className="mt-4 flex items-center gap-3">
+              {post.category && (
+                <span className={`text-[12px] font-normal ${CATEGORY_COLOR}`}>
+                  {post.category}
+                </span>
+              )}
+              <span className="text-[12px] text-slate-400">
+                {formatDate(post.publishedAt || post.createdAt)}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Link>
   );
-}
-
-/** Build page number array: 1 2 3 ... 8 형태 */
-function buildPageNumbers(
-  current: number,
-  total: number,
-): (number | "...")[] {
-  if (total <= 7) {
-    return Array.from({ length: total }, (_, i) => i + 1);
-  }
-
-  const pages: (number | "...")[] = [];
-
-  if (current <= 4) {
-    for (let i = 1; i <= 5; i++) pages.push(i);
-    pages.push("...", total);
-  } else if (current >= total - 3) {
-    pages.push(1, "...");
-    for (let i = total - 4; i <= total; i++) pages.push(i);
-  } else {
-    pages.push(1, "...");
-    for (let i = current - 1; i <= current + 1; i++) pages.push(i);
-    pages.push("...", total);
-  }
-
-  return pages;
 }

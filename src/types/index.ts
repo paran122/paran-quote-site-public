@@ -174,6 +174,9 @@ export interface BlogPost {
   isPublished: boolean;
   isFeatured: boolean;
   sortOrder: number;
+  naverBlogUrl?: string;
+  instagramUrl?: string;
+  youtubeUrl?: string;
   publishedAt?: string;
   createdAt: string;
   updatedAt: string;

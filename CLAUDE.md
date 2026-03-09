@@ -191,6 +191,22 @@ MD 작성법: `.claude/skills/blog-post/md-template.md`
 블로그 글 올려줘 .claude/skills/blog-post/examples/행사-기획-체크리스트.md
 ```
 
+### SNS 링크 (선택)
+MD 프론트매터에 행사별 SNS URL을 적으면 블로그 상세 페이지 왼쪽 사이드바에 해당 링크로 연결됩니다.
+안 적으면 회사 메인 계정(네이버블로그/인스타/유튜브)으로 자동 연결됩니다.
+
+```yaml
+naver_blog_url: "https://blog.naver.com/paran-company/게시물번호"
+instagram_url: "https://www.instagram.com/p/게시물ID/"
+youtube_url: "https://www.youtube.com/watch?v=영상ID"
+```
+
+### SEO 주의: 네이버 블로그와 내용 차별화
+- 같은 행사라도 네이버 블로그와 자사 사이트 블로그 내용은 **반드시 다르게** 작성
+- 동일 내용 복사 시 구글이 중복 콘텐츠로 판단 → 두 사이트 모두 검색 순위 하락
+- 네이버: 현장 후기/사진 중심 (가벼운 톤) / 자사 사이트: 기획 프로세스/노하우 중심 (전문적 톤)
+- 제목과 본문 텍스트가 **70% 이상 달라야** 중복 판정 회피
+
 ### 알아두면 좋은 것
 - 같은 슬러그의 글이 이미 있으면 덮어쓸지 물어봅니다
 - 등록 결과는 `/admin/blog`에서 확인, `/blog/{slug}`에서 미리보기
