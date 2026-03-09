@@ -369,7 +369,7 @@ export default function WorkPage() {
             </button>
 
             {/* 썸네일 또는 갤러리 */}
-            <div className="relative h-[280px] bg-slate-100">
+            <div className="relative h-[400px] bg-slate-100">
               {hasGallery ? (
                 <>
                   {/* 로딩 스켈레톤 */}
@@ -383,7 +383,7 @@ export default function WorkPage() {
                     fill
                     sizes="640px"
                     priority
-                    className={`object-cover transition-opacity duration-300 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+                    className={`object-contain transition-opacity duration-300 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
                     onLoad={() => setImageLoaded(true)}
                   />
                   {/* 갤러리 네비게이션 */}
@@ -413,7 +413,7 @@ export default function WorkPage() {
                   alt={selectedPortfolio.title}
                   fill
                   sizes="640px"
-                  className="object-cover"
+                  className="object-contain"
                 />
               ) : (
                 <div
