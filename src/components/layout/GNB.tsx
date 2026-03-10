@@ -10,7 +10,8 @@ const navItems: { label: string; anchor: string; isPage?: boolean }[] = [
   { label: "포트폴리오", anchor: "#portfolio" },
   { label: "프로세스", anchor: "#process" },
   { label: "고객사", anchor: "#clients" },
-  // { label: "블로그", anchor: "/blog", isPage: true }, // TODO: 블로그 콘텐츠 준비 후 활성화
+  { label: "FAQ", anchor: "/faq", isPage: true },
+  { label: "블로그", anchor: "/blog", isPage: true },
 ];
 
 export default function GNB() {
