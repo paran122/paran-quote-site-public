@@ -11,6 +11,14 @@ interface PortfolioRow {
   created_at: string | null;
 }
 
+interface BlogRow {
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  published_at: string | null;
+  created_at: string;
+}
+
 function escapeXml(str: string): string {
   return str
     .replace(/&/g, "&amp;")
@@ -22,21 +30,31 @@ function escapeXml(str: string): string {
 
 export async function GET() {
   const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://paran-quote.netlify.app";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://parancompany.co.kr";
 
   let portfolioItems = "";
+  let blogItems = "";
 
   try {
     if (!supabase) throw new Error("No client");
-    const { data } = await supabase
-      .from("portfolios")
-      .select("id, title, event_type, description, venue, year, slug, created_at")
-      .eq("is_visible", true)
-      .order("sort_order")
-      .limit(20);
 
-    if (data) {
-      portfolioItems = (data as PortfolioRow[])
+    const [portfolioRes, blogRes] = await Promise.all([
+      supabase
+        .from("portfolios")
+        .select("id, title, event_type, description, venue, year, slug, created_at")
+        .eq("is_visible", true)
+        .order("sort_order")
+        .limit(20),
+      supabase
+        .from("blog_posts")
+        .select("title, slug, excerpt, published_at, created_at")
+        .eq("is_published", true)
+        .order("published_at", { ascending: false })
+        .limit(20),
+    ]);
+
+    if (portfolioRes.data) {
+      portfolioItems = (portfolioRes.data as PortfolioRow[])
         .map((p) => {
           const link = `${siteUrl}/work`;
           const desc = p.description || `${p.venue}에서 진행된 ${p.event_type}`;
@@ -54,8 +72,26 @@ export async function GET() {
         })
         .join("\n");
     }
+
+    if (blogRes.data) {
+      blogItems = (blogRes.data as BlogRow[])
+        .map((b) => {
+          const link = `${siteUrl}/blog/${b.slug}`;
+          const desc = b.excerpt || b.title;
+          const pubDate = new Date(b.published_at || b.created_at).toUTCString();
+
+          return `    <item>
+      <title>${escapeXml(b.title)}</title>
+      <link>${escapeXml(link)}</link>
+      <description>${escapeXml(desc)}</description>
+      <pubDate>${pubDate}</pubDate>
+      <guid>${escapeXml(link)}</guid>
+    </item>`;
+        })
+        .join("\n");
+    }
   } catch {
-    // Supabase 실패 시 포트폴리오 항목 없이 기본 피드만 반환
+    // Supabase 실패 시 기본 피드만 반환
   }
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -67,20 +103,7 @@ export async function GET() {
     <language>ko</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
-    <item>
-      <title>파란컴퍼니 - 행사 기획·디자인·운영 전문</title>
-      <link>${siteUrl}</link>
-      <description>250+ 프로젝트 수행 실적, 합리적인 견적으로 성공적인 행사를 만듭니다.</description>
-      <pubDate>${new Date().toUTCString()}</pubDate>
-      <guid>${siteUrl}</guid>
-    </item>
-<item>
-      <title>파란컴퍼니 포트폴리오</title>
-      <link>${siteUrl}/work</link>
-      <description>파란컴퍼니가 수행한 행사 포트폴리오를 확인하세요.</description>
-      <pubDate>${new Date().toUTCString()}</pubDate>
-      <guid>${siteUrl}/work</guid>
-    </item>
+${blogItems}
 ${portfolioItems}
   </channel>
 </rss>`;

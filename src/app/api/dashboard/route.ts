@@ -7,14 +7,14 @@ export async function GET() {
   }
 
   const [blogRes, portfolioRes, mediaRes, quoteRes] = await Promise.all([
-    supabase.from("blog_posts").select("id"),
+    supabase.from("blog_posts").select("id", { count: "exact", head: true }).eq("is_published", true),
     supabase.from("portfolios").select("id", { count: "exact", head: true }),
     supabase.from("portfolio_media").select("id", { count: "exact", head: true }),
     supabase.from("quotes").select("id", { count: "exact", head: true }),
   ]);
 
   return NextResponse.json({
-    blog: blogRes.data?.length ?? 0,
+    blog: blogRes.count ?? 0,
     portfolio: portfolioRes.count ?? 0,
     media: mediaRes.count ?? 0,
     quote: quoteRes.count ?? 0,

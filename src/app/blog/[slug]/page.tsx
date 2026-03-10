@@ -20,19 +20,37 @@ interface Props {
   params: { slug: string };
 }
 
+const SITE_URL = "https://parancompany.co.kr";
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await fetchPublishedBlogPostBySlug(decodeURIComponent(params.slug));
   if (!post) return {};
 
+  const title = post.seoTitle || post.title;
+  const description = post.seoDescription || post.excerpt || "";
+  const image = post.ogImageUrl || post.thumbnailUrl || "/og-image.png";
+  const url = `${SITE_URL}/blog/${post.slug}`;
+
   return {
-    title: post.seoTitle || post.title,
-    description: post.seoDescription || post.excerpt || "",
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
-      title: post.seoTitle || post.title,
-      description: post.seoDescription || post.excerpt || "",
+      title,
+      description,
       type: "article",
+      url,
       publishedTime: post.publishedAt || post.createdAt,
-      images: [{ url: post.ogImageUrl || post.thumbnailUrl || "/og-image.png" }],
+      modifiedTime: post.updatedAt,
+      images: [{ url: image }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
     },
   };
 }
@@ -47,7 +65,8 @@ function formatDate(dateStr: string) {
 
 function estimateReadTime(content: string): number {
   const text = content.replace(/<[^>]*>/g, "");
-  return Math.max(1, Math.round(text.length / 500));
+  const words = text.split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
 }
 
 export default async function BlogDetailPage({ params }: Props) {
@@ -91,8 +110,53 @@ export default async function BlogDetailPage({ params }: Props) {
     youtubeUrl: post.youtubeUrl,
   };
 
+  const postUrl = `${SITE_URL}/blog/${post.slug}`;
+  const postText = post.content.replace(/<[^>]*>/g, "");
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.seoTitle || post.title,
+    description: post.seoDescription || post.excerpt || "",
+    image: post.ogImageUrl || post.thumbnailUrl || `${SITE_URL}/og-image.png`,
+    url: postUrl,
+    datePublished: post.publishedAt || post.createdAt,
+    dateModified: post.updatedAt,
+    wordCount: postText.split(/\s+/).filter(Boolean).length,
+    author: {
+      "@type": "Organization",
+      name: "파란컴퍼니",
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "파란컴퍼니",
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "홈", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "블로그", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
+    ],
+  };
+
   return (
     <MotionPage>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       <div className="min-h-screen bg-white pt-16">
         {/* ═══ Social Sidebar (데스크탑 1400px+: 왼쪽 고정) ═══ */}
         <SocialSidebarFixed {...socialLinks} />

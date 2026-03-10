@@ -12,17 +12,24 @@ interface Props {
   afterHero?: React.ReactNode;
 }
 
+interface ImageItem {
+  src: string;
+  alt: string;
+  noHero?: boolean;
+}
+
 /* HTML에서 blog-photo-grid 이미지를 분리 */
 function extractPhotoGrid(html: string) {
   const gridRegex = /<h2>현장 사진<\/h2>\s*<div class="blog-photo-grid">([\s\S]*?)<\/div>/;
   const match = html.match(gridRegex);
-  if (!match) return { cleanHtml: html, gridImages: [] };
+  if (!match) return { cleanHtml: html, gridImages: [] as ImageItem[] };
 
-  const imgRegex = /<img[^>]+src="([^"]+)"[^>]*alt="([^"]*)"[^>]*>/g;
-  const gridImages: { src: string; alt: string }[] = [];
+  const imgRegex = /<img[^>]*src="([^"]+)"[^>]*alt="([^"]*)"[^>]*>/g;
+  const gridImages: ImageItem[] = [];
   let imgMatch;
   while ((imgMatch = imgRegex.exec(match[1])) !== null) {
-    gridImages.push({ src: imgMatch[1], alt: imgMatch[2] });
+    const noHero = imgMatch[0].includes("data-no-hero");
+    gridImages.push({ src: imgMatch[1], alt: imgMatch[2], noHero });
   }
 
   const cleanHtml = html.replace(gridRegex, "");
@@ -32,7 +39,7 @@ function extractPhotoGrid(html: string) {
 export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Props) {
   const contentRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const [images, setImages] = useState<{ src: string; alt: string }[]>([]);
+  const [images, setImages] = useState<ImageItem[]>([]);
   const [heroIndex, setHeroIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -42,23 +49,39 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
 
   useEffect(() => {
     if (!contentRef.current) return;
-    const list: { src: string; alt: string }[] = [];
+    const list: ImageItem[] = [];
+    const seenSrcs = new Set<string>();
 
     if (thumbnailUrl) {
       list.push({ src: thumbnailUrl, alt: title || "" });
+      seenSrcs.add(thumbnailUrl);
     }
 
-    // 본문 내 이미지
+    // 본문 내 이미지 — noHero가 아닌 것만 수집 (중복 src 제외)
     const imgs = contentRef.current.querySelectorAll("img");
-    const offset = thumbnailUrl ? 1 : 0;
-    imgs.forEach((img, i) => {
-      list.push({ src: img.src, alt: img.alt });
-      img.classList.add("cursor-pointer");
-      img.addEventListener("click", () => setLightboxIndex(i + offset));
+    imgs.forEach((img) => {
+      const noHero = img.hasAttribute("data-no-hero");
+      if (!noHero && !seenSrcs.has(img.src)) {
+        seenSrcs.add(img.src);
+        list.push({ src: img.src, alt: img.alt });
+      }
+      // noHero가 아닌 이미지만 라이트박스 클릭 핸들러 추가
+      if (!noHero) {
+        const idx = list.findIndex((item) => item.src === img.src);
+        if (idx >= 0) {
+          img.classList.add("cursor-pointer");
+          img.addEventListener("click", () => setLightboxIndex(idx));
+        }
+      }
     });
 
-    // 그리드 이미지 추가
-    gridImages.forEach((gi) => list.push(gi));
+    // 그리드 이미지 추가 (noHero 제외, 중복 제외)
+    gridImages.forEach((gi) => {
+      if (!gi.noHero && !seenSrcs.has(gi.src)) {
+        seenSrcs.add(gi.src);
+        list.push({ src: gi.src, alt: gi.alt });
+      }
+    });
 
     setImages(list);
   }, [html, thumbnailUrl, title, gridImages.length]);
@@ -83,7 +106,7 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
     });
   };
 
-  /* 히어로 */
+  /* 히어로 (images에는 이미 noHero 제외된 것만 포함) */
   const heroPrev = useCallback(() => {
     setHeroIndex((i) => (i > 0 ? i - 1 : images.length - 1));
   }, [images.length]);
@@ -121,23 +144,21 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
     };
   }, [lightboxIndex, closeLightbox, lightboxNext, lightboxPrev]);
 
-  const heroImage = images[heroIndex];
-  // gridImages의 라이트박스 인덱스 오프셋
-  const gridOffset = images.length - gridImages.length;
+  const heroItem = images[heroIndex];
 
   return (
     <>
       {/* 히어로 캐러셀 */}
-      {images.length > 0 && heroImage && (
+      {images.length > 0 && heroItem && (
         <div className="group relative mx-auto mb-12 max-w-[1100px]">
           <div
             className="relative aspect-[2.2/1] cursor-pointer overflow-hidden"
             onClick={() => setLightboxIndex(heroIndex)}
           >
             <Image
-              key={heroImage.src}
-              src={heroImage.src}
-              alt={heroImage.alt}
+              key={heroItem.src}
+              src={heroItem.src}
+              alt={heroItem.alt}
               fill
               className="object-cover"
               sizes="960px"
@@ -207,15 +228,19 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
             onScroll={checkScroll}
             className="flex gap-3 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
-            {gridImages.map((img, i) => (
+            {gridImages.map((img, i) => {
+              const lightboxIdx = img.noHero ? -1 : images.findIndex((item) => item.src === img.src);
+              return (
               <motion.div
                 key={img.src}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.08, ease: "easeOut" }}
                 whileHover={{ scale: 1.03, rotate: 1, transition: { duration: 0.25 } }}
-                onClick={() => setLightboxIndex(gridOffset + i)}
-                className="relative h-[140px] w-[200px] flex-shrink-0 cursor-pointer overflow-hidden rounded-lg shadow-sm sm:h-[160px] sm:w-[230px]"
+                onClick={() => {
+                  if (lightboxIdx >= 0) setLightboxIndex(lightboxIdx);
+                }}
+                className={`relative h-[140px] w-[200px] flex-shrink-0 overflow-hidden rounded-lg shadow-sm sm:h-[160px] sm:w-[230px] ${lightboxIdx >= 0 ? "cursor-pointer" : ""}`}
               >
                 <Image
                   src={img.src}
@@ -225,7 +250,8 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
                   sizes="230px"
                 />
               </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

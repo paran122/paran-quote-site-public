@@ -42,7 +42,7 @@ const inter = Inter({
 });
 
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://paran-quote.netlify.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://parancompany.co.kr";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
