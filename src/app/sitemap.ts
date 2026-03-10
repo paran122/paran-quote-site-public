@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://paran-quote.netlify.app";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://parancompany.co.kr";
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -20,6 +20,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${siteUrl}/build`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/faq`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
@@ -57,5 +63,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Supabase 연결 실패 시 정적 페이지만 반환
   }
 
-  return [...staticPages, ...blogPages];
+  // 포트폴리오 행사 동적 추가
+  const portfolioPages: MetadataRoute.Sitemap = [];
+  try {
+    if (supabase) {
+      const { data: portfolios } = await supabase
+        .from("portfolios")
+        .select("slug, updated_at")
+        .eq("is_visible", true);
+
+      if (portfolios) {
+        for (const portfolio of portfolios) {
+          portfolioPages.push({
+            url: `${siteUrl}/work#${portfolio.slug}`,
+            lastModified: new Date(portfolio.updated_at),
+            changeFrequency: "monthly",
+            priority: 0.5,
+          });
+        }
+      }
+    }
+  } catch {
+    // Supabase 연결 실패 시 무시
+  }
+
+  return [...staticPages, ...blogPages, ...portfolioPages];
 }
