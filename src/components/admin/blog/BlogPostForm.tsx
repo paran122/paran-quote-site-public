@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Save, Eye, ArrowLeft, Upload, X, Search, ImageIcon, Check } from "lucide-react";
 import TiptapEditor from "./TiptapEditor";
@@ -289,6 +289,11 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
                 onClose={() => setPickerOpen(false)}
                 onSelect={setThumbnailUrl}
               />
+              <ContentImagePicker
+                content={content}
+                thumbnailUrl={thumbnailUrl}
+                onSelect={setThumbnailUrl}
+              />
             </div>
 
             {/* 발행 설정 */}
@@ -417,6 +422,59 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
             )}
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── 본문 이미지에서 썸네일 선택 ── */
+function ContentImagePicker({
+  content,
+  thumbnailUrl,
+  onSelect,
+}: {
+  content: string;
+  thumbnailUrl: string;
+  onSelect: (url: string) => void;
+}) {
+  const contentImages = useMemo(() => {
+    const urls: string[] = [];
+    const regex = /<img[^>]+src=["']([^"']+)["']/g;
+    let match;
+    while ((match = regex.exec(content)) !== null) {
+      if (!urls.includes(match[1])) urls.push(match[1]);
+    }
+    return urls;
+  }, [content]);
+
+  if (contentImages.length === 0) return null;
+
+  return (
+    <div className="mt-3">
+      <p className="text-xs text-slate-500 mb-1.5">본문 이미지에서 선택</p>
+      <div className="grid grid-cols-4 gap-1.5">
+        {contentImages.map((url) => {
+          const isSelected = url === thumbnailUrl;
+          return (
+            <button
+              key={url}
+              type="button"
+              onClick={() => onSelect(url)}
+              className={`relative aspect-square overflow-hidden rounded-sm border transition-all ${
+                isSelected
+                  ? "border-primary ring-2 ring-primary/30"
+                  : "border-slate-200 hover:border-primary/50"
+              }`}
+            >
+              <img src={url} alt="" className="h-full w-full object-cover" loading="lazy" />
+              {isSelected && (
+                <div className="absolute inset-0 flex items-center justify-center bg-primary/20">
+                  <Check className="h-4 w-4 text-white drop-shadow" />
+                </div>
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

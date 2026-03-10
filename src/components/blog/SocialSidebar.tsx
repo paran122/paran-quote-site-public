@@ -24,11 +24,20 @@ function NaverBlogIcon() {
 
 function InstagramIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="2" width="20" height="20" rx="5" />
-      <circle cx="12" cy="12" r="5" />
-      <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
-    </svg>
+    <span
+      className="inline-block"
+      style={{
+        width: 18,
+        height: 18,
+        background: "radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)",
+        WebkitMaskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='2' width='20' height='20' rx='5'/%3E%3Ccircle cx='12' cy='12' r='5'/%3E%3Ccircle cx='17.5' cy='6.5' r='1.5' fill='black' stroke='none'/%3E%3C/svg%3E")`,
+        WebkitMaskSize: "contain",
+        WebkitMaskRepeat: "no-repeat",
+        maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='2' width='20' height='20' rx='5'/%3E%3Ccircle cx='12' cy='12' r='5'/%3E%3Ccircle cx='17.5' cy='6.5' r='1.5' fill='black' stroke='none'/%3E%3C/svg%3E")`,
+        maskSize: "contain",
+        maskRepeat: "no-repeat",
+      }}
+    />
   );
 }
 
@@ -42,7 +51,7 @@ function YoutubeIcon() {
 
 const LINKS_CONFIG = [
   { key: "naver" as const, label: "네이버 블로그", Icon: NaverBlogIcon, color: "text-[#03C75A] border-[#03C75A]/25", hoverColor: "hover:text-[#02a34a] hover:border-[#02a34a]/40 hover:bg-[#03C75A]/5" },
-  { key: "instagram" as const, label: "인스타그램", Icon: InstagramIcon, color: "text-[#E1306C] border-[#E1306C]/25", hoverColor: "hover:text-[#C13584] hover:border-[#C13584]/40 hover:bg-[#E1306C]/5" },
+  { key: "instagram" as const, label: "인스타그램", Icon: InstagramIcon, color: "border-[#E1306C]/25", hoverColor: "hover:border-[#C13584]/40 hover:bg-[#E1306C]/5" },
   { key: "youtube" as const, label: "유튜브", Icon: YoutubeIcon, color: "text-[#FF0000] border-[#FF0000]/25", hoverColor: "hover:text-[#cc0000] hover:border-[#cc0000]/40 hover:bg-[#FF0000]/5" },
 ] as const;
 
