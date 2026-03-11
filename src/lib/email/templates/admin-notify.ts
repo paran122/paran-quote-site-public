@@ -63,7 +63,7 @@ export function adminNotifyHtml(data: QuoteEmailData): string {
           </div>
         </td></tr>
         <tr><td style="padding:20px 32px;background:#f8fafc;border-top:1px solid #e2e8f0">
-          <p style="margin:0;font-size:12px;color:#94a3b8;text-align:center">파란컴퍼니 / 02-6342-2801 / info@parancompany.co.kr</p>
+          <p style="margin:0;font-size:12px;color:#94a3b8;text-align:center">파란컴퍼니 / 02-6342-2800 / info@parancompany.co.kr</p>
         </td></tr>
       </table>
     </td></tr>
@@ -148,7 +148,7 @@ export function adminNotifyHtml(data: QuoteEmailData): string {
           </div>` : ""}
         </td></tr>
         <tr><td style="padding:20px 32px;background:#f8fafc;border-top:1px solid #e2e8f0">
-          <p style="margin:0;font-size:12px;color:#94a3b8;text-align:center">파란컴퍼니 / 02-6342-2801 / info@parancompany.co.kr</p>
+          <p style="margin:0;font-size:12px;color:#94a3b8;text-align:center">파란컴퍼니 / 02-6342-2800 / info@parancompany.co.kr</p>
         </td></tr>
       </table>
     </td></tr>

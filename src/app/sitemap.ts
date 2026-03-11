@@ -19,12 +19,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
-      url: `${siteUrl}/build`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
       url: `${siteUrl}/faq`,
       lastModified: new Date(),
       changeFrequency: "monthly",
@@ -75,10 +69,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       if (portfolios) {
         for (const portfolio of portfolios) {
           portfolioPages.push({
-            url: `${siteUrl}/work#${portfolio.slug}`,
+            url: `${siteUrl}/work/${portfolio.slug}`,
             lastModified: new Date(portfolio.updated_at),
             changeFrequency: "monthly",
-            priority: 0.5,
+            priority: 0.7,
           });
         }
       }

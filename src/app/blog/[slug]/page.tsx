@@ -157,7 +157,7 @@ export default async function BlogDetailPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
-      <div className="min-h-screen bg-white pt-16">
+      <div className="min-h-screen bg-slate-50 pt-16">
         {/* ═══ Social Sidebar (데스크탑 1400px+: 왼쪽 고정) ═══ */}
         <SocialSidebarFixed {...socialLinks} />
 
@@ -280,7 +280,7 @@ export default async function BlogDetailPage({ params }: Props) {
               {relatedPortfolios.map((pf) => (
                 <Link
                   key={pf.id}
-                  href={`/work#${pf.slug || pf.id}`}
+                  href={`/work/${pf.slug || pf.id}`}
                   className="group"
                 >
                   {pf.imageUrl && (

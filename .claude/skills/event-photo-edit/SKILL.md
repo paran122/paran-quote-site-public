@@ -17,7 +17,7 @@ triggers:
 
 ## 전체 흐름
 ```
-미디어 선택 → 편집/보정 → 최적화(사진: WebP / 영상: 720p H.264) → Storage 업로드 → DB 업데이트
+미디어 선택 → 편집/보정 → 최적화(사진: 1080px WebP q80 / 영상: 720p H.264) → Storage 업로드 → DB 업데이트
 ```
 
 ## 파일 분류 기준
@@ -50,7 +50,7 @@ AskUserQuestion:
 1. **자동 보정** - 휴대폰 사진 자동 감지 + 일괄 보정 (화밸/노이즈/샤프닝/밝기)
 2. **직접 편집** - 특정 사진을 골라 원하는 편집 지시
 3. **전체 일괄 보정** - 모든 사진에 보정 적용 (DSLR 포함)
-4. **영상 최적화** - 영상을 720p H.264로 최적화
+4. **영상 최적화** - 영상을 720p H.264 (no audio)로 최적화
 
 > "보정", "퀄리티" 표현 → 옵션 1 추천
 > 구체적 편집 지시 → 옵션 2로 바로 진행
@@ -142,31 +142,31 @@ ffmpeg -version 2>/dev/null || echo "ffmpeg 설치 필요"
 ### Step D-3: 영상 최적화 실행
 ```bash
 ffmpeg -i {입력} \
-  -vf "scale=-2:1080" \
+  -vf "scale=-2:720" \
   -c:v libx264 -crf 23 -preset medium \
-  -c:a aac -b:a 128k \
+  -an \
   -movflags +faststart \
   {출력}.mp4
 ```
 
 | 항목 | 값 | 설명 |
 |------|-----|------|
-| 해상도 | 1080p (-2:1080) | 비율 유지, 짝수 보정 |
+| 해상도 | 720p (-2:720) | 비율 유지, 짝수 보정 |
 | 코덱 | H.264 (libx264) | 브라우저 호환성 최고 |
 | 품질 | CRF 23 | 시각적으로 무손실 수준 |
 | 프리셋 | medium | 속도/품질 균형 |
-| 오디오 | AAC 128kbps | 충분한 음질 |
+| 오디오 | 없음 (-an) | 행사 영상은 음소거 재생 |
 | 웹 최적화 | -movflags +faststart | 스트리밍 바로 재생 |
 
 ### Step D-4: 썸네일(poster) 생성
 ```bash
 ffmpeg -i {입력} -ss 00:00:01 -vframes 1 -q:v 2 {출력}_poster.jpg
-npx sharp-cli -i {poster}.jpg -o {poster}.webp --format webp --quality 92 --chromaSubsampling 4:4:4 --resize 1920
+npx sharp-cli -i {poster}.jpg -o {poster}.webp --format webp --quality 80 --resize 1080
 ```
 
 ### Step D-5: 최적화 결과 보고
 ```
-[1] 행사 하이라이트: 800MB → 250MB (1080p H.264, 69% 감소) ✓
+[1] 행사 하이라이트: 800MB → 250MB (720p H.264, 69% 감소) ✓
     poster: 생성 완료 (42KB)
 ```
 
@@ -180,13 +180,13 @@ npx sharp-cli -i {poster}.jpg -o {poster}.webp --format webp --quality 92 --chro
 
 편집/보정된 사진을 WebP로 최적화:
 ```bash
-npx sharp-cli -i {입력} -o {출력}.webp --format webp --quality 92 --chromaSubsampling 4:4:4 --resize 1920
+npx sharp-cli -i {입력} -o {출력}.webp --format webp --quality 80 --resize 1080
 ```
 | 항목 | 값 |
 |------|-----|
-| 최대 가로 | 1920px |
+| 최대 가로 | 1080px |
 | 포맷 | WebP |
-| 품질 | 92 (chromaSubsampling 4:4:4) |
+| 품질 | 80 |
 
 ### Step 6: Supabase Storage 업로드
 
@@ -259,6 +259,6 @@ WHERE id = '{media_id}';
 - 테이블: `portfolio_media` (type: gallery/photo/video)
 - Storage 버킷: `portfolio`
 - SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY: `.env.local`에서 읽기
-- 이미지 편집/보정: **Replicate MCP (우선)**, 나노바나나 Pro MCP (폴백: `edit_image`, `restore_image`, `generate_image`)
+- 이미지 편집/보정: **Replicate MCP (우선)**, 나노바나나 Pro MCP (폴백: `edit_image`, `list_generated_images`)
 - 이미지 최적화: sharp-cli (`npx sharp-cli`)
 - 영상 최적화: ffmpeg (`ffmpeg`)

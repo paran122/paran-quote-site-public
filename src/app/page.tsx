@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import LandingPage from "@/components/landing-v2/LandingPage";
 
@@ -20,5 +21,9 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <LandingPage />;
+  return (
+    <Suspense>
+      <LandingPage />
+    </Suspense>
+  );
 }

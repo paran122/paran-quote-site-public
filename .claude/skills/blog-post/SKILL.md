@@ -39,16 +39,47 @@ Read 도구로 사용자가 지정한 MD 파일을 읽는다.
 - `excerpt` — 요약문 (SNS 공유용)
 - `is_published` — 기본 true
 
-### 3단계: slug 생성
+**SEO 필드 (선택 — 없으면 자동 생성):**
+- `seo_title` — 검색 결과에 표시될 제목 (최대 60자)
+- `seo_description` — 메타 디스크립션 (최대 155자)
+- `focus_keyword` — 이 글이 타겟하는 핵심 검색어
+- `slug` — URL 슬러그 직접 지정
 
-title에서 slug를 자동 생성한다:
+### 3단계: SEO 자동 생성
+
+프론트매터에 SEO 필드가 없으면 본문을 분석하여 자동 생성한다.
+
+**focus_keyword 추출 (프론트매터에 없을 때):**
+1. 본문에서 2~4어절 명사구 빈도 분석
+2. title, tags, category와 겹치는 키워드 우선
+3. 행사 관련 업종 특성 반영 (예: "기업행사", "세미나 기획", "행사 장비")
+4. 최종 1개 핵심 키워드 선정
+
+**seo_title 생성 (프론트매터에 없을 때):**
+1. focus_keyword를 앞부분에 배치
+2. title의 핵심 정보를 결합
+3. 60자 이내, 끝에 " | 파란컴퍼니" 접미사
+4. 예: "기업행사 체크리스트 10가지 | 파란컴퍼니"
+
+**seo_description 생성 (프론트매터에 없을 때):**
+1. focus_keyword를 자연스럽게 포함
+2. 본문 핵심 내용 요약 (무엇을 다루는 글인지)
+3. 행동 유도 문구 포함 ("~을 확인하세요", "~을 정리했습니다")
+4. 155자 이내
+
+**slug 생성:**
+- 프론트매터에 `slug`가 있으면 → 그대로 사용
+- 없고 `focus_keyword`가 있으면 → keyword 기반 slug (짧고 SEO 친화적)
+- 둘 다 없으면 → title에서 자동 생성
+
+slug 변환 규칙:
 1. 앞뒤 공백 제거
 2. 공백 → 하이픈(`-`) 치환
 3. 한글, 영문, 숫자, 하이픈만 유지 (특수문자 제거)
 4. 연속 하이픈 → 단일 하이픈
 5. 앞뒤 하이픈 제거
 
-예: "성공적인 행사 기획을 위한 체크리스트 10가지" → "성공적인-행사-기획을-위한-체크리스트-10가지"
+예: focus_keyword "기업행사 체크리스트" → slug "기업행사-체크리스트"
 
 ### 4단계: 이미지 처리
 
@@ -61,6 +92,24 @@ title에서 slug를 자동 생성한다:
 
 **외부 URL:**
 - `http://` 또는 `https://`로 시작하면 그대로 유지
+
+**marketing DB에서 가져오기 (MD에 이미지가 없을 때):**
+블로그 글이 특정 행사에 대한 내용인데 MD 파일에 이미지가 없으면, `marketing.event_photos`에서 홈페이지용 사진을 가져온다.
+
+1. 행사 이름으로 event_id 조회:
+   ```sql
+   SELECT id, name, event_date FROM marketing.events
+   WHERE name ILIKE '%{행사키워드}%' LIMIT 5;
+   ```
+2. 해당 행사의 홈페이지용 사진 조회:
+   ```sql
+   SELECT photo_url, caption, category FROM marketing.event_photos
+   WHERE event_id = '{event_id}' AND use_homepage = true
+   ORDER BY sort_order;
+   ```
+3. 조회된 이미지 URL을 본문에 적절히 배치 (이미 업로드된 URL이므로 재업로드 불필요)
+4. 썸네일이 없으면 첫 번째 이미지를 썸네일로 사용
+5. 사용자에게 어떤 사진을 사용할지 확인 (전체 or 선택)
 
 **이미지 업로드 방법 (Bash 사용):**
 ```bash
@@ -100,14 +149,14 @@ console.log(marked.parse(md));
 ```json
 {
   "title": "프론트매터의 title",
-  "slug": "자동 생성된 slug",
+  "slug": "3단계에서 생성된 slug (keyword 기반 또는 title 기반)",
   "content": "HTML 변환된 본문",
   "excerpt": "프론트매터의 excerpt 또는 null",
   "thumbnail_url": "업로드된 썸네일 URL 또는 null",
   "category": "프론트매터의 category 또는 null",
   "tags": ["프론트매터의", "tags", "배열"],
-  "seo_title": "프론트매터의 title",
-  "seo_description": "프론트매터의 excerpt 또는 null",
+  "seo_title": "3단계에서 생성/지정된 seo_title (keyword + title 조합, 60자 이내)",
+  "seo_description": "3단계에서 생성/지정된 seo_description (keyword 포함, 155자 이내)",
   "og_image_url": "썸네일 URL 또는 null",
   "is_published": true,
   "is_featured": false,
@@ -147,6 +196,12 @@ console.log(marked.parse(md));
 - 태그: {tags}
 - 발행 상태: {is_published ? "발행됨" : "임시저장"}
 - 이미지: {업로드된 이미지 수}장 업로드
+
+SEO 정보:
+- 타겟 키워드: {focus_keyword}
+- 검색 제목: {seo_title}
+- 메타 설명: {seo_description}
+
 - 미리보기: /blog/{slug}
 - 관리: /admin/blog
 ```
@@ -159,6 +214,58 @@ console.log(marked.parse(md));
 - 이미지 업로드: `/api/admin/blog/upload` 엔드포인트 활용 (Sharp WebP 최적화)
 - 블로그 API: `/api/admin/blog` (POST로 생성)
 - 변경/삭제 전 반드시 사용자 확인
+
+## 히어로 캐러셀 초상권 검열
+
+블로그 상세 페이지 상단에 큰 히어로 캐러셀이 표시된다.
+본문 내 이미지는 작아서 초상권 문제가 적지만, **히어로 캐러셀은 사진이 크게 표시**되므로 별도 검열이 필요하다.
+
+### data-no-hero 속성
+
+이미지에 `data-no-hero` 속성을 추가하면 히어로 캐러셀에서 제외된다.
+본문 내 표시와 라이트박스는 정상 작동한다.
+
+```html
+<img src="..." alt="..." data-no-hero />
+```
+
+### 히어로 캐러셀에서 제외해야 하는 이미지
+
+1. **얼굴이 선명하게 식별 가능한 사진** — 초상권 문제
+   - 가까이서 찍힌 인물 (상반신, 얼굴 클로즈업)
+   - 발표자/패널 얼굴이 뚜렷한 사진
+   - 참석자 표정이 명확한 사진
+2. **디자인 시안물** — 히어로에 부적합
+   - 포스터, 리플렛, 브로셔, 현수막 디자인
+   - 포토존, 부스 시안물
+
+### 히어로 캐러셀에 포함해도 되는 사진
+
+- 전체 행사장 전경 (인물이 작게 보이는 경우)
+- 뒷모습, 실루엣 사진
+- 장비/세팅 사진
+- 무대/연단 원경
+
+### 처리 절차
+
+블로그 글 등록 시 현장 사진이 포함되면:
+
+1. **각 이미지를 확인**하여 얼굴 식별 가능 여부 판단
+2. 초상권 위험 사진과 시안물에 `data-no-hero` 속성 추가
+3. 사용자에게 제외 대상 목록을 보고하고 확인 받기
+4. 확인 후 HTML에 반영
+
+## 본문 분량 가이드라인 (SEO)
+
+| 항목 | 기준 |
+|------|------|
+| 최소 글자수 | **1,500자** (HTML 태그 제외, 순수 텍스트) |
+| 권장 글자수 | **2,500자 이상** |
+| h2 섹션당 | 최소 2~3문장 (100자+) |
+
+- 1,500자 미만이면 구글이 "얕은 콘텐츠(thin content)"로 판단하여 검색 순위가 낮아짐
+- h2 섹션에 사진만 있고 텍스트가 1문장 이하이면 경고
+- 블로그 글 등록 완료 후 글자수를 보고하고, 1,500자 미만이면 보강을 권고할 것
 
 ## 이미지 사양
 

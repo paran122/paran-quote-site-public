@@ -87,10 +87,10 @@ INSERT INTO quote_site.portfolios (
 #### 편집 선택 시
 Replicate MCP를 우선 사용하여 발견된 문제를 수정한다. Replicate MCP 사용 불가 시 나노바나나 Pro MCP(`edit_image`)를 폴백으로 사용.
 - 편집 프롬프트: 분석에서 발견된 문제에 맞는 보정 지시 (예: "밝기를 높여주세요", "잘린 부분을 자연스럽게 확장해주세요")
-- 나노바나나 사용 시: `get_last_image_info`로 편집된 이미지 경로를 확인한다
+- 나노바나나 사용 시: `list_generated_images`로 편집된 이미지 경로를 확인한다
 - 편집 결과를 사용자에게 보여주고 확인받는다
 - 만족하면 편집된 이미지 URL로 Step 6 진행
-- 불만족하면 `continue_editing`으로 추가 수정 또는 원본으로 진행
+- 불만족하면 `edit_image`로 추가 수정 또는 원본으로 진행
 
 ### Step 6: 갤러리 사진 등록 (있을 경우)
 ```sql
@@ -120,5 +120,5 @@ INSERT INTO quote_site.event_reviews (
 - Supabase MCP 프로젝트 ID: `aiarnrhftmuffmcninyl`
 - 스키마: `quote_site`
 - 테이블: `portfolios`, `portfolio_media` (type: gallery/photo/video), `event_reviews`
-- 이미지 분석/편집: **Replicate MCP (우선)**, 나노바나나 Pro MCP (폴백: `edit_image`, `continue_editing`, `get_last_image_info`)
+- 이미지 분석/편집: **Replicate MCP (우선)**, 나노바나나 Pro MCP (폴백: `edit_image`, `list_generated_images`)
 - emoji 필드는 빈 문자열로 저장 (UI 미사용)

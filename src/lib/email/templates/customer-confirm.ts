@@ -54,12 +54,12 @@ export function customerConfirmHtml(data: QuoteEmailData): string {
           </div>
           <p style="margin:0;font-size:14px;color:#64748b;line-height:1.7">
             확인 후 빠른 시일 내에 회신 드리겠습니다.<br/>
-            급한 건은 전화(02-6342-2801)로 연락 주시면 더 빠르게 도움드릴 수 있습니다.
+            급한 건은 전화(02-6342-2800)로 연락 주시면 더 빠르게 도움드릴 수 있습니다.
           </p>
         </td></tr>
         <tr><td style="padding:20px 32px;background:#f8fafc;border-top:1px solid #e2e8f0;text-align:center">
           <p style="margin:0 0 4px;font-size:13px;color:#64748b;font-weight:600">파란컴퍼니</p>
-          <p style="margin:0;font-size:12px;color:#94a3b8">02-6342-2801 / info@parancompany.co.kr</p>
+          <p style="margin:0;font-size:12px;color:#94a3b8">02-6342-2800 / info@parancompany.co.kr</p>
         </td></tr>
       </table>
     </td></tr>
@@ -113,13 +113,13 @@ export function customerConfirmHtml(data: QuoteEmailData): string {
           <div style="padding:20px;background:#f8fafc;border-radius:8px;text-align:center">
             <p style="margin:0 0 8px;font-size:15px;color:#1e293b;font-weight:600">1영업일 이내 담당자가 연락드리겠습니다</p>
             <p style="margin:0;font-size:13px;color:#64748b">
-              급한 건은 전화(02-6342-2801)로 연락 주시면<br/>더 빠르게 도움드릴 수 있습니다.
+              급한 건은 전화(02-6342-2800)로 연락 주시면<br/>더 빠르게 도움드릴 수 있습니다.
             </p>
           </div>
         </td></tr>
         <tr><td style="padding:20px 32px;background:#f8fafc;border-top:1px solid #e2e8f0;text-align:center">
           <p style="margin:0 0 4px;font-size:13px;color:#64748b;font-weight:600">파란컴퍼니</p>
-          <p style="margin:0;font-size:12px;color:#94a3b8">02-6342-2801 / info@parancompany.co.kr</p>
+          <p style="margin:0;font-size:12px;color:#94a3b8">02-6342-2800 / info@parancompany.co.kr</p>
         </td></tr>
       </table>
     </td></tr>

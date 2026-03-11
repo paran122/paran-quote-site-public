@@ -401,7 +401,7 @@ function PreviewFooter() {
           <span>이용약관</span><span>개인정보</span>
         </div>
       </div>
-      <p className="mt-1 text-[10px] text-white/30">02-6342-2801 | info@parancompany.co.kr</p>
+      <p className="mt-1 text-[10px] text-white/30">02-6342-2800 | info@parancompany.co.kr</p>
     </div>
   );
 }

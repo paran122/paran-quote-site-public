@@ -616,6 +616,16 @@ function PortfolioModal({
   );
 }
 
+/* 사진 콜라주 영상 목록 (외곽 검은 테두리 크롭 대상) */
+const COLLAGE_VIDEO_NAMES = new Set([
+  "문화예술클럽 결과공유회",
+  "필승해군캠프",
+  "지역사회 역량강화 프로그램",
+  "추계 자동차부품산업 세미나",
+  "예술인 권리보호 교육",
+  "교육감협의회 부스 설치",
+]);
+
 /** Lazy video: only plays when visible in viewport */
 function LazyVideo({ src, className }: { src: string; className?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -705,14 +715,20 @@ function CardPhotoRotator({ photos, sizes, stagger = 0, priority = false }: { ph
   // Only run timer when in viewport
   useEffect(() => {
     if (photos.length <= 1 || !inView) return;
-    let timer: ReturnType<typeof setInterval>;
-    const delay = setTimeout(() => {
-      setIdx((i) => (i + 1) % photos.length);
-      timer = setInterval(() => {
-        setIdx((i) => (i + 1) % photos.length);
-      }, 5000);
-    }, stagger);
-    return () => { clearTimeout(delay); clearInterval(timer); };
+    const pickRandom = (prev: number) => {
+      let next: number;
+      do { next = Math.floor(Math.random() * photos.length); } while (next === prev);
+      return next;
+    };
+    let cancelled = false;
+    const randomInterval = () => 3000 + Math.random() * 3000; // 3~6초 랜덤
+    const tick = () => {
+      if (cancelled) return;
+      setIdx((i) => pickRandom(i));
+      setTimeout(tick, randomInterval());
+    };
+    const delay = setTimeout(tick, stagger);
+    return () => { cancelled = true; clearTimeout(delay); };
   }, [photos.length, stagger, inView]);
 
   if (photos.length === 0) {
@@ -758,10 +774,10 @@ function MobilePortfolioCard({ p, onSelect, index = 0 }: { p: Project; onSelect:
       className="w-[48vw] flex-shrink-0 cursor-pointer overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
-        {p.video ? (
+        {p.video && !COLLAGE_VIDEO_NAMES.has(p.name) ? (
           <LazyVideo src={p.video} className="h-full w-full object-cover" />
         ) : (
-          <CardPhotoRotator photos={p.photos.length > 0 ? p.photos : p.images} sizes="48vw" stagger={index * 800} />
+          <CardPhotoRotator photos={p.photos.length > 0 ? p.photos : p.images} sizes="48vw" stagger={index * 150} />
         )}
       </div>
       <div className="px-1.5 py-1">
@@ -1016,10 +1032,10 @@ export default function Portfolio() {
               >
                 {/* Thumbnail */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
-                  {project.video ? (
+                  {project.video && !COLLAGE_VIDEO_NAMES.has(project.name) ? (
                     <LazyVideo src={project.video} className="h-full w-full object-cover" />
                   ) : (
-                    <CardPhotoRotator photos={project.photos.length > 0 ? project.photos : project.images} sizes="(max-width: 768px) 50vw, 33vw" stagger={i * 1200} priority={i < 3} />
+                    <CardPhotoRotator photos={project.photos.length > 0 ? project.photos : project.images} sizes="(max-width: 768px) 50vw, 33vw" stagger={i * 200} priority={i < 3} />
                   )}
                 </div>
 

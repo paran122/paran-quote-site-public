@@ -79,8 +79,8 @@ export default function AdminBlogPage() {
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="bg-white rounded-lg border border-slate-200 overflow-x-auto">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-slate-100 text-left">
                 <th className="px-4 py-3 font-medium text-slate-500">제목</th>

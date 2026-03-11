@@ -56,7 +56,7 @@ export async function GET() {
     if (portfolioRes.data) {
       portfolioItems = (portfolioRes.data as PortfolioRow[])
         .map((p) => {
-          const link = `${siteUrl}/work`;
+          const link = `${siteUrl}/work/${p.slug || p.id}`;
           const desc = p.description || `${p.venue}에서 진행된 ${p.event_type}`;
           const pubDate = p.created_at
             ? new Date(p.created_at).toUTCString()
@@ -67,7 +67,7 @@ export async function GET() {
       <link>${escapeXml(link)}</link>
       <description>${escapeXml(desc)}</description>
       <pubDate>${pubDate}</pubDate>
-      <guid>${escapeXml(`${siteUrl}/work#${p.slug || p.id}`)}</guid>
+      <guid>${escapeXml(`${siteUrl}/work/${p.slug || p.id}`)}</guid>
     </item>`;
         })
         .join("\n");

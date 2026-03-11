@@ -5,10 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Phone, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { BlurFade } from "@/components/ui/blur-fade";
 
 /* ─── 내부 링크 헬퍼 ─── */
 const A = ({ href, children }: { href: string; children: React.ReactNode }) => (
-  <Link href={href} className="text-blue-400 underline underline-offset-2 hover:text-blue-300">
+  <Link href={href} className="text-blue-600 underline underline-offset-2 hover:text-blue-500">
     {children}
   </Link>
 );
@@ -33,10 +34,18 @@ const categories: FAQCategory[] = [
     desc: "행사 종류, 규모, 서비스 범위",
     items: [
       {
+        question: "파란컴퍼니는 어떤 회사인가요?",
+        answer: (
+          <>
+            파란컴퍼니는 <strong className="text-slate-900">2015년 설립</strong>된 행사 기획·운영 전문 에이전시입니다. 세미나, 컨퍼런스, 포럼, 학술대회 등을 전문으로 하며, 기획부터 디자인·운영까지 원스톱 서비스를 제공합니다. 여성기업 인증 업체이며, 경기도 수원에 본사를 두고 전국 단위로 행사를 수행합니다.
+          </>
+        ),
+      },
+      {
         question: "어떤 종류의 행사를 전문으로 하나요?",
         answer: (
           <>
-            세미나, 컨퍼런스, 포럼, 학술대회, 심포지엄, 워크숍, 기념식, 축제 등 다양한 형태의 행사를 기획·운영합니다. 특히 공공기관과 기업의 세미나·컨퍼런스 대행에 강점이 있으며, <strong className="text-white/80">250건 이상</strong>의 <A href="/work">프로젝트 수행 경험</A>을 보유하고 있습니다.
+            세미나, 컨퍼런스, 포럼, 학술대회, 심포지엄, 워크숍, 기념식, 축제 등 다양한 형태의 행사를 기획·운영합니다. 특히 공공기관과 기업의 세미나·컨퍼런스 대행에 강점이 있으며, <strong className="text-slate-900">250건 이상</strong>의 <A href="/work">프로젝트 수행 경험</A>을 보유하고 있습니다.
           </>
         ),
       },
@@ -44,7 +53,7 @@ const categories: FAQCategory[] = [
         question: "소규모(30명) 행사도 가능한가요?",
         answer: (
           <>
-            네, 가능합니다. <strong className="text-white/80">30명 이하</strong>의 소규모 세미나부터 <strong className="text-white/80">500명 이상</strong>의 대규모 컨퍼런스까지 규모에 관계없이 대응합니다. 소규모 행사에는 핵심 인력 중심의 효율적인 구성을 제안드리며, 예산에 맞춘 최적의 서비스를 제공합니다.
+            네, 가능합니다. <strong className="text-slate-900">30명 이하</strong>의 소규모 세미나부터 <strong className="text-slate-900">500명 이상</strong>의 대규모 컨퍼런스까지 규모에 관계없이 대응합니다. 소규모 행사에는 핵심 인력 중심의 효율적인 구성을 제안드리며, 예산에 맞춘 최적의 서비스를 제공합니다.
           </>
         ),
       },
@@ -57,18 +66,10 @@ const categories: FAQCategory[] = [
         ),
       },
       {
-        question: "시안물(포스터, 현수막) 제작도 해주나요?",
+        question: "디자인(포스터, 현수막)이나 영상 촬영도 해주나요?",
         answer: (
           <>
-            네, 행사 시안물 디자인을 전문적으로 제작합니다. 포스터, 현수막, 배너, 리플렛, 초청장, 명찰, 무대 디자인 등 행사에 필요한 모든 인쇄물과 디지털 디자인을 자체 제작하며, 고객사 CI/BI에 맞춘 통일된 비주얼을 제공합니다.
-          </>
-        ),
-      },
-      {
-        question: "행사 영상 촬영/편집도 가능한가요?",
-        answer: (
-          <>
-            네, 행사 현장 촬영(사진·영상)과 편집 서비스를 제공합니다. 행사 스케치 영상, 인터뷰 촬영, 하이라이트 영상 제작 등이 가능하며, 결과보고서용 기록 촬영도 포함됩니다.
+            네, 행사에 필요한 디자인과 촬영을 모두 지원합니다. 포스터, 현수막, 배너, 리플렛, 초청장, 명찰 등 인쇄물과 디지털 디자인을 자체 제작하며, 고객사 CI/BI에 맞춘 통일된 비주얼을 제공합니다. 현장 사진·영상 촬영, 하이라이트 영상 편집, 결과보고서용 기록 촬영도 가능합니다.
           </>
         ),
       },
@@ -83,7 +84,7 @@ const categories: FAQCategory[] = [
         question: "세미나 대행 비용은 얼마인가요?",
         answer: (
           <>
-            행사 규모, 형태, 서비스 범위에 따라 달라집니다. 소규모 세미나(30~50명)는 약 <strong className="text-white/80">300만 원부터</strong>, 중규모 컨퍼런스(100~200명)는 약 <strong className="text-white/80">800만 원부터</strong> 시작합니다. 정확한 견적은 행사 내용을 확인한 후 맞춤 산출해 드립니다.
+            행사 규모, 형태, 서비스 범위에 따라 달라집니다. 소규모 세미나(30~50명)는 약 <strong className="text-slate-900">300만 원부터</strong>, 중규모 컨퍼런스(100~200명)는 약 <strong className="text-slate-900">800만 원부터</strong> 시작합니다. 정확한 견적은 행사 내용을 확인한 후 맞춤 산출해 드립니다.
           </>
         ),
       },
@@ -91,7 +92,7 @@ const categories: FAQCategory[] = [
         question: "견적은 어떻게 받나요?",
         answer: (
           <>
-            홈페이지의 <A href="/build">견적 요청</A> 버튼을 통해 간단한 행사 정보를 입력하시면 <strong className="text-white/80">1영업일 내</strong>에 맞춤 견적서를 보내드립니다. <a href="tel:02-6342-2800" className="text-blue-400 underline underline-offset-2 hover:text-blue-300">전화(02-6342-2800)</a> 또는 <a href="https://pf.kakao.com/_xkexdLG" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline underline-offset-2 hover:text-blue-300">카카오톡 상담</a>으로도 견적 문의가 가능합니다.
+            홈페이지의 <A href="/build">견적 요청</A> 버튼을 통해 간단한 행사 정보를 입력하시면 <strong className="text-slate-900">1영업일 내</strong>에 맞춤 견적서를 보내드립니다. <a href="tel:02-6342-2800" className="text-blue-600 underline underline-offset-2 hover:text-blue-500">전화(02-6342-2800)</a> 또는 <a href="https://pf.kakao.com/_xkexdLG" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline underline-offset-2 hover:text-blue-500">카카오톡 상담</a>으로도 견적 문의가 가능합니다.
           </>
         ),
       },
@@ -99,7 +100,7 @@ const categories: FAQCategory[] = [
         question: "패키지와 개별 서비스의 차이는?",
         answer: (
           <>
-            패키지는 기획·디자인·운영을 묶어 할인된 가격으로 제공하는 상품이며, 개별 서비스는 필요한 항목만 선택하는 방식입니다. 패키지 이용 시 약 <strong className="text-white/80">10~20% 비용 절감</strong> 효과가 있고, 담당자 간 커뮤니케이션도 원활하여 대부분의 고객사에서 선호합니다.
+            패키지는 기획·디자인·운영을 묶어 할인된 가격으로 제공하는 상품이며, 개별 서비스는 필요한 항목만 선택하는 방식입니다. 패키지 이용 시 약 <strong className="text-slate-900">10~20% 비용 절감</strong> 효과가 있고, 담당자 간 커뮤니케이션도 원활하여 대부분의 고객사에서 선호합니다.
           </>
         ),
       },
@@ -130,7 +131,7 @@ const categories: FAQCategory[] = [
         question: "행사 준비 기간은 최소 얼마나 필요한가요?",
         answer: (
           <>
-            소규모 세미나는 최소 <strong className="text-white/80">2~3주</strong>, 중대규모 컨퍼런스·포럼은 최소 <strong className="text-white/80">4~6주</strong> 전에 의뢰해 주시는 것이 좋습니다. 시안물 디자인, 장소 섭외, 장비 준비 등을 고려하면 여유 있게 준비할수록 더 높은 퀄리티를 보장할 수 있습니다.
+            소규모 세미나는 최소 <strong className="text-slate-900">2~3주</strong>, 중대규모 컨퍼런스·포럼은 최소 <strong className="text-slate-900">4~6주</strong> 전에 의뢰해 주시는 것이 좋습니다. 시안물 디자인, 장소 섭외, 장비 준비 등을 고려하면 여유 있게 준비할수록 더 높은 퀄리티를 보장할 수 있습니다.
           </>
         ),
       },
@@ -146,7 +147,7 @@ const categories: FAQCategory[] = [
         question: "현장에 몇 명이 지원 나오나요?",
         answer: (
           <>
-            행사 규모와 성격에 따라 <strong className="text-white/80">2~10명</strong>의 전문 인력이 투입됩니다. 소규모 세미나는 PM 1명 + 운영 1~2명, 대규모 행사는 PM + 디자이너 + 음향·영상 + 운영 스태프로 구성됩니다. 필요 인력은 사전에 협의하여 확정합니다.
+            행사 규모와 성격에 따라 <strong className="text-slate-900">2~10명</strong>의 전문 인력이 투입됩니다. 소규모 세미나는 PM 1명 + 운영 1~2명, 대규모 행사는 PM + 디자이너 + 음향·영상 + 운영 스태프로 구성됩니다. 필요 인력은 사전에 협의하여 확정합니다.
           </>
         ),
       },
@@ -166,18 +167,10 @@ const categories: FAQCategory[] = [
     desc: "회사 소개, 고객사, 수행 실적",
     items: [
       {
-        question: "파란컴퍼니는 어떤 회사인가요?",
-        answer: (
-          <>
-            파란컴퍼니는 <strong className="text-white/80">2015년 설립</strong>된 행사 기획·운영 전문 에이전시입니다. 세미나, 컨퍼런스, 포럼, 학술대회 등을 전문으로 하며, 기획부터 디자인·운영까지 원스톱 서비스를 제공합니다. 여성기업 인증 업체이며, 경기도 수원에 본사를 두고 전국 단위로 행사를 수행합니다.
-          </>
-        ),
-      },
-      {
         question: "공공기관 행사 경험이 있나요?",
         answer: (
           <>
-            네, 다수의 공공기관 행사를 수행한 경험이 있습니다. 교육부, 해군, 경기도교육청, 수원시 등 정부 부처 및 지자체, 공기업의 세미나·포럼·컨퍼런스를 진행했습니다. 공공조달 절차와 관내 보고 형식에 익숙하며, 관련 서류 작성도 지원합니다. <A href="/work">수행 실적 보기</A>
+            네, 다수의 공공기관 행사를 수행한 경험이 있습니다. 교육부, 해군, 경기도교육청, 수원시, 한국문화예술교육진흥원 등 정부 부처 및 지자체, 공기업의 세미나·포럼·컨퍼런스를 진행했습니다. 공공조달 절차와 관내 보고 형식에 익숙하며, 관련 서류 작성도 지원합니다. <A href="/work">수행 실적 보기</A>
           </>
         ),
       },
@@ -185,7 +178,7 @@ const categories: FAQCategory[] = [
         question: "지금까지 몇 건의 행사를 수행했나요?",
         answer: (
           <>
-            2015년 설립 이후 <strong className="text-white/80">250건 이상</strong>의 행사를 성공적으로 수행했습니다. 연간 약 <strong className="text-white/80">30~40건</strong>의 행사를 진행하고 있으며, 재계약률이 높은 것이 저희의 자부심입니다.
+            2015년 설립 이후 <strong className="text-slate-900">250건 이상</strong>의 행사를 성공적으로 수행했습니다. 연간 <strong className="text-slate-900">100회 이상</strong>의 행사를 운영하고 있으며, 고객 재계약률 <strong className="text-slate-900">90%</strong>가 저희의 자부심입니다.
           </>
         ),
       },
@@ -193,7 +186,31 @@ const categories: FAQCategory[] = [
         question: "어떤 고객사와 일하나요?",
         answer: (
           <>
-            공공기관(교육부, 해군, 경기도교육청, 수원시 등), 공기업, 대학교, 협회·학회, 민간기업 등 다양한 분야의 고객사와 협업하고 있습니다. 업종별 행사 특성을 이해하고 있어 맞춤형 기획이 가능합니다. <A href="/work">포트폴리오에서 확인하기</A>
+            <strong className="text-slate-900">50개 이상</strong>의 기관·기업과 협업하고 있습니다. 공공기관(교육부, 해군, 경기도교육청, 수원시 등), 공기업, 대학교, 협회·학회, 민간기업 등 다양한 분야의 고객사가 있으며, 업종별 행사 특성을 이해하고 있어 맞춤형 기획이 가능합니다. <A href="/work">포트폴리오에서 확인하기</A>
+          </>
+        ),
+      },
+      {
+        question: "전국 어디서든 행사 진행이 가능한가요?",
+        answer: (
+          <>
+            네, 가능합니다. 경기도 수원에 본사를 두고 있지만 서울, 경기, 경남, 전남, 충남 등 <strong className="text-slate-900">전국 단위</strong>로 행사를 수행합니다. <strong className="text-slate-900">40개 이상</strong>의 협력사 네트워크를 통해 지역에 관계없이 동일한 수준의 서비스를 제공합니다.
+          </>
+        ),
+      },
+      {
+        question: "온라인·하이브리드 행사도 운영하나요?",
+        answer: (
+          <>
+            네, YouTube·Zoom 등을 활용한 온라인 생중계와 오프라인 현장을 결합한 <strong className="text-slate-900">하이브리드 행사</strong>를 운영합니다. 코로나 이후 축적한 노하우로 안정적인 송출 환경을 구축하며, 참가자 만족도 <strong className="text-slate-900">93점</strong>(100점 만점)의 높은 평가를 받고 있습니다.
+          </>
+        ),
+      },
+      {
+        question: "연사·강사 섭외도 해주나요?",
+        answer: (
+          <>
+            네, <strong className="text-slate-900">80명 이상</strong>의 연사·강사 풀을 보유하고 있어 행사 주제와 대상에 맞는 최적의 강사를 섭외해 드립니다. 학계, 산업계, 공공 분야 등 다양한 분야의 전문가와 협업한 경험이 있으며, 강연료 협상과 일정 조율까지 원스톱으로 지원합니다.
           </>
         ),
       },
@@ -207,10 +224,7 @@ export { categories };
 
 export default function FAQClient() {
   const [activeTab, setActiveTab] = useState("service");
-  // 모든 카테고리의 첫 번째 질문을 기본 열림
-  const [openItems, setOpenItems] = useState<Set<string>>(
-    new Set(categories.map((c) => c.items[0].question))
-  );
+  const [openItems, setOpenItems] = useState<Set<string>>(new Set());
 
   const activeCategory = categories.find((c) => c.id === activeTab)!;
 
@@ -224,25 +238,29 @@ export default function FAQClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a1628]">
-      {/* Hero */}
-      <section className="relative pb-10 pt-28 text-center md:pb-14 md:pt-36">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(59,130,246,0.06),transparent)]" />
-        <h1 className="text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-          자주 묻는 질문
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl text-sm text-blue-200/60 md:text-base">
-          파란컴퍼니의 행사 대행 서비스에 대해 궁금한 점을 확인하세요
-        </p>
-        <p className="mt-5 text-xs text-white/30">
-          {categories.map((c) => c.label).join(" · ")} — {totalQuestions}개의 답변
-        </p>
+    <div className="min-h-screen bg-slate-50 pt-[56px]">
+      {/* Hero — BlurFade (포트폴리오와 통일) */}
+      <section className="py-16 text-center md:py-20">
+        <BlurFade>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl lg:text-5xl">
+            자주 묻는 질문
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-sm text-slate-500 md:text-base">
+            파란컴퍼니의 행사 대행 서비스에 대해 궁금한 점을 확인하세요
+          </p>
+        </BlurFade>
+        <BlurFade delay={0.1}>
+          <p className="mt-5 text-xs text-slate-400">
+            {categories.map((c) => c.label).join(" · ")} — {totalQuestions}개의 답변
+          </p>
+        </BlurFade>
       </section>
 
       {/* Tabs + Content */}
-      <section className="mx-auto max-w-3xl px-4 pb-20 md:px-6">
+      <BlurFade delay={0.2}>
+      <section className="mx-auto max-w-3xl px-4 pb-20 pt-10 md:px-6">
         {/* Tab Buttons */}
-        <div className="border-b border-white/10">
+        <div className="border-b border-slate-200">
           <div className="flex gap-2 overflow-x-auto pb-px md:gap-3">
             {categories.map((cat) => (
               <button
@@ -251,15 +269,15 @@ export default function FAQClient() {
                 className={cn(
                   "relative shrink-0 px-4 py-2.5 text-sm font-medium transition-colors md:text-base",
                   activeTab === cat.id
-                    ? "text-white"
-                    : "text-white/40 hover:text-white/70"
+                    ? "text-slate-900"
+                    : "text-slate-400 hover:text-slate-600"
                 )}
               >
                 {cat.label}
                 {activeTab === cat.id && (
                   <motion.div
                     layoutId="faq-tab-indicator"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -276,7 +294,7 @@ export default function FAQClient() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="mt-4 text-xs text-white/30"
+            className="mt-4 text-xs text-slate-400"
           >
             {activeCategory.desc}
           </motion.p>
@@ -291,7 +309,7 @@ export default function FAQClient() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="mt-4 space-y-4"
+            className="mt-4 space-y-3"
           >
             {activeCategory.items.map((item, idx) => {
               const isOpen = openItems.has(item.question);
@@ -301,19 +319,19 @@ export default function FAQClient() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.25, delay: idx * 0.05 }}
-                  className="rounded-xl border border-white/[0.06] bg-white/[0.03] transition-colors duration-200 hover:border-white/[0.12] hover:bg-white/[0.05]"
+                  className="rounded-xl border border-slate-200/80 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition-all duration-200 hover:border-slate-300 hover:shadow-md"
                 >
                   <button
                     onClick={() => toggleItem(item.question)}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-6"
+                    className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left md:px-6"
                   >
-                    <span className="text-sm font-medium text-white/90 md:text-base">
+                    <span className="text-[15px] font-medium text-slate-900 md:text-base">
                       {item.question}
                     </span>
                     <motion.span
                       animate={{ rotate: isOpen ? 45 : 0 }}
                       transition={{ duration: 0.2 }}
-                      className="shrink-0 text-blue-400"
+                      className="shrink-0 text-blue-600"
                     >
                       <Plus size={18} />
                     </motion.span>
@@ -327,9 +345,9 @@ export default function FAQClient() {
                         transition={{ duration: 0.25, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="border-t border-white/[0.06] px-5 pb-5 pt-4 md:px-6">
-                          <div className="border-l-2 border-blue-500/30 pl-4">
-                            <p className="text-sm leading-relaxed text-white/60">
+                        <div className="border-t border-slate-100 px-5 pb-5 pt-4 md:px-6">
+                          <div className="border-l-2 border-blue-500/40 pl-4">
+                            <p className="text-[14px] leading-relaxed text-slate-700">
                               {item.answer}
                             </p>
                           </div>
@@ -343,13 +361,15 @@ export default function FAQClient() {
           </motion.div>
         </AnimatePresence>
       </section>
+      </BlurFade>
 
       {/* CTA */}
-      <section className="border-t border-white/[0.06] py-16 text-center md:py-20">
-        <h2 className="text-xl font-bold text-white md:text-2xl">
+      <BlurFade delay={0.1}>
+      <section className="py-16 text-center md:py-20">
+        <h2 className="text-xl font-bold text-slate-900 md:text-2xl">
           더 궁금한 점이 있으신가요?
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-sm text-white/40">
+        <p className="mx-auto mt-3 max-w-md text-sm text-slate-500">
           전화, 카카오톡, 또는 홈페이지를 통해 편하게 문의해 주세요.
           1영업일 내에 답변드립니다.
         </p>
@@ -362,7 +382,7 @@ export default function FAQClient() {
           </a>
           <a
             href="tel:02-6342-2800"
-            className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-6 py-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/[0.08] hover:text-white"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-6 py-3 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900"
           >
             <Phone size={15} />
             02-6342-2800
@@ -371,13 +391,14 @@ export default function FAQClient() {
             href="https://pf.kakao.com/_xkexdLG"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-6 py-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/[0.08] hover:text-white"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-6 py-3 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900"
           >
             <MessageCircle size={15} />
             카카오톡 상담
           </a>
         </div>
       </section>
+      </BlurFade>
     </div>
   );
 }
