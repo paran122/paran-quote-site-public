@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, MapPin, ArrowRight, Home, Building2, Calendar, Tag, Users, FileText, Image as ImageIcon, Printer, BookOpen, Palette, Package, Pen, Monitor, Megaphone, Gift, Sticker, KeyRound, LayoutGrid } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, Home, Building2, Calendar, Tag, Users, FileText, Image as ImageIcon, Printer, BookOpen, Palette, Package, Pen, Monitor, Megaphone, Gift, Sticker, KeyRound, LayoutGrid } from "lucide-react";
 import ContactModal from "@/components/ui/ContactModal";
 import { GRADIENT_MAP } from "@/lib/portfolioData";
 import type { Portfolio, PortfolioMedia } from "@/types";
