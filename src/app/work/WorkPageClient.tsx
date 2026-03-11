@@ -330,7 +330,6 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                       : pf.imageUrl
                         ? [{ src: pf.imageUrl, label: pf.title }]
                         : [];
-                  const mediaCnt = photos.length + galleryImages.length;
 
                   return (
                     <BlurFade key={pf.id} delay={0.04 * Math.min(idx, 8)}>
@@ -345,11 +344,6 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                             gradientType={pf.gradientType}
                           />
 
-                          {mediaCnt > 0 && (
-                            <span className="absolute top-3 right-3 z-10 text-[10px] font-semibold bg-black/50 text-white px-2 py-0.5 rounded-full">
-                              +{mediaCnt} 사진
-                            </span>
-                          )}
 
                           <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                             <h3 className="text-[13px] font-bold text-white leading-snug translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
