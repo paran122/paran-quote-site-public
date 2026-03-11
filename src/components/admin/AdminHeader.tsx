@@ -1,15 +1,15 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { LogOut, ExternalLink } from "lucide-react";
+import { LogOut, ExternalLink, Menu } from "lucide-react";
 
 const PAGE_TITLES: Record<string, string> = {
   "/admin": "대시보드",
   "/admin/blog": "블로그 관리",
   "/admin/blog/new": "새 글 작성",
-  "/admin/portfolio": "포트폴리오 관리",
+  "/admin/portfolio": "행사 관리",
   "/admin/portfolio/new": "새 포트폴리오",
-  "/admin/photos": "사진 관리",
+  "/admin/photos": "Work 페이지",
 };
 
 function getTitle(pathname: string): string {
@@ -25,7 +25,11 @@ function getTitle(pathname: string): string {
   return "관리자";
 }
 
-export default function AdminHeader() {
+interface AdminHeaderProps {
+  onMenuClick: () => void;
+}
+
+export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const title = getTitle(pathname);
@@ -37,15 +41,23 @@ export default function AdminHeader() {
   }
 
   return (
-    <header className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0">
-      <h1 className="text-base font-semibold text-slate-900">{title}</h1>
+    <header className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-6 shrink-0">
+      <div className="flex items-center gap-3">
+        <button
+          onClick={onMenuClick}
+          className="md:hidden p-1.5 text-slate-500 hover:text-slate-700 -ml-1"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+        <h1 className="text-base font-semibold text-slate-900">{title}</h1>
+      </div>
 
       <div className="flex items-center gap-3">
         <a
           href="/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1"
+          className="hidden sm:flex text-sm text-slate-500 hover:text-slate-700 items-center gap-1"
         >
           사이트 보기
           <ExternalLink className="w-3.5 h-3.5" />
@@ -55,7 +67,7 @@ export default function AdminHeader() {
           className="text-sm text-slate-500 hover:text-red-500 flex items-center gap-1 transition-colors"
         >
           <LogOut className="w-3.5 h-3.5" />
-          로그아웃
+          <span className="hidden sm:inline">로그아웃</span>
         </button>
       </div>
     </header>

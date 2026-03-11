@@ -17,12 +17,13 @@
 
 ## 라우트 구조
 - `/` 랜딩 페이지
-- `/services` 서비스 목록
-- `/services/[id]` 서비스 상세
-- `/checkout` 장바구니 + 견적
-- `/checkout/complete` 견적 완료
-- `/work` 포트폴리오
-- `/build` 견적 빌더
+- `/work` 포트폴리오 목록
+- `/work/[slug]` 포트폴리오 상세
+- `/blog` 블로그
+- `/blog/[slug]` 블로그 상세
+- `/blog/all` 블로그 전체글
+- `/faq` FAQ
+- `/privacy` 개인정보처리방침
 
 ## 데이터 흐름
 - catalogStore가 Supabase에서 데이터를 먼저 조회하고, 실패 시 constants.ts 폴백 데이터를 사용

@@ -62,5 +62,5 @@ sort_order: 1                       # 낮을수록 상단
 
 ### 본문 섹션
 - `## 설명`: portfolios.description에 저장
-- `## 갤러리`: 마크다운 이미지 문법 파싱 → event_photos 테이블
+- `## 갤러리`: 마크다운 이미지 문법 파싱 → portfolio_media 테이블
 - `## 고객 후기`: `### 이름 | 직책 | 소속` 형식 파싱 → event_reviews 테이블

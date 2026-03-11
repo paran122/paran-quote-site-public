@@ -23,15 +23,18 @@
 | event_date | DATE | NULL | 행사 날짜 |
 | created_at | TIMESTAMPTZ | now() | 생성일 |
 | updated_at | TIMESTAMPTZ | now() | 수정일 |
+| attendees | TEXT | NULL | 참여 인원 (예: "약 200명") |
 
-## event_photos 테이블
+## portfolio_media 테이블
 
 | 컬럼 | 타입 | 기본값 | 설명 |
 |------|------|--------|------|
 | id | UUID | gen_random_uuid() | PK |
 | portfolio_id | UUID | - | FK → portfolios(id), CASCADE 삭제 |
-| url | TEXT | - | 사진 URL (필수) |
-| caption | TEXT | NULL | 사진 설명 |
+| event_slug | TEXT | NULL | 행사 슬러그 (Storage 경로용) |
+| type | TEXT | NULL | 미디어 유형 (gallery/photo/video) |
+| label | TEXT | NULL | 미디어 라벨/설명 |
+| url | TEXT | - | 미디어 URL (필수) |
 | sort_order | INTEGER | 0 | 정렬 순서 |
 | created_at | TIMESTAMPTZ | now() | 생성일 |
 
@@ -49,6 +52,6 @@
 | created_at | TIMESTAMPTZ | now() | 생성일 |
 
 ## RLS 정책
-- `event_photos`: 모든 사용자 SELECT 허용
+- `portfolio_media`: 모든 사용자 SELECT 허용
 - `event_reviews`: 모든 사용자 SELECT 허용
 - INSERT/UPDATE/DELETE는 서비스 역할(service_role) 또는 Supabase MCP를 통해서만 가능

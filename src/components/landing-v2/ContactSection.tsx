@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Phone, Mail, Printer, MapPin, Loader2 } from "lucide-react";
 import { showToast } from "@/components/ui/Toast";
+import AnimatedCheckbox from "@/components/ui/AnimatedCheckbox";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_REGEX = /^[\d\-]{9,15}$/;
@@ -38,6 +40,7 @@ export default function Contact() {
   const [form, setForm] = useState<ContactForm>(INITIAL_FORM);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [privacyAgreed, setPrivacyAgreed] = useState(false);
 
   const updateField = (key: keyof ContactForm, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -54,6 +57,10 @@ export default function Contact() {
 
     const hasError = REQUIRED_FIELDS.some((key) => getFieldError(form, key) !== null);
     if (hasError || submitting) return;
+    if (!privacyAgreed) {
+      showToast("개인정보 수집·이용에 동의해주세요.");
+      return;
+    }
     setSubmitting(true);
 
     const quoteNumber = `IQ-${new Date()
@@ -79,6 +86,7 @@ export default function Contact() {
       showToast("문의가 접수되었습니다");
       setForm(INITIAL_FORM);
       setTouched({});
+      setPrivacyAgreed(false);
     } catch {
       showToast("오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
@@ -101,7 +109,7 @@ export default function Contact() {
           <div className="mb-0.5 font-[var(--font-inter)] text-[9px] font-extrabold tracking-[0.25em] text-white/60 md:mb-1 md:text-base">CONTACT</div>
           <div className="mx-auto mb-1 h-[1.5px] w-6 rounded-full bg-white/40 md:mb-4 md:h-[2px] md:w-10" />
           <h2 className="text-lg font-bold text-white md:text-5xl">문의하기</h2>
-          <p className="mx-auto mt-1 max-w-md text-[9px] leading-relaxed text-blue-100/80 md:mt-4 md:text-sm">
+          <p className="mx-auto mt-1 text-[9px] leading-relaxed text-blue-100/80 md:mt-4 md:max-w-md md:text-sm">
             무엇이든 문의하세요. 행사 기획부터 운영까지, 파란컴퍼니와 함께 시작하세요.
           </p>
         </BlurFade>
@@ -211,6 +219,21 @@ export default function Contact() {
                     className={`w-full resize-none rounded border bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.message && getFieldError(form, "message") ? "border-red-300" : "border-gray-200"}`}
                   />
                   {touched.message && getFieldError(form, "message") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "message")}</p>}
+                </div>
+
+                {/* 개인정보 동의 */}
+                <div className="mb-2 flex cursor-pointer items-start gap-2 md:mb-6 md:items-center md:gap-2.5" onClick={() => setPrivacyAgreed(!privacyAgreed)}>
+                  <div className="mt-[3px] md:mt-0">
+                    <AnimatedCheckbox
+                      checked={privacyAgreed}
+                      onChange={setPrivacyAgreed}
+                      size="sm"
+                      className="md:h-4 md:w-4"
+                    />
+                  </div>
+                  <span className="text-[9px] leading-relaxed text-gray-500 md:text-xs">
+                    <Link href="/privacy" target="_blank" className="font-semibold text-blue-600 underline underline-offset-2">개인정보 수집·이용</Link>에 동의합니다. (이름, 연락처, 이메일을 문의 응대 목적으로 수집하며, 목적 달성 후 즉시 파기합니다.)
+                  </span>
                 </div>
 
                 <motion.button

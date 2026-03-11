@@ -41,7 +41,7 @@ const BlogPostCard = React.forwardRef<HTMLDivElement, BlogPostCardProps>(
     if (variant === "featured") {
       /* ═══ Pitch Hero 스타일: 왼쪽 텍스트 + 오른쪽 이미지 ═══ */
       const content = (
-        <div className={`group relative overflow-hidden rounded-lg bg-white ${className || ""}`}>
+        <div className={`group relative overflow-hidden rounded-lg ${className || ""}`}>
           <div className="grid items-stretch md:grid-cols-2">
             {/* 텍스트 영역 */}
             <div className="flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-12 md:py-16">

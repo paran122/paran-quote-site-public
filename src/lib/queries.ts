@@ -74,6 +74,22 @@ export async function fetchPortfolios(): Promise<Portfolio[]> {
   return (data ?? []).map((r) => mapRow<Portfolio>(r));
 }
 
+// ── 포트폴리오 (slug 조회) ──
+export async function fetchPortfolioBySlug(slug: string): Promise<Portfolio | null> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("portfolios")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_visible", true)
+    .single();
+  if (error) {
+    if (error.code === "PGRST116") return null;
+    throw error;
+  }
+  return mapRow<Portfolio>(data);
+}
+
 // ── 포트폴리오 미디어 (통합) ──
 export async function fetchAllPortfolioMedia(): Promise<PortfolioMedia[]> {
   const db = requireClient();

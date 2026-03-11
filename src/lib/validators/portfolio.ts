@@ -15,6 +15,7 @@ export const portfolioSchema = z.object({
   client: z.string().optional().nullable(),
   event_date: z.string().optional().nullable(),
   deliverables: z.array(z.string()).optional().nullable(),
+  sort_order: z.number().int().min(0).optional(),
 });
 
 export type PortfolioInput = z.infer<typeof portfolioSchema>;

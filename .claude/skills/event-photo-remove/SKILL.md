@@ -26,8 +26,16 @@ WHERE portfolio_id = '{id}' ORDER BY sort_order;
 ### Step 3: 삭제 확인
 사용자에게 "이 사진을 삭제할까요?" 반드시 확인한다.
 
-### Step 4: DELETE
+### Step 4: Storage 파일 삭제
+미디어 URL에서 Storage 경로를 추출하여 파일도 삭제한다.
 ```sql
+SELECT quote_site.admin_delete_media('{media_id}');
+```
+> `admin_delete_media` 함수가 DB 행 + Storage 파일을 함께 삭제한다 (SECURITY DEFINER).
+
+함수 사용 불가 시 수동 삭제:
+```sql
+DELETE FROM storage.objects WHERE name = '{storage_path}';
 DELETE FROM quote_site.portfolio_media WHERE id = '{media_id}';
 ```
 

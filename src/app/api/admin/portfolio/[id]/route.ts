@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { createClient } from "@supabase/supabase-js";
 import { portfolioSchema } from "@/lib/validators/portfolio";
 
@@ -37,13 +38,14 @@ export async function PATCH(
     const parsed = portfolioSchema.partial().parse(body);
 
     const db = getClient();
-    const { data, error } = await db
-      .from("portfolios")
-      .update(parsed)
-      .eq("id", params.id)
-      .select()
-      .single();
+    const { data, error } = await db.rpc("admin_update_portfolio", {
+      p_id: params.id,
+      p_data: parsed,
+    });
     if (error) throw error;
+
+    revalidatePath("/work");
+    revalidatePath("/");
 
     return NextResponse.json(data);
   } catch (err) {
@@ -51,7 +53,8 @@ export async function PATCH(
       return NextResponse.json({ error: "입력값이 올바르지 않습니다" }, { status: 400 });
     }
     const msg = err instanceof Error ? err.message : "수정 실패";
-    return NextResponse.json({ error: msg }, { status: 500 });
+    const code = (err as Record<string, unknown>)?.code;
+    return NextResponse.json({ error: msg, code }, { status: 500 });
   }
 }
 

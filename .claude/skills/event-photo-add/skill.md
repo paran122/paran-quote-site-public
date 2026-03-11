@@ -95,13 +95,13 @@ edit_image:
 > 육안으로 원본과 차이를 느낄 수 없는 수준을 유지한다.
 
 ```bash
-npx sharp-cli -i {입력} -o {출력}.webp --format webp --quality 95
+npx sharp-cli -i {입력} -o {출력}.webp --format webp --quality 80 --resize 1080
 ```
 | 항목 | 값 | 설명 |
 |------|-----|------|
 | 포맷 | WebP | JPG 대비 동일 화질에서 용량 절감 |
-| 품질 | 95 | 육안 차이 없는 최고 품질 |
-| 리사이즈 | 안 함 (원본 해상도 유지) | 화질 손상 방지 |
+| 품질 | 80 | 포트폴리오 표준 품질 |
+| 최대 가로 | 1080px | withoutEnlargement |
 | 메타데이터 | EXIF 제거 | 용량 절감 + 개인정보 보호 |
 
 ---
@@ -117,20 +117,20 @@ ffmpeg 없으면 사용자에게 안내: `winget install ffmpeg` 또는 https://
 ### Step 4-V: 영상 최적화
 ```bash
 ffmpeg -i {입력} \
-  -vf "scale=-2:1080" \
+  -vf "scale=-2:720" \
   -c:v libx264 -crf 23 -preset medium \
-  -c:a aac -b:a 128k \
+  -an \
   -movflags +faststart \
   {출력}.mp4
 ```
 
 | 항목 | 값 | 설명 |
 |------|-----|------|
-| 해상도 | 1080p (-2:1080) | 비율 유지, 짝수 보정 |
+| 해상도 | 720p (-2:720) | 비율 유지, 짝수 보정 |
 | 코덱 | H.264 (libx264) | 브라우저 호환성 최고 |
 | 품질 | CRF 23 | 시각적으로 무손실 수준 |
 | 프리셋 | medium | 속도/품질 균형 |
-| 오디오 | AAC 128kbps | 충분한 음질 |
+| 오디오 | 없음 (-an) | 행사 영상은 음소거 재생 |
 | 웹 최적화 | -movflags +faststart | 스트리밍 바로 재생 |
 
 > CRF 23 = 원본과 화질 차이 구분 불가능 수준. 웹 재생 시 체감 동일.
@@ -142,7 +142,7 @@ ffmpeg -i {입력} -ss 00:00:01 -vframes 1 -q:v 2 {출력}_poster.jpg
 ```
 poster도 WebP로 최적화:
 ```bash
-npx sharp-cli -i {poster}.jpg -o {poster}.webp --format webp --quality 95
+npx sharp-cli -i {poster}.jpg -o {poster}.webp --format webp --quality 80 --resize 1080
 ```
 
 ---
@@ -208,7 +208,7 @@ VALUES ('{portfolio_id}', '{event_slug}', '{photo|video}', '{label}', '{storage_
 
 - 행사: {행사명}
 - 사진: {N}장 추가 (보정 {X}장, WebP 변환)
-- 영상: {N}개 추가 (1080p H.264, poster 생성)
+- 영상: {N}개 추가 (720p H.264, poster 생성)
 - 최적화: 총 {원본 용량} → {최적화 용량} ({절감율}% 감소)
 - Storage: portfolio/{event_slug}/
 
@@ -221,6 +221,6 @@ VALUES ('{portfolio_id}', '{event_slug}', '{photo|video}', '{label}', '{storage_
 - 테이블: `portfolio_media` (type: gallery/photo/video)
 - Storage 버킷: `portfolio`
 - SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY: `.env.local`에서 읽기
-- 이미지 분석/보정: **Replicate MCP (우선)**, 나노바나나 Pro MCP (폴백: `edit_image`, `restore_image`, `generate_image`)
+- 이미지 분석/보정: **Replicate MCP (우선)**, 나노바나나 Pro MCP (폴백: `edit_image`, `list_generated_images`)
 - 이미지 최적화: sharp-cli (`npx sharp-cli`)
 - 영상 최적화: ffmpeg (`ffmpeg`)

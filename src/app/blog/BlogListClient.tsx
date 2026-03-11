@@ -30,8 +30,8 @@ interface Props {
   totalCount: number;
 }
 
-/* ── 기본 카테고리 ── */
-const DEFAULT_CATEGORIES = [
+/* ── 기본 카테고리 (글이 있는 것만 표시하기 위해 순서 정의용) ── */
+const CATEGORY_ORDER = [
   "행사 기획",
   "행사 후기",
   "트렌드",
@@ -66,7 +66,7 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
   const [morePage, setMorePage] = useState(1);
 
   const mergedCategories = Array.from(
-    new Set([...DEFAULT_CATEGORIES, ...categories]),
+    new Set([...CATEGORY_ORDER, ...categories]),
   );
   const allCategories = ["전체", ...mergedCategories];
 
@@ -120,7 +120,7 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
 
   return (
     <motion.div
-      className="min-h-screen bg-white pb-20 pt-14 sm:pb-28"
+      className="min-h-screen bg-slate-50 pb-20 pt-14 sm:pb-28"
       initial="hidden"
       animate="show"
       variants={stagger}
@@ -178,6 +178,14 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
       </motion.div>
 
       <div className="mx-auto max-w-[1200px] px-6">
+        {/* ═══ 빈 카테고리: Coming Soon ═══ */}
+        {filtered.length === 0 && (
+          <EmptyCategory
+            category={activeCategory}
+            onBack={() => setActiveCategory("전체")}
+          />
+        )}
+
         {/* ═══ Mega Featured (Pitch Hero 스타일) ═══ */}
         {featured && (
           <motion.div variants={fadeIn} className="mt-2">
@@ -293,7 +301,7 @@ function ArticleCard({ post, index }: { post: BlogPost; index: number }) {
         </div>
 
         {/* 제목 */}
-        <h3 className="mt-5 text-[20px] font-semibold leading-snug tracking-[-0.02em] text-slate-900 sm:text-[22px]">
+        <h3 className="mt-5 text-[17px] font-semibold leading-snug tracking-[-0.02em] text-slate-900 sm:text-[18px]">
           <span className="underline decoration-slate-900/40 underline-offset-[3px] transition-all duration-300 group-hover:text-primary group-hover:decoration-transparent">
             {post.title}
           </span>
@@ -321,7 +329,7 @@ function ArticleCard({ post, index }: { post: BlogPost; index: number }) {
 function EditorPickHero({ post }: { post: BlogPost }) {
   return (
     <Link href={`/blog/${post.slug}`}>
-      <div className="group overflow-hidden rounded-md bg-white transition-all hover:shadow-lg">
+      <div className="group overflow-hidden rounded-md transition-all hover:shadow-lg">
         <div className="grid items-center gap-0 sm:grid-cols-2">
           {/* 이미지 */}
           <div className="relative aspect-[16/9] overflow-hidden rounded-md">
@@ -362,6 +370,25 @@ function EditorPickHero({ post }: { post: BlogPost }) {
         </div>
       </div>
     </Link>
+  );
+}
+
+function EmptyCategory({ category, onBack }: { category: string; onBack: () => void }) {
+  return (
+    <motion.div variants={fadeIn} className="flex flex-col items-center justify-center py-28 text-center">
+      <p
+        className="text-[36px] font-bold tracking-wide text-primary sm:text-[48px]"
+        style={{ textShadow: "0 0 20px rgba(59,130,246,0.4), 0 0 40px rgba(59,130,246,0.15)" }}
+      >
+        COMING SOON
+      </p>
+      <p className="mt-3 text-[15px] text-slate-400">
+        {category} 카테고리 — 준비 중
+      </p>
+      <button onClick={onBack} className="mt-8 rounded-full border border-slate-200 px-6 py-2.5 text-[13px] font-medium text-slate-600 hover:bg-slate-50 transition-colors">
+        전체 글 보기
+      </button>
+    </motion.div>
   );
 }
 

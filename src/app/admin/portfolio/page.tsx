@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2, ImageIcon, MessageSquare, Eye, EyeOff } from "lucide-react";
+import { Plus, Pencil, Trash2, ImageIcon, MessageSquare, Eye, EyeOff, Loader2 } from "lucide-react";
 
 interface PortfolioRow {
   id: string;
@@ -19,6 +19,8 @@ export default function AdminPortfolioPage() {
   const router = useRouter();
   const [portfolios, setPortfolios] = useState<PortfolioRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteTarget, setDeleteTarget] = useState<PortfolioRow | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetch("/api/admin/portfolio")
@@ -29,14 +31,24 @@ export default function AdminPortfolioPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  async function handleDelete(id: string, title: string) {
-    if (!confirm(`"${title}" 포트폴리오와 모든 사진/후기를 삭제하시겠습니까?`)) return;
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
 
-    const res = await fetch(`/api/admin/portfolio/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      setPortfolios((prev) => prev.filter((p) => p.id !== id));
-    } else {
-      alert("삭제에 실패했습니다");
+    try {
+      const res = await fetch(`/api/admin/portfolio/${deleteTarget.id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setPortfolios((prev) => prev.filter((p) => p.id !== deleteTarget.id));
+        setDeleteTarget(null);
+      } else {
+        alert("삭제에 실패했습니다");
+      }
+    } catch {
+      alert("삭제 중 오류가 발생했습니다");
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -60,8 +72,8 @@ export default function AdminPortfolioPage() {
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="bg-white rounded-lg border border-slate-200 overflow-x-auto">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="border-b border-slate-100 text-left">
                 <th className="px-4 py-3 font-medium text-slate-500">행사명</th>
@@ -116,7 +128,7 @@ export default function AdminPortfolioPage() {
                         <MessageSquare className="w-3.5 h-3.5" />
                       </button>
                       <button
-                        onClick={() => handleDelete(p.id, p.title)}
+                        onClick={() => setDeleteTarget(p)}
                         className="p-1.5 text-slate-400 hover:text-red-500 transition-colors"
                         title="삭제"
                       >
@@ -128,6 +140,49 @@ export default function AdminPortfolioPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* 삭제 확인 모달 */}
+      {deleteTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-red-600" />
+              </div>
+              <h2 className="text-lg font-bold">행사 삭제</h2>
+            </div>
+            <p className="text-gray-600 mb-2">
+              <strong>&ldquo;{deleteTarget.title}&rdquo;</strong> 행사를
+              삭제하시겠습니까?
+            </p>
+            <p className="text-sm text-gray-400 mb-6">
+              이 행사의 모든 사진과 후기가 함께 삭제됩니다. 이 작업은 되돌릴 수
+              없습니다.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setDeleteTarget(null)}
+                disabled={deleting}
+                className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              >
+                취소
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="flex items-center gap-2 px-4 py-2 text-sm bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors disabled:opacity-50"
+              >
+                {deleting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Trash2 className="w-4 h-4" />
+                )}
+                삭제하기
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

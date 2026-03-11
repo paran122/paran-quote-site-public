@@ -9,6 +9,7 @@ const sections = [
   { id: "estimate", label: "견적안내" },
   { id: "process", label: "프로세스" },
   { id: "clients", label: "고객사" },
+  { id: "blog", label: "블로그" },
   { id: "contact", label: "문의" },
 ];
 
@@ -24,15 +25,33 @@ export default function DesignerSidebar() {
           }
         });
       },
-      { rootMargin: "-40% 0px -55% 0px" }
+      { rootMargin: "-30% 0px -40% 0px" }
     );
 
-    sections.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    function observeAll() {
+      sections.forEach(({ id }) => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    }
 
-    return () => observer.disconnect();
+    observeAll();
+    // 블로그 섹션 비동기 로드 후 재등록
+    const timer = setTimeout(observeAll, 2000);
+
+    // 페이지 맨 아래 → 문의 활성화
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
+        setActive("contact");
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const handleClick = (id: string) => {
