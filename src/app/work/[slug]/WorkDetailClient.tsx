@@ -85,12 +85,26 @@ function SafeImage({ src, alt, fill, sizes, className, priority, onLoad }: {
   );
 }
 
+interface RelatedEvent {
+  id: string;
+  title: string;
+  slug?: string;
+  tags: string[];
+  client?: string;
+  year: number;
+  venue: string;
+  thumbnailUrl: string;
+}
+
 interface WorkDetailClientProps {
   portfolio: Portfolio;
   media: PortfolioMedia[];
+  relatedEvents?: RelatedEvent[];
+  prevPortfolio?: { slug: string; title: string } | null;
+  nextPortfolio?: { slug: string; title: string } | null;
 }
 
-export default function WorkDetailClient({ portfolio, media }: WorkDetailClientProps) {
+export default function WorkDetailClient({ portfolio, media, relatedEvents = [], prevPortfolio, nextPortfolio }: WorkDetailClientProps) {
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [selectedSession, setSelectedSession] = useState<number | null>(null);
@@ -511,9 +525,87 @@ export default function WorkDetailClient({ portfolio, media }: WorkDetailClientP
 
       </div>
 
+      {/* 관련 행사 */}
+      {relatedEvents.length > 0 && (
+        <section className="max-w-[960px] mx-auto px-6 mt-12">
+          <h2 className="text-[17px] font-bold text-slate-800 mb-4">관련 행사</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {relatedEvents.map((evt) => (
+              <Link
+                key={evt.id}
+                href={`/work/${evt.slug || evt.id}`}
+                className="group block overflow-hidden rounded-xl border border-slate-100 bg-white transition-shadow hover:shadow-md"
+              >
+                <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
+                  {evt.thumbnailUrl ? (
+                    <SafeImage
+                      src={evt.thumbnailUrl}
+                      alt={evt.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <ImageIcon className="h-6 w-6 text-slate-300" />
+                    </div>
+                  )}
+                </div>
+                <div className="p-3">
+                  {evt.tags?.[0] && (
+                    <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${categoryStyle[evt.tags[0]] || "bg-slate-100 text-slate-600"}`}>
+                      {evt.tags[0]}
+                    </span>
+                  )}
+                  <p className="mt-1.5 text-[14px] font-semibold text-slate-800 leading-snug line-clamp-1">{evt.title}</p>
+                  <div className="mt-1 flex items-center gap-1 text-[11px] text-slate-400">
+                    <MapPin className="h-3 w-3" />
+                    <span>{evt.venue}</span>
+                    <span className="mx-0.5">·</span>
+                    <span>{evt.year}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 이전/다음 내비게이션 */}
+      {(prevPortfolio || nextPortfolio) && (
+        <nav className="max-w-[960px] mx-auto px-6 mt-10">
+          <div className="flex items-stretch gap-3 border-t border-slate-200 pt-6">
+            {prevPortfolio ? (
+              <Link
+                href={`/work/${prevPortfolio.slug}`}
+                className="flex-1 group flex items-center gap-2 rounded-lg border border-slate-100 px-4 py-3 transition-colors hover:bg-slate-50"
+              >
+                <ChevronLeft className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-hover:-translate-x-0.5" />
+                <div className="min-w-0">
+                  <p className="text-[11px] text-slate-400">이전 행사</p>
+                  <p className="text-[13px] font-medium text-slate-700 truncate">{prevPortfolio.title}</p>
+                </div>
+              </Link>
+            ) : <div className="flex-1" />}
+            {nextPortfolio ? (
+              <Link
+                href={`/work/${nextPortfolio.slug}`}
+                className="flex-1 group flex items-center justify-end gap-2 rounded-lg border border-slate-100 px-4 py-3 text-right transition-colors hover:bg-slate-50"
+              >
+                <div className="min-w-0">
+                  <p className="text-[11px] text-slate-400">다음 행사</p>
+                  <p className="text-[13px] font-medium text-slate-700 truncate">{nextPortfolio.title}</p>
+                </div>
+                <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            ) : <div className="flex-1" />}
+          </div>
+        </nav>
+      )}
+
       {/* 하단 CTA */}
       <div className="max-w-[960px] mx-auto px-6">
-        <div className="flex items-center justify-between border-t border-slate-200 py-8">
+        <div className="flex items-center justify-between border-t border-slate-200 py-8 mt-6">
           <div>
             <p className="text-[15px] font-semibold text-slate-800">이 행사가 마음에 드셨나요?</p>
             <p className="text-[13px] text-slate-400 mt-0.5">비슷한 행사를 기획해 드립니다</p>

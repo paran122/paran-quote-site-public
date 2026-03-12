@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { fetchPortfolioBySlug, fetchPortfolioMedia } from "@/lib/queries";
+import { fetchPortfolioBySlug, fetchPortfolioMedia, fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { PORTFOLIOS } from "@/lib/portfolioData";
 import WorkDetailClient from "./WorkDetailClient";
-import type { PortfolioMedia } from "@/types";
+import type { Portfolio, PortfolioMedia } from "@/types";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -55,11 +55,44 @@ export default async function WorkDetailPage({ params }: Props) {
   if (!portfolio) notFound();
 
   let media: PortfolioMedia[] = [];
+  let allPortfolios: Portfolio[] = [];
+  let allMedia: PortfolioMedia[] = [];
   try {
-    media = await fetchPortfolioMedia(portfolio.id);
+    [media, allPortfolios, allMedia] = await Promise.all([
+      fetchPortfolioMedia(portfolio.id),
+      fetchPortfolios(),
+      fetchAllPortfolioMedia(),
+    ]);
   } catch {
-    // 미디어 로드 실패 시 빈 배열
+    try { media = await fetchPortfolioMedia(portfolio.id); } catch { /* */ }
   }
+
+  if (allPortfolios.length === 0) allPortfolios = PORTFOLIOS;
+  const visibleAll = allPortfolios.filter((p) => p.isVisible);
+
+  // 이전/다음 포트폴리오
+  const currentIdx = visibleAll.findIndex((p) => p.slug === portfolio.slug || p.id === portfolio.id);
+  const prevPortfolio = currentIdx > 0 ? visibleAll[currentIdx - 1] : null;
+  const nextPortfolio = currentIdx < visibleAll.length - 1 ? visibleAll[currentIdx + 1] : null;
+
+  // 관련 행사: 카테고리(tags[0]) 또는 고객사 일치, 최대 3개
+  const category = portfolio.tags?.[0];
+  const related = visibleAll
+    .filter((p) => p.id !== portfolio.id)
+    .map((p) => {
+      let score = 0;
+      if (category && p.tags?.[0] === category) score += 3;
+      if (portfolio.client && p.client === portfolio.client) score += 2;
+      const commonTags = (p.tags || []).filter((t) => (portfolio.tags || []).includes(t));
+      score += commonTags.length * 0.5;
+      return { portfolio: p, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map((r) => {
+      const pm = allMedia.filter((m) => m.portfolioId === r.portfolio.id && m.type === "photo");
+      return { ...r.portfolio, thumbnailUrl: pm[0]?.url || r.portfolio.imageUrl || "" };
+    });
 
   const url = `${SITE_URL}/work/${portfolio.slug}`;
 
@@ -119,7 +152,13 @@ export default async function WorkDetailPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(vLd) }}
         />
       ))}
-      <WorkDetailClient portfolio={portfolio} media={media} />
+      <WorkDetailClient
+        portfolio={portfolio}
+        media={media}
+        relatedEvents={related}
+        prevPortfolio={prevPortfolio ? { slug: prevPortfolio.slug || prevPortfolio.id, title: prevPortfolio.title } : null}
+        nextPortfolio={nextPortfolio ? { slug: nextPortfolio.slug || nextPortfolio.id, title: nextPortfolio.title } : null}
+      />
     </>
   );
 }
