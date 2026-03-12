@@ -33,11 +33,20 @@ function CardPhotoRotator({ photos, gradientType }: {
   photos: { src: string; label: string }[];
   gradientType: string;
 }) {
-  const [idx, setIdx] = useState(() => Math.floor(Math.random() * Math.max(photos.length, 1)));
+  const [idx, setIdx] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const [inView, setInView] = useState(false);
+  const [portraitSet, setPortraitSet] = useState<Set<number>>(new Set());
+  const [errorSet, setErrorSet] = useState<Set<number>>(new Set());
   const containerRef = useRef<HTMLDivElement>(null);
-  const randomDelay = useRef(Math.random() * 4000);
+  const randomDelay = useRef(0);
   const gradient = GRADIENT_MAP[gradientType] ?? "from-slate-100 to-slate-200";
+
+  useEffect(() => {
+    setIdx(Math.floor(Math.random() * Math.max(photos.length, 1)));
+    randomDelay.current = Math.random() * 4000;
+    setMounted(true);
+  }, [photos.length]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -51,12 +60,12 @@ function CardPhotoRotator({ photos, gradientType }: {
   }, []);
 
   useEffect(() => {
-    if (photos.length <= 1 || !inView) return;
+    if (photos.length <= 1 || !inView || !mounted) return;
     const randomNext = () => {
       setIdx((prev) => {
-        let next: number;
-        do { next = Math.floor(Math.random() * photos.length); } while (next === prev);
-        return next;
+        const validIndices = Array.from({ length: photos.length }, (_, i) => i).filter((i) => !errorSet.has(i) && i !== prev);
+        if (validIndices.length === 0) return prev;
+        return validIndices[Math.floor(Math.random() * validIndices.length)];
       });
     };
     let timer: ReturnType<typeof setInterval>;
@@ -65,7 +74,7 @@ function CardPhotoRotator({ photos, gradientType }: {
       timer = setInterval(randomNext, 5000);
     }, randomDelay.current);
     return () => { clearTimeout(delay); clearInterval(timer); };
-  }, [photos.length, inView]);
+  }, [photos.length, inView, mounted]);
 
   if (photos.length === 0) {
     return (
@@ -80,21 +89,27 @@ function CardPhotoRotator({ photos, gradientType }: {
       <AnimatePresence initial={false}>
         <motion.div
           key={idx}
-          initial={{ opacity: 0, scale: 1 }}
-          animate={{ opacity: 1, scale: 1.08 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{
-            opacity: { duration: 1.5, ease: "easeInOut" },
-            scale: { duration: 5, ease: "linear" },
-          }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         >
           <Image
             src={photos[idx].src}
             alt={photos[idx].label}
             fill
-            className="object-cover"
+            className={portraitSet.has(idx) ? "object-contain" : "object-cover"}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            onLoad={(e) => {
+              const img = e.currentTarget as HTMLImageElement;
+              if (img.naturalHeight > img.naturalWidth) {
+                setPortraitSet((prev) => new Set(prev).add(idx));
+              }
+            }}
+            onError={() => {
+              setErrorSet((prev) => new Set(prev).add(idx));
+            }}
           />
         </motion.div>
       </AnimatePresence>

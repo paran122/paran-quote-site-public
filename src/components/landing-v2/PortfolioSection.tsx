@@ -8,6 +8,26 @@ import { X, ChevronLeft, ChevronRight, Camera, Palette } from "lucide-react";
 import { useCatalogStore } from "@/stores/catalogStore";
 import type { Portfolio, PortfolioMedia } from "@/types";
 
+/** 세로 이미지 자동 감지 — 세로면 object-contain, 가로면 object-cover */
+function AutoFitImage({ src, alt, sizes, className = "" }: {
+  src: string; alt: string; sizes: string; className?: string;
+}) {
+  const [isPortrait, setIsPortrait] = useState(false);
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className={`${isPortrait ? "object-contain" : "object-cover"} ${className}`}
+      sizes={sizes}
+      onLoad={(e) => {
+        const img = e.currentTarget as HTMLImageElement;
+        if (img.naturalHeight > img.naturalWidth) setIsPortrait(true);
+      }}
+    />
+  );
+}
+
 interface Project {
   slug: string;
   name: string;
@@ -181,13 +201,7 @@ function PhotoToggleCell({
     >
       {/* B layer (아래) */}
       <div className="absolute inset-0">
-        <Image
-          src={photoB.src}
-          alt={photoB.label}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 50vw, 25vw"
-        />
+        <AutoFitImage src={photoB.src} alt={photoB.label} sizes="(max-width: 768px) 50vw, 25vw" />
       </div>
       {/* A layer (위) — opacity로 크로스페이드 */}
       <motion.div
@@ -195,13 +209,7 @@ function PhotoToggleCell({
         transition={{ duration: 1.2, ease: "easeInOut" }}
         className="absolute inset-0"
       >
-        <Image
-          src={photoA.src}
-          alt={photoA.label}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 50vw, 25vw"
-        />
+        <AutoFitImage src={photoA.src} alt={photoA.label} sizes="(max-width: 768px) 50vw, 25vw" />
       </motion.div>
       {/* Hover scale effect */}
       <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-105" />
@@ -269,7 +277,7 @@ function PhotoSection({
         <div className="relative mx-auto aspect-[16/9] max-w-full overflow-hidden rounded-xl bg-gray-100 md:max-w-[90%]">
           <AnimatePresence mode="wait">
             <motion.div key={photoIdx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="absolute inset-0">
-              <Image src={photos[photoIdx].src} alt={photos[photoIdx].label || `사진 ${photoIdx + 1}`} fill className="object-cover" sizes="90vw" />
+              <AutoFitImage src={photos[photoIdx].src} alt={photos[photoIdx].label || `사진 ${photoIdx + 1}`} sizes="90vw" />
             </motion.div>
           </AnimatePresence>
           <div className="absolute top-2 left-2 rounded-full bg-black/50 px-2.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm md:top-3 md:left-3 md:text-xs">
@@ -299,7 +307,7 @@ function PhotoSection({
         <div className="mx-auto grid max-w-full grid-cols-2 gap-1.5 md:max-w-[90%] md:gap-3">
           {preview.map((p, i) => (
             <div key={i} className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-lg bg-gray-100" onClick={() => onPhotoClick(i)}>
-              <Image src={p.src} alt={p.label || `사진 ${i + 1}`} fill className="object-cover transition-transform duration-300 group-hover:scale-105" sizes="45vw" />
+              <AutoFitImage src={p.src} alt={p.label || `사진 ${i + 1}`} sizes="45vw" className="transition-transform duration-300 group-hover:scale-105" />
               {i === 3 && remaining > 0 && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/40">
                   <span className="text-lg font-bold text-white md:text-2xl">+{remaining}</span>
@@ -321,7 +329,7 @@ function PhotoSection({
           <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-gray-100 cursor-pointer" onClick={() => onPhotoClick(photoIdx)}>
             <AnimatePresence mode="wait">
               <motion.div key={photoIdx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="absolute inset-0">
-                <Image src={photos[photoIdx].src} alt="" fill className="object-cover" sizes="90vw" />
+                <AutoFitImage src={photos[photoIdx].src} alt="" sizes="90vw" />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -348,7 +356,7 @@ function PhotoSection({
           <div className="flex gap-1.5" style={{ width: "max-content", animation: `photo-flow ${photos.length * 3}s linear infinite` }}>
             {doubled.map((p, i) => (
               <div key={i} className="relative h-24 w-36 flex-shrink-0 cursor-pointer overflow-hidden rounded-lg bg-gray-100 md:h-36 md:w-52" onClick={() => onPhotoClick(i % photos.length)}>
-                <Image src={p.src} alt="" fill className="object-cover" sizes="150px" />
+                <AutoFitImage src={p.src} alt="" sizes="150px" />
               </div>
             ))}
           </div>
@@ -363,13 +371,13 @@ function PhotoSection({
       {header}
       <div className="mx-auto grid max-w-full grid-cols-3 gap-1.5 md:max-w-[90%] md:gap-2" style={{ gridTemplateRows: "1fr 1fr" }}>
         <div className="col-span-2 row-span-2 relative aspect-[4/3] cursor-pointer overflow-hidden rounded-xl bg-gray-100" onClick={() => onPhotoClick(0)}>
-          <Image src={photos[0].src} alt="" fill className="object-cover" sizes="60vw" />
+          <AutoFitImage src={photos[0].src} alt="" sizes="60vw" />
         </div>
         <div className="relative aspect-[4/3] cursor-pointer overflow-hidden rounded-xl bg-gray-100" onClick={() => onPhotoClick(1)}>
-          <Image src={photos[1].src} alt="" fill className="object-cover" sizes="30vw" />
+          <AutoFitImage src={photos[1].src} alt="" sizes="30vw" />
         </div>
         <div className="relative aspect-[4/3] cursor-pointer overflow-hidden rounded-xl bg-gray-100" onClick={() => onPhotoClick(2)}>
-          <Image src={photos[2].src} alt="" fill className="object-cover" sizes="30vw" />
+          <AutoFitImage src={photos[2].src} alt="" sizes="30vw" />
           {photos.length > 3 && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer" onClick={(e) => { e.stopPropagation(); onPhotoClick(2); }}>
               <span className="text-sm font-bold text-white md:text-lg">+{photos.length - 3}장</span>
@@ -631,6 +639,7 @@ function LazyVideo({ src, className }: { src: string; className?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [inView, setInView] = useState(false);
   const [opacity, setOpacity] = useState(1);
+  const [isPortrait, setIsPortrait] = useState(false);
   const fadeTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -688,8 +697,12 @@ function LazyVideo({ src, className }: { src: string; className?: string }) {
       muted
       playsInline
       preload="none"
-      className={className}
+      className={isPortrait ? (className || "").replace("object-cover", "object-contain") : className}
       style={{ opacity, transition: "opacity 0.15s ease" }}
+      onLoadedMetadata={(e) => {
+        const v = e.currentTarget;
+        if (v.videoHeight > v.videoWidth) setIsPortrait(true);
+      }}
     />
   );
 }
@@ -698,6 +711,8 @@ function LazyVideo({ src, className }: { src: string; className?: string }) {
 function CardPhotoRotator({ photos, sizes, stagger = 0, priority = false }: { photos: { src: string; label: string }[]; sizes: string; stagger?: number; priority?: boolean }) {
   const [idx, setIdx] = useState(0);
   const [inView, setInView] = useState(false);
+  const [portraitSet, setPortraitSet] = useState<Set<number>>(new Set());
+  const [errorSet, setErrorSet] = useState<Set<number>>(new Set());
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Viewport detection
@@ -716,9 +731,9 @@ function CardPhotoRotator({ photos, sizes, stagger = 0, priority = false }: { ph
   useEffect(() => {
     if (photos.length <= 1 || !inView) return;
     const pickRandom = (prev: number) => {
-      let next: number;
-      do { next = Math.floor(Math.random() * photos.length); } while (next === prev);
-      return next;
+      const validIndices = Array.from({ length: photos.length }, (_, i) => i).filter((i) => !errorSet.has(i) && i !== prev);
+      if (validIndices.length === 0) return prev;
+      return validIndices[Math.floor(Math.random() * validIndices.length)];
     };
     let cancelled = false;
     const randomInterval = () => 3000 + Math.random() * 3000; // 3~6초 랜덤
@@ -744,22 +759,28 @@ function CardPhotoRotator({ photos, sizes, stagger = 0, priority = false }: { ph
       <AnimatePresence initial={false}>
         <motion.div
           key={idx}
-          initial={{ opacity: 0, scale: 1 }}
-          animate={{ opacity: 1, scale: 1.08 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{
-            opacity: { duration: 1.5, ease: "easeInOut" },
-            scale: { duration: 5, ease: "linear" },
-          }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         >
           <Image
             src={photos[idx].src}
             alt={photos[idx].label}
             fill
-            className="object-cover"
+            className={portraitSet.has(idx) ? "object-contain" : "object-cover"}
             sizes={sizes}
             priority={priority}
+            onLoad={(e) => {
+              const img = e.currentTarget as HTMLImageElement;
+              if (img.naturalHeight > img.naturalWidth) {
+                setPortraitSet((prev) => new Set(prev).add(idx));
+              }
+            }}
+            onError={() => {
+              setErrorSet((prev) => new Set(prev).add(idx));
+            }}
           />
         </motion.div>
       </AnimatePresence>
