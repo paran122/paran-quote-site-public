@@ -17,9 +17,7 @@ const categoryStyle: Record<string, string> = {
   세미나: "bg-emerald-100 text-emerald-700",
   행사운영: "bg-blue-100 text-blue-700",
   교육: "bg-amber-100 text-amber-700",
-  전시: "bg-pink-100 text-pink-700",
   콘텐츠: "bg-orange-100 text-orange-700",
-  인쇄: "bg-teal-100 text-teal-700",
 };
 
 /** CTA rotating 행사 유형 */
