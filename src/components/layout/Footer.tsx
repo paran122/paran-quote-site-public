@@ -79,12 +79,24 @@ export default function Footer() {
           </div>
 
           {/* Center: Quick Links */}
-          <nav className="hidden md:block">
-            <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-400">바로가기</div>
-            <div className="space-y-2 text-xs text-white/40">
-              <Link href="/work" className="block transition-colors hover:text-white">포트폴리오</Link>
-              <Link href="/faq" className="block transition-colors hover:text-white">FAQ</Link>
-              <Link href="/blog" className="block transition-colors hover:text-white">블로그</Link>
+          <nav className="hidden md:flex md:gap-12">
+            <div>
+              <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-400">바로가기</div>
+              <div className="space-y-2 text-xs text-white/40">
+                <Link href="/work" className="block transition-colors hover:text-white">포트폴리오</Link>
+                <Link href="/faq" className="block transition-colors hover:text-white">FAQ</Link>
+                <Link href="/blog" className="block transition-colors hover:text-white">블로그</Link>
+              </div>
+            </div>
+            <div>
+              <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-400">가이드</div>
+              <div className="space-y-2 text-xs text-white/40">
+                <Link href="/guide/checklist" className="block transition-colors hover:text-white">행사 준비 체크리스트</Link>
+                <Link href="/guide/process" className="block transition-colors hover:text-white">진행 절차</Link>
+                <Link href="/guide/pricing" className="block transition-colors hover:text-white">비용 가이드</Link>
+                <Link href="/guide/venue" className="block transition-colors hover:text-white">장소 선택</Link>
+                <Link href="/guide/scale" className="block transition-colors hover:text-white">규모별 가이드</Link>
+              </div>
             </div>
           </nav>
 

@@ -47,9 +47,7 @@ const categoryStyle: Record<string, string> = {
   세미나: "bg-emerald-100 text-emerald-700",
   행사운영: "bg-blue-100 text-blue-700",
   교육: "bg-amber-100 text-amber-700",
-  전시: "bg-pink-100 text-pink-700",
   콘텐츠: "bg-orange-100 text-orange-700",
-  인쇄: "bg-teal-100 text-teal-700",
 };
 
 function SafeImage({ src, alt, fill, sizes, className, priority, onLoad }: {
@@ -452,6 +450,16 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
             </div>
           )}
         </div>
+
+        {/* 행사 설명 */}
+        {portfolio.description && (
+          <div className="mb-8">
+            <h2 className="text-[14px] font-semibold text-slate-800 mb-3">행사 소개</h2>
+            <p className="max-w-[640px] text-[14px] leading-[1.8] text-slate-600">
+              {portfolio.description}
+            </p>
+          </div>
+        )}
 
         {/* 현장사진 그리드 */}
         {hasPhotos && (

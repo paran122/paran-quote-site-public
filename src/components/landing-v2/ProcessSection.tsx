@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
 
 const steps = [
@@ -186,6 +188,22 @@ export default function Process() {
             </div>
           ))}
         </div>
+
+        {/* 가이드 링크 */}
+        <BlurFade delay={0.3}>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[10px] text-white/35 md:mt-12 md:text-xs">
+            <span className="text-[10px] text-white/50 md:text-xs">자세히 알아보기</span>
+            <Link href="/guide/process" className="inline-flex items-center gap-0.5 transition-colors hover:text-blue-400">
+              진행 절차 <ArrowRight size={10} />
+            </Link>
+            <Link href="/guide/checklist" className="inline-flex items-center gap-0.5 transition-colors hover:text-blue-400">
+              준비 체크리스트 <ArrowRight size={10} />
+            </Link>
+            <Link href="/guide/pricing" className="inline-flex items-center gap-0.5 transition-colors hover:text-blue-400">
+              비용 가이드 <ArrowRight size={10} />
+            </Link>
+          </div>
+        </BlurFade>
       </div>
     </section>
   );
