@@ -77,11 +77,11 @@ export default function GuideIndexClient() {
               무료 상담 받기
             </a>
             <a
-              href="tel:02-6342-2802"
+              href="tel:02-6342-2800"
               className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-6 py-3 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900"
             >
               <Phone size={15} />
-              02-6342-2802
+              02-6342-2800
             </a>
             <a
               href="https://pf.kakao.com/_xkexdLG"
