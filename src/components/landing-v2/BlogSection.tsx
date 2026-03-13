@@ -25,7 +25,7 @@ export default function BlogSection() {
       .catch(() => {});
   }, []);
 
-  if (posts.length === 0) return null;
+  if (posts.length === 0) return <section id="blog" />;
 
   return (
     <section id="blog" className="relative overflow-hidden bg-[#f8f9fb] px-4 py-10 md:px-12 md:py-24 lg:px-20">

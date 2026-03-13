@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, MapPin, Camera } from "lucide-react";
+import { Search, Camera } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ContactModal from "@/components/ui/ContactModal";
 import { BlurFade } from "@/components/ui/blur-fade";
@@ -362,10 +362,6 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                             <h3 className="text-[13px] font-bold text-white leading-snug translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                               {pf.title}
                             </h3>
-                            <div className="flex items-center gap-1.5 mt-1 text-[12px] text-white/80 translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                              <MapPin size={11} />
-                              {pf.venue}
-                            </div>
                           </div>
                         </div>
 
@@ -384,10 +380,11 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                           <h3 className="text-[13px] font-semibold text-slate-900 leading-snug">
                             {pf.title}
                           </h3>
-                          <div className="flex items-center gap-1.5 mt-1.5 text-[12px] text-slate-500">
-                            <MapPin size={12} />
-                            {pf.venue}
-                          </div>
+                          {pf.description && (
+                            <p className="mt-1.5 text-[12px] text-slate-500 line-clamp-2 leading-relaxed">
+                              {pf.description}
+                            </p>
+                          )}
                           <div className="flex flex-wrap gap-1.5 mt-3">
                             {pf.tags.slice(1, 4).map((tag) => (
                               <span
