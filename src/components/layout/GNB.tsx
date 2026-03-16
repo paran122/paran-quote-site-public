@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const navItems: { label: string; anchor: string; isPage?: boolean }[] = [
   { label: "홈", anchor: "/", isPage: true },
+  { label: "회사소개", anchor: "/company", isPage: true },
   { label: "포트폴리오", anchor: "/work", isPage: true },
   { label: "FAQ", anchor: "/faq", isPage: true },
   { label: "블로그", anchor: "/blog", isPage: true },
