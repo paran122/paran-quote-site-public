@@ -478,7 +478,6 @@ function TwoColumnServices() {
 
 function FeatureBand({ onContact }: { onContact: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const bandLabels = [
     { top: "기획→운영", bottom: "전 과정 책임 진행" },
