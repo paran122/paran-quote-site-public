@@ -64,6 +64,7 @@ export default function Footer() {
               <p>
                 TEL <a href="tel:02-6342-2800" className="transition-colors hover:text-white">02-6342-2800</a> | FAX <a href="tel:0504-482-1305" className="transition-colors hover:text-white">0504-482-1305</a>
               </p>
+              <p>운영시간 : 평일 09:00 ~ 18:00 (주말·공휴일 휴무)</p>
               <p>
                 <a href="mailto:info@parancompany.co.kr" className="transition-colors hover:text-white">info@parancompany.co.kr</a>
               </p>
@@ -75,6 +76,7 @@ export default function Footer() {
               <p>
                 TEL <a href="tel:02-6342-2800" className="transition-colors hover:text-white">02-6342-2800</a> | FAX <a href="tel:0504-482-1305" className="transition-colors hover:text-white">0504-482-1305</a> | <a href="mailto:info@parancompany.co.kr" className="transition-colors hover:text-white">info@parancompany.co.kr</a>
               </p>
+              <p>운영시간 : 평일 09:00 ~ 18:00 (주말·공휴일 휴무)</p>
             </div>
           </div>
 
@@ -83,6 +85,7 @@ export default function Footer() {
             <div>
               <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-400">바로가기</div>
               <div className="space-y-2 text-xs text-white/40">
+                <Link href="/company" className="block transition-colors hover:text-white">회사소개</Link>
                 <Link href="/work" className="block transition-colors hover:text-white">포트폴리오</Link>
                 <Link href="/faq" className="block transition-colors hover:text-white">FAQ</Link>
                 <Link href="/blog" className="block transition-colors hover:text-white">블로그</Link>
@@ -134,7 +137,11 @@ export default function Footer() {
         </div>
 
         <div className="mt-4 flex flex-col items-center gap-1.5 border-t border-white/10 pt-3 text-[7px] text-white/20 md:mt-8 md:flex-row md:justify-between md:pt-5 md:text-xs">
-          <Link href="/privacy" className="transition-colors hover:text-white/50">개인정보처리방침</Link>
+          <div className="flex items-center gap-2 md:gap-3">
+            <Link href="/privacy" className="transition-colors hover:text-white/50">개인정보처리방침</Link>
+            <span className="text-white/10">|</span>
+            <Link href="/terms" className="transition-colors hover:text-white/50">이용약관</Link>
+          </div>
           <span>&copy; {new Date().getFullYear()} PARAN COMPANY. All rights reserved.</span>
         </div>
       </div>

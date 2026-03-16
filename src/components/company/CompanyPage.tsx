@@ -12,15 +12,9 @@ import {
   ChevronDown,
   ArrowRight,
   ArrowDown,
-  Phone,
-  Mail,
-  MapPin,
-  Building2,
-  Users,
-  Award,
-  Calendar,
 } from "lucide-react";
 import type { BlogPost } from "@/types";
+import ContactModal from "@/components/ui/ContactModal";
 
 /* ─────────────────────────── helpers ─────────────────────────── */
 
@@ -89,60 +83,183 @@ function Section({
    1. HERO — dark→white inversion on scroll
    ═══════════════════════════════════════════════════════════════ */
 
+/* Hero CSS injected once */
+const heroStyles = `
+  @keyframes hero-grid-draw { 0% { stroke-dashoffset: 1000; opacity: 0; } 50% { opacity: 0.3; } 100% { stroke-dashoffset: 0; opacity: 0.15; } }
+  @keyframes hero-pulse-glow { 0%, 100% { opacity: 0.1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.1); } }
+  @keyframes hero-word-appear { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+  @keyframes hero-float { 0%, 100% { transform: translateY(0); opacity: 0.2; } 50% { transform: translateY(-12px); opacity: 0.6; } }
+  .hero-grid-line { stroke: #3b82f6; stroke-width: 0.5; opacity: 0; stroke-dasharray: 5 5; stroke-dashoffset: 1000; animation: hero-grid-draw 2s ease-out forwards; }
+  .hero-dot { fill: #60a5fa; opacity: 0; animation: hero-pulse-glow 3s ease-in-out infinite; }
+  .hero-corner { position: absolute; width: 32px; height: 32px; border: 1px solid rgba(59, 130, 246, 0.15); opacity: 0; animation: hero-word-appear 1s ease-out forwards; }
+  .hero-float-dot { position: absolute; width: 2px; height: 2px; background: #60a5fa; border-radius: 50%; animation: hero-float 4s ease-in-out infinite; }
+  #hero-mouse-grad { position: fixed; pointer-events: none; border-radius: 9999px; background: radial-gradient(circle, rgba(59,130,246,0.06), rgba(37,99,235,0.04), transparent 70%); transform: translate(-50%,-50%); will-change: left, top, opacity; transition: left 70ms linear, top 70ms linear, opacity 300ms ease-out; }
+`;
+
 const HeroSection = forwardRef<HTMLDivElement>(function HeroSection(_props, ref) {
-  const lines: { text: string; accent?: boolean }[] = [
-    { text: "행사, 그 이상의" },
-    { text: "가치를 만들고", accent: true },
-    { text: "있습니다" },
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0, opacity: 0 });
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => setMousePos({ x: e.clientX, y: e.clientY, opacity: 1 });
+    const onLeave = () => setMousePos((p) => ({ ...p, opacity: 0 }));
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseleave", onLeave);
+    return () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  const mainWords = [
+    { text: "행사,", accent: false },
+    { text: "그", accent: false },
+    { text: "이상의", accent: false },
   ];
+  const accentWords = [
+    { text: "가치를" },
+    { text: "만들고" },
+  ];
+  const lastWords = [{ text: "있습니다" }];
+  const subWords = ["파란컴퍼니는", "세미나,", "컨퍼런스,", "포럼,", "축제의", "기획부터", "운영까지", "원스톱으로", "제공하는", "행사", "전문", "에이전시입니다."];
+
+  let wordIdx = 0;
 
   return (
-    <div
-      ref={ref}
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden pt-14"
-    >
-      <div className="mx-auto max-w-[1200px] px-5 text-center">
-        <h1 className="text-4xl font-extrabold leading-tight tracking-tight md:text-6xl lg:text-7xl">
-          {lines.map((line, i) => (
-            <motion.span
-              key={line.text}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + i * 0.2, duration: 0.7, ease: "easeOut" }}
-              className={`block ${line.accent ? "text-blue-500" : ""}`}
-            >
-              {line.text}
-            </motion.span>
-          ))}
-        </h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.7 }}
-          className="mx-auto mt-8 max-w-2xl text-base leading-relaxed opacity-70 md:text-lg"
-        >
-          파란컴퍼니는 세미나, 컨퍼런스, 포럼, 축제의 기획부터 운영까지
-          원스톱으로 제공하는 행사 전문 에이전시입니다.
-        </motion.p>
-      </div>
-
-      {/* scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.5 }}
-        className="absolute bottom-10 flex flex-col items-center gap-2"
+    <>
+      <style>{heroStyles}</style>
+      <div
+        ref={ref}
+        className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden pt-14"
       >
-        <span className="text-xs tracking-widest opacity-50">SCROLL</span>
+        {/* Grid background */}
+        <svg className="absolute inset-0 h-full w-full pointer-events-none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <pattern id="heroGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(59,130,246,0.06)" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#heroGrid)" />
+          <line x1="0" y1="20%" x2="100%" y2="20%" className="hero-grid-line" style={{ animationDelay: "0.5s" }} />
+          <line x1="0" y1="80%" x2="100%" y2="80%" className="hero-grid-line" style={{ animationDelay: "1s" }} />
+          <line x1="20%" y1="0" x2="20%" y2="100%" className="hero-grid-line" style={{ animationDelay: "1.5s" }} />
+          <line x1="80%" y1="0" x2="80%" y2="100%" className="hero-grid-line" style={{ animationDelay: "2s" }} />
+          <circle cx="20%" cy="20%" r="2" className="hero-dot" style={{ animationDelay: "3s" }} />
+          <circle cx="80%" cy="20%" r="2" className="hero-dot" style={{ animationDelay: "3.2s" }} />
+          <circle cx="20%" cy="80%" r="2" className="hero-dot" style={{ animationDelay: "3.4s" }} />
+          <circle cx="80%" cy="80%" r="2" className="hero-dot" style={{ animationDelay: "3.6s" }} />
+        </svg>
+
+        {/* Corner decorations */}
+        <div className="hero-corner left-4 top-4 md:left-8 md:top-8" style={{ animationDelay: "3.5s" }} />
+        <div className="hero-corner right-4 top-4 md:right-8 md:top-8" style={{ animationDelay: "3.7s" }} />
+        <div className="hero-corner left-4 bottom-4 md:left-8 md:bottom-8" style={{ animationDelay: "3.9s" }} />
+        <div className="hero-corner right-4 bottom-4 md:right-8 md:bottom-8" style={{ animationDelay: "4.1s" }} />
+
+        {/* Floating dots */}
+        <div className="hero-float-dot" style={{ top: "25%", left: "12%", animationDelay: "0s", opacity: 0.3 }} />
+        <div className="hero-float-dot" style={{ top: "65%", left: "88%", animationDelay: "1s", opacity: 0.3 }} />
+        <div className="hero-float-dot" style={{ top: "35%", left: "8%", animationDelay: "2s", opacity: 0.3 }} />
+        <div className="hero-float-dot" style={{ top: "70%", left: "92%", animationDelay: "3s", opacity: 0.3 }} />
+
+        {/* Main content */}
+        <div className="relative z-10 mx-auto max-w-[1200px] px-5 text-center">
+          <h1 className="text-4xl font-extrabold leading-tight tracking-tight md:text-6xl lg:text-7xl">
+            {/* 행사, 그 이상의 */}
+            <span className="mb-2 block">
+              {mainWords.map((w) => {
+                const delay = 0.5 + wordIdx * 0.15;
+                wordIdx++;
+                return (
+                  <motion.span
+                    key={`main-${w.text}`}
+                    initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ delay, duration: 0.5, ease: "easeOut" }}
+                    className="mx-[0.1em] inline-block"
+                  >
+                    {w.text}
+                  </motion.span>
+                );
+              })}
+            </span>
+            {/* 가치를 만들고 */}
+            <span className="mb-2 block text-blue-500">
+              {accentWords.map((w) => {
+                const delay = 0.5 + wordIdx * 0.15;
+                wordIdx++;
+                return (
+                  <motion.span
+                    key={`accent-${w.text}`}
+                    initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ delay, duration: 0.5, ease: "easeOut" }}
+                    className="mx-[0.1em] inline-block"
+                  >
+                    {w.text}
+                  </motion.span>
+                );
+              })}
+            </span>
+            {/* 있습니다 */}
+            <span className="block">
+              {lastWords.map((w) => {
+                const delay = 0.5 + wordIdx * 0.15;
+                wordIdx++;
+                return (
+                  <motion.span
+                    key={`last-${w.text}`}
+                    initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ delay, duration: 0.5, ease: "easeOut" }}
+                    className="mx-[0.1em] inline-block"
+                  >
+                    {w.text}
+                  </motion.span>
+                );
+              })}
+            </span>
+          </h1>
+
+          {/* Subtitle — word by word */}
+          <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed opacity-70 md:text-lg">
+            {subWords.map((w, i) => (
+              <motion.span
+                key={`sub-${i}`}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 0.7, y: 0 }}
+                transition={{ delay: 1.2 + i * 0.06, duration: 0.4, ease: "easeOut" }}
+                className="mx-[0.12em] inline-block"
+              >
+                {w}
+              </motion.span>
+            ))}
+          </p>
+        </div>
+
+        {/* Scroll indicator */}
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, duration: 0.5 }}
+          className="absolute bottom-10 flex flex-col items-center gap-2"
         >
-          <ArrowDown className="h-5 w-5 opacity-50" />
+          <span className="text-xs tracking-widest opacity-50">SCROLL</span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          >
+            <ArrowDown className="h-5 w-5 opacity-50" />
+          </motion.div>
         </motion.div>
-      </motion.div>
-    </div>
+
+        {/* Mouse-following gradient */}
+        <div
+          id="hero-mouse-grad"
+          className="h-60 w-60 blur-xl md:h-96 md:w-96 md:blur-3xl"
+          style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px`, opacity: mousePos.opacity }}
+        />
+      </div>
+    </>
   );
 });
 
@@ -302,12 +419,6 @@ function TwoColumnServices() {
               </span>
             ))}
           </div>
-          <Link
-            href="/work"
-            className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-blue-500 transition-colors hover:text-blue-600"
-          >
-            포트폴리오 보기 <ArrowRight className="h-4 w-4" />
-          </Link>
         </motion.div>
 
         {/* right — 개별 서비스 */}
@@ -339,14 +450,24 @@ function TwoColumnServices() {
               </span>
             ))}
           </div>
-          <Link
-            href="/work"
-            className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-blue-500 transition-colors hover:text-blue-600"
-          >
-            서비스 사례 보기 <ArrowRight className="h-4 w-4" />
-          </Link>
         </motion.div>
       </div>
+
+      {/* 하단 중앙 포트폴리오 링크 */}
+      <motion.div
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        variants={fadeUp}
+        custom={2}
+        className="mt-10 text-center"
+      >
+        <Link
+          href="/work"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-blue-500 transition-colors hover:text-blue-600"
+        >
+          포트폴리오 보기 <ArrowRight className="h-4 w-4" />
+        </Link>
+      </motion.div>
     </Section>
   );
 }
@@ -355,37 +476,14 @@ function TwoColumnServices() {
    5. FEATURE BAND (50/50)
    ═══════════════════════════════════════════════════════════════ */
 
-function FeatureBandStat({
-  value,
-  suffix,
-  label,
-  active,
-}: {
-  value: number;
-  suffix: string;
-  label: string;
-  active: boolean;
-}) {
-  const count = useCountUp(value, 1800, active);
-  return (
-    <div className="text-center">
-      <p className="font-display text-2xl font-bold text-white md:text-3xl">
-        {count}
-        {suffix}
-      </p>
-      <p className="mt-1 text-xs text-blue-100">{label}</p>
-    </div>
-  );
-}
-
-function FeatureBand() {
+function FeatureBand({ onContact }: { onContact: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const bandStats = [
-    { value: 10, suffix: "+", label: "Years" },
-    { value: 6, suffix: "", label: "In-house Teams" },
-    { value: 100, suffix: "%", label: "One-stop" },
+  const bandLabels = [
+    { top: "기획→운영", bottom: "전 과정 책임 진행" },
+    { top: "전담 PM 배치", bottom: "일관된 커뮤니케이션" },
+    { top: "사후 관리 포함", bottom: "결과보고서까지 완료" },
   ];
 
   return (
@@ -412,34 +510,37 @@ function FeatureBand() {
             있습니다. 외주 의존 없이 일관된 퀄리티로 행사의 완성도를 높이는 것이
             파란컴퍼니만의 강점입니다.
           </p>
-          <Link
-            href="/work"
+          <button
+            onClick={onContact}
             className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-blue-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-600"
           >
-            자세히 보기 <ArrowRight className="h-4 w-4" />
-          </Link>
+            문의하기 <ArrowRight className="h-4 w-4" />
+          </button>
         </motion.div>
 
-        {/* right — blue gradient */}
+        {/* right — dark navy */}
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative flex flex-col justify-between overflow-hidden bg-gradient-to-br from-blue-500 to-blue-700 px-8 py-16 md:px-16"
+          className="relative flex flex-col justify-between overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 px-8 py-16 md:px-16"
         >
-          <p className="select-none font-display text-7xl font-black tracking-tight text-white/10 md:text-9xl">
-            PARAN
-          </p>
+          <div className="flex items-center justify-center">
+            <Image
+              src="/logos/paran-white.svg"
+              alt="파란컴퍼니 로고"
+              width={320}
+              height={140}
+              className="w-64 md:w-80"
+            />
+          </div>
           <div className="mt-auto flex justify-around gap-6">
-            {bandStats.map((s) => (
-              <FeatureBandStat
-                key={s.label}
-                value={s.value}
-                suffix={s.suffix}
-                label={s.label}
-                active={isInView}
-              />
+            {bandLabels.map((item) => (
+              <div key={item.top} className="text-center">
+                <p className="text-base font-bold text-white md:text-lg">{item.top}</p>
+                <p className="mt-1 text-xs text-slate-400">{item.bottom}</p>
+              </div>
             ))}
           </div>
         </motion.div>
@@ -457,7 +558,7 @@ interface ServiceAccordionItem {
   title: string;
   description: string;
   tags: string[];
-  gradient: string;
+  image: string;
 }
 
 const serviceItems: ServiceAccordionItem[] = [
@@ -467,7 +568,7 @@ const serviceItems: ServiceAccordionItem[] = [
     description:
       "클라이언트의 목표와 예산을 분석하고, 행사 컨셉 설계부터 프로그램 구성, 현장 운영, 사후 관리까지 전 과정을 체계적으로 관리합니다. 참가자 동선 설계, 연사 섭외, 의전 프로토콜, 안전 관리 등 행사의 성패를 좌우하는 디테일까지 놓치지 않습니다.",
     tags: ["세미나", "컨퍼런스", "포럼", "축제", "교육연수", "런칭행사"],
-    gradient: "from-blue-500 to-cyan-400",
+    image: "/images/service-planning-C.png",
   },
   {
     number: "02",
@@ -475,7 +576,7 @@ const serviceItems: ServiceAccordionItem[] = [
     description:
       "행사의 목적과 브랜드 아이덴티티에 맞는 공간을 설계하고, 참가자의 경험을 극대화하는 연출을 제공합니다. 3D 렌더링으로 사전 시뮬레이션을 진행하여 시행착오를 줄이고, 로비부터 메인홀까지 일관된 비주얼 경험을 만듭니다.",
     tags: ["로비연출", "조형물", "체험부스", "포토존", "사이니지", "무대디자인"],
-    gradient: "from-blue-600 to-indigo-500",
+    image: "/images/service-design-C.png",
   },
   {
     number: "03",
@@ -483,7 +584,7 @@ const serviceItems: ServiceAccordionItem[] = [
     description:
       "행사 홍보부터 현장 기록, 결과 보고까지 전문 콘텐츠 팀이 높은 퀄리티의 결과물을 제작합니다. 사전 티저 영상, 현장 스케치 영상, SNS 카드뉴스, 사진 촬영 및 보정, 결과보고서까지 행사의 시작과 끝을 콘텐츠로 완성합니다.",
     tags: ["홍보영상", "SNS콘텐츠", "e-러닝", "실시간중계", "결과보고서"],
-    gradient: "from-indigo-500 to-purple-500",
+    image: "/images/service-contents-C.png",
   },
   {
     number: "04",
@@ -491,110 +592,133 @@ const serviceItems: ServiceAccordionItem[] = [
     description:
       "전시회, 박람회, 체험존 등 다양한 전시 공간을 설계부터 시공, 철거까지 원스톱으로 진행합니다. 캐릭터 조형물, 대형 현수막, LED 디스플레이 등 시선을 사로잡는 요소와 효율적인 관람 동선을 결합하여 방문객 체류 시간을 극대화합니다.",
     tags: ["전시부스", "박람회", "체험존", "조형물제작", "LED설치", "시공관리"],
-    gradient: "from-cyan-500 to-blue-500",
+    image: "/images/service-exhibition-C.png",
   },
   {
     number: "05",
-    title: "온라인 / 하이브리드 행사",
-    description:
-      "실시간 스트리밍, 화상 연결, 온라인 참여형 프로그램 등 비대면 행사의 기술적 요소를 안정적으로 운영합니다. 오프라인과 온라인 참가자 모두에게 몰입감 있는 경험을 제공하는 하이브리드 행사를 기획하고, 실시간 투표, Q&A, 채팅 연동까지 지원합니다.",
-    tags: ["실시간중계", "하이브리드", "웨비나", "온라인플랫폼", "화상회의"],
-    gradient: "from-emerald-500 to-teal-500",
-  },
-  {
-    number: "06",
     title: "인쇄물 / 기념품 제작",
     description:
       "행사 초대장, 프로그램북, 현수막, 배너 등 인쇄물부터 참가자 기념품, VIP 선물 세트까지 행사에 필요한 모든 제작물을 디자인하고 납품합니다. 브랜드 가이드라인에 맞춘 일관된 디자인으로 행사의 완성도를 한 단계 높입니다.",
     tags: ["초대장", "프로그램북", "현수막", "배너", "기념품", "굿즈"],
-    gradient: "from-amber-500 to-orange-500",
+    image: "/images/service-print-C.png",
   },
 ];
+
+function ServiceCard({ item, isOpen, onToggle }: { item: ServiceAccordionItem; isOpen: boolean; onToggle: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5 }}
+      onClick={onToggle}
+      className="group relative w-full cursor-pointer overflow-hidden rounded-2xl bg-[#f8f9fa] md:w-[460px]"
+    >
+      <div className="relative h-[420px] md:h-[522px]">
+        {/* 배경 이미지 */}
+        <Image
+          src={item.image}
+          alt={item.title}
+          fill
+          className={`object-contain transition-all duration-700 ${isOpen ? "scale-105 blur-sm opacity-15" : "scale-100 blur-0 opacity-100"}`}
+          sizes="(max-width: 768px) 100vw, 600px"
+        />
+
+        {/* 항상 표시: 넘버 + 제목 (위치/크기만 전환) */}
+        <div className="absolute inset-x-0 top-0 p-6 md:p-8">
+          <div className="flex items-baseline gap-2">
+            <p className={`font-medium text-slate-500 transition-all duration-500 ${isOpen ? "w-0 overflow-hidden opacity-0" : "text-sm opacity-100"}`}>
+              {item.number}
+            </p>
+            <h3 className={`font-bold text-slate-900 transition-all duration-500 ${isOpen ? "text-lg md:text-xl" : "text-xl md:text-2xl"}`}>
+              {item.title}
+            </h3>
+          </div>
+        </div>
+
+        {/* 접힌 상태: 하단 화살표 */}
+        <div
+          className={`absolute inset-x-0 bottom-0 p-6 transition-opacity duration-500 md:p-8 ${isOpen ? "pointer-events-none opacity-0" : "opacity-100"}`}
+        >
+          <div className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition-colors group-hover:border-slate-500 group-hover:bg-white">
+            <ArrowRight className="h-4 w-4" />
+          </div>
+        </div>
+
+        {/* 펼친 상태: 설명 + 태그 + 닫기 */}
+        <div
+          className={`absolute inset-x-0 bottom-0 top-16 flex flex-col justify-between p-6 pt-0 transition-all duration-500 md:p-8 md:pt-0 ${isOpen ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"}`}
+        >
+          <div className="mt-4">
+            <p className="text-sm leading-relaxed text-slate-600 md:text-base">
+              {item.description}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {item.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-slate-200/80 px-3 py-1 text-xs font-medium text-slate-700 backdrop-blur-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500">
+              <ChevronDown className="h-4 w-4 rotate-180" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 function AccordionServices() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (
     <Section className="py-20 md:py-28">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={staggerContainer}
-      >
+      <div className="text-center">
         <motion.span
-          variants={fadeUp}
-          custom={0}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
           className="text-xs font-semibold tracking-widest text-blue-500"
         >
           SERVICES
         </motion.span>
         <motion.h2
-          variants={fadeUp}
-          custom={1}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
           className="mt-3 text-3xl font-bold text-slate-900 md:text-4xl"
         >
           파란컴퍼니가 만드는 행사
         </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="mt-3 text-slate-500"
+        >
+          기획부터 운영까지, 행사의 모든 과정을 책임집니다
+        </motion.p>
+      </div>
 
-        <div className="mt-12 divide-y divide-slate-200 border-y border-slate-200">
-          {serviceItems.map((item, i) => {
-            const isOpen = openIdx === i;
-            return (
-              <motion.div
-                key={item.number}
-                variants={fadeUp}
-                custom={i + 2}
-              >
-                <button
-                  onClick={() => setOpenIdx(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 py-6 text-left transition-colors hover:bg-slate-50"
-                >
-                  <div className="flex items-baseline gap-4">
-                    <span className="font-display text-sm font-semibold text-blue-500">
-                      {item.number}
-                    </span>
-                    <span className="text-lg font-semibold text-slate-900 md:text-xl">
-                      {item.title}
-                    </span>
-                  </div>
-                  <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-slate-400 transition-transform duration-300 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                <div
-                  className="overflow-hidden transition-all duration-500 ease-in-out"
-                  style={{ maxHeight: isOpen ? "500px" : "0px" }}
-                >
-                  <div className="grid gap-6 pb-8 md:grid-cols-2">
-                    <div>
-                      <p className="leading-relaxed text-slate-600">
-                        {item.description}
-                      </p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {item.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <div
-                      className={`hidden h-32 rounded-xl bg-gradient-to-br ${item.gradient} md:block`}
-                    />
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </motion.div>
+      <div className="mt-12 flex flex-wrap justify-center gap-[28px]">
+        {serviceItems.map((item, i) => (
+          <ServiceCard
+            key={item.number}
+            item={item}
+            isOpen={openIdx === i}
+            onToggle={() => setOpenIdx(openIdx === i ? null : i)}
+          />
+        ))}
+      </div>
     </Section>
   );
 }
@@ -803,99 +927,7 @@ function ClientsSection() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   8. HIGHLIGHTS TIMELINE
-   ═══════════════════════════════════════════════════════════════ */
-
-interface TimelineEvent {
-  year: string;
-  title: string;
-  description: string;
-  hasImage?: boolean;
-}
-
-const timelineEvents: TimelineEvent[] = [
-  {
-    year: "2026",
-    title: "중앙아시아 교육협력포럼",
-    description: "경기도교육청 주관 국제 포럼 행사 진행",
-    hasImage: true,
-  },
-  {
-    year: "2025",
-    title: "직장인 문화예술클럽 시범사업",
-    description: "한국문화예술교육진흥원 위탁 운영",
-  },
-  {
-    year: "2025",
-    title: "여성기업인증 획득",
-    description: "사업영역 확장과 함께 여성기업으로 공식 인증",
-  },
-  {
-    year: "2024",
-    title: "동동동화축제 운영",
-    description: "남원시 대규모 축제 종합 운영",
-    hasImage: true,
-  },
-];
-
-function HighlightsSection() {
-  return (
-    <Section className="bg-blue-50 py-20 md:py-28">
-      <motion.span
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="text-xs font-semibold tracking-widest text-blue-500"
-      >
-        HIGHLIGHTS
-      </motion.span>
-      <motion.h2
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.1 }}
-        className="mt-3 text-3xl font-bold text-slate-900 md:text-4xl"
-      >
-        주요 연혁
-      </motion.h2>
-
-      <div className="mt-12 space-y-0 divide-y divide-slate-200">
-        {timelineEvents.map((evt, i) => (
-          <motion.div
-            key={`${evt.year}-${evt.title}`}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={fadeUp}
-            custom={i}
-            className="grid items-center gap-6 py-8 md:grid-cols-[80px_1fr_160px]"
-          >
-            <span className="font-display text-2xl font-bold text-blue-500">
-              {evt.year}
-            </span>
-            <div>
-              <h3 className="text-lg font-semibold text-slate-900">
-                {evt.title}
-              </h3>
-              <p className="mt-1 text-sm text-slate-500">{evt.description}</p>
-            </div>
-            {evt.hasImage ? (
-              <div
-                className="h-24 w-full rounded-xl bg-gradient-to-br from-blue-400 to-blue-300 shadow-md transition-transform duration-300 hover:rotate-0"
-                style={{ transform: "rotate(-3deg)" }}
-              />
-            ) : (
-              <div className="hidden md:block" />
-            )}
-          </motion.div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   9. TEAM
+   8. TEAM
    ═══════════════════════════════════════════════════════════════ */
 
 interface TeamCard {
@@ -1091,130 +1123,13 @@ function BlogSection({ posts }: { posts: BlogPost[] }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   11. CTA BAND
-   ═══════════════════════════════════════════════════════════════ */
-
-function CTABand() {
-  return (
-    <Section
-      fullWidth
-      className="bg-gradient-to-br from-slate-900 to-slate-800 py-20 md:py-24"
-    >
-      <div className="mx-auto max-w-[1200px] px-5 text-center md:px-8">
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-2xl font-bold text-white md:text-3xl"
-        >
-          행사를 준비하고 계신가요?
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="mt-3 text-slate-400"
-        >
-          파란컴퍼니와 함께 성공적인 행사를 만들어보세요.
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="mt-8"
-        >
-          <Link
-            href="/?scrollTo=contact"
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-4 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30"
-          >
-            견적 요청하기 <ArrowRight className="h-4 w-4" />
-          </Link>
-        </motion.div>
-      </div>
-    </Section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   12. COMPANY INFO
-   ═══════════════════════════════════════════════════════════════ */
-
-interface InfoRow {
-  icon: ReactNode;
-  label: string;
-  value: string;
-  href?: string;
-}
-
-const infoRows: InfoRow[] = [
-  { icon: <Building2 className="h-4 w-4" />, label: "회사명", value: "파란컴퍼니 주식회사" },
-  { icon: <Users className="h-4 w-4" />, label: "대표", value: "김미경" },
-  { icon: <Calendar className="h-4 w-4" />, label: "설립", value: "2015년 (2022 법인전환)" },
-  {
-    icon: <MapPin className="h-4 w-4" />,
-    label: "주소",
-    value: "경기도 수원시 팔달구 효원로 278, 6층 603호",
-  },
-  { icon: <Phone className="h-4 w-4" />, label: "전화", value: "02-6342-2800", href: "tel:02-6342-2800" },
-  { icon: <Mail className="h-4 w-4" />, label: "이메일", value: "info@parancompany.co.kr", href: "mailto:info@parancompany.co.kr" },
-  { icon: <Award className="h-4 w-4" />, label: "인증", value: "여성기업인증 (2025)" },
-];
-
-function CompanyInfo() {
-  return (
-    <Section className="py-20 md:py-28">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={staggerContainer}
-      >
-        <motion.h2
-          variants={fadeUp}
-          custom={0}
-          className="text-3xl font-bold text-slate-900 md:text-4xl"
-        >
-          회사 정보
-        </motion.h2>
-
-        <div className="mt-10 divide-y divide-slate-200 border-y border-slate-200">
-          {infoRows.map((row, i) => (
-            <motion.div
-              key={row.label}
-              variants={fadeUp}
-              custom={i + 1}
-              className="grid grid-cols-[100px_1fr] items-center gap-4 py-4 md:grid-cols-[160px_1fr]"
-            >
-              <span className="flex items-center gap-2 text-sm font-medium text-slate-500">
-                {row.icon}
-                {row.label}
-              </span>
-              {row.href ? (
-                <a href={row.href} className="text-sm text-slate-900 underline-offset-2 hover:text-blue-600 hover:underline md:text-base">
-                  {row.value}
-                </a>
-              ) : (
-                <span className="text-sm text-slate-900 md:text-base">
-                  {row.value}
-                </span>
-              )}
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-    </Section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
    MAIN PAGE COMPONENT
    ═══════════════════════════════════════════════════════════════ */
 
 export default function CompanyPage({ blogPosts = [] }: { blogPosts?: BlogPost[] }) {
   const heroRef = useRef<HTMLDivElement>(null);
   const [inverted, setInverted] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
 
   const handleScroll = useCallback(() => {
     if (!heroRef.current) return;
@@ -1240,14 +1155,12 @@ export default function CompanyPage({ blogPosts = [] }: { blogPosts?: BlogPost[]
       <StatsSection inverted={inverted} />
       <MissionSection />
       <TwoColumnServices />
-      <FeatureBand />
+      <FeatureBand onContact={() => setContactOpen(true)} />
       <AccordionServices />
       <ClientsSection />
-      <HighlightsSection />
       <TeamSection />
       <BlogSection posts={blogPosts} />
-      <CTABand />
-      <CompanyInfo />
+      <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
     </div>
   );
 }
