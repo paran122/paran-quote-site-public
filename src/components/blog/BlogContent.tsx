@@ -189,7 +189,7 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
       )}
 
       {/* 본문 (사진 그리드 제거된 HTML) */}
-      <div className="relative mx-auto mt-14 max-w-[640px]">
+      <div className="relative mx-auto mt-14 max-w-[640px] px-5 sm:px-0">
         {afterHero}
         <div
           ref={contentRef}

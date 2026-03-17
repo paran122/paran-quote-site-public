@@ -19,6 +19,7 @@ export interface BlogPostCardProps {
   imageUrl?: string;
   href: string;
   readMoreText?: string;
+  readTime?: number;
 }
 
 const BlogPostCard = React.forwardRef<HTMLDivElement, BlogPostCardProps>(
@@ -33,6 +34,7 @@ const BlogPostCard = React.forwardRef<HTMLDivElement, BlogPostCardProps>(
       imageUrl,
       href,
       readMoreText = "자세히 보기",
+      readTime,
     },
     ref
   ) => {
@@ -46,9 +48,16 @@ const BlogPostCard = React.forwardRef<HTMLDivElement, BlogPostCardProps>(
             {/* 텍스트 영역 */}
             <div className="flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-12 md:py-16">
               {/* 카테고리 + 날짜 */}
-              <div className="mb-5 flex items-center gap-3 text-[12px]">
+              <div className="mb-5 flex items-center gap-1.5 text-[12px]">
                 <span className={`${CATEGORY_COLOR}`}>{tag}</span>
+                <span className="text-slate-300">·</span>
                 <span className="text-slate-400">{date}</span>
+                {readTime && (
+                  <>
+                    <span className="text-slate-300">·</span>
+                    <span className="text-slate-400">{readTime}분 읽기</span>
+                  </>
+                )}
               </div>
 
               {/* 제목 (기본: 밑줄 없음 → hover: 밑줄 애니메이션 + primary 색) */}

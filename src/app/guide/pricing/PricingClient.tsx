@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import GuideClient from "../GuideClient";
 
 interface PriceItem {
@@ -136,7 +139,8 @@ export default function PricingClient() {
             규모별 예산 예시
           </h2>
           <p className="mb-4 text-xs text-slate-400">실제 견적은 포함 항목에 따라 달라집니다</p>
-          <div className="grid gap-4 md:grid-cols-3">
+          {/* Desktop: 3-column grid */}
+          <div className="hidden gap-4 md:grid md:grid-cols-3">
             {packageExamples.map((pkg, pi) => (
               <div key={pi} className="rounded-lg border border-slate-100 p-4">
                 <h3 className="text-sm font-semibold text-slate-900">{pkg.title}</h3>
@@ -153,6 +157,8 @@ export default function PricingClient() {
               </div>
             ))}
           </div>
+          {/* Mobile: single card with arrows */}
+          <PackageSlider packages={packageExamples} />
         </div>
 
         {/* 비용 절감 팁 */}
@@ -176,5 +182,65 @@ export default function PricingClient() {
         </div>
       </div>
     </GuideClient>
+  );
+}
+
+/* Mobile package slider with arrows */
+function PackageSlider({ packages }: { packages: typeof packageExamples }) {
+  const [idx, setIdx] = useState(0);
+  const pkg = packages[idx];
+
+  return (
+    <div className="md:hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -30 }}
+          transition={{ duration: 0.25 }}
+          className="rounded-lg border border-slate-100 p-4"
+        >
+          <h3 className="text-sm font-semibold text-slate-900">{pkg.title}</h3>
+          <p className="mt-0.5 text-xs text-slate-500">{pkg.scale}</p>
+          <p className="mt-2 text-lg font-bold text-blue-600">{pkg.range}</p>
+          <ul className="mt-3 space-y-1">
+            {pkg.includes.map((inc, ii) => (
+              <li key={ii} className="flex items-start gap-1.5 text-xs text-slate-600">
+                <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-blue-400" />
+                {inc}
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+      </AnimatePresence>
+
+      <div className="mt-3 flex items-center justify-between">
+        <button
+          onClick={() => setIdx((prev) => (prev - 1 + packages.length) % packages.length)}
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500"
+          aria-label="이전"
+        >
+          <ArrowRight className="h-4 w-4 rotate-180" />
+        </button>
+        <div className="flex gap-1.5">
+          {packages.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIdx(i)}
+              className={`h-1.5 rounded-full transition-all ${i === idx ? "w-4 bg-blue-500" : "w-1.5 bg-slate-300"}`}
+              aria-label={`${i + 1}번째`}
+            />
+          ))}
+        </div>
+        <button
+          onClick={() => setIdx((prev) => (prev + 1) % packages.length)}
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500"
+          aria-label="다음"
+        >
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
   );
 }

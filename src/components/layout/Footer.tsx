@@ -27,6 +27,13 @@ const YouTubeIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+/* 짧은 구분선 컴포넌트 */
+const Divider = () => (
+  <div className="hidden self-stretch py-3 md:block">
+    <div className="mx-auto h-full w-px bg-white/10" />
+  </div>
+);
+
 export default function Footer() {
   const pathname = usePathname();
   const isHome = pathname === "/";
@@ -44,44 +51,31 @@ export default function Footer() {
       />
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="flex items-start justify-between gap-4 md:gap-8">
-          {/* Left: Logo & Info */}
+        {/* 데스크톱: 3등분 + 짧은 구분선 */}
+        <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-start md:gap-6">
+          {/* 1/3: 로고 + 회사정보 */}
           <div>
-            <div className="mb-1.5 md:mb-4">
+            <div className="mb-4">
               <Image
                 src="/logo-white.svg"
                 alt="파란컴퍼니"
                 width={120}
                 height={53}
-                className="h-5 w-auto md:h-8"
+                className="h-8 w-auto"
               />
             </div>
-            {/* 모바일: 5줄 */}
-            <div className="space-y-0.5 text-[7px] leading-relaxed text-white/40 md:hidden">
+            <div className="space-y-1 text-xs leading-relaxed text-white/40">
               <p>파란컴퍼니 주식회사 | 대표 김미경</p>
               <p>사업자등록번호 291-86-02802</p>
               <p>경기도 수원시 팔달구 효원로 278, 6층 603호</p>
-              <p>
-                TEL <a href="tel:02-6342-2800" className="transition-colors hover:text-white">02-6342-2800</a> | FAX <a href="tel:0504-482-1305" className="transition-colors hover:text-white">0504-482-1305</a>
-              </p>
-              <p>운영시간 : 평일 09:00 ~ 18:00 (주말·공휴일 휴무)</p>
-              <p>
-                <a href="mailto:info@parancompany.co.kr" className="transition-colors hover:text-white">info@parancompany.co.kr</a>
-              </p>
-            </div>
-            {/* 데스크톱: 3줄로 압축 */}
-            <div className="hidden space-y-1 text-xs leading-relaxed text-white/40 md:block">
-              <p>파란컴퍼니 주식회사 | 대표 김미경 | 사업자등록번호 291-86-02802</p>
-              <p>경기도 수원시 팔달구 효원로 278, 6층 603호</p>
-              <p>
-                TEL <a href="tel:02-6342-2800" className="transition-colors hover:text-white">02-6342-2800</a> | FAX <a href="tel:0504-482-1305" className="transition-colors hover:text-white">0504-482-1305</a> | <a href="mailto:info@parancompany.co.kr" className="transition-colors hover:text-white">info@parancompany.co.kr</a>
-              </p>
-              <p>운영시간 : 평일 09:00 ~ 18:00 (주말·공휴일 휴무)</p>
+              <p>운영시간 : 평일 09:00 ~ 18:00</p>
             </div>
           </div>
 
-          {/* Center: Quick Links */}
-          <nav className="hidden md:flex md:gap-12">
+          <Divider />
+
+          {/* 2/3: 바로가기 + 가이드 */}
+          <nav className="flex gap-12">
             <div>
               <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-400">바로가기</div>
               <div className="space-y-2 text-xs text-white/40">
@@ -92,9 +86,9 @@ export default function Footer() {
               </div>
             </div>
             <div>
-              <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-400">가이드</div>
+              <Link href="/guide" className="mb-3 block text-xs font-semibold uppercase tracking-wider text-blue-400 transition-colors hover:text-blue-300">가이드</Link>
               <div className="space-y-2 text-xs text-white/40">
-                <Link href="/guide/checklist" className="block transition-colors hover:text-white">행사 준비 체크리스트</Link>
+                <Link href="/guide/checklist" className="block transition-colors hover:text-white">행사 체크리스트</Link>
                 <Link href="/guide/process" className="block transition-colors hover:text-white">진행 절차</Link>
                 <Link href="/guide/pricing" className="block transition-colors hover:text-white">비용 가이드</Link>
                 <Link href="/guide/venue" className="block transition-colors hover:text-white">장소 선택</Link>
@@ -103,11 +97,67 @@ export default function Footer() {
             </div>
           </nav>
 
-          {/* Right: SNS Links — 모바일: 가로 아이콘만 / 데스크톱: 세로 아이콘+텍스트 */}
-          <div>
-            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-blue-400 md:mb-3 md:text-xs">SNS</div>
-            {/* 모바일: 가로 아이콘 */}
-            <div className="flex items-center gap-3 text-white/40 md:hidden">
+          <Divider />
+
+          {/* 3/3: 연락처 + SNS 나란히 */}
+          <div className="flex gap-10">
+            <div>
+              <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-400">연락처</div>
+              <div className="space-y-2 text-xs text-white/40">
+                <p>
+                  TEL <a href="tel:02-6342-2800" className="transition-colors hover:text-white">02-6342-2800</a>
+                </p>
+                <p>
+                  <a href="mailto:info@parancompany.co.kr" className="transition-colors hover:text-white">info@parancompany.co.kr</a>
+                </p>
+                <p>FAX 0504-482-1305</p>
+                <p>평일 09:00 ~ 18:00</p>
+              </div>
+            </div>
+            <div>
+              <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-400">SNS</div>
+              <div className="space-y-2 text-xs text-white/40">
+                <a href="https://blog.naver.com/paran-company" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 transition-colors hover:text-white">
+                  <NaverBlogIcon className="h-3.5 w-3.5" />
+                  Blog
+                </a>
+                <a href="https://www.instagram.com/parancompany" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 transition-colors hover:text-white">
+                  <InstagramIcon className="h-3.5 w-3.5" />
+                  Instagram
+                </a>
+                <a href="https://www.youtube.com/@parancompany" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 transition-colors hover:text-white">
+                  <YouTubeIcon className="h-3.5 w-3.5" />
+                  YouTube
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 모바일 */}
+        <div className="md:hidden">
+          {/* 상단: 회사정보(왼쪽) + SNS(오른쪽) */}
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="mb-2">
+                <Image
+                  src="/logo-white.svg"
+                  alt="파란컴퍼니"
+                  width={120}
+                  height={53}
+                  className="h-5 w-auto"
+                />
+              </div>
+              <div className="space-y-0.5 text-[8px] leading-relaxed text-white/40">
+                <p>파란컴퍼니 주식회사 | 대표 김미경 | 사업자등록번호 291-86-02802</p>
+                <p>경기도 수원시 팔달구 효원로 278, 6층 603호</p>
+                <p>
+                  TEL <a href="tel:02-6342-2800" className="transition-colors hover:text-white">02-6342-2800</a> | FAX 0504-482-1305 | <a href="mailto:info@parancompany.co.kr" className="transition-colors hover:text-white">info@parancompany.co.kr</a>
+                </p>
+                <p>평일 09:00 ~ 18:00 (주말·공휴일 휴무)</p>
+              </div>
+            </div>
+            <div className="flex flex-col items-center gap-3 pt-1 text-white/40">
               <a href="https://blog.naver.com/paran-company" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">
                 <NaverBlogIcon className="h-3.5 w-3.5" />
               </a>
@@ -118,26 +168,27 @@ export default function Footer() {
                 <YouTubeIcon className="h-3.5 w-3.5" />
               </a>
             </div>
-            {/* 데스크톱: 세로 아이콘+텍스트 */}
-            <div className="hidden space-y-2 text-xs text-white/40 md:block">
-              <a href="https://blog.naver.com/paran-company" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 transition-colors hover:text-white">
-                <NaverBlogIcon className="h-3.5 w-3.5" />
-                Blog
-              </a>
-              <a href="https://www.instagram.com/parancompany" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 transition-colors hover:text-white">
-                <InstagramIcon className="h-3.5 w-3.5" />
-                Instagram
-              </a>
-              <a href="https://www.youtube.com/@parancompany" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 transition-colors hover:text-white">
-                <YouTubeIcon className="h-3.5 w-3.5" />
-                YouTube
-              </a>
+          </div>
+
+          {/* 하단: 바로가기 + 개인정보/이용약관 */}
+          <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
+            <div className="flex items-center gap-3 text-[8px] text-white/40">
+              <Link href="/company" className="transition-colors hover:text-white">회사소개</Link>
+              <Link href="/work" className="transition-colors hover:text-white">포트폴리오</Link>
+              <Link href="/blog" className="transition-colors hover:text-white">블로그</Link>
+              <Link href="/faq" className="transition-colors hover:text-white">FAQ</Link>
+              <Link href="/guide" className="transition-colors hover:text-white">가이드</Link>
+            </div>
+            <div className="flex items-center gap-2 text-[8px] text-white/30">
+              <Link href="/privacy" className="transition-colors hover:text-white/50">개인정보처리방침</Link>
+              <span className="text-white/10">|</span>
+              <Link href="/terms" className="transition-colors hover:text-white/50">이용약관</Link>
             </div>
           </div>
         </div>
 
         <div className="mt-4 flex flex-col items-center gap-1.5 border-t border-white/10 pt-3 text-[7px] text-white/20 md:mt-8 md:flex-row md:justify-between md:pt-5 md:text-xs">
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="hidden items-center gap-2 md:flex md:gap-3">
             <Link href="/privacy" className="transition-colors hover:text-white/50">개인정보처리방침</Link>
             <span className="text-white/10">|</span>
             <Link href="/terms" className="transition-colors hover:text-white/50">이용약관</Link>

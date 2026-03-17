@@ -752,8 +752,12 @@ function CardPhotoRotator({ photos, sizes, stagger = 0, priority = false }: { ph
     );
   }
 
+  // 다음 이미지 프리로드
+  const nextIdx = (idx + 1) % photos.length;
+
   return (
     <div ref={containerRef} className="absolute inset-0">
+      {/* 현재 이미지 아래에 깔리는 이전 이미지 (흰 화면 방지) */}
       <AnimatePresence initial={false}>
         <motion.div
           key={idx}
@@ -782,6 +786,17 @@ function CardPhotoRotator({ photos, sizes, stagger = 0, priority = false }: { ph
           />
         </motion.div>
       </AnimatePresence>
+      {/* 다음 이미지 프리로드 (숨김) */}
+      {photos.length > 1 && !errorSet.has(nextIdx) && (
+        <Image
+          src={photos[nextIdx].src}
+          alt=""
+          fill
+          className="pointer-events-none opacity-0"
+          sizes={sizes}
+          aria-hidden
+        />
+      )}
     </div>
   );
 }
