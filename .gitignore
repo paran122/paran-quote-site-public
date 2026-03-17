@@ -47,8 +47,9 @@ nul
 # MCP config (API keys)
 .mcp.json
 
-# Claude Code local settings (contains API keys, tokens)
+# Claude Code local settings and skills (contains API keys, project IDs, internal rules)
 .claude/settings.local.json
+.claude/skills/
 
 # Portfolio assets (migrated to Supabase Storage)
 /public/portfolio/

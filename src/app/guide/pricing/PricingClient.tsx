@@ -17,39 +17,37 @@ const priceCategories: PriceCategory[] = [
   {
     title: "기획·운영",
     items: [
-      { name: "행사 기획서 (컨퍼런스)", range: "150만 원부터", note: "기획안, 운영 매뉴얼, 타임테이블, 예산안 포함" },
-      { name: "행사 기획서 (세미나·교육)", range: "120만 원부터", note: "교육 커리큘럼 설계, 연사 섭외 지원 포함" },
-      { name: "현장 운영 인력 (PM)", range: "별도 상담", note: "전담 프로젝트 매니저 1명 배치" },
-      { name: "현장 운영 스태프", range: "별도 상담", note: "등록·안내·진행 보조 인력 1명 기준" },
+      { name: "기획·운영 (세미나·컨퍼런스)", range: "500만 원~", note: "기획안, 운영 매뉴얼, 타임테이블, 예산안, 현장 운영 포함" },
+      { name: "기획·운영 (포럼)", range: "700만 원~", note: "패널 토론 구성, 통역 연계, 현장 운영 포함" },
+      { name: "결과보고서", range: "150만 원~", note: "행사 성과 분석 및 결과 보고서 작성" },
     ],
   },
   {
     title: "디자인·시안물",
     items: [
-      { name: "메인 현수막", range: "80만 원부터", note: "디자인 시안 제공, 출력·설치 포함" },
-      { name: "배너·엑스배너", range: "40만 원부터", note: "디자인 시안 제공" },
-      { name: "포스터", range: "별도 상담", note: "웹용·인쇄용 동시 제작" },
-      { name: "자료집·리플렛", range: "별도 상담", note: "편집 디자인 + 인쇄·제본" },
-      { name: "명찰·네임택", range: "별도 상담", note: "디자인 + 인쇄" },
+      { name: "포스터", range: "50만 원~", note: "웹용·인쇄용 동시 제작" },
+      { name: "메인 현수막", range: "20만 원~", note: "디자인 시안 제공, 출력·설치 포함" },
+      { name: "배너·엑스배너", range: "15만 원~", note: "디자인 시안 제공" },
+      { name: "자료집·리플렛", range: "100만 원~", note: "편집 디자인 + 인쇄·제본" },
+      { name: "참가자 키트", range: "5만 원~", note: "명찰, 자료, 기념품 등 1세트 기준" },
     ],
   },
   {
-    title: "영상·음향·장비",
+    title: "영상·촬영",
     items: [
-      { name: "음향 시스템", range: "250만 원부터", note: "스피커, 마이크, 전문 엔지니어 포함" },
-      { name: "LED 스크린", range: "300만 원부터", note: "P3.9 고화질 패널, 영상 송출 운영" },
-      { name: "행사 촬영 (사진)", range: "80만 원부터", note: "전 과정 촬영, 보정 납품" },
-      { name: "행사 촬영 (영상)", range: "별도 상담", note: "현장 촬영 + 하이라이트 편집 영상" },
+      { name: "영상 촬영", range: "200만 원~", note: "현장 촬영 + 하이라이트 편집 영상" },
+      { name: "하이브리드 중계", range: "300만 원~", note: "온·오프라인 동시 생중계" },
     ],
   },
   {
-    title: "부대 서비스",
+    title: "특수 서비스",
     items: [
-      { name: "전문 MC·사회자", range: "150만 원부터", note: "대본 작성 포함" },
-      { name: "포토존 제작", range: "120만 원부터", note: "맞춤 디자인, 설치·철거 포함" },
-      { name: "등록 데스크 설치", range: "200만 원부터", note: "접수대, 안내판, QR 체크인 시스템" },
-      { name: "커피·다과 케이터링", range: "50만 원부터", note: "바리스타 서비스 + 다과 세팅" },
-      { name: "뷔페 케이터링", range: "150만 원부터", note: "한식/양식 코스, 서빙 인력 포함" },
+      { name: "연사 섭외", range: "200만 원~", note: "전문 연사 매칭 및 섭외 대행" },
+      { name: "통역 서비스", range: "200만 원~", note: "동시통역 장비 + 통역사" },
+      { name: "공간 디자인", range: "800만 원~", note: "축제·페스티벌 공간 연출" },
+      { name: "무대 설치", range: "500만 원~", note: "무대 구조물 설치·철거" },
+      { name: "체험부스", range: "100만 원~", note: "참여형 체험 부스 1개 기준" },
+      { name: "안전관리", range: "500만 원~", note: "안전요원 배치 및 안전 관리 계획" },
     ],
   },
 ];
@@ -65,20 +63,20 @@ const packageExamples: PackageExample[] = [
   {
     title: "소규모 세미나",
     scale: "30~50명",
-    range: "300만 원부터",
-    includes: ["기획서", "디자인(현수막·배너·명찰)", "자료집", "현장 운영"],
+    range: "700만 원~",
+    includes: ["기획·운영", "포스터", "현수막·배너", "참가자 키트", "결과보고서"],
   },
   {
     title: "중규모 컨퍼런스",
     scale: "100~200명",
-    range: "800만 원부터",
-    includes: ["기획서", "디자인 풀세트", "음향 시스템", "현장 촬영", "현장 운영", "다과 케이터링"],
+    range: "1,500만 원~",
+    includes: ["기획·운영", "포스터", "현수막·배너", "참가자 키트", "자료집", "영상 촬영", "연사 섭외", "결과보고서"],
   },
   {
     title: "대규모 포럼·국제행사",
     scale: "300~500명",
-    range: "2,000만 원부터",
-    includes: ["기획서", "디자인 풀세트", "음향+LED", "MC", "촬영(사진+영상)", "등록 시스템", "포토존", "케이터링"],
+    range: "2,000만 원~",
+    includes: ["기획·운영", "포스터", "현수막·배너", "참가자 키트", "자료집", "영상 촬영", "연사 섭외", "통역 서비스", "하이브리드 중계", "결과보고서"],
   },
 ];
 
@@ -90,9 +88,9 @@ export default function PricingClient() {
     >
       <div className="space-y-8">
         {/* 안내 문구 */}
-        <div className="rounded-lg border border-amber-200 bg-amber-50/60 p-4">
-          <p className="text-sm font-medium leading-relaxed text-amber-900">
-            아래 금액은 일반적인 업계 참고 범위이며, 실제 비용은 행사 규모·장소·일정·세부 요구사항에 따라 달라집니다.
+        <div className="rounded-lg border border-slate-200 bg-slate-50/60 p-4">
+          <p className="text-sm leading-relaxed text-slate-500">
+            아래 금액은 소규모 기준 최소 단가이며, 행사 규모·장소·세부 요구사항에 따라 달라집니다.
             정확한 견적은 상담 후 항목별로 투명하게 산출해 드립니다.
           </p>
         </div>
@@ -111,7 +109,7 @@ export default function PricingClient() {
                 <thead>
                   <tr className="border-b border-slate-100">
                     <th className="pb-2 text-left font-medium text-slate-500">항목</th>
-                    <th className="pb-2 text-left font-medium text-slate-500">참고 가격</th>
+                    <th className="pb-2 text-left font-medium text-slate-500">최소 가격</th>
                     <th className="hidden pb-2 text-left font-medium text-slate-500 md:table-cell">비고</th>
                   </tr>
                 </thead>

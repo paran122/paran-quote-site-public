@@ -34,10 +34,13 @@ interface Props {
 const CATEGORY_ORDER = [
   "행사 기획",
   "행사 후기",
-  "트렌드",
-  "체크리스트",
-  "장비/기술",
+  "기획 가이드",
+  "현장 노하우",
+  "행사 정보",
 ];
+
+/* ── SEO 가이드 카테고리 (히어로 제외 대상) ── */
+const GUIDE_CATEGORIES = new Set(["기획 가이드", "현장 노하우", "행사 정보"]);
 
 /* ── 카테고리 색상 (Pitch 스타일: 눈에 띄게) ── */
 const CATEGORY_COLOR = "text-[13px] font-semibold text-[#4B5EDB]";
@@ -76,11 +79,21 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
 
   // 에디터 추천: DB에서 is_featured=true인 글 (sort_order 정렬)
   const featuredIds = new Set(featuredPosts.map((p) => p.id));
-  const nonFeatured = filtered.filter((p) => !featuredIds.has(p.id));
+
+  // 전체 탭일 때 히어로는 행사 기획/후기만, 가이드 카테고리는 별도 섹션
+  const isGuideCategory = (cat?: string) => GUIDE_CATEGORIES.has(cat ?? "");
+  const heroCandidates = activeCategory === "전체"
+    ? filtered.filter((p) => !isGuideCategory(p.category) && !featuredIds.has(p.id))
+    : filtered.filter((p) => !featuredIds.has(p.id));
 
   // 데이터 분배: 메가(1) + 서브(3) + 에디터(1) + 나머지
-  const featured = nonFeatured[0] ?? filtered[0] ?? null;
-  const subCards = nonFeatured.slice(1, 4);
+  const featured = heroCandidates[0] ?? null;
+  const subCards = heroCandidates.slice(1, 4);
+
+  // 가이드 섹션 (전체 탭에서만 표시, 3개 가이드 카테고리 통합)
+  const guideSectionPosts = activeCategory === "전체"
+    ? filtered.filter((p) => isGuideCategory(p.category))
+    : [];
 
   // 에디터 추천: featuredPosts 중 첫 번째 1개
   const filteredFeatured = featuredPosts.filter(
@@ -88,11 +101,15 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
   );
   const editorPick: BlogPost | null = filteredFeatured.length > 0
     ? filteredFeatured[0]
-    : (nonFeatured[4] ?? null);
+    : (heroCandidates[4] ?? null);
 
-  // More articles: 메가+서브에 사용된 글 제외
-  const usedIds = new Set([featured?.id, ...subCards.map((p) => p.id)].filter(Boolean));
-  const remaining = nonFeatured.filter((p) => !usedIds.has(p.id));
+  // More articles: 메가+서브+가이드 섹션에 사용된 글 제외
+  const usedIds = new Set([
+    featured?.id,
+    ...subCards.map((p) => p.id),
+    ...guideSectionPosts.map((p) => p.id),
+  ].filter(Boolean));
+  const remaining = filtered.filter((p) => !featuredIds.has(p.id) && !usedIds.has(p.id));
   const moreArticles = [...remaining, ...morePosts];
 
   // 이미 표시된 총 갯수로 "더 보기" 가능 여부 계산
@@ -221,6 +238,33 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
               </h2>
             </div>
             <EditorPickHero post={editorPick} />
+          </motion.div>
+        )}
+
+        {/* ═══ 행사 가이드 섹션 ═══ */}
+        {guideSectionPosts.length > 0 && (
+          <motion.div variants={fadeIn} className="mt-20 pt-12 sm:mt-24 sm:pt-16">
+            <div className="mb-10 flex items-end justify-between">
+              <div>
+                <h2 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
+                  EVENT GUIDE
+                </h2>
+                <p className="mt-1 text-[13px] text-slate-400">
+                  행사 기획에 필요한 실무 가이드
+                </p>
+              </div>
+              <button
+                onClick={() => setActiveCategory("기획 가이드")}
+                className="text-[13px] font-medium text-slate-500 hover:text-primary transition-colors"
+              >
+                전체 보기 →
+              </button>
+            </div>
+            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+              {guideSectionPosts.slice(0, 3).map((post, i) => (
+                <ArticleCard key={post.id} post={post} index={i + 10} />
+              ))}
+            </div>
           </motion.div>
         )}
 
