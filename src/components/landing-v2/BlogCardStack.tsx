@@ -20,7 +20,7 @@ export type FlipMode = "A";
 
 const FLIP_CONFIG = {
   flipping: { y: "-25%", opacity: 0, scale: 1.0, rotateX: -15 },
-  transition: { duration: 1.0, ease: [0.25, 0.46, 0.45, 0.94] },
+  transition: { duration: 1.0, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
 };
 
 /* ────────────────────────────────────────────
@@ -36,8 +36,6 @@ const OFFSET = 8;
 const SCALE_STEP = 0;
 const DIM_STEP = 0.15;
 const VISIBLE = 3;
-
-const spring = { type: "spring" as const, stiffness: 120, damping: 20 };
 
 export default function BlogCardStack({ posts, interval = 5000 }: CardStackProps) {
   const [cards, setCards] = useState(posts);
