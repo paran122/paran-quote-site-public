@@ -63,10 +63,10 @@ function formatDate(dateStr: string) {
   });
 }
 
+/** HTML 태그 제거 후 한글 기준 읽기 시간 계산 (분당 500자) */
 function estimateReadTime(content: string): number {
-  const text = content.replace(/<[^>]*>/g, "");
-  const words = text.split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.round(words / 200));
+  const text = content.replace(/<[^>]*>/g, "").trim();
+  return Math.max(1, Math.round(text.length / 500));
 }
 
 export default async function BlogDetailPage({ params }: Props) {

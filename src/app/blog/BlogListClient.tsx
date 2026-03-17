@@ -57,6 +57,13 @@ function formatDate(dateStr?: string) {
   return `${y}.${m}.${day}`;
 }
 
+/** HTML 태그 제거 후 한글 기준 읽기 시간 계산 (분당 500자) */
+function estimateReadTime(content?: string): number {
+  if (!content) return 1;
+  const text = content.replace(/<[^>]*>/g, "").trim();
+  return Math.max(1, Math.round(text.length / 500));
+}
+
 
 /* ════════════════════════════════════════════════════════
    메인 컴포넌트
@@ -214,13 +221,14 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
               description={featured.excerpt || ""}
               imageUrl={featured.thumbnailUrl}
               href={`/blog/${featured.slug}`}
+              readTime={estimateReadTime(featured.content)}
             />
           </motion.div>
         )}
 
         {/* ═══ Sub-Featured (3열 이미지 카드) ═══ */}
         {subCards.length > 0 && (
-          <motion.div variants={fadeIn} className="-mx-6 mt-20 flex snap-x sm:mt-24 snap-mandatory gap-6 overflow-x-auto px-6 pb-2 scrollbar-hide sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-10 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
+          <motion.div variants={fadeIn} className="-mx-6 mt-12 flex snap-x sm:mt-24 snap-mandatory gap-5 overflow-x-auto pl-6 pr-4 pb-2 scrollbar-hide sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-10 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
             {subCards.map((post, i) => (
               <div key={post.id} className="w-[80%] flex-shrink-0 snap-start sm:w-auto">
                 <ArticleCard post={post} index={i + 1} />
@@ -231,7 +239,7 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
 
         {/* ═══ 에디터 추천 ═══ */}
         {editorPick && (
-          <motion.div variants={fadeIn} className="mt-20 pt-12 sm:mt-24 sm:pt-16">
+          <motion.div variants={fadeIn} className="mt-10 pt-6 sm:mt-24 sm:pt-16">
             <div className="mb-10">
               <h2 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
                 EDITOR&apos;S PICK
@@ -243,7 +251,7 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
 
         {/* ═══ 행사 가이드 섹션 ═══ */}
         {guideSectionPosts.length > 0 && (
-          <motion.div variants={fadeIn} className="mt-20 pt-12 sm:mt-24 sm:pt-16">
+          <motion.div variants={fadeIn} className="mt-10 pt-6 sm:mt-24 sm:pt-16">
             <div className="mb-10 flex items-end justify-between">
               <div>
                 <h2 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
@@ -260,9 +268,9 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
                 전체 보기 →
               </button>
             </div>
-            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3">
               {guideSectionPosts.slice(0, 3).map((post, i) => (
-                <ArticleCard key={post.id} post={post} index={i + 10} />
+                <ArticleCard key={post.id} post={post} index={i + 10} compact />
               ))}
             </div>
           </motion.div>
@@ -270,7 +278,7 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
 
         {/* ═══ More Articles (Pitch 스타일 3열 이미지 카드 그리드) ═══ */}
         {(moreArticles.length > 0 || hasMoreToLoad) && (
-          <motion.div variants={fadeIn} className="mt-20 pt-12 sm:mt-24 sm:pt-16">
+          <motion.div variants={fadeIn} className="mt-10 pt-6 sm:mt-24 sm:pt-16">
             <div className="mb-10">
               <h2 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
                 MORE ARTICLES
@@ -281,7 +289,7 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
               initial="hidden"
               animate="show"
               variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
-              className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3"
+              className="grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3"
             >
               {moreArticles.map((post, i) => (
                 <MoreArticleItem
@@ -327,7 +335,7 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
 
 /** Article Card — Pitch 스타일: 이미지 → 제목(밑줄) → 카테고리 → 설명
  *  hover: 밑줄 사라짐 + 텍스트 primary 색 */
-function ArticleCard({ post, index }: { post: BlogPost; index: number }) {
+function ArticleCard({ post, index, compact }: { post: BlogPost; index: number; compact?: boolean }) {
   return (
     <Link href={`/blog/${post.slug}`}>
       <div className="group">
@@ -338,29 +346,31 @@ function ArticleCard({ post, index }: { post: BlogPost; index: number }) {
             alt={post.title}
             fill
             className="object-cover"
-            sizes="400px"
+            sizes="(max-width: 640px) 45vw, 400px"
             priority={index < 3}
           />
           <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
         </div>
 
         {/* 제목 */}
-        <h3 className="mt-5 text-[17px] font-semibold leading-snug tracking-[-0.02em] text-slate-900 sm:text-[18px]">
+        <h3 className={`mt-3 font-semibold leading-snug tracking-[-0.02em] text-slate-900 sm:mt-5 ${compact ? "line-clamp-2 text-[13px] sm:line-clamp-none sm:text-[18px]" : "text-[17px] sm:text-[18px]"}`}>
           <span className="underline decoration-slate-900/40 underline-offset-[3px] transition-all duration-300 group-hover:text-primary group-hover:decoration-transparent">
             {post.title}
           </span>
         </h3>
 
-        {/* 카테고리 */}
-        {post.category && (
-          <span className={`mt-2 inline-block ${CATEGORY_COLOR}`}>
-            {post.category}
-          </span>
-        )}
+        {/* 카테고리 + 읽기 시간 */}
+        <div className={`mt-1.5 flex items-center gap-1.5 sm:mt-2 ${compact ? "text-[11px] sm:text-[13px]" : "text-[13px]"}`}>
+          {post.category && (
+            <span className="font-semibold text-[#4B5EDB]">{post.category}</span>
+          )}
+          <span className="text-slate-300">·</span>
+          <span className="text-slate-400">{estimateReadTime(post.content)}분 읽기</span>
+        </div>
 
-        {/* 설명 */}
+        {/* 설명 — compact 모드에서 모바일 숨김 */}
         {post.excerpt && (
-          <p className="mt-1 line-clamp-2 text-[14px] leading-relaxed text-slate-500">
+          <p className={`mt-1 line-clamp-2 text-[14px] leading-relaxed text-slate-500 ${compact ? "hidden sm:block" : ""}`}>
             {post.excerpt}
           </p>
         )}
@@ -403,8 +413,10 @@ function EditorPickHero({ post }: { post: BlogPost }) {
                 {post.excerpt}
               </p>
             )}
-            <p className="mt-4 text-[13px] text-slate-400">
+            <p className="mt-4 flex items-center gap-1.5 text-[13px] text-slate-400">
               {formatDate(post.publishedAt || post.createdAt)}
+              <span className="text-slate-300">·</span>
+              <span>{estimateReadTime(post.content)}분 읽기</span>
             </p>
             <span className="mt-4 inline-flex w-fit items-center gap-1.5 text-[14px] font-semibold text-slate-800 transition-colors group-hover:text-primary">
               자세히 보기
@@ -451,7 +463,7 @@ function MoreArticleItem({
   return (
     <>
       <motion.div variants={itemFadeIn}>
-        <ArticleCard post={post} index={index + 5} />
+        <ArticleCard post={post} index={index + 5} compact />
       </motion.div>
       {showCta && (
         <motion.div

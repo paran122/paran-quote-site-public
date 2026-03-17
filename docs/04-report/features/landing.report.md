@@ -155,7 +155,7 @@ Per CLAUDE.md, this project follows **Version B** conventions:
 
 | Item | Score | Details |
 |------|:-----:|---------|
-| Supabase Client | 95% | quote_site schema, createClient configuration |
+| Supabase Client | 95% | public schema, createClient configuration |
 | CRUD Query Functions | 98% | **26 functions** (C4, R10, U5, D4, Stats1, Notes2) |
 | Event Types Table | 98% | event_types with RLS policies, sortOrder, isVisible fields |
 | Data Mapping | 100% | snake_case -> camelCase mapRow<T>() |
@@ -357,7 +357,7 @@ Per CLAUDE.md, this project follows **Version B** conventions:
 | Technology | Purpose | Status |
 |-----------|---------|:------:|
 | **Supabase** | DB + Auth + Infrastructure | 98% |
-| **PostgreSQL** | quote_site schema, **8 tables** | PASS |
+| **PostgreSQL** | public schema, **8 tables** | PASS |
 | **RLS Policies** | Row-level security (event_types with public SELECT) | PASS |
 | **CRUD Functions** | 26 functions (C4, R10, U5, D4, Stats1, Notes2) | PASS |
 | **Environment Variables** | NEXT_PUBLIC_SUPABASE_URL/ANON_KEY | PASS |
@@ -801,7 +801,7 @@ New team member onboarding checklist:
 
 [ ] 3. Set environment variables
       Create .env.local with:
-        NEXT_PUBLIC_SUPABASE_URL=https://aiarnrhftmuffmcninyl.supabase.co
+        NEXT_PUBLIC_SUPABASE_URL=https://syzsqdgvculdzfepdlsi.supabase.co
         NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
 
 [ ] 4. Start dev server

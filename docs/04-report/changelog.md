@@ -46,7 +46,7 @@
 - **공통 레이아웃**: GNB (투명→백색 전환), Footer (3열 그리드), CategoryTabs (8개 탭), SiteDataLoader
 - **상태 관리**: cartStore (항목 추가/제거/수량/할인), drawerStore (서비스 상세 Drawer), siteDataStore (Supabase 데이터 + 폴백)
 - **Supabase 연동**:
-  - 클라이언트 설정 (quote_site 스키마)
+  - 클라이언트 설정 (public 스키마)
   - 17개 CRUD 함수 (fetchCategories, fetchServices, fetchPackages, submitQuote, fetchQuotes, updateQuoteStatus, fetchAdminNotes, addAdminNote, updateService, updatePackage, updatePortfolio, deletePortfolio, fetchDashboardStats, fetchRecentQuotes, updateSiteSetting, fetchSiteSettings, fetchServiceById)
   - snake_case → camelCase 변환 (mapRow)
 - **디자인 시스템**: Tailwind 토큰 완벽 적용 (Primary #3B82F6, Accent #F59E0B, Success #10B981, 폰트, border-radius, maxWidth)

@@ -289,21 +289,23 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
             </div>
 
             {/* 연도 필터 + 검색 */}
-            <div className="flex flex-wrap items-center gap-2 mb-6">
-              {YEARS.map((y) => (
-                <button
-                  key={y}
-                  onClick={() => setYearFilter(y)}
-                  className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium font-num transition-colors ${
-                    yearFilter === y
-                      ? "bg-slate-900 text-white"
-                      : "bg-slate-100 text-slate-500 hover:bg-slate-200"
-                  }`}
-                >
-                  {y === "전체" ? "전체 연도" : y}
-                </button>
-              ))}
-              <div className="relative flex-1 min-w-[180px] max-w-[300px] ml-auto">
+            <div className="mb-4 flex flex-col gap-2 sm:mb-6 sm:flex-row sm:flex-wrap sm:items-center">
+              <div className="flex flex-wrap gap-2">
+                {YEARS.map((y) => (
+                  <button
+                    key={y}
+                    onClick={() => setYearFilter(y)}
+                    className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium font-num transition-colors ${
+                      yearFilter === y
+                        ? "bg-slate-900 text-white"
+                        : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                    }`}
+                  >
+                    {y === "전체" ? "전체 연도" : y}
+                  </button>
+                ))}
+              </div>
+              <div className="relative w-full sm:ml-auto sm:w-auto sm:min-w-[180px] sm:max-w-[300px] sm:flex-1">
                 <Search
                   size={16}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
@@ -325,7 +327,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                 <p className="text-[13px] mt-1">다른 조건으로 검색해보세요</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-3 sm:gap-6">
                 {filtered.map((pf, idx) => {
                   const cat = pf.tags[0] ?? "";
                   const pfMedia = portfolioMedia.filter((m) => m.portfolioId === pf.id);
@@ -348,7 +350,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                     <BlurFade key={pf.id} delay={0.04 * Math.min(idx, 8)}>
                       <Link
                         href={`/work/${pf.slug || pf.id}`}
-                        className="group block rounded-[10px] overflow-hidden bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200"
+                        className="group flex h-full flex-col rounded-[10px] overflow-hidden bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200"
                       >
                         {/* 썸네일 */}
                         <div className="relative aspect-[16/10] overflow-hidden">
@@ -356,7 +358,6 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                             photos={cardPhotos}
                             gradientType={pf.gradientType}
                           />
-
 
                           <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                             <h3 className="text-[13px] font-bold text-white leading-snug translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
@@ -366,39 +367,54 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                         </div>
 
                         {/* 카드 정보 */}
-                        <div className="p-4">
-                          <div className="flex items-center gap-2 mb-1.5">
+                        <div className="flex flex-1 flex-col p-3 sm:p-4">
+                          <div className="flex items-center gap-1.5 mb-1 sm:gap-2 sm:mb-1.5">
                             {cat && (
-                              <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ${categoryStyle[cat] ?? "bg-slate-100 text-slate-600"}`}>
+                              <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium sm:px-2.5 sm:text-[10px] ${categoryStyle[cat] ?? "bg-slate-100 text-slate-600"}`}>
                                 {cat}
                               </span>
                             )}
-                            <span className="text-[12px] text-slate-400 font-num">
+                            <span className="text-[10px] text-slate-400 font-num sm:text-[12px]">
                               {pf.year}
                             </span>
                           </div>
-                          <h3 className="text-[13px] font-semibold text-slate-900 leading-snug">
+                          <h3 className="min-h-[2.25rem] text-[12px] font-semibold text-slate-900 leading-snug line-clamp-2 sm:text-[13px]">
                             {pf.title}
                           </h3>
                           {pf.description && (
-                            <p className="mt-1.5 text-[12px] text-slate-500 line-clamp-2 leading-relaxed">
+                            <p className="mt-1 hidden text-[12px] text-slate-500 leading-relaxed sm:mt-1.5 sm:line-clamp-2">
                               {pf.description}
                             </p>
                           )}
-                          <div className="flex flex-wrap gap-1.5 mt-3">
-                            {pf.tags.slice(1, 4).map((tag) => (
-                              <span
-                                key={tag}
-                                className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-[4px]"
-                              >
-                                #{tag}
-                              </span>
-                            ))}
-                            {pf.tags.length > 4 && (
-                              <span className="text-[10px] text-slate-400">
-                                +{pf.tags.length - 4}
-                              </span>
-                            )}
+                          {/* Mobile: 2 tags + count, Desktop: all tags */}
+                          <div className="mt-auto pt-2 sm:pt-3">
+                            {/* Mobile */}
+                            <div className="flex h-[1.25rem] flex-wrap gap-1 overflow-hidden sm:hidden">
+                              {pf.tags.slice(1, 3).map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-[4px]"
+                                >
+                                  #{tag}
+                                </span>
+                              ))}
+                              {pf.tags.length > 3 && (
+                                <span className="text-[9px] text-slate-400">
+                                  +{pf.tags.length - 3}
+                                </span>
+                              )}
+                            </div>
+                            {/* Desktop */}
+                            <div className="hidden flex-wrap gap-1.5 sm:flex">
+                              {pf.tags.slice(1).map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-[4px]"
+                                >
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </Link>
