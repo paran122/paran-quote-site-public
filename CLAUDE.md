@@ -170,7 +170,7 @@ MD 파일을 먼저 준비합니다. (작성법: `.claude/skills/event-portfolio
 - MD 파일 샘플: `.claude/skills/event-portfolio-update/examples/`
 
 ### 스킬 시스템 (개발자용)
-Supabase MCP 프로젝트: `aiarnrhftmuffmcninyl` / 스키마: `quote_site`
+Supabase MCP 프로젝트: `syzsqdgvculdzfepdlsi` / 스키마: `public`
 관련 테이블: portfolios, portfolio_media, event_reviews
 Storage 버킷: `portfolio`
 이미지 편집/보정: Replicate MCP (우선), 나노바나나 Pro MCP (폴백)
@@ -226,7 +226,7 @@ youtube_url: "https://www.youtube.com/watch?v=영상ID"
 - 어드민 UI: "저장" 버튼 1개, 발행 여부는 체크박스로 제어 (체크=공개, 미체크=초안)
 
 ### 스킬 시스템 (개발자용)
-Supabase MCP 프로젝트: `aiarnrhftmuffmcninyl` / 스키마: `quote_site`
+Supabase MCP 프로젝트: `syzsqdgvculdzfepdlsi` / 스키마: `public`
 테이블: `blog_posts`
 Storage 버킷: `blog` / 경로: `images/{timestamp}.webp`
 이미지 업로드: `/api/admin/blog/upload` (Sharp WebP quality 90, 최대 1200px)

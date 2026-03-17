@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, forwardRef, type ReactNode } from "react";
 import Link from "next/link";
 import {
+  AnimatePresence,
   motion,
   useInView,
   type Variants,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 import type { BlogPost } from "@/types";
 import ContactModal from "@/components/ui/ContactModal";
+import { Particles } from "@/components/ui/particles";
 
 /* ─────────────────────────── helpers ─────────────────────────── */
 
@@ -88,12 +90,10 @@ const heroStyles = `
   @keyframes hero-grid-draw { 0% { stroke-dashoffset: 1000; opacity: 0; } 50% { opacity: 0.3; } 100% { stroke-dashoffset: 0; opacity: 0.15; } }
   @keyframes hero-pulse-glow { 0%, 100% { opacity: 0.1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.1); } }
   @keyframes hero-word-appear { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
-  @keyframes hero-float { 0%, 100% { transform: translateY(0); opacity: 0.2; } 50% { transform: translateY(-12px); opacity: 0.6; } }
   .hero-grid-line { stroke: #3b82f6; stroke-width: 0.5; opacity: 0; stroke-dasharray: 5 5; stroke-dashoffset: 1000; animation: hero-grid-draw 2s ease-out forwards; }
   .hero-dot { fill: #60a5fa; opacity: 0; animation: hero-pulse-glow 3s ease-in-out infinite; }
-  .hero-corner { position: absolute; width: 32px; height: 32px; border: 1px solid rgba(59, 130, 246, 0.15); opacity: 0; animation: hero-word-appear 1s ease-out forwards; }
-  .hero-float-dot { position: absolute; width: 2px; height: 2px; background: #60a5fa; border-radius: 50%; animation: hero-float 4s ease-in-out infinite; }
   #hero-mouse-grad { position: fixed; pointer-events: none; border-radius: 9999px; background: radial-gradient(circle, rgba(59,130,246,0.06), rgba(37,99,235,0.04), transparent 70%); transform: translate(-50%,-50%); will-change: left, top, opacity; transition: left 70ms linear, top 70ms linear, opacity 300ms ease-out; }
+  @keyframes particle-breathe { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
 `;
 
 const HeroSection = forwardRef<HTMLDivElement>(function HeroSection(_props, ref) {
@@ -131,6 +131,26 @@ const HeroSection = forwardRef<HTMLDivElement>(function HeroSection(_props, ref)
         ref={ref}
         className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden pt-14"
       >
+        {/* Particles — desktop: 40, mobile: 20, breathing effect */}
+        <div className="absolute inset-0 hidden animate-[particle-breathe_6s_ease-in-out_infinite] md:block">
+          <Particles
+            quantity={40}
+            staticity={15}
+            ease={30}
+            color="#60a5fa"
+            className="opacity-40"
+          />
+        </div>
+        <div className="absolute inset-0 animate-[particle-breathe_6s_ease-in-out_infinite] md:hidden">
+          <Particles
+            quantity={20}
+            staticity={15}
+            ease={30}
+            color="#60a5fa"
+            className="opacity-40"
+          />
+        </div>
+
         {/* Grid background */}
         <svg className="absolute inset-0 h-full w-full pointer-events-none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
@@ -148,18 +168,6 @@ const HeroSection = forwardRef<HTMLDivElement>(function HeroSection(_props, ref)
           <circle cx="20%" cy="80%" r="2" className="hero-dot" style={{ animationDelay: "3.4s" }} />
           <circle cx="80%" cy="80%" r="2" className="hero-dot" style={{ animationDelay: "3.6s" }} />
         </svg>
-
-        {/* Corner decorations */}
-        <div className="hero-corner left-4 top-4 md:left-8 md:top-8" style={{ animationDelay: "3.5s" }} />
-        <div className="hero-corner right-4 top-4 md:right-8 md:top-8" style={{ animationDelay: "3.7s" }} />
-        <div className="hero-corner left-4 bottom-4 md:left-8 md:bottom-8" style={{ animationDelay: "3.9s" }} />
-        <div className="hero-corner right-4 bottom-4 md:right-8 md:bottom-8" style={{ animationDelay: "4.1s" }} />
-
-        {/* Floating dots */}
-        <div className="hero-float-dot" style={{ top: "25%", left: "12%", animationDelay: "0s", opacity: 0.3 }} />
-        <div className="hero-float-dot" style={{ top: "65%", left: "88%", animationDelay: "1s", opacity: 0.3 }} />
-        <div className="hero-float-dot" style={{ top: "35%", left: "8%", animationDelay: "2s", opacity: 0.3 }} />
-        <div className="hero-float-dot" style={{ top: "70%", left: "92%", animationDelay: "3s", opacity: 0.3 }} />
 
         {/* Main content */}
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 text-center">
@@ -287,12 +295,12 @@ function StatCard({ item }: { item: StatItem }) {
   const count = useCountUp(item.value, 1800, isInView);
 
   return (
-    <div ref={ref} className="flex flex-col items-center py-8">
-      <span className="font-display text-4xl font-bold text-blue-400 md:text-5xl">
+    <div ref={ref} className="flex flex-col items-center py-4 md:py-8">
+      <span className="font-display text-2xl font-bold text-blue-400 md:text-5xl">
         {count}
         {item.suffix}
       </span>
-      <span className="mt-2 text-sm opacity-60">{item.label}</span>
+      <span className="mt-1 text-[10px] opacity-60 md:mt-2 md:text-sm">{item.label}</span>
     </div>
   );
 }
@@ -300,7 +308,7 @@ function StatCard({ item }: { item: StatItem }) {
 function StatsSection({ inverted }: { inverted: boolean }) {
   return (
     <Section className={`border-y py-4 transition-colors duration-[800ms] ${inverted ? "border-slate-200" : "border-white/10"}`}>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-4 gap-1 md:gap-4">
         {statsData.map((s) => (
           <StatCard key={s.label} item={s} />
         ))}
@@ -348,7 +356,7 @@ function MissionSection() {
   let wordIdx = -1;
 
   return (
-    <Section className="py-28 md:py-36">
+    <Section className="py-14 md:py-36">
       <div ref={sectionRef} className="mx-auto max-w-3xl text-center">
         <p className="text-2xl font-medium leading-relaxed md:text-3xl lg:text-4xl">
           {words.map((token, i) => {
@@ -382,9 +390,9 @@ function TwoColumnServices() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <Section className="py-20 md:py-28">
-      <div ref={ref} className="relative grid gap-12 md:grid-cols-2 md:gap-0">
-        {/* diagonal divider (hidden on mobile) */}
+    <Section className="py-12 md:py-28">
+      <div ref={ref} className="relative grid grid-cols-2 gap-4 md:gap-0">
+        {/* diagonal divider (desktop only) */}
         <div
           className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px origin-center -translate-x-1/2 bg-slate-200 md:block"
           style={{ transform: "translateX(-50%) rotate(12deg)" }}
@@ -398,22 +406,23 @@ function TwoColumnServices() {
           custom={0}
           className="flex flex-col items-start pr-0 md:pr-16"
         >
-          <span className="text-xs font-semibold tracking-widest text-blue-500">
+          <span className="text-[10px] font-semibold tracking-widest text-blue-500 md:text-xs">
             TOTAL MANAGEMENT
           </span>
-          <h3 className="mt-3 text-2xl font-bold text-slate-900 md:text-3xl">
+          <h3 className="mt-2 text-base font-bold text-slate-900 md:mt-3 md:text-3xl">
             행사 전체 운영
           </h3>
-          <p className="mt-4 leading-relaxed text-slate-600">
-            기획부터 공간 디자인, 콘텐츠 제작, 현장 운영, 사후 관리까지
+          <p className="mt-2 text-xs leading-relaxed text-slate-600 md:mt-4 md:text-base">
+            <span className="md:hidden">기획부터 운영까지 모든 과정을 원스톱으로 맡깁니다.</span>
+            <span className="hidden md:inline">기획부터 공간 디자인, 콘텐츠 제작, 현장 운영, 사후 관리까지
             행사의 모든 과정을 원스톱으로 맡깁니다.
-            검증된 프로세스와 전담 팀 배치로 처음부터 끝까지 책임지고 진행합니다.
+            검증된 프로세스와 전담 팀 배치로 처음부터 끝까지 책임지고 진행합니다.</span>
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-1.5 md:mt-4 md:gap-2">
             {["기획/운영", "공간디자인", "콘텐츠", "전시/부스", "인쇄물"].map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600"
+                className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-medium text-blue-600 md:px-3 md:py-1 md:text-xs"
               >
                 {tag}
               </span>
@@ -429,22 +438,23 @@ function TwoColumnServices() {
           custom={1}
           className="flex flex-col items-start pl-0 md:pl-16"
         >
-          <span className="text-xs font-semibold tracking-widest text-blue-500">
+          <span className="text-[10px] font-semibold tracking-widest text-blue-500 md:text-xs">
             INDIVIDUAL SERVICES
           </span>
-          <h3 className="mt-3 text-2xl font-bold text-slate-900 md:text-3xl">
+          <h3 className="mt-2 text-base font-bold text-slate-900 md:mt-3 md:text-3xl">
             필요한 서비스만 선택
           </h3>
-          <p className="mt-4 leading-relaxed text-slate-600">
-            전체 행사가 아니더라도, 필요한 서비스만 골라서 의뢰할 수 있습니다.
+          <p className="mt-2 text-xs leading-relaxed text-slate-600 md:mt-4 md:text-base">
+            <span className="md:hidden">필요한 서비스만 골라서 의뢰할 수 있습니다.</span>
+            <span className="hidden md:inline">전체 행사가 아니더라도, 필요한 서비스만 골라서 의뢰할 수 있습니다.
             기획서 작성, 인쇄 디자인, 전시 부스 시공, 영상 제작 등
-            개별 서비스만으로도 전문가 수준의 결과물을 받아보세요.
+            개별 서비스만으로도 전문가 수준의 결과물을 받아보세요.</span>
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-1.5 md:mt-4 md:gap-2">
             {["기획서", "인쇄디자인", "전시부스", "영상제작", "온라인중계", "기념품"].map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-medium text-blue-600"
+                className="rounded-full border border-blue-200 bg-white px-2 py-0.5 text-[10px] font-medium text-blue-600 md:px-3 md:py-1 md:text-xs"
               >
                 {tag}
               </span>
@@ -613,7 +623,7 @@ function ServiceCard({ item, isOpen, onToggle }: { item: ServiceAccordionItem; i
       onClick={onToggle}
       className="group relative w-full cursor-pointer overflow-hidden rounded-2xl bg-[#f8f9fa] md:w-[460px]"
     >
-      <div className="relative h-[420px] md:h-[522px]">
+      <div className="relative h-[280px] md:h-[522px]">
         {/* 배경 이미지 */}
         <Image
           src={item.image}
@@ -676,9 +686,10 @@ function ServiceCard({ item, isOpen, onToggle }: { item: ServiceAccordionItem; i
 
 function AccordionServices() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [mobileIdx, setMobileIdx] = useState(0);
 
   return (
-    <Section className="py-20 md:py-28">
+    <Section className="py-14 md:py-28">
       <div className="text-center">
         <motion.span
           initial={{ opacity: 0 }}
@@ -693,7 +704,7 @@ function AccordionServices() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="mt-3 text-3xl font-bold text-slate-900 md:text-4xl"
+          className="mt-3 text-2xl font-bold text-slate-900 md:text-4xl"
         >
           파란컴퍼니가 만드는 행사
         </motion.h2>
@@ -702,13 +713,14 @@ function AccordionServices() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="mt-3 text-slate-500"
+          className="mt-2 text-sm text-slate-500 md:mt-3 md:text-base"
         >
           기획부터 운영까지, 행사의 모든 과정을 책임집니다
         </motion.p>
       </div>
 
-      <div className="mt-12 flex flex-wrap justify-center gap-[28px]">
+      {/* Desktop: card grid */}
+      <div className="mt-12 hidden flex-wrap justify-center gap-[28px] md:flex">
         {serviceItems.map((item, i) => (
           <ServiceCard
             key={item.number}
@@ -717,6 +729,77 @@ function AccordionServices() {
             onToggle={() => setOpenIdx(openIdx === i ? null : i)}
           />
         ))}
+      </div>
+
+      {/* Mobile: single card with arrows */}
+      <div className="mt-8 md:hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={mobileIdx}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden rounded-2xl bg-[#f8f9fa]"
+          >
+            <div className="relative h-[200px]">
+              <Image
+                src={serviceItems[mobileIdx].image}
+                alt={serviceItems[mobileIdx].title}
+                fill
+                className="object-contain"
+                sizes="100vw"
+              />
+            </div>
+            <div className="p-5">
+              <div className="flex items-baseline gap-2">
+                <span className="text-xs font-medium text-slate-400">{serviceItems[mobileIdx].number}</span>
+                <h3 className="text-lg font-bold text-slate-900">{serviceItems[mobileIdx].title}</h3>
+              </div>
+              <p className="mt-2 line-clamp-3 min-h-[3.75rem] text-xs leading-relaxed text-slate-600">
+                {serviceItems[mobileIdx].description}
+              </p>
+              <div className="mt-3 flex min-h-[2rem] flex-wrap gap-1.5">
+                {serviceItems[mobileIdx].tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full bg-slate-200/80 px-2.5 py-0.5 text-[10px] font-medium text-slate-700"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Navigation */}
+        <div className="mt-4 flex items-center justify-between">
+          <button
+            onClick={() => setMobileIdx((prev) => (prev - 1 + serviceItems.length) % serviceItems.length)}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition-colors hover:bg-slate-100"
+            aria-label="이전"
+          >
+            <ArrowRight className="h-4 w-4 rotate-180" />
+          </button>
+          <div className="flex gap-1.5">
+            {serviceItems.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setMobileIdx(i)}
+                className={`h-1.5 rounded-full transition-all ${i === mobileIdx ? "w-4 bg-blue-500" : "w-1.5 bg-slate-300"}`}
+                aria-label={`${i + 1}번째 서비스`}
+              />
+            ))}
+          </div>
+          <button
+            onClick={() => setMobileIdx((prev) => (prev + 1) % serviceItems.length)}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition-colors hover:bg-slate-100"
+            aria-label="다음"
+          >
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </Section>
   );
@@ -849,7 +932,7 @@ function LogoGlobe() {
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
-      className="relative flex aspect-square w-full max-w-[600px] cursor-grab items-center justify-center select-none active:cursor-grabbing"
+      className="relative flex aspect-square w-full max-w-[600px] cursor-grab items-center justify-center overflow-hidden select-none active:cursor-grabbing"
     >
       {clientLogos.map((client, i) => {
         const pos = positions[i];
@@ -881,8 +964,8 @@ function LogoGlobe() {
 
 function ClientsSection() {
   return (
-    <Section className="py-20 md:py-28">
-      <div className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
+    <Section className="py-14 md:py-28">
+      <div className="grid items-center gap-8 md:grid-cols-2 md:gap-16">
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -961,8 +1044,10 @@ const teamCards: TeamCard[] = [
 ];
 
 function TeamSection() {
+  const [activeIdx, setActiveIdx] = useState(0);
+
   return (
-    <Section className="py-20 md:py-28">
+    <Section className="py-12 md:py-28">
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -984,7 +1069,8 @@ function TeamSection() {
           전문 조직
         </motion.h2>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        {/* Desktop: 3-column grid */}
+        <div className="mt-12 hidden gap-6 md:grid md:grid-cols-3">
           {teamCards.map((card, i) => (
             <motion.div
               key={card.enLabel}
@@ -1013,6 +1099,71 @@ function TeamSection() {
             </motion.div>
           ))}
         </div>
+
+        {/* Mobile: single card with arrows + animation */}
+        <div className="mt-8 md:hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIdx}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.25 }}
+              className="overflow-hidden rounded-2xl border border-slate-200 p-5"
+            >
+              <div className="flex items-start gap-4">
+                <div className="inline-flex h-14 w-14 shrink-0 items-center justify-center">
+                  <Image
+                    src={teamCards[activeIdx].icon}
+                    alt={teamCards[activeIdx].label}
+                    width={56}
+                    height={56}
+                    className="h-12 w-12"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900">
+                    {teamCards[activeIdx].label}
+                  </h3>
+                  <p className="font-display text-[10px] tracking-wider text-slate-400">
+                    {teamCards[activeIdx].enLabel}
+                  </p>
+                </div>
+              </div>
+              <p className="mt-3 text-xs leading-relaxed text-slate-600">
+                {teamCards[activeIdx].description}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation */}
+          <div className="mt-4 flex items-center justify-between">
+            <button
+              onClick={() => setActiveIdx((prev) => (prev - 1 + teamCards.length) % teamCards.length)}
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition-colors hover:bg-slate-100"
+              aria-label="이전"
+            >
+              <ArrowRight className="h-4 w-4 rotate-180" />
+            </button>
+            <div className="flex gap-1.5">
+              {teamCards.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveIdx(i)}
+                  className={`h-1.5 rounded-full transition-all ${i === activeIdx ? "w-4 bg-blue-500" : "w-1.5 bg-slate-300"}`}
+                  aria-label={`${i + 1}번째 카드`}
+                />
+              ))}
+            </div>
+            <button
+              onClick={() => setActiveIdx((prev) => (prev + 1) % teamCards.length)}
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition-colors hover:bg-slate-100"
+              aria-label="다음"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
       </motion.div>
     </Section>
   );
@@ -1031,7 +1182,7 @@ function BlogSection({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) return null;
 
   return (
-    <Section className="py-20 md:py-28">
+    <Section className="py-12 md:py-28">
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -1065,44 +1216,44 @@ function BlogSection({ posts }: { posts: BlogPost[] }) {
           </motion.div>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-8 grid grid-cols-2 gap-3 md:mt-12 md:gap-6">
           {posts.map((post, i) => (
             <motion.div key={post.id} variants={fadeUp} custom={i + 2}>
               <Link
                 href={`/blog/${post.slug}`}
-                className="group grid gap-5 rounded-2xl border border-slate-200 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg sm:grid-cols-[1fr_140px]"
+                className="group flex flex-col gap-3 rounded-xl border border-slate-200 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg md:grid md:grid-cols-[1fr_140px] md:gap-5 md:rounded-2xl md:p-5"
               >
-                <div className="flex flex-col justify-between">
-                  <div>
-                    {post.category && (
-                      <span className="text-xs font-medium text-blue-500">
-                        {post.category}
-                      </span>
-                    )}
-                    <h3 className="mt-1 line-clamp-2 text-base font-semibold text-slate-900 transition-colors group-hover:text-blue-600 md:text-lg">
-                      {post.title}
-                    </h3>
-                    {post.excerpt && (
-                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-500">
-                        {post.excerpt}
-                      </p>
-                    )}
-                  </div>
-                  <p className="mt-3 text-xs text-slate-400">
-                    {post.publishedAt ? formatDate(post.publishedAt) : ""}
-                  </p>
-                </div>
                 {post.thumbnailUrl && (
-                  <div className="relative hidden aspect-[4/3] overflow-hidden rounded-xl sm:block">
+                  <div className="relative aspect-[16/9] overflow-hidden rounded-lg md:order-2 md:aspect-[4/3] md:rounded-xl">
                     <Image
                       src={post.thumbnailUrl}
                       alt={post.title}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      sizes="140px"
+                      sizes="(max-width: 768px) 45vw, 140px"
                     />
                   </div>
                 )}
+                <div className="flex flex-col justify-between md:order-1">
+                  <div>
+                    {post.category && (
+                      <span className="text-[10px] font-medium text-blue-500 md:text-xs">
+                        {post.category}
+                      </span>
+                    )}
+                    <h3 className="mt-0.5 line-clamp-2 text-sm font-semibold text-slate-900 transition-colors group-hover:text-blue-600 md:mt-1 md:text-lg">
+                      {post.title}
+                    </h3>
+                    {post.excerpt && (
+                      <p className="mt-1 line-clamp-2 hidden text-sm leading-relaxed text-slate-500 md:block">
+                        {post.excerpt}
+                      </p>
+                    )}
+                  </div>
+                  <p className="mt-2 text-[10px] text-slate-400 md:mt-3 md:text-xs">
+                    {post.publishedAt ? formatDate(post.publishedAt) : ""}
+                  </p>
+                </div>
               </Link>
             </motion.div>
           ))}

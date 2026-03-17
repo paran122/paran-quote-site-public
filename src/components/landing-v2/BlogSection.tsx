@@ -2,38 +2,53 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
+import BlogCardStack, { BlogFixedCard } from "./BlogCardStack";
 import type { BlogPost } from "@/types";
 
-function formatDate(dateStr?: string) {
-  if (!dateStr) return "";
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return "";
-  return `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).padStart(2, "0")}.${String(d.getUTCDate()).padStart(2, "0")}`;
-}
+const GUIDE_CATEGORIES = ["기획 가이드", "현장 노하우", "행사 정보"];
 
 export default function BlogSection() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [eventPosts, setEventPosts] = useState<BlogPost[]>([]);
+  const [guidePost, setGuidePost] = useState<BlogPost | null>(null);
 
   useEffect(() => {
-    // 랜딩페이지에는 행사 사례(행사 기획/후기)만 표시, SEO 가이드 글 제외
-    Promise.all([
+    const eventFetches = Promise.all([
       fetch("/api/blog?page=1&category=행사 기획").then((r) => r.ok ? r.json() : { posts: [] }),
       fetch("/api/blog?page=1&category=행사 후기").then((r) => r.ok ? r.json() : { posts: [] }),
-    ])
-      .then(([a, b]: { posts: BlogPost[] }[]) => {
-        const merged = [...a.posts, ...b.posts]
-          .sort((x, y) => new Date(y.publishedAt || y.createdAt || "").getTime() - new Date(x.publishedAt || x.createdAt || "").getTime())
-          .slice(0, 3);
-        setPosts(merged);
+    ]).then(([a, b]: { posts: BlogPost[] }[]) =>
+      [...a.posts, ...b.posts]
+        .filter((p, i, arr) => arr.findIndex((q) => q.id === p.id) === i)
+        .sort((x, y) =>
+          new Date(y.publishedAt || y.createdAt || "").getTime() -
+          new Date(x.publishedAt || x.createdAt || "").getTime()
+        )
+    );
+
+    const guideFetches = Promise.all(
+      GUIDE_CATEGORIES.map((cat) =>
+        fetch(`/api/blog?page=1&category=${encodeURIComponent(cat)}`)
+          .then((r) => r.ok ? r.json() : { posts: [] })
+      )
+    ).then((results: { posts: BlogPost[] }[]) => {
+      const all = results.flatMap((r) => r.posts);
+      if (all.length === 0) return null;
+      return all[Math.floor(Math.random() * all.length)];
+    });
+
+    Promise.all([eventFetches, guideFetches])
+      .then(([events, guide]) => {
+        setEventPosts(events);
+        setGuidePost(guide);
       })
       .catch(() => {});
   }, []);
 
-  if (posts.length === 0) return <section id="blog" />;
+  if (eventPosts.length === 0) return <section id="blog" />;
+
+  const leftPosts = eventPosts.filter((_, i) => i % 2 === 0);
+  const rightPosts = eventPosts.filter((_, i) => i % 2 === 1);
 
   return (
     <section id="blog" className="relative overflow-hidden bg-[#f8f9fb] px-4 py-10 md:px-12 md:py-24 lg:px-20">
@@ -51,51 +66,29 @@ export default function BlogSection() {
           </p>
         </BlurFade>
 
-        {/* 카드 그리드 */}
-        <div className={`grid gap-6 ${posts.length === 1 ? "mx-auto max-w-md" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
-          {posts.map((post, i) => (
-            <motion.div
-              key={post.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.12, duration: 0.5 }}
-            >
-              <Link href={`/blog/${post.slug}`} className="group block">
-                <div className="overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md">
-                  {/* 이미지 */}
-                  <div className="relative aspect-[3/2] overflow-hidden">
-                    <Image
-                      src={post.thumbnailUrl || "/blog-default-thumbnail.png"}
-                      alt={post.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, 400px"
-                    />
-                  </div>
-                  {/* 텍스트 */}
-                  <div className="p-4 md:p-5">
-                    {post.category && (
-                      <span className="text-[12px] font-semibold text-blue-500">
-                        {post.category}
-                      </span>
-                    )}
-                    <h3 className="mt-1 line-clamp-2 text-[15px] font-bold leading-snug text-gray-900 md:text-[17px]">
-                      {post.title}
-                    </h3>
-                    {post.excerpt && (
-                      <p className="mt-1.5 line-clamp-2 text-[12px] leading-relaxed text-gray-500 md:text-[13px]">
-                        {post.excerpt}
-                      </p>
-                    )}
-                    <p className="mt-2 text-[11px] text-gray-400">
-                      {formatDate(post.publishedAt || post.createdAt)}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+        {/* 3열 레이아웃: 카드스택 | 고정 | 카드스택 */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {/* 1번: 왼쪽 카드 스택 */}
+          <div className="relative">
+            <BlogCardStack posts={leftPosts} interval={4000} />
+          </div>
+
+          {/* 2번: 가운데 고정 카드 */}
+          <div className="relative hidden sm:block">
+            {guidePost ? (
+              <BlogFixedCard post={guidePost} />
+            ) : eventPosts[1] ? (
+              <BlogFixedCard post={eventPosts[1]} />
+            ) : null}
+          </div>
+
+          {/* 3번: 오른쪽 카드 스택 */}
+          <div className="relative hidden lg:block">
+            <BlogCardStack
+              posts={rightPosts.length > 0 ? rightPosts : leftPosts}
+              interval={6000}
+            />
+          </div>
         </div>
 
         {/* CTA 버튼 */}

@@ -7,7 +7,6 @@ function initClient() {
   }
   try {
     return createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
-      db: { schema: "quote_site" },
       global: {
         fetch: (url, options = {}) => fetch(url, { ...options, cache: "no-store" }),
       },

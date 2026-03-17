@@ -6,7 +6,7 @@ function getClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) throw new Error("Missing Supabase env vars");
-  return createClient(url, key, { db: { schema: "quote_site" } });
+  return createClient(url, key);
 }
 
 /** 서버 전용 Supabase 클라이언트 (service_role 키) */
@@ -14,7 +14,7 @@ function getAdminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) throw new Error("Missing Supabase admin env vars");
-  return createClient(url, key, { db: { schema: "quote_site" } });
+  return createClient(url, key);
 }
 
 /** Storage 파일 삭제 (Supabase SDK) */

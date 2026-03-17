@@ -36,6 +36,11 @@
   color: #C7D2FE;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 body {
   color: var(--color-fg);
   background: var(--color-bg);

@@ -62,7 +62,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Supabase not configured" }, { status: 500 });
     }
     const db = createClient(url, anonKey, {
-      db: { schema: "quote_site" },
       auth: { persistSession: false, autoRefreshToken: false },
     });
     const { error: dbError } = await db.from("quotes").insert({
