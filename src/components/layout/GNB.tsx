@@ -59,7 +59,7 @@ export default function GNB() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-blue-400/10 bg-[#0f1a3c] backdrop-blur-xl">
-      <div className="flex items-center justify-between px-6 py-3 md:px-8 lg:pl-44">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-5 py-3 md:px-8">
         {/* Logo */}
         <a
           href="/"
@@ -108,15 +108,15 @@ export default function GNB() {
           >
             <motion.span
               animate={mobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-              className="block h-0.5 w-6 bg-white/70"
+              className="block h-0.5 w-6 bg-white"
             />
             <motion.span
               animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="block h-0.5 w-6 bg-white/70"
+              className="block h-0.5 w-6 bg-white"
             />
             <motion.span
               animate={mobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-              className="block h-0.5 w-6 bg-white/70"
+              className="block h-0.5 w-6 bg-white"
             />
           </button>
         </div>

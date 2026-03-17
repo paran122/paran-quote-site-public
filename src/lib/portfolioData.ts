@@ -1,6 +1,6 @@
 import { Portfolio } from "@/types";
 
-const S = "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/portfolio";
+const S = "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio";
 
 export const PORTFOLIOS: Portfolio[] = [
   {
