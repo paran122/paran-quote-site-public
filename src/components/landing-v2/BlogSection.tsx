@@ -19,9 +19,17 @@ export default function BlogSection() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
-    fetch("/api/blog?page=1")
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((data: { posts: BlogPost[] }) => setPosts(data.posts.slice(0, 3)))
+    // 랜딩페이지에는 행사 사례(행사 기획/후기)만 표시, SEO 가이드 글 제외
+    Promise.all([
+      fetch("/api/blog?page=1&category=행사 기획").then((r) => r.ok ? r.json() : { posts: [] }),
+      fetch("/api/blog?page=1&category=행사 후기").then((r) => r.ok ? r.json() : { posts: [] }),
+    ])
+      .then(([a, b]: { posts: BlogPost[] }[]) => {
+        const merged = [...a.posts, ...b.posts]
+          .sort((x, y) => new Date(y.publishedAt || y.createdAt || "").getTime() - new Date(x.publishedAt || x.createdAt || "").getTime())
+          .slice(0, 3);
+        setPosts(merged);
+      })
       .catch(() => {});
   }, []);
 

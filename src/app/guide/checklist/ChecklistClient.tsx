@@ -82,6 +82,14 @@ export default function ChecklistClient() {
       description="기획부터 마무리까지, 빠짐없이 준비하는 4단계 체크리스트"
     >
       <div className="space-y-8">
+        {/* 안내 문구 */}
+        <div className="rounded-lg border border-blue-100 bg-blue-50/60 px-4 py-3">
+          <p className="text-sm leading-relaxed text-slate-600">
+            아래 체크리스트는 행사 준비 전반을 위한 <span className="font-medium text-slate-800">참고용 가이드</span>입니다.
+            파란컴퍼니의 서비스 범위는 행사 유형과 규모에 따라 달라지며, 상담을 통해 맞춤 안내해 드립니다.
+          </p>
+        </div>
+
         {stages.map((stage, si) => (
           <div
             key={si}

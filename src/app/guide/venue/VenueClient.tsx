@@ -6,7 +6,7 @@ import { MapPin } from "lucide-react";
 interface VenueType {
   title: string;
   capacity: string;
-  priceRange: string;
+  costLevel: string;
   pros: string[];
   cons: string[];
   bestFor: string;
@@ -16,14 +16,14 @@ const venueTypes: VenueType[] = [
   {
     title: "호텔 연회장·그랜드볼룸",
     capacity: "100 ~ 500명",
-    priceRange: "200만 ~ 800만 원",
+    costLevel: "비용 높음",
     pros: [
       "고급스러운 분위기, 음향·조명 시설 완비",
       "케이터링·주차 등 부대시설 일괄 제공",
       "VIP 의전에 적합한 별도 대기실",
     ],
     cons: [
-      "대관료가 비교적 높음",
+      "비용이 비교적 높음",
       "외부 장비 반입 제한이 있을 수 있음",
       "주말·성수기 예약 경쟁 치열",
     ],
@@ -32,7 +32,7 @@ const venueTypes: VenueType[] = [
   {
     title: "컨벤션센터·전시관",
     capacity: "200 ~ 1,000명 이상",
-    priceRange: "300만 ~ 1,500만 원",
+    costLevel: "비용 높음",
     pros: [
       "대규모 행사에 적합한 넓은 공간",
       "전시 부스 설치 등 자유로운 공간 활용",
@@ -48,9 +48,9 @@ const venueTypes: VenueType[] = [
   {
     title: "대학교·공공기관 강당",
     capacity: "50 ~ 300명",
-    priceRange: "무료 ~ 100만 원",
+    costLevel: "비용 낮음",
     pros: [
-      "대관료가 저렴하거나 무료",
+      "비용이 저렴하거나 무료인 경우가 많음",
       "프로젝터·마이크 등 기본 장비 구비",
       "교육·학술 행사의 공신력 확보",
     ],
@@ -64,7 +64,7 @@ const venueTypes: VenueType[] = [
   {
     title: "연수원·리조트",
     capacity: "30 ~ 200명",
-    priceRange: "150만 ~ 500만 원 (숙박 별도)",
+    costLevel: "비용 보통",
     pros: [
       "숙박+교육 일체형 운영 가능",
       "외부 방해 없는 집중 환경",
@@ -80,10 +80,10 @@ const venueTypes: VenueType[] = [
   {
     title: "카페·세미나룸·공유 공간",
     capacity: "10 ~ 50명",
-    priceRange: "20만 ~ 80만 원",
+    costLevel: "비용 낮음",
     pros: [
       "소규모 행사에 적합한 아담한 공간",
-      "대관료가 저렴하고 예약이 간편",
+      "비용이 저렴하고 예약이 간편",
       "음료·다과 포함 가능",
     ],
     cons: [
@@ -113,8 +113,8 @@ export default function VenueClient() {
       <div className="space-y-8">
         <div className="rounded-lg border border-slate-200 bg-slate-50/60 p-4">
           <p className="text-sm leading-relaxed text-slate-500">
-            아래 대관료는 일반적인 시장 참고 범위이며, 실제 비용은 장소·시기·이용 조건에 따라 달라집니다.
-            파란컴퍼니의 서비스 비용과는 별도입니다.
+            아래 비용 등급은 장소 유형 간 상대적 비교를 위한 참고 정보입니다.
+            정확한 대관료는 장소·시기·이용 조건에 따라 달라지며, 상담 시 안내해 드립니다.
           </p>
         </div>
         {/* 장소 유형별 */}
@@ -135,7 +135,7 @@ export default function VenueClient() {
               </span>
             </div>
             <p className="mb-3 text-sm text-slate-500">
-              대관료 기준: <span className="font-medium text-slate-700">{venue.priceRange}</span>
+              대관료: <span className="font-medium text-slate-700">{venue.costLevel}</span>
             </p>
 
             <div className="grid gap-4 md:grid-cols-2">
