@@ -249,33 +249,6 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
           </motion.div>
         )}
 
-        {/* ═══ 행사 가이드 섹션 ═══ */}
-        {guideSectionPosts.length > 0 && (
-          <motion.div variants={fadeIn} className="mt-10 pt-6 sm:mt-24 sm:pt-16">
-            <div className="mb-10 flex items-end justify-between">
-              <div>
-                <h2 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
-                  EVENT GUIDE
-                </h2>
-                <p className="mt-1 text-[13px] text-slate-400">
-                  행사 기획에 필요한 실무 가이드
-                </p>
-              </div>
-              <button
-                onClick={() => setActiveCategory("기획 가이드")}
-                className="text-[13px] font-medium text-slate-500 hover:text-primary transition-colors"
-              >
-                전체 보기 →
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3">
-              {guideSectionPosts.slice(0, 3).map((post, i) => (
-                <ArticleCard key={post.id} post={post} index={i + 10} compact />
-              ))}
-            </div>
-          </motion.div>
-        )}
-
         {/* ═══ More Articles (Pitch 스타일 3열 이미지 카드 그리드) ═══ */}
         {(moreArticles.length > 0 || hasMoreToLoad) && (
           <motion.div variants={fadeIn} className="mt-10 pt-6 sm:mt-24 sm:pt-16">
@@ -320,6 +293,54 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
                 </button>
               </div>
             )}
+          </motion.div>
+        )}
+
+        {/* ═══ 행사 가이드 섹션 (신문 기사 스타일) ═══ */}
+        {guideSectionPosts.length > 0 && (
+          <motion.div variants={fadeIn} className="mt-10 pt-6 sm:mt-24 sm:pt-16">
+            <div className="mb-6 flex items-end justify-between sm:mb-8">
+              <div>
+                <h2 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
+                  EVENT GUIDE
+                </h2>
+                <p className="mt-1 text-[13px] text-slate-400">
+                  행사 기획에 필요한 실무 가이드
+                </p>
+              </div>
+              <button
+                onClick={() => setActiveCategory("기획 가이드")}
+                className="text-[13px] font-medium text-slate-500 hover:text-primary transition-colors"
+              >
+                전체 보기 →
+              </button>
+            </div>
+            <div className="divide-y divide-slate-200 border-t border-slate-200">
+              {guideSectionPosts.slice(0, 6).map((post) => (
+                <Link key={post.id} href={`/blog/${post.slug}`} className="group block py-4 sm:py-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 text-[12px] sm:text-[13px]">
+                        {post.category && (
+                          <span className="font-semibold text-[#4B5EDB]">{post.category}</span>
+                        )}
+                        <span className="text-slate-300">·</span>
+                        <span className="text-slate-400">{formatDate(post.publishedAt || post.createdAt)}</span>
+                      </div>
+                      <h3 className="mt-1 text-[15px] font-semibold leading-snug text-slate-900 transition-colors group-hover:text-primary sm:text-[16px]">
+                        {post.title}
+                      </h3>
+                      {post.excerpt && (
+                        <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-slate-500 sm:text-[14px]">
+                          {post.excerpt}
+                        </p>
+                      )}
+                    </div>
+                    <ArrowRight className="mt-3 h-4 w-4 flex-shrink-0 text-slate-300 transition-all group-hover:translate-x-0.5 group-hover:text-primary sm:mt-4" />
+                  </div>
+                </Link>
+              ))}
+            </div>
           </motion.div>
         )}
 

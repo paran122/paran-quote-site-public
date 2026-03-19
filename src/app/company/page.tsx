@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import CompanyPage from "@/components/company/CompanyPage";
-import { fetchPublishedBlogPosts } from "@/lib/queries";
+import { fetchCompanyBlogPosts } from "@/lib/queries";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://parancompany.co.kr";
@@ -22,9 +22,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Company() {
-  let blogPosts: Awaited<ReturnType<typeof fetchPublishedBlogPosts>> = [];
+  let blogPosts: Awaited<ReturnType<typeof fetchCompanyBlogPosts>> = [];
   try {
-    blogPosts = await fetchPublishedBlogPosts(undefined, 4, 0);
+    blogPosts = await fetchCompanyBlogPosts();
   } catch {
     blogPosts = [];
   }

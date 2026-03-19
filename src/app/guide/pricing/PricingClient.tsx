@@ -4,84 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import GuideClient from "../GuideClient";
-
-interface PriceItem {
-  name: string;
-  range: string;
-  note: string;
-}
-
-interface PriceCategory {
-  title: string;
-  items: PriceItem[];
-}
-
-const priceCategories: PriceCategory[] = [
-  {
-    title: "기획·운영",
-    items: [
-      { name: "기획·운영 (세미나·컨퍼런스)", range: "500만 원~", note: "기획안, 운영 매뉴얼, 타임테이블, 예산안, 현장 운영 포함" },
-      { name: "기획·운영 (포럼)", range: "700만 원~", note: "패널 토론 구성, 통역 연계, 현장 운영 포함" },
-      { name: "결과보고서", range: "150만 원~", note: "행사 성과 분석 및 결과 보고서 작성" },
-    ],
-  },
-  {
-    title: "디자인·시안물",
-    items: [
-      { name: "포스터", range: "50만 원~", note: "웹용·인쇄용 동시 제작" },
-      { name: "메인 현수막", range: "20만 원~", note: "디자인 시안 제공, 출력·설치 포함" },
-      { name: "배너·엑스배너", range: "15만 원~", note: "디자인 시안 제공" },
-      { name: "자료집·리플렛", range: "100만 원~", note: "편집 디자인 + 인쇄·제본" },
-      { name: "참가자 키트", range: "5만 원~", note: "명찰, 자료, 기념품 등 1세트 기준" },
-    ],
-  },
-  {
-    title: "영상·촬영",
-    items: [
-      { name: "영상 촬영", range: "200만 원~", note: "현장 촬영 + 하이라이트 편집 영상" },
-      { name: "하이브리드 중계", range: "300만 원~", note: "온·오프라인 동시 생중계" },
-    ],
-  },
-  {
-    title: "특수 서비스",
-    items: [
-      { name: "연사 섭외", range: "200만 원~", note: "전문 연사 매칭 및 섭외 대행" },
-      { name: "통역 서비스", range: "200만 원~", note: "동시통역 장비 + 통역사" },
-      { name: "공간 디자인", range: "800만 원~", note: "축제·페스티벌 공간 연출" },
-      { name: "무대 설치", range: "500만 원~", note: "무대 구조물 설치·철거" },
-      { name: "체험부스", range: "100만 원~", note: "참여형 체험 부스 1개 기준" },
-      { name: "안전관리", range: "500만 원~", note: "안전요원 배치 및 안전 관리 계획" },
-    ],
-  },
-];
-
-interface PackageExample {
-  title: string;
-  scale: string;
-  range: string;
-  includes: string[];
-}
-
-const packageExamples: PackageExample[] = [
-  {
-    title: "소규모 세미나",
-    scale: "30~50명",
-    range: "700만 원~",
-    includes: ["기획·운영", "포스터", "현수막·배너", "참가자 키트", "결과보고서"],
-  },
-  {
-    title: "중규모 컨퍼런스",
-    scale: "100~200명",
-    range: "1,500만 원~",
-    includes: ["기획·운영", "포스터", "현수막·배너", "참가자 키트", "자료집", "영상 촬영", "연사 섭외", "결과보고서"],
-  },
-  {
-    title: "대규모 포럼·국제행사",
-    scale: "300~500명",
-    range: "2,000만 원~",
-    includes: ["기획·운영", "포스터", "현수막·배너", "참가자 키트", "자료집", "영상 촬영", "연사 섭외", "통역 서비스", "하이브리드 중계", "결과보고서"],
-  },
-];
+import { PRICE_CATEGORIES, PACKAGE_EXAMPLES, formatPriceRange } from "@/lib/pricing";
 
 export default function PricingClient() {
   return (
@@ -99,7 +22,7 @@ export default function PricingClient() {
         </div>
 
         {/* 항목별 비용 */}
-        {priceCategories.map((cat, ci) => (
+        {PRICE_CATEGORIES.map((cat, ci) => (
           <div
             key={ci}
             className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm md:p-6"
@@ -123,7 +46,7 @@ export default function PricingClient() {
                         {item.name}
                         <p className="mt-0.5 text-xs text-slate-400 md:hidden">{item.note}</p>
                       </td>
-                      <td className="py-2.5 align-top font-medium text-blue-600">{item.range}</td>
+                      <td className="py-2.5 align-top font-medium text-blue-600">{formatPriceRange(item.price)}</td>
                       <td className="hidden py-2.5 text-slate-500 md:table-cell">{item.note}</td>
                     </tr>
                   ))}
@@ -141,7 +64,7 @@ export default function PricingClient() {
           <p className="mb-4 text-xs text-slate-400">실제 견적은 포함 항목에 따라 달라집니다</p>
           {/* Desktop: 3-column grid */}
           <div className="hidden gap-4 md:grid md:grid-cols-3">
-            {packageExamples.map((pkg, pi) => (
+            {PACKAGE_EXAMPLES.map((pkg, pi) => (
               <div key={pi} className="rounded-lg border border-slate-100 p-4">
                 <h3 className="text-sm font-semibold text-slate-900">{pkg.title}</h3>
                 <p className="mt-0.5 text-xs text-slate-500">{pkg.scale}</p>
@@ -158,7 +81,7 @@ export default function PricingClient() {
             ))}
           </div>
           {/* Mobile: single card with arrows */}
-          <PackageSlider packages={packageExamples} />
+          <PackageSlider packages={PACKAGE_EXAMPLES} />
         </div>
 
         {/* 비용 절감 팁 */}
@@ -186,7 +109,7 @@ export default function PricingClient() {
 }
 
 /* Mobile package slider with arrows */
-function PackageSlider({ packages }: { packages: typeof packageExamples }) {
+function PackageSlider({ packages }: { packages: typeof PACKAGE_EXAMPLES }) {
   const [idx, setIdx] = useState(0);
   const pkg = packages[idx];
 

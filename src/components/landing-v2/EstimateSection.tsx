@@ -7,6 +7,7 @@ import { Mic, MessageSquare, PartyPopper, PenTool, Check, Plus, Minus, X, Chevro
 import type { LucideIcon } from "lucide-react";
 import { showToast } from "@/components/ui/Toast";
 import { BorderBeam } from "@/components/ui/border-beam";
+import { ESTIMATE_EVENT_TYPES, formatPriceWon } from "@/lib/pricing";
 
 interface EstimateItem {
   name: string;
@@ -25,86 +26,21 @@ interface EventType {
   items: EstimateItem[];
 }
 
-const eventTypes: EventType[] = [
-  {
-    id: "seminar",
-    name: "세미나·컨퍼런스",
-    desc: "전문 발표와 네트워킹 중심의 행사",
-    icon: Mic,
-    bg: "bg-gray-100/80",
-    iconBg: "bg-gray-200/80",
-    items: [
-      { name: "기획·운영", price: 500, unit: "식", default: true },
-      { name: "포스터", price: 50, unit: "종" },
-      { name: "엑스배너", price: 15, unit: "개" },
-      { name: "현수막", price: 20, unit: "개" },
-      { name: "참가자 키트", price: 5, unit: "세트" },
-      { name: "연사 섭외", price: 200, unit: "명" },
-      { name: "영상 촬영", price: 200, unit: "건" },
-      { name: "결과보고서", price: 150, unit: "건", default: true },
-    ],
-  },
-  {
-    id: "forum",
-    name: "포럼",
-    desc: "토론·패널 중심의 전문가 회의",
-    icon: MessageSquare,
-    bg: "bg-gray-100/80",
-    iconBg: "bg-gray-200/80",
-    items: [
-      { name: "기획·운영", price: 700, unit: "식", default: true },
-      { name: "포스터", price: 50, unit: "종" },
-      { name: "엑스배너", price: 15, unit: "개" },
-      { name: "현수막", price: 20, unit: "개" },
-      { name: "통역 서비스", price: 200, unit: "건" },
-      { name: "하이브리드 중계", price: 300, unit: "건" },
-      { name: "영상 촬영", price: 200, unit: "건" },
-      { name: "결과보고서", price: 150, unit: "건", default: true },
-    ],
-  },
-  {
-    id: "festival",
-    name: "축제·페스티벌",
-    desc: "대중 참여형 문화·체험 행사",
-    icon: PartyPopper,
-    bg: "bg-gray-100/80",
-    iconBg: "bg-gray-200/80",
-    items: [
-      { name: "기획·운영", price: 1500, unit: "식", default: true },
-      { name: "공간 디자인", price: 800, unit: "식", default: true },
-      { name: "현수막", price: 20, unit: "개" },
-      { name: "체험부스", price: 100, unit: "개" },
-      { name: "무대 설치", price: 500, unit: "식" },
-      { name: "안전관리", price: 500, unit: "식", default: true },
-      { name: "영상 촬영", price: 300, unit: "건" },
-    ],
-  },
-  {
-    id: "editorial",
-    name: "편집 디자인",
-    desc: "인쇄물·리플렛·보고서 등 편집 디자인",
-    icon: PenTool,
-    bg: "bg-gray-100/80",
-    iconBg: "bg-gray-200/80",
-    items: [
-      { name: "컨셉 기획", price: 50, unit: "건", default: true },
-      { name: "편집 디자인", price: 100, unit: "건", default: true },
-      { name: "인포그래픽", price: 50, unit: "건" },
-      { name: "인쇄·제본", price: 50, unit: "건" },
-      { name: "PDF 납품", price: 10, unit: "건", default: true },
-    ],
-  },
-];
+const ICONS: Record<string, { icon: LucideIcon; bg: string; iconBg: string }> = {
+  seminar: { icon: Mic, bg: "bg-gray-100/80", iconBg: "bg-gray-200/80" },
+  forum: { icon: MessageSquare, bg: "bg-gray-100/80", iconBg: "bg-gray-200/80" },
+  festival: { icon: PartyPopper, bg: "bg-gray-100/80", iconBg: "bg-gray-200/80" },
+  editorial: { icon: PenTool, bg: "bg-gray-100/80", iconBg: "bg-gray-200/80" },
+};
 
-function formatPrice(price: number): string {
-  if (price >= 10000) {
-    const eok = Math.floor(price / 10000);
-    const man = price % 10000;
-    if (man === 0) return `${eok}억원`;
-    return `${eok}억 ${man.toLocaleString()}만원`;
-  }
-  return `${price.toLocaleString()}만원`;
-}
+const eventTypes: EventType[] = ESTIMATE_EVENT_TYPES.map((et) => ({
+  ...et,
+  icon: ICONS[et.id]?.icon ?? Mic,
+  bg: ICONS[et.id]?.bg ?? "bg-gray-100/80",
+  iconBg: ICONS[et.id]?.iconBg ?? "bg-gray-200/80",
+}));
+
+const formatPrice = formatPriceWon;
 
 interface CheckedState {
   [itemName: string]: { checked: boolean; qty: number };

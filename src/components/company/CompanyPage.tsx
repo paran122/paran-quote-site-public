@@ -613,7 +613,11 @@ const serviceItems: ServiceAccordionItem[] = [
   },
 ];
 
-function ServiceCard({ item, isOpen, onToggle }: { item: ServiceAccordionItem; isOpen: boolean; onToggle: () => void }) {
+function ServiceCard({ item, isOpen, onToggle }: {
+  item: ServiceAccordionItem;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
