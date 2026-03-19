@@ -81,11 +81,11 @@ export async function POST(
 
     // DB에 레코드 추가
     const db = getClient();
-    const { data: countData } = await db
+    const { count } = await db
       .from("portfolio_media")
       .select("id", { count: "exact", head: true })
       .eq("portfolio_id", params.id);
-    const sortOrder = (countData as unknown as number) ?? 0;
+    const sortOrder = count ?? 0;
 
     const { data, error } = await db
       .from("portfolio_media")

@@ -15,6 +15,16 @@ function getPassword(): string {
   return pw;
 }
 
+/** 상수 시간 문자열 비교 (타이밍 공격 방지) */
+function constantTimeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return result === 0;
+}
+
 /** HMAC-SHA256 서명 생성 (Web Crypto API) */
 async function sign(payload: string, secret: string): Promise<string> {
   const encoder = new TextEncoder();
@@ -52,7 +62,7 @@ export async function verifySessionToken(token: string): Promise<boolean> {
 
     const payload = atob(payloadB64);
     const expectedSig = await sign(payload, secret);
-    if (signature !== expectedSig) return false;
+    if (!constantTimeEqual(signature, expectedSig)) return false;
 
     const parsed = JSON.parse(payload) as { iat: number };
     const age = Date.now() - parsed.iat;
@@ -76,7 +86,7 @@ export async function setSessionCookie(token: string) {
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "strict",
     maxAge: MAX_AGE,
     path: "/",
   });

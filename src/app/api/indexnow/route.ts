@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isAuthenticated } from "@/lib/admin-auth";
 
-const INDEXNOW_KEY = "497ac1e5-881d-4017-a4c4-4aab16648794";
+const INDEXNOW_KEY = process.env.INDEXNOW_KEY || "";
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://parancompany.co.kr";
 
@@ -9,6 +10,15 @@ interface IndexNowRequestBody {
 }
 
 export async function POST(request: NextRequest) {
+  const authed = await isAuthenticated();
+  if (!authed) {
+    return NextResponse.json({ error: "인증이 필요합니다" }, { status: 401 });
+  }
+
+  if (!INDEXNOW_KEY) {
+    return NextResponse.json({ error: "INDEXNOW_KEY가 설정되지 않았습니다" }, { status: 500 });
+  }
+
   try {
     const body = (await request.json()) as IndexNowRequestBody;
     const { urls } = body;
@@ -63,8 +73,7 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   return NextResponse.json({
     service: "IndexNow",
-    key: INDEXNOW_KEY,
-    keyLocation: `${SITE_URL}/${INDEXNOW_KEY}.txt`,
+    configured: !!INDEXNOW_KEY,
     usage:
       'POST /api/indexnow with { "urls": ["/blog/slug", "/work"] }',
   });
