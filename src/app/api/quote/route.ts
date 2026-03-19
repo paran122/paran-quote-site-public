@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     if (dbError) {
       console.error("[api/quote] DB insert failed:", dbError);
       return NextResponse.json(
-        { error: "견적 저장에 실패했습니다", debug: dbError.message },
+        { error: "견적 저장에 실패했습니다" },
         { status: 500 }
       );
     }
@@ -116,11 +116,37 @@ export async function POST(request: Request) {
 
     const emailResult = await sendQuoteNotification(emailData);
 
-    return NextResponse.json({ success: true, email: emailResult });
+    // 알림톡 발송 (실패해도 성공 반환 — 이메일과 동일 정책)
+    let alimtalkResult = { success: false };
+    try {
+      if (isInquiry) {
+        const { sendInquiryAlimtalk } = await import("@/lib/alimtalk");
+        alimtalkResult = await sendInquiryAlimtalk({
+          phone: data.phone,
+          contactName: data.contact_name,
+          quoteNumber: data.quote_number,
+        });
+      } else {
+        const { sendQuoteAlimtalk } = await import("@/lib/alimtalk");
+        alimtalkResult = await sendQuoteAlimtalk({
+          phone: data.phone,
+          contactName: data.contact_name,
+          quoteNumber: data.quote_number,
+          organization: data.organization,
+          eventType: data.event_type || data.event_name,
+          eventDate: data.event_date,
+          totalAmount: data.total_amount,
+        });
+      }
+    } catch (alimtalkErr) {
+      console.error("[api/quote] Alimtalk send error:", alimtalkErr);
+    }
+
+    return NextResponse.json({ success: true, email: emailResult, alimtalk: alimtalkResult });
   } catch (err) {
     console.error("[api/quote] Unexpected error:", err);
     return NextResponse.json(
-      { error: "서버 오류가 발생했습니다", debug: String(err) },
+      { error: "서버 오류가 발생했습니다" },
       { status: 500 }
     );
   }

@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import DOMPurify from "isomorphic-dompurify";
 import { ChevronLeft, ChevronRight, X, ArrowLeft, ArrowRight } from "lucide-react";
 
 interface Props {
@@ -45,7 +46,8 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const { cleanHtml, gridImages } = extractPhotoGrid(html);
+  const { cleanHtml: rawCleanHtml, gridImages } = extractPhotoGrid(html);
+  const cleanHtml = useMemo(() => DOMPurify.sanitize(rawCleanHtml), [rawCleanHtml]);
 
   useEffect(() => {
     if (!contentRef.current) return;
@@ -59,6 +61,7 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
 
     // 본문 내 이미지 — noHero가 아닌 것만 수집 (중복 src 제외)
     const imgs = contentRef.current.querySelectorAll("img");
+    const cleanups: (() => void)[] = [];
     imgs.forEach((img) => {
       const noHero = img.hasAttribute("data-no-hero");
       if (!noHero && !seenSrcs.has(img.src)) {
@@ -70,7 +73,9 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
         const idx = list.findIndex((item) => item.src === img.src);
         if (idx >= 0) {
           img.classList.add("cursor-pointer");
-          img.addEventListener("click", () => setLightboxIndex(idx));
+          const handler = () => setLightboxIndex(idx);
+          img.addEventListener("click", handler);
+          cleanups.push(() => img.removeEventListener("click", handler));
         }
       }
     });
@@ -84,6 +89,7 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
     });
 
     setImages(list);
+    return () => { cleanups.forEach((fn) => fn()); };
   }, [html, thumbnailUrl, title, gridImages.length]);
 
   /* 캐러셀 스크롤 */
