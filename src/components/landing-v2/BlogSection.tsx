@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
-import BlogCardStack, { BlogFixedCard } from "./BlogCardStack";
+import BlogCardStack from "./BlogCardStack";
 import type { BlogPost } from "@/types";
 
 const GUIDE_CATEGORIES = ["기획 가이드", "현장 노하우", "행사 정보"];
 
 export default function BlogSection() {
   const [eventPosts, setEventPosts] = useState<BlogPost[]>([]);
-  const [guidePost, setGuidePost] = useState<BlogPost | null>(null);
+  const [guidePosts, setGuidePosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
     const eventFetches = Promise.all([
@@ -31,16 +31,18 @@ export default function BlogSection() {
         fetch(`/api/blog?page=1&category=${encodeURIComponent(cat)}`)
           .then((r) => r.ok ? r.json() : { posts: [] })
       )
-    ).then((results: { posts: BlogPost[] }[]) => {
-      const all = results.flatMap((r) => r.posts);
-      if (all.length === 0) return null;
-      return all[Math.floor(Math.random() * all.length)];
-    });
+    ).then((results: { posts: BlogPost[] }[]) =>
+      results.flatMap((r) => r.posts)
+        .sort((x, y) =>
+          new Date(y.publishedAt || y.createdAt || "").getTime() -
+          new Date(x.publishedAt || x.createdAt || "").getTime()
+        )
+    );
 
     Promise.all([eventFetches, guideFetches])
-      .then(([events, guide]) => {
+      .then(([events, guides]) => {
         setEventPosts(events);
-        setGuidePost(guide);
+        setGuidePosts(guides);
       })
       .catch(() => {});
   }, []);
@@ -73,13 +75,12 @@ export default function BlogSection() {
             <BlogCardStack posts={leftPosts} interval={4000} />
           </div>
 
-          {/* 2번: 가운데 고정 카드 */}
+          {/* 2번: 가운데 카드 스택 (가이드 카테고리) */}
           <div className="relative hidden sm:block">
-            {guidePost ? (
-              <BlogFixedCard post={guidePost} />
-            ) : eventPosts[1] ? (
-              <BlogFixedCard post={eventPosts[1]} />
-            ) : null}
+            <BlogCardStack
+              posts={guidePosts.length > 0 ? guidePosts : leftPosts}
+              interval={5000}
+            />
           </div>
 
           {/* 3번: 오른쪽 카드 스택 */}

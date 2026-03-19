@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronRight, AlertTriangle, Save, X, Mail, ArrowRight, CheckCircle } from "lucide-react";
+import { ChevronDown, ChevronRight, AlertTriangle, Save, X, CheckCircle } from "lucide-react";
 import { PulsatingButton } from "@/components/ui/pulsating-button";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import MovingBorderButton from "@/components/ui/MovingBorderButton";
@@ -45,8 +45,6 @@ const SECTIONS: Section[] = [
     title: "카드",
     components: [
       { name: "BlogPostCard (card-18)", path: "components/ui/card-18.tsx" },
-      { name: "ServiceCard", path: "components/cards/ServiceCard.tsx" },
-      { name: "PackageCard", path: "components/cards/PackageCard.tsx" },
       { name: "CardStack", path: "components/ui/CardStack.tsx" },
     ],
   },
@@ -67,8 +65,6 @@ const SECTIONS: Section[] = [
       { name: "Footer", path: "components/layout/Footer.tsx" },
       { name: "AdminSidebar", path: "components/admin/AdminSidebar.tsx" },
       { name: "AdminHeader", path: "components/admin/AdminHeader.tsx" },
-      { name: "CategoryTabs", path: "components/layout/CategoryTabs.tsx" },
-      { name: "CategorySidebar", path: "components/layout/CategorySidebar.tsx" },
       { name: "SiteShell", path: "components/layout/SiteShell.tsx" },
       { name: "PublicShell", path: "components/layout/PublicShell.tsx" },
     ],
@@ -251,39 +247,6 @@ function PreviewBlogPostCard() {
   );
 }
 
-function PreviewServiceCard() {
-  return (
-    <div className="flex justify-center">
-      <div className="w-[220px] rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-        <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
-          <Mail size={18} className="text-blue-500" />
-        </div>
-        <h3 className="text-[14px] font-bold text-slate-900">서비스 이름</h3>
-        <p className="mt-1 text-[12px] text-slate-500">서비스 설명 텍스트</p>
-        <span className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-primary">
-          자세히 <ArrowRight size={12} />
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function PreviewPackageCard() {
-  return (
-    <div className="flex justify-center">
-      <div className="w-[220px] rounded-xl border-2 border-primary bg-white p-4 shadow-sm">
-        <span className="mb-2 inline-block rounded-full bg-primary-50 px-2.5 py-0.5 text-[11px] font-bold text-primary">인기</span>
-        <h3 className="text-[14px] font-bold text-slate-900">스탠다드</h3>
-        <p className="mt-1 text-2xl font-bold text-slate-900">150<span className="text-[13px] font-normal text-slate-400">만원~</span></p>
-        <div className="mt-3 space-y-1.5">
-          <div className="flex items-center gap-1.5 text-[12px] text-slate-600"><CheckCircle size={12} className="text-emerald-500" /> 기본 음향/조명</div>
-          <div className="flex items-center gap-1.5 text-[12px] text-slate-600"><CheckCircle size={12} className="text-emerald-500" /> 진행 MC</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function PreviewCardStack() {
   return (
     <div className="flex justify-center">
@@ -423,18 +386,6 @@ function PreviewAdminSidebar() {
   );
 }
 
-function PreviewCategoryTabs() {
-  return (
-    <div className="flex gap-1.5">
-      {["전체", "컨퍼런스", "세미나", "기업행사"].map((cat, i) => (
-        <span key={cat} className={`rounded-full px-3 py-1 text-[12px] font-medium ${i === 0 ? "bg-slate-800 text-white" : "bg-white text-slate-500 border border-slate-200"}`}>
-          {cat}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 /* -- 랜딩 섹션 (미니 프리뷰) -- */
 function PreviewLandingSection({ label, gradient }: { label: string; gradient: string }) {
   return (
@@ -502,8 +453,6 @@ const PREVIEW_MAP: Record<string, React.ReactNode> = {
   "MovingBorderButton": <PreviewMovingBorderButton />,
   // 카드
   "BlogPostCard (card-18)": <PreviewBlogPostCard />,
-  "ServiceCard": <PreviewServiceCard />,
-  "PackageCard": <PreviewPackageCard />,
   "CardStack": <PreviewCardStack />,
   // 애니메이션
   "BlurFade": <PreviewBlurFade />,
@@ -515,7 +464,6 @@ const PREVIEW_MAP: Record<string, React.ReactNode> = {
   "GNB": <PreviewGNB />,
   "Footer": <PreviewFooter />,
   "AdminSidebar": <PreviewAdminSidebar />,
-  "CategoryTabs": <PreviewCategoryTabs />,
   // 랜딩 섹션
   "HeroParticle": <PreviewLandingSection label="Hero + Particles" gradient="from-slate-900 to-indigo-900" />,
   "AboutSection": <PreviewLandingSection label="About 소개" gradient="from-slate-50 to-blue-50" />,

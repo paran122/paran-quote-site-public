@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Category, Service, Package as PkgType, Portfolio, EventType, EventPhoto, EventReview, PortfolioMedia, BlogPost } from "@/types";
+import { Portfolio, EventPhoto, EventReview, PortfolioMedia, BlogPost } from "@/types";
 
 /** Supabase 클라이언트를 반환하거나, 미연결 시 에러를 throw (catalogStore catch에서 처리) */
 function requireClient() {
@@ -17,50 +17,6 @@ function mapRow<T>(row: Record<string, unknown>): T {
     result[camelKey] = row[key];
   }
   return result as T;
-}
-
-// ── 카테고리 ──
-export async function fetchCategories(): Promise<Category[]> {
-  const db = requireClient();
-  const { data, error } = await db
-    .from("categories")
-    .select("*")
-    .order("sort_order");
-  if (error) throw error;
-  return (data ?? []).map((r) => mapRow<Category>(r));
-}
-
-// ── 서비스 ──
-export async function fetchServices(): Promise<Service[]> {
-  const db = requireClient();
-  const { data, error } = await db
-    .from("services")
-    .select("*")
-    .order("sort_order");
-  if (error) throw error;
-  return (data ?? []).map((r) => mapRow<Service>(r));
-}
-
-export async function fetchServiceById(id: string): Promise<Service> {
-  const db = requireClient();
-  const { data, error } = await db
-    .from("services")
-    .select("*")
-    .eq("id", id)
-    .single();
-  if (error) throw error;
-  return mapRow<Service>(data);
-}
-
-// ── 패키지 ──
-export async function fetchPackages(): Promise<PkgType[]> {
-  const db = requireClient();
-  const { data, error } = await db
-    .from("packages")
-    .select("*")
-    .order("sort_order");
-  if (error) throw error;
-  return (data ?? []).map((r) => mapRow<PkgType>(r));
 }
 
 // ── 포트폴리오 ──
@@ -170,53 +126,6 @@ export async function fetchTopReviews(limit = 6): Promise<EventReview[]> {
 }
 
 // ── 행사 유형 ──
-export async function fetchEventTypes(): Promise<EventType[]> {
-  const db = requireClient();
-  const { data, error } = await db
-    .from("event_types")
-    .select("*")
-    .order("sort_order");
-  if (error) throw error;
-  return (data ?? []).map((r) => mapRow<EventType>(r));
-}
-
-export async function createEventType(data: {
-  key: string;
-  label: string;
-  emoji: string;
-  description: string;
-}) {
-  const db = requireClient();
-  const { data: row, error } = await db
-    .from("event_types")
-    .insert(data)
-    .select()
-    .single();
-  if (error) throw error;
-  return mapRow<EventType>(row);
-}
-
-export async function updateEventType(
-  id: string,
-  updates: Record<string, unknown>
-) {
-  const db = requireClient();
-  const { error } = await db
-    .from("event_types")
-    .update(updates)
-    .eq("id", id);
-  if (error) throw error;
-}
-
-export async function deleteEventType(id: string) {
-  const db = requireClient();
-  const { error } = await db
-    .from("event_types")
-    .delete()
-    .eq("id", id);
-  if (error) throw error;
-}
-
 // ── 사이트 설정 ──
 export interface SiteSetting {
   id: string;
@@ -370,89 +279,6 @@ export async function addAdminNote(
   return mapRow<AdminNote>(data);
 }
 
-// ── 서비스 CRUD (관리자) ──
-export async function createService(data: {
-  category_id: string;
-  category_key: string;
-  name: string;
-  emoji: string;
-  description: string;
-  base_price: number;
-}) {
-  const db = requireClient();
-  const { data: row, error } = await db
-    .from("services")
-    .insert(data)
-    .select()
-    .single();
-  if (error) throw error;
-  return mapRow<Service>(row);
-}
-
-export async function updateService(
-  id: string,
-  updates: Record<string, unknown>
-) {
-  const db = requireClient();
-  const { error } = await db
-    .from("services")
-    .update(updates)
-    .eq("id", id);
-  if (error) throw error;
-}
-
-export async function deleteService(id: string) {
-  const db = requireClient();
-  const { error } = await db
-    .from("services")
-    .delete()
-    .eq("id", id);
-  if (error) throw error;
-}
-
-// ── 패키지 CRUD (관리자) ──
-export async function createPackage(data: {
-  name: string;
-  emoji: string;
-  event_type: string;
-  discount_rate: number;
-  included_service_ids: string[];
-}) {
-  const db = requireClient();
-  const { data: row, error } = await db
-    .from("packages")
-    .insert({
-      ...data,
-      original_price: 0,
-      discount_price: 0,
-    })
-    .select()
-    .single();
-  if (error) throw error;
-  return mapRow<PkgType>(row);
-}
-
-export async function updatePackage(
-  id: string,
-  updates: Record<string, unknown>
-) {
-  const db = requireClient();
-  const { error } = await db
-    .from("packages")
-    .update(updates)
-    .eq("id", id);
-  if (error) throw error;
-}
-
-export async function deletePackage(id: string) {
-  const db = requireClient();
-  const { error } = await db
-    .from("packages")
-    .delete()
-    .eq("id", id);
-  if (error) throw error;
-}
-
 // ── 포트폴리오 CRUD (관리자) ──
 export async function updatePortfolio(
   id: string,
@@ -541,6 +367,38 @@ export async function fetchPublishedBlogPosts(
   const { data, error } = await query;
   if (error) throw error;
   return (data ?? []).map((r) => mapRow<BlogPost>(r));
+}
+
+/** 회사소개 페이지용: 행사기획/후기 최신 3개 + 나머지 카테고리 최신 1개 */
+export async function fetchCompanyBlogPosts(): Promise<BlogPost[]> {
+  const db = requireClient();
+  const now = new Date().toISOString();
+
+  const [mainRes, guideRes] = await Promise.all([
+    db
+      .from("blog_posts")
+      .select("*")
+      .eq("is_published", true)
+      .lte("published_at", now)
+      .in("category", ["행사 기획", "행사 후기"])
+      .order("published_at", { ascending: false })
+      .limit(3),
+    db
+      .from("blog_posts")
+      .select("*")
+      .eq("is_published", true)
+      .lte("published_at", now)
+      .not("category", "in", '("행사 기획","행사 후기")')
+      .order("published_at", { ascending: false })
+      .limit(1),
+  ]);
+
+  if (mainRes.error) throw mainRes.error;
+  if (guideRes.error) throw guideRes.error;
+
+  return [...(mainRes.data ?? []), ...(guideRes.data ?? [])].map((r) =>
+    mapRow<BlogPost>(r),
+  );
 }
 
 export async function fetchFeaturedBlogPosts(): Promise<BlogPost[]> {

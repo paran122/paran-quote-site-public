@@ -78,6 +78,9 @@ docs/.pdca-snapshots/
 docs/.pdca-status.json
 docs/.bkit-memory.json
 
+# Design asset candidates (AI-generated alternatives)
+/design-assets/
+
 # Designer source files
 /SVG/
 

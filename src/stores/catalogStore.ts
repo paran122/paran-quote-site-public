@@ -1,22 +1,16 @@
 "use client";
 
 import { create } from "zustand";
-import { Category, Service, Package as PkgType, Portfolio, EventType, PortfolioMedia } from "@/types";
-import { CATEGORIES, SERVICES, PACKAGES, EVENT_TYPES } from "@/lib/constants";
+import { Portfolio, PortfolioMedia } from "@/types";
 import { PORTFOLIOS } from "@/lib/portfolioData";
 
 interface CatalogStore {
-  categories: Category[];
-  services: Service[];
-  packages: PkgType[];
   portfolios: Portfolio[];
   portfolioMedia: PortfolioMedia[];
-  eventTypes: EventType[];
   loaded: boolean;
   fetchAll: () => Promise<void>;
   reload: () => Promise<void>;
 }
-
 
 async function fetchFromSupabase() {
   const queries = await import("@/lib/queries");
@@ -28,12 +22,8 @@ async function fetchFromSupabase() {
 }
 
 export const useCatalogStore = create<CatalogStore>((set, get) => ({
-  categories: CATEGORIES,
-  services: SERVICES,
-  packages: PACKAGES,
   portfolios: PORTFOLIOS,
   portfolioMedia: [],
-  eventTypes: EVENT_TYPES,
   loaded: false,
 
   fetchAll: async () => {
