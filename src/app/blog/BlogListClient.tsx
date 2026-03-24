@@ -228,7 +228,7 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
 
         {/* ═══ Sub-Featured (3열 이미지 카드) ═══ */}
         {subCards.length > 0 && (
-          <motion.div variants={fadeIn} className="-mx-6 mt-12 flex snap-x sm:mt-24 snap-mandatory gap-5 overflow-x-auto pl-6 pr-4 pb-2 scrollbar-hide sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-10 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
+          <motion.div variants={fadeIn} className="-mr-6 mt-12 flex snap-x sm:mt-24 snap-mandatory gap-5 overflow-x-auto pr-6 pb-2 scrollbar-hide sm:mr-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-10 sm:overflow-visible sm:pr-0 sm:pb-0 lg:grid-cols-3">
             {subCards.map((post, i) => (
               <div key={post.id} className="w-[80%] flex-shrink-0 snap-start sm:w-auto">
                 <ArticleCard post={post} index={i + 1} />
@@ -375,7 +375,7 @@ function ArticleCard({ post, index, compact }: { post: BlogPost; index: number; 
 
         {/* 제목 */}
         <h3 className={`mt-3 font-semibold leading-snug tracking-[-0.02em] text-slate-900 sm:mt-5 ${compact ? "line-clamp-2 text-[13px] sm:line-clamp-none sm:text-[18px]" : "text-[17px] sm:text-[18px]"}`}>
-          <span className="underline decoration-slate-900/40 underline-offset-[3px] transition-all duration-300 group-hover:text-primary group-hover:decoration-transparent">
+          <span className="underline decoration-slate-300/60 underline-offset-[3px] transition-all duration-300 group-hover:text-primary group-hover:decoration-transparent">
             {post.title}
           </span>
         </h3>
@@ -425,7 +425,7 @@ function EditorPickHero({ post }: { post: BlogPost }) {
               </span>
             )}
             <h3 className="line-clamp-2 text-[22px] font-semibold leading-snug tracking-[-0.02em] text-slate-900 sm:text-[26px]">
-              <span className="underline decoration-slate-900/40 underline-offset-[3px] transition-all duration-300 group-hover:text-primary group-hover:decoration-transparent">
+              <span className="underline decoration-slate-300/60 underline-offset-[3px] transition-all duration-300 group-hover:text-primary group-hover:decoration-transparent">
                 {post.title}
               </span>
             </h3>
