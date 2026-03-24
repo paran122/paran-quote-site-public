@@ -8,6 +8,7 @@ import {
   Briefcase,
   Monitor,
   Component,
+  ClipboardList,
   ChevronLeft,
   ChevronRight,
   X,
@@ -16,6 +17,7 @@ import { useState, useEffect } from "react";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "대시보드", icon: LayoutDashboard },
+  { href: "/admin/quotes", label: "견적 요청", icon: ClipboardList },
   { href: "/admin/blog", label: "블로그", icon: FileText },
   { href: "/admin/portfolio", label: "행사 관리", icon: Briefcase },
   { href: "/admin/photos", label: "Work 페이지", icon: Monitor },
