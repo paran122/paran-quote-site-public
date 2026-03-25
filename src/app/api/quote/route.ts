@@ -5,6 +5,22 @@ import {
   type QuoteEmailData,
 } from "@/lib/email/send-notification";
 
+// IP 기반 Rate Limiting (메모리 기반, 서버리스 환경에서도 동작)
+const rateLimit = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1분
+const RATE_LIMIT_MAX = 5; // 1분에 5회
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimit.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT_MAX;
+}
+
 // Zod 스키마
 const CartItemSchema = z.object({
   name: z.string(),
@@ -42,6 +58,14 @@ const QuoteRequestSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "너무 많은 요청입니다. 잠시 후 다시 시도해주세요." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const parsed = QuoteRequestSchema.safeParse(body);
 

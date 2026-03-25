@@ -74,10 +74,10 @@ export async function verifySessionToken(token: string): Promise<boolean> {
   }
 }
 
-/** 비밀번호 확인 */
+/** 비밀번호 확인 (상수 시간 비교로 타이밍 공격 방지) */
 export function verifyPassword(input: string): boolean {
   const pw = getPassword();
-  return input === pw;
+  return constantTimeEqual(input, pw);
 }
 
 /** 세션 쿠키 설정 */

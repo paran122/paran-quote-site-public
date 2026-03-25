@@ -301,52 +301,6 @@ export async function deletePortfolio(id: string) {
   if (error) throw error;
 }
 
-// ── 대시보드 통계 ──
-export interface DashboardStats {
-  monthlyQuotes: number;
-  totalServices: number;
-  totalPackages: number;
-  monthlyRevenue: number;
-}
-
-export async function fetchDashboardStats(): Promise<DashboardStats> {
-  const db = requireClient();
-  const now = new Date();
-  const firstDay = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-01`;
-
-  const [quotesRes, servicesRes, packagesRes] = await Promise.all([
-    db.from("quotes").select("total_amount").gte("created_at", firstDay),
-    db.from("services").select("id", { count: "exact", head: true }),
-    db.from("packages").select("id", { count: "exact", head: true }),
-  ]);
-
-  const monthQuotes = quotesRes.data ?? [];
-  const revenue = monthQuotes.reduce(
-    (sum, q) => sum + ((q.total_amount as number) || 0),
-    0
-  );
-
-  return {
-    monthlyQuotes: monthQuotes.length,
-    totalServices: servicesRes.count ?? 0,
-    totalPackages: packagesRes.count ?? 0,
-    monthlyRevenue: revenue,
-  };
-}
-
-export async function fetchRecentQuotes(
-  limit = 5
-): Promise<QuoteRow[]> {
-  const db = requireClient();
-  const { data, error } = await db
-    .from("quotes")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(limit);
-  if (error) throw error;
-  return (data ?? []).map((r) => mapRow<QuoteRow>(r));
-}
-
 // ── 블로그 포스트 ──
 export async function fetchPublishedBlogPosts(
   category?: string,

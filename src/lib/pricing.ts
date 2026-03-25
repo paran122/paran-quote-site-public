@@ -33,18 +33,26 @@ export const DESIGN_PRICES: PriceEntry[] = [
 
 /** 영상·촬영 */
 export const MEDIA_PRICES: PriceEntry[] = [
-  { name: "영상 촬영", price: 200, unit: "건", note: "현장 촬영 + 하이라이트 편집 영상" },
-  { name: "하이브리드 중계", price: 300, unit: "건", note: "온·오프라인 동시 생중계" },
+  { name: "영상 촬영", price: 200, unit: "건", note: "촬영 시간·편집 분량에 따라 변동" },
+  { name: "하이브리드 중계", price: 300, unit: "건", note: "카메라 대수·중계 시간에 따라 변동" },
 ];
 
 /** 특수 서비스 */
 export const SPECIAL_PRICES: PriceEntry[] = [
-  { name: "연사 섭외", price: 200, unit: "명", note: "전문 연사 매칭 및 섭외 대행" },
-  { name: "통역 서비스", price: 200, unit: "건", note: "동시통역 장비 + 통역사" },
-  { name: "공간 디자인", price: 800, unit: "식", note: "축제·페스티벌 공간 연출" },
-  { name: "무대 설치", price: 500, unit: "식", note: "무대 구조물 설치·철거" },
-  { name: "체험부스", price: 100, unit: "개", note: "참여형 체험 부스 1개 기준" },
-  { name: "안전관리", price: 500, unit: "식", note: "안전요원 배치 및 안전 관리 계획" },
+  { name: "연사 섭외", price: 200, unit: "명", note: "인지도·강연 시간에 따라 변동" },
+  { name: "통역 서비스", price: 200, unit: "건", note: "언어 수·시간에 따라 변동" },
+  { name: "공간 디자인", price: 800, unit: "식", note: "규모·연출 복잡도에 따라 변동" },
+  { name: "무대 설치", price: 500, unit: "식", note: "무대 크기·조명 포함 여부에 따라 변동" },
+  { name: "체험부스", price: 100, unit: "개", note: "체험 콘텐츠 종류에 따라 변동" },
+  { name: "안전관리", price: 500, unit: "식", note: "행사 규모·장소 특성에 따라 변동" },
+];
+
+/** 케이터링·식음 (1인당, 만원 단위) */
+export const CATERING_PRICES: PriceEntry[] = [
+  { name: "커피·다과 (1인당)", price: 1.5, unit: "인", note: "메뉴 구성·바리스타 유무에 따라 변동" },
+  { name: "도시락 (1인당)", price: 1.5, unit: "인", note: "메뉴 등급에 따라 변동" },
+  { name: "뷔페 케이터링 (1인당)", price: 2.5, unit: "인", note: "메뉴 수·코스 구성에 따라 변동" },
+  { name: "VIP 식사 (1인당)", price: 3.5, unit: "인", note: "장소·코스에 따라 변동" },
 ];
 
 /** 편집 디자인 (단품) */
@@ -67,6 +75,7 @@ export const PRICE_CATEGORIES: PriceCategory[] = [
   { title: "기획·운영", items: PLANNING_PRICES },
   { title: "디자인·시안물", items: DESIGN_PRICES },
   { title: "영상·촬영", items: MEDIA_PRICES },
+  { title: "케이터링·식음", items: CATERING_PRICES },
   { title: "특수 서비스", items: SPECIAL_PRICES },
 ];
 
@@ -127,6 +136,8 @@ export const ESTIMATE_EVENT_TYPES: EstimateEventType[] = [
       { name: "참가자 키트", price: p(DESIGN_PRICES, "참가자 키트"), unit: "세트" },
       { name: "연사 섭외", price: p(SPECIAL_PRICES, "연사 섭외"), unit: "명" },
       { name: "영상 촬영", price: p(MEDIA_PRICES, "영상 촬영"), unit: "건" },
+      { name: "커피·다과", price: p(CATERING_PRICES, "커피·다과 (1인당)"), unit: "인" },
+      { name: "뷔페 케이터링", price: p(CATERING_PRICES, "뷔페 케이터링 (1인당)"), unit: "인" },
       { name: "결과보고서", price: p(PLANNING_PRICES, "결과보고서"), unit: "건", default: true },
     ],
   },
@@ -142,6 +153,8 @@ export const ESTIMATE_EVENT_TYPES: EstimateEventType[] = [
       { name: "통역 서비스", price: p(SPECIAL_PRICES, "통역 서비스"), unit: "건" },
       { name: "하이브리드 중계", price: p(MEDIA_PRICES, "하이브리드 중계"), unit: "건" },
       { name: "영상 촬영", price: p(MEDIA_PRICES, "영상 촬영"), unit: "건" },
+      { name: "커피·다과", price: p(CATERING_PRICES, "커피·다과 (1인당)"), unit: "인" },
+      { name: "뷔페 케이터링", price: p(CATERING_PRICES, "뷔페 케이터링 (1인당)"), unit: "인" },
       { name: "결과보고서", price: p(PLANNING_PRICES, "결과보고서"), unit: "건", default: true },
     ],
   },
@@ -157,6 +170,8 @@ export const ESTIMATE_EVENT_TYPES: EstimateEventType[] = [
       { name: "무대 설치", price: p(SPECIAL_PRICES, "무대 설치"), unit: "식" },
       { name: "안전관리", price: p(SPECIAL_PRICES, "안전관리"), unit: "식", default: true },
       { name: "영상 촬영", price: 300, unit: "건" },
+      { name: "커피·다과", price: p(CATERING_PRICES, "커피·다과 (1인당)"), unit: "인" },
+      { name: "뷔페 케이터링", price: p(CATERING_PRICES, "뷔페 케이터링 (1인당)"), unit: "인" },
     ],
   },
   {
@@ -182,9 +197,27 @@ export function formatPriceWon(price: number): string {
     if (man === 0) return `${eok}억원`;
     return `${eok}억 ${man.toLocaleString()}만원`;
   }
+  if (price < 1) {
+    return `${(price * 10000).toLocaleString()}원`;
+  }
+  if (price < 10 && price % 1 !== 0) {
+    const man = Math.floor(price);
+    const cheon = Math.round((price - man) * 10);
+    if (man === 0) return `${cheon}천원`;
+    return `${man}만 ${cheon}천원`;
+  }
   return `${price.toLocaleString()}만원`;
 }
 
 export function formatPriceRange(price: number): string {
+  if (price < 1) {
+    return `${(price * 10000).toLocaleString()}원~`;
+  }
+  if (price < 10 && price % 1 !== 0) {
+    const man = Math.floor(price);
+    const cheon = Math.round((price - man) * 10);
+    if (man === 0) return `${cheon}천 원~`;
+    return `${man}만 ${cheon}천 원~`;
+  }
   return `${price.toLocaleString()}만 원~`;
 }
