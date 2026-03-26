@@ -184,6 +184,7 @@ export async function submitQuoteViaApi(quote: {
   total_amount: number;
   discount_amount?: number;
   user_id?: string;
+  attachments?: Array<{ name: string; url: string; size: number; type: string }>;
 }) {
   const res = await fetch("/api/quote", {
     method: "POST",

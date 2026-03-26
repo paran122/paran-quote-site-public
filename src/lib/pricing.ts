@@ -17,9 +17,9 @@ export interface PriceEntry {
 
 /** 기획·운영 */
 export const PLANNING_PRICES: PriceEntry[] = [
-  { name: "기획·운영 (세미나·컨퍼런스)", price: 500, unit: "식", note: "기획안, 운영 매뉴얼, 타임테이블, 예산안, 현장 운영 포함" },
-  { name: "기획·운영 (포럼)", price: 700, unit: "식", note: "패널 토론 구성, 통역 연계, 현장 운영 포함" },
-  { name: "결과보고서", price: 150, unit: "건", note: "행사 성과 분석 및 결과 보고서 작성" },
+  { name: "기획·운영 (세미나·컨퍼런스)", price: 300, unit: "식", note: "기획안, 운영 매뉴얼, 타임테이블, 예산안, 현장 운영 포함" },
+  { name: "기획·운영 (포럼)", price: 300, unit: "식", note: "패널 토론 구성, 통역 연계, 현장 운영 포함" },
+  { name: "결과보고서", price: 50, unit: "건", note: "행사 성과 분석 및 결과 보고서 작성" },
 ];
 
 /** 디자인·시안물 */
@@ -129,7 +129,7 @@ export const ESTIMATE_EVENT_TYPES: EstimateEventType[] = [
     name: "세미나·컨퍼런스",
     desc: "전문 발표와 네트워킹 중심의 행사",
     items: [
-      { name: "기획·운영", price: p(PLANNING_PRICES, "기획·운영 (세미나·컨퍼런스)"), unit: "식", default: true },
+      { name: "기획·운영", price: p(PLANNING_PRICES, "기획·운영 (세미나·컨퍼런스)"), unit: "식" },
       { name: "포스터", price: p(DESIGN_PRICES, "포스터"), unit: "종" },
       { name: "엑스배너", price: p(DESIGN_PRICES, "배너·엑스배너"), unit: "개" },
       { name: "현수막", price: p(DESIGN_PRICES, "메인 현수막"), unit: "개" },
@@ -138,7 +138,7 @@ export const ESTIMATE_EVENT_TYPES: EstimateEventType[] = [
       { name: "영상 촬영", price: p(MEDIA_PRICES, "영상 촬영"), unit: "건" },
       { name: "커피·다과", price: p(CATERING_PRICES, "커피·다과 (1인당)"), unit: "인" },
       { name: "뷔페 케이터링", price: p(CATERING_PRICES, "뷔페 케이터링 (1인당)"), unit: "인" },
-      { name: "결과보고서", price: p(PLANNING_PRICES, "결과보고서"), unit: "건", default: true },
+      { name: "결과보고서", price: p(PLANNING_PRICES, "결과보고서"), unit: "건" },
     ],
   },
   {
@@ -146,7 +146,7 @@ export const ESTIMATE_EVENT_TYPES: EstimateEventType[] = [
     name: "포럼",
     desc: "토론·패널 중심의 전문가 회의",
     items: [
-      { name: "기획·운영", price: p(PLANNING_PRICES, "기획·운영 (포럼)"), unit: "식", default: true },
+      { name: "기획·운영", price: p(PLANNING_PRICES, "기획·운영 (포럼)"), unit: "식" },
       { name: "포스터", price: p(DESIGN_PRICES, "포스터"), unit: "종" },
       { name: "엑스배너", price: p(DESIGN_PRICES, "배너·엑스배너"), unit: "개" },
       { name: "현수막", price: p(DESIGN_PRICES, "메인 현수막"), unit: "개" },
@@ -155,7 +155,7 @@ export const ESTIMATE_EVENT_TYPES: EstimateEventType[] = [
       { name: "영상 촬영", price: p(MEDIA_PRICES, "영상 촬영"), unit: "건" },
       { name: "커피·다과", price: p(CATERING_PRICES, "커피·다과 (1인당)"), unit: "인" },
       { name: "뷔페 케이터링", price: p(CATERING_PRICES, "뷔페 케이터링 (1인당)"), unit: "인" },
-      { name: "결과보고서", price: p(PLANNING_PRICES, "결과보고서"), unit: "건", default: true },
+      { name: "결과보고서", price: p(PLANNING_PRICES, "결과보고서"), unit: "건" },
     ],
   },
   {
@@ -163,12 +163,11 @@ export const ESTIMATE_EVENT_TYPES: EstimateEventType[] = [
     name: "축제·페스티벌",
     desc: "대중 참여형 문화·체험 행사",
     items: [
-      { name: "기획·운영", price: 1500, unit: "식", default: true },
-      { name: "공간 디자인", price: p(SPECIAL_PRICES, "공간 디자인"), unit: "식", default: true },
+      { name: "기획·운영", price: 300, unit: "식" },
+      { name: "공간 디자인", price: 200, unit: "식" },
       { name: "현수막", price: p(DESIGN_PRICES, "메인 현수막"), unit: "개" },
       { name: "체험부스", price: p(SPECIAL_PRICES, "체험부스"), unit: "개" },
       { name: "무대 설치", price: p(SPECIAL_PRICES, "무대 설치"), unit: "식" },
-      { name: "안전관리", price: p(SPECIAL_PRICES, "안전관리"), unit: "식", default: true },
       { name: "영상 촬영", price: 300, unit: "건" },
       { name: "커피·다과", price: p(CATERING_PRICES, "커피·다과 (1인당)"), unit: "인" },
       { name: "뷔페 케이터링", price: p(CATERING_PRICES, "뷔페 케이터링 (1인당)"), unit: "인" },
@@ -179,11 +178,11 @@ export const ESTIMATE_EVENT_TYPES: EstimateEventType[] = [
     name: "편집 디자인",
     desc: "인쇄물·리플렛·보고서 등 편집 디자인",
     items: [
-      { name: "컨셉 기획", price: p(EDITORIAL_PRICES, "컨셉 기획"), unit: "건", default: true },
-      { name: "편집 디자인", price: p(EDITORIAL_PRICES, "편집 디자인"), unit: "건", default: true },
+      { name: "컨셉 기획", price: p(EDITORIAL_PRICES, "컨셉 기획"), unit: "건" },
+      { name: "편집 디자인", price: p(EDITORIAL_PRICES, "편집 디자인"), unit: "건" },
       { name: "인포그래픽", price: p(EDITORIAL_PRICES, "인포그래픽"), unit: "건" },
       { name: "인쇄·제본", price: p(EDITORIAL_PRICES, "인쇄·제본"), unit: "건" },
-      { name: "PDF 납품", price: p(EDITORIAL_PRICES, "PDF 납품"), unit: "건", default: true },
+      { name: "PDF 납품", price: p(EDITORIAL_PRICES, "PDF 납품"), unit: "건" },
     ],
   },
 ];
