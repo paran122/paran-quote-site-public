@@ -53,6 +53,10 @@ export function adminNotifyHtml(data: QuoteEmailData): string {
               <td style="padding:8px 0;font-size:14px;color:#1e293b;font-weight:600">${data.contactName}</td>
             </tr>
             <tr>
+              <td style="padding:8px 0;font-size:13px;color:#94a3b8">연락처</td>
+              <td style="padding:8px 0;font-size:14px;color:#1e293b">${data.phone}</td>
+            </tr>
+            <tr>
               <td style="padding:8px 0;font-size:13px;color:#94a3b8">이메일</td>
               <td style="padding:8px 0;font-size:14px;color:#1e293b">${data.email}</td>
             </tr>

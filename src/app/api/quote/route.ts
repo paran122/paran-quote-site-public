@@ -54,6 +54,12 @@ const QuoteRequestSchema = z.object({
   total_amount: z.number(),
   discount_amount: z.number().optional(),
   user_id: z.string().optional(),
+  attachments: z.array(z.object({
+    name: z.string(),
+    url: z.string(),
+    size: z.number(),
+    type: z.string(),
+  })).optional(),
 });
 
 export async function POST(request: Request) {
@@ -105,6 +111,7 @@ export async function POST(request: Request) {
       total_amount: data.total_amount,
       discount_amount: data.discount_amount,
       user_id: data.user_id,
+      attachments: data.attachments || [],
     });
 
     if (dbError) {

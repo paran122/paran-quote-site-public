@@ -11,6 +11,8 @@ import {
   Trash2,
   ChevronDown,
   ChevronUp,
+  Paperclip,
+  Download,
 } from "lucide-react";
 
 /* ── 타입 ── */
@@ -31,6 +33,7 @@ export interface QuoteItem {
   cart_items: Array<{ name: string; price: number; qty?: number; quantity?: number }>;
   total_amount: number;
   discount_amount: number | null;
+  attachments: Array<{ name: string; url: string; size: number; type: string }> | null;
   status: string;
   created_at: string;
 }
@@ -327,6 +330,11 @@ export function QuoteDetail({
         </div>
       )}
 
+      {/* 첨부 파일 */}
+      {q.attachments && q.attachments.length > 0 && (
+        <AttachmentList attachments={q.attachments} />
+      )}
+
       {/* 내부 메모 */}
       <NotesSection quoteId={q.id} />
 
@@ -399,5 +407,89 @@ export function QuoteRow({
         <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
       )}
     </button>
+  );
+}
+
+/* ── 첨부 파일 (실시간 signed URL 발급) ── */
+function AttachmentList({
+  attachments,
+}: {
+  attachments: Array<{ name: string; url: string; size: number; type: string }>;
+}) {
+  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  const fetchUrls = useCallback(async () => {
+    if (loaded) return;
+    setLoading(true);
+    try {
+      const paths = attachments.map((a) => a.url);
+      const res = await fetch("/api/admin/attachments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paths }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setSignedUrls(data.urls || {});
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLoading(false);
+      setLoaded(true);
+    }
+  }, [attachments, loaded]);
+
+  return (
+    <div>
+      <div className="flex items-center gap-2">
+        <Paperclip className="h-3.5 w-3.5 text-slate-400" />
+        <span className="text-xs text-slate-400">첨부 파일 ({attachments.length})</span>
+        {!loaded && (
+          <button
+            onClick={fetchUrls}
+            disabled={loading}
+            className="text-xs text-blue-500 hover:text-blue-700 transition-colors"
+          >
+            {loading ? "불러오는 중..." : "파일 보기"}
+          </button>
+        )}
+      </div>
+      <div className="mt-1 space-y-1">
+        {attachments.map((file, idx) => {
+          const downloadUrl = signedUrls[file.url];
+          return (
+            <div
+              key={idx}
+              className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-1.5"
+            >
+              <span className="truncate flex-1 text-sm text-slate-700">{file.name}</span>
+              <span className="text-xs text-slate-400 shrink-0">
+                {file.size < 1024 * 1024
+                  ? `${(file.size / 1024).toFixed(0)}KB`
+                  : `${(file.size / (1024 * 1024)).toFixed(1)}MB`}
+              </span>
+              {downloadUrl ? (
+                <a
+                  href={downloadUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 hover:bg-blue-100 transition-colors"
+                >
+                  <Download className="inline h-3 w-3 mr-0.5" />
+                  다운로드
+                </a>
+              ) : (
+                <span className="shrink-0 text-xs text-slate-300">
+                  {loaded ? "URL 만료" : ""}
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }

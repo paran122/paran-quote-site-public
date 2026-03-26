@@ -1,8 +1,28 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { X, Loader2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { X, Loader2, Paperclip, FileText, Image as ImageIcon } from "lucide-react";
 import { showToast } from "@/components/ui/Toast";
+
+const MAX_FILES = 5;
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+interface UploadedFile {
+  name: string;
+  url: string;
+  size: number;
+  type: string;
+}
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes}B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)}KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
+}
+
+function isImageType(type: string): boolean {
+  return type.startsWith("image/");
+}
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -42,6 +62,9 @@ export default function ContactModal({ isOpen, onClose }: Props) {
   const [form, setForm] = useState<ContactForm>(INITIAL_FORM);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // ESC 키로 닫기
   useEffect(() => {
@@ -70,6 +93,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
     if (!isOpen) {
       setForm(INITIAL_FORM);
       setTouched({});
+      setFiles([]);
     }
   }, [isOpen]);
 
@@ -79,6 +103,44 @@ export default function ContactModal({ isOpen, onClose }: Props) {
 
   const handleBlur = (key: string) => {
     setTouched((prev) => ({ ...prev, [key]: true }));
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files || []);
+    if (files.length + selected.length > MAX_FILES) {
+      showToast(`최대 ${MAX_FILES}개까지 첨부 가능합니다.`);
+      return;
+    }
+    for (const file of selected) {
+      if (file.size > MAX_FILE_SIZE) {
+        showToast(`${file.name}: 10MB 이하 파일만 첨부 가능합니다.`);
+        return;
+      }
+    }
+    setFiles((prev) => [...prev, ...selected]);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const uploadFiles = async (): Promise<UploadedFile[]> => {
+    if (files.length === 0) return [];
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      files.forEach((f) => formData.append("files", f));
+      const res = await fetch("/api/contact/upload", { method: "POST", body: formData });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: "업로드 실패" }));
+        throw new Error(err.error);
+      }
+      const data = await res.json();
+      return data.files;
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = async () => {
@@ -96,6 +158,11 @@ export default function ContactModal({ isOpen, onClose }: Props) {
       .replace(/-/g, "")}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, "0")}`;
 
     try {
+      let attachments: UploadedFile[] = [];
+      if (files.length > 0) {
+        attachments = await uploadFiles();
+      }
+
       const { submitQuoteViaApi } = await import("@/lib/queries");
       await submitQuoteViaApi({
         quote_number: quoteNumber,
@@ -109,6 +176,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
         memo: form.message,
         cart_items: [],
         total_amount: 0,
+        attachments,
       });
       showToast("문의가 접수되었습니다");
       onClose();
@@ -242,13 +310,65 @@ export default function ContactModal({ isOpen, onClose }: Props) {
             )}
           </div>
 
+          {/* 파일 첨부 */}
+          <div className="mt-4">
+            <div className="flex items-center gap-1.5">
+              <label className="text-[13px] font-medium text-slate-600">파일 첨부</label>
+              <span className="text-[11px] text-slate-400">선택사항 (최대 {MAX_FILES}개, 10MB 이하)</span>
+            </div>
+            <div className="mt-1.5">
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.txt"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={files.length >= MAX_FILES}
+                className="flex items-center gap-1.5 rounded-lg border border-dashed border-slate-300 px-3.5 py-2 text-[13px] text-slate-500 transition-colors hover:border-blue-400 hover:text-blue-500 disabled:opacity-40"
+              >
+                <Paperclip className="h-3.5 w-3.5" />
+                파일 선택 (이미지, PDF, 문서)
+              </button>
+              {files.length > 0 && (
+                <div className="mt-2 space-y-1.5">
+                  {files.map((file, idx) => (
+                    <div
+                      key={`${file.name}-${idx}`}
+                      className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50/60 px-3 py-2"
+                    >
+                      {isImageType(file.type) ? (
+                        <ImageIcon className="h-3.5 w-3.5 shrink-0 text-blue-400" />
+                      ) : (
+                        <FileText className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+                      )}
+                      <span className="min-w-0 flex-1 truncate text-[13px] text-slate-700">{file.name}</span>
+                      <span className="shrink-0 text-[11px] text-slate-400">{formatFileSize(file.size)}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(idx)}
+                        className="shrink-0 rounded-full p-0.5 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
           <button
             type="submit"
-            disabled={submitting}
+            disabled={submitting || uploading}
             className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 py-3 text-[14px] font-semibold text-white shadow-lg shadow-blue-500/20 transition-opacity disabled:opacity-60"
           >
-            {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-            {submitting ? "처리 중..." : "문의 보내기"}
+            {(submitting || uploading) && <Loader2 className="h-4 w-4 animate-spin" />}
+            {uploading ? "파일 업로드 중..." : submitting ? "처리 중..." : "문의 보내기"}
           </button>
         </form>
       </div>

@@ -1,13 +1,33 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { Mic, MessageSquare, PartyPopper, PenTool, Check, Plus, Minus, X, ChevronDown, Loader2 } from "lucide-react";
+import { Mic, MessageSquare, PartyPopper, PenTool, Check, Plus, Minus, X, ChevronDown, Loader2, Paperclip, FileText, Image as ImageIcon } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { showToast } from "@/components/ui/Toast";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { ESTIMATE_EVENT_TYPES, formatPriceWon } from "@/lib/pricing";
+
+const MAX_FILES = 5;
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+interface UploadedFile {
+  name: string;
+  url: string;
+  size: number;
+  type: string;
+}
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes}B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)}KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
+}
+
+function isImageType(type: string): boolean {
+  return type.startsWith("image/");
+}
 
 interface EstimateItem {
   name: string;
@@ -112,6 +132,9 @@ export default function Estimate() {
   const [form, setForm] = useState<OrderForm>(INITIAL_FORM);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const updateField = (key: keyof OrderForm, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -124,6 +147,45 @@ export default function Estimate() {
   const resetForm = () => {
     setForm(INITIAL_FORM);
     setTouched({});
+    setFiles([]);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files || []);
+    if (files.length + selected.length > MAX_FILES) {
+      showToast(`최대 ${MAX_FILES}개까지 첨부 가능합니다.`);
+      return;
+    }
+    for (const file of selected) {
+      if (file.size > MAX_FILE_SIZE) {
+        showToast(`${file.name}: 10MB 이하 파일만 첨부 가능합니다.`);
+        return;
+      }
+    }
+    setFiles((prev) => [...prev, ...selected]);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const uploadFiles = async (): Promise<UploadedFile[]> => {
+    if (files.length === 0) return [];
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      files.forEach((f) => formData.append("files", f));
+      const res = await fetch("/api/contact/upload", { method: "POST", body: formData });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: "업로드 실패" }));
+        throw new Error(err.error);
+      }
+      const data = await res.json();
+      return data.files;
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleOrderSubmit = async () => {
@@ -160,6 +222,11 @@ export default function Estimate() {
     const combinedMemo = memoParts.join("\n") || undefined;
 
     try {
+      let attachments: UploadedFile[] = [];
+      if (files.length > 0) {
+        attachments = await uploadFiles();
+      }
+
       const { submitQuoteViaApi } = await import("@/lib/queries");
       await submitQuoteViaApi({
         quote_number: quoteNumber,
@@ -175,6 +242,7 @@ export default function Estimate() {
         memo: combinedMemo,
         cart_items: cartItems,
         total_amount: total,
+        attachments,
       });
       showToast("주문 요청이 완료되었습니다");
       setShowOrder(false);
@@ -310,6 +378,9 @@ export default function Estimate() {
                         transition={{ duration: 0.25 }}
                         className="overflow-hidden"
                       >
+                        <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-700 md:text-xs">
+                          아래 금액은 참고용 기본 단가이며, 실제 비용은 행사 규모·조건에 따라 달라집니다. 정확한 견적은 상담을 통해 안내드립니다.
+                        </p>
                         <div className="space-y-2 pt-3">
                           {active.items.map((item) => {
                             const state = checkedItems[item.name];
@@ -583,6 +654,57 @@ export default function Estimate() {
                           className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm text-gray-900 placeholder-gray-300 outline-none transition-all focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100"
                         />
                       </div>
+
+                      {/* 파일 첨부 */}
+                      <div>
+                        <div className="mb-3 flex items-center gap-2 md:mb-4">
+                          <div className="h-5 w-1 rounded-full bg-indigo-500" />
+                          <h4 className="text-sm font-bold text-gray-900">파일 첨부</h4>
+                          <span className="text-[11px] text-gray-400">선택사항 (최대 {MAX_FILES}개, 10MB 이하)</span>
+                        </div>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          multiple
+                          accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.txt"
+                          onChange={handleFileSelect}
+                          className="hidden"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={files.length >= MAX_FILES}
+                          className="flex items-center gap-1.5 rounded-xl border border-dashed border-gray-300 px-4 py-2.5 text-sm text-gray-500 transition-colors hover:border-blue-400 hover:text-blue-500 disabled:opacity-40"
+                        >
+                          <Paperclip className="h-3.5 w-3.5" />
+                          파일 선택 (이미지, PDF, 문서)
+                        </button>
+                        {files.length > 0 && (
+                          <div className="mt-2 space-y-1.5">
+                            {files.map((file, idx) => (
+                              <div
+                                key={`${file.name}-${idx}`}
+                                className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50/60 px-3 py-2"
+                              >
+                                {isImageType(file.type) ? (
+                                  <ImageIcon className="h-3.5 w-3.5 shrink-0 text-blue-400" />
+                                ) : (
+                                  <FileText className="h-3.5 w-3.5 shrink-0 text-gray-400" />
+                                )}
+                                <span className="min-w-0 flex-1 truncate text-sm text-gray-700">{file.name}</span>
+                                <span className="shrink-0 text-xs text-gray-400">{formatFileSize(file.size)}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => removeFile(idx)}
+                                  className="shrink-0 rounded-full p-0.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                                >
+                                  <X className="h-3.5 w-3.5" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -596,11 +718,11 @@ export default function Estimate() {
                       whileHover={{ scale: submitting ? 1 : 1.02 }}
                       whileTap={{ scale: submitting ? 1 : 0.98 }}
                       type="submit"
-                      disabled={submitting}
+                      disabled={submitting || uploading}
                       className="flex shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition-shadow hover:shadow-xl hover:shadow-blue-500/30 disabled:opacity-60 md:px-10 md:py-3.5"
                     >
-                      {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-                      {submitting ? "처리 중..." : "주문 요청하기"}
+                      {(submitting || uploading) && <Loader2 className="h-4 w-4 animate-spin" />}
+                      {uploading ? "파일 업로드 중..." : submitting ? "처리 중..." : "주문 요청하기"}
                     </motion.button>
                   </div>
                 </form>
