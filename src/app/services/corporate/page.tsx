@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { PORTFOLIOS } from "@/lib/portfolioData";
@@ -10,16 +11,19 @@ import ServiceProcess from "../_components/ServiceProcess";
 import ServiceCTA from "../_components/ServiceCTA";
 import TrustBadges from "../_components/TrustBadges";
 import ServiceSNS from "../_components/ServiceSNS";
+import HeroSlideshow from "../_components/HeroSlideshow";
+import ServiceSubNav from "../_components/ServiceSubNav";
 
 const SITE_URL = "https://parancompany.co.kr";
 
 export const metadata: Metadata = {
-  title: "기업행사 대행 — 세미나·워크숍·성과발표회 기획 전문",
+  title: "기업행사 대행 — 세미나·워크숍·시무식·송년회 기획 전문",
   description:
-    "기업행사 대행 전문 에이전시. 산업 세미나, 비전선포식, 성과발표회, 기업 워크숍을 기획부터 디자인·운영까지 원스톱 대행합니다. 자동차부품산업진흥재단 등 다수 실적. 무료 견적 요청.",
+    "기업행사 대행 전문 에이전시. 산업 세미나, 시무식, 송년회, 창립기념행사, 비전선포식, 기업 워크숍을 기획부터 디자인·운영까지 원스톱 대행합니다. 자동차부품산업진흥재단 등 다수 실적. 무료 견적 요청.",
   keywords: [
     "기업행사대행", "기업행사기획", "기업세미나", "기업워크숍",
-    "행사대행", "행사대행업체", "세미나대행", "성과발표회",
+    "행사대행", "행사대행업체", "시무식", "송년회",
+    "창립기념행사", "성과발표회", "팀빌딩",
   ],
   alternates: { canonical: `${SITE_URL}/services/corporate` },
   openGraph: {
@@ -27,6 +31,7 @@ export const metadata: Metadata = {
     description: "기업 세미나·워크숍·성과발표회 전문. 기획부터 운영까지 원스톱 대행. 250+ 프로젝트 경험.",
     type: "website",
     url: `${SITE_URL}/services/corporate`,
+    images: [{ url: "/og-image.png?v=2", width: 1200, height: 630, alt: "기업행사 대행 - 파란컴퍼니" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -74,8 +79,8 @@ const eventTypes = [
   },
   {
     icon: "/icons/service-icon-vision-v1.png",
-    title: "비전선포식·성과발표회",
-    desc: "기업의 비전 선포, 연간 성과 발표, 창립기념일 행사 등을 대행합니다. 기업 브랜드에 맞는 연출과 프로그램을 기획합니다.",
+    title: "시무식·송년회·창립기념행사",
+    desc: "시무식, 송년회, 창립기념행사, 비전선포식, 성과발표회 등 기업의 중요한 연례 행사를 대행합니다. 기업 브랜드에 맞는 연출과 프로그램을 기획합니다.",
   },
   {
     icon: "/icons/service-icon-education-v4.png",
@@ -84,8 +89,8 @@ const eventTypes = [
   },
   {
     icon: "/icons/service-icon-culture-v1.png",
-    title: "문화·복지 프로그램",
-    desc: "임직원 문화 프로그램, 체험형 워크숍, 팀빌딩 행사 등을 기획·운영합니다. 참가자 경험을 중심으로 프로그램을 설계합니다.",
+    title: "팀빌딩·기공식·착공식",
+    desc: "팀빌딩 프로그램, 기공식, 착공식, 준공식 등 기업 특성에 맞는 행사를 기획·운영합니다. 참가자 경험을 중심으로 프로그램을 설계합니다.",
   },
 ];
 
@@ -118,9 +123,19 @@ export default async function CorporatePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* Hero */}
-      <section className="bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40">
-        <div className="mx-auto max-w-[1200px] px-5 md:px-8">
-          <nav className="text-[11px] text-white/40 mb-16 md:mb-24">
+      <section className="relative bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
+        <HeroSlideshow
+          images={[
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-05.webp", alt: "기업행사 대행 - 추계 자동차부품산업 세미나 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-04.webp", alt: "기업행사 대행 - 춘계 자동차부품산업 세미나 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-03.webp", alt: "기업행사 대행 - 하계 자동차부품산업 세미나 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-09.webp", alt: "기업 세미나 대행 - 추계 자동차부품산업 세미나" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-08.webp", alt: "기업 세미나 대행 - 춘계 자동차부품산업 세미나" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-10.webp", alt: "기업 세미나 대행 - 하계 자동차부품산업 세미나" },
+          ]}
+        />
+        <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
+          <nav aria-label="breadcrumb" className="text-[11px] text-white/40 mb-16 md:mb-24">
             <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
             <span className="mx-2 text-white/20">/</span>
             <Link href="/services" className="hover:text-white/70 transition-colors">서비스</Link>
@@ -132,18 +147,20 @@ export default async function CorporatePage() {
               기업행사 대행
             </h1>
             <p className="text-base md:text-lg text-slate-300 leading-relaxed mb-10">
-              산업 세미나, 워크숍, 성과발표회 등 기업 행사를
-              기획부터 디자인·운영까지 원스톱으로 대행합니다.
+              세미나, 워크숍, 시무식, 송년회, 창립기념행사 등
+              기업 행사를 기획부터 디자인·운영까지 원스톱으로 대행합니다.
             </p>
             <TrustBadges variant="dark" />
           </div>
         </div>
       </section>
 
+      <ServiceSubNav />
+
       {/* 본문 + SNS */}
       <section className="py-16 md:py-24 px-5 md:px-8">
         <div className="mx-auto max-w-[900px] relative">
-          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-0 sticky" style={{ position: "sticky", top: 100 }}>
+          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-[100px] sticky">
             <ServiceSNS layout="vertical" />
           </aside>
 
@@ -188,6 +205,59 @@ export default async function CorporatePage() {
             외주 없이 한 팀에서 기획과 디자인을 동시에 진행하기 때문에
             수정·보완이 빠르고, 행사 컨셉이 일관됩니다.
           </p>
+
+          {/* 행사 사진 */}
+          <div className="my-10 rounded-2xl overflow-hidden shadow-md">
+            <Image
+              src="https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-02.webp"
+              alt="기업행사 대행 현장 사진 - 자동차부품산업 세미나 (약 200명 규모)"
+              width={900}
+              height={500}
+              className="w-full h-auto object-cover"
+            />
+            <div className="flex items-center justify-between px-4 py-2 bg-slate-50">
+              <p className="text-xs text-slate-400">
+                추계 자동차부품산업 세미나 | 자동차부품산업진흥재단 | 약 200명 규모
+              </p>
+              <Link href="/work/auto-seminar-fall" className="text-xs text-blue-600 font-medium hover:underline shrink-0 ml-4">
+                이 행사 상세 보기 →
+              </Link>
+            </div>
+          </div>
+
+          {/* 서비스 범위 */}
+          <h2 className="text-xl md:text-2xl font-bold mt-14 mb-6">
+            기업행사 대행 서비스 범위
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { title: "기획·프로그램 구성", items: "행사 컨셉 설계, 프로그램 구성, 타임라인 작성, 시나리오 작성" },
+              { title: "연사·사회자 섭외", items: "산업별 전문 연사, 전문 사회자, 강사, 퍼실리테이터" },
+              { title: "디자인·제작", items: "포스터, 현수막, 리플렛, 자료집, 명찰, 초청장, 엑스배너" },
+              { title: "현장 운영", items: "음향·조명·영상 세팅, 참가자 접수, 동선 관리, 케이터링" },
+              { title: "촬영·기록", items: "사진·영상 촬영, 하이라이트 영상 제작" },
+              { title: "사후 관리", items: "결과보고서, 참석자 통계, 만족도 조사, 사진 납품" },
+            ].map((s) => (
+              <div key={s.title} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                <h3 className="font-bold text-sm mb-1">{s.title}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">{s.items}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* 비용 간략 안내 */}
+          <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
+            <h3 className="font-bold text-sm mb-2">기업행사 대행 비용 안내</h3>
+            <p className="text-sm text-slate-600 leading-[1.8]">
+              소규모 세미나(50명)는 약 300만 원부터, 중규모 행사(100~200명)는
+              약 800만 원부터 시작합니다. 시무식, 송년회, 창립기념행사 등
+              행사 유형과 필요 서비스에 따라 달라지며,
+              행사 정보를 알려주시면 1영업일 내에 항목별 상세 견적서를 보내드립니다.
+            </p>
+            <Link href="/guide/pricing" className="inline-block mt-3 text-sm text-blue-600 font-medium hover:underline">
+              비용·견적 상세 안내 →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -197,13 +267,13 @@ export default async function CorporatePage() {
           <div className="p-8 md:p-10 rounded-2xl border border-slate-200/80 bg-white shadow-sm flex flex-col md:flex-row gap-8 md:gap-14 items-start">
             <div className="flex-1">
               <h2 className="text-xl md:text-2xl font-bold mb-5">
-                기획부터 디자인까지, 한 팀이 만드는 완성도
+                기업 브랜드를 담은 행사 디자인
               </h2>
               <p className="text-slate-600 text-sm leading-[1.8] mb-6">
-                기업행사는 회사의 브랜드 이미지를 반영한 디자인 퀄리티가
-                중요합니다. 파란컴퍼니는 기획팀과 디자인팀이 처음부터
-                함께 움직여, 행사 컨셉에 맞는 포스터·현수막·리플렛·자료집·명찰
-                등 모든 시안물을 통일된 톤으로 제작합니다.
+                기업행사의 시안물은 곧 회사의 얼굴입니다. 파란컴퍼니는
+                기업 CI/BI 가이드에 맞춰 포스터·현수막·리플렛·자료집·명찰을
+                디자인합니다. 기획팀이 확정한 행사 방향이 디자인팀으로
+                바로 전달되어 수정 횟수가 적고 진행이 빠릅니다.
               </p>
               <Link
                 href="/services/design"
@@ -241,7 +311,7 @@ export default async function CorporatePage() {
             {eventTypes.map((et) => (
               <div key={et.title} className="p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
-                  <img src={et.icon} alt={et.title} className="w-14 h-14 object-contain" />
+                  <Image src={et.icon} alt={et.title} width={56} height={56} className="object-contain" />
                 </div>
                 <h3 className="font-bold text-lg mb-3">{et.title}</h3>
                 <p className="text-slate-500 text-sm leading-[1.7]">{et.desc}</p>

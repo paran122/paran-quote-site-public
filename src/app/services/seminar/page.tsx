@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { PORTFOLIOS } from "@/lib/portfolioData";
@@ -10,6 +11,8 @@ import ServiceProcess from "../_components/ServiceProcess";
 import ServiceCTA from "../_components/ServiceCTA";
 import TrustBadges from "../_components/TrustBadges";
 import ServiceSNS from "../_components/ServiceSNS";
+import HeroSlideshow from "../_components/HeroSlideshow";
+import ServiceSubNav from "../_components/ServiceSubNav";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -18,8 +21,9 @@ export const metadata: Metadata = {
   description:
     "세미나·워크숍 대행 전문 에이전시. 교육 세미나, 역량강화 워크숍, 직무교육을 기획부터 운영까지 원스톱 대행합니다. 연사 섭외, 교육자료 제작 포함. 무료 견적 요청.",
   keywords: [
-    "세미나대행", "워크숍대행", "세미나기획", "교육세미나",
-    "행사대행", "행사대행업체", "워크숍기획", "역량강화",
+    "세미나대행", "워크숍대행", "워크샵", "세미나기획",
+    "교육세미나", "행사대행", "행사대행업체", "워크숍기획",
+    "역량강화", "전문사회자",
   ],
   alternates: { canonical: `${SITE_URL}/services/seminar` },
   openGraph: {
@@ -27,6 +31,7 @@ export const metadata: Metadata = {
     description: "교육세미나·역량강화 워크숍 전문. 기획부터 운영까지 원스톱 대행. 250+ 프로젝트 경험.",
     type: "website",
     url: `${SITE_URL}/services/seminar`,
+    images: [{ url: "/og-image.png?v=2", width: 1200, height: 630, alt: "세미나·워크숍 대행 - 파란컴퍼니" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -118,9 +123,18 @@ export default async function SeminarPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* Hero */}
-      <section className="bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40">
-        <div className="mx-auto max-w-[1200px] px-5 md:px-8">
-          <nav className="text-[11px] text-white/40 mb-16 md:mb-24">
+      <section className="relative bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
+        <HeroSlideshow
+          images={[
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-08.webp", alt: "세미나 대행 - 지역사회 역량강화 프로그램 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-06.webp", alt: "세미나 대행 - 춘계 자동차부품산업 세미나 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/artist-rights/photo-03.webp", alt: "워크숍 대행 - 예술인 권리보호 교육 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-15.webp", alt: "교육 세미나 대행 - 지역사회 역량강화 프로그램" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-12.webp", alt: "교육 세미나 대행 - 춘계 자동차부품산업 세미나" },
+          ]}
+        />
+        <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
+          <nav aria-label="breadcrumb" className="text-[11px] text-white/40 mb-16 md:mb-24">
             <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
             <span className="mx-2 text-white/20">/</span>
             <Link href="/services" className="hover:text-white/70 transition-colors">서비스</Link>
@@ -140,10 +154,12 @@ export default async function SeminarPage() {
         </div>
       </section>
 
+      <ServiceSubNav />
+
       {/* 본문 + SNS */}
       <section className="py-16 md:py-24 px-5 md:px-8">
         <div className="mx-auto max-w-[900px] relative">
-          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-0 sticky" style={{ position: "sticky", top: 100 }}>
+          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-[100px] sticky">
             <ServiceSNS layout="vertical" />
           </aside>
 
@@ -185,6 +201,59 @@ export default async function SeminarPage() {
             필요한 모든 시안물을 직접 디자인합니다. 행사 컨셉에 맞는
             통일된 비주얼을 제공하여 참가자에게 전문적인 인상을 줍니다.
           </p>
+
+          {/* 행사 사진 */}
+          <div className="my-10 rounded-2xl overflow-hidden shadow-md">
+            <Image
+              src="https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-01.webp"
+              alt="세미나 대행 현장 사진 - 지역사회 역량강화 프로그램 (약 100명 규모)"
+              width={900}
+              height={500}
+              className="w-full h-auto object-cover"
+            />
+            <div className="flex items-center justify-between px-4 py-2 bg-slate-50">
+              <p className="text-xs text-slate-400">
+                지역사회 역량강화 프로그램 | 한국에너지정보문화재단 | 약 100명 규모
+              </p>
+              <Link href="/work/community-energy" className="text-xs text-blue-600 font-medium hover:underline shrink-0 ml-4">
+                이 행사 상세 보기 →
+              </Link>
+            </div>
+          </div>
+
+          {/* 서비스 범위 */}
+          <h2 className="text-xl md:text-2xl font-bold mt-14 mb-6">
+            세미나·워크숍 대행 서비스 범위
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { title: "기획·커리큘럼 설계", items: "교육 목표 분석, 프로그램 구성, 타임라인 작성, 시나리오 작성" },
+              { title: "연사·강사 섭외", items: "전문 연사, 강사, 전문 사회자, 퍼실리테이터 섭외" },
+              { title: "디자인·제작", items: "포스터, 현수막, 자료집, 리플렛, 명찰, 엑스배너, 교육 교재" },
+              { title: "현장 운영", items: "음향·조명·영상 세팅, 참가자 접수, 교육 자료 배포" },
+              { title: "워크숍 도구", items: "참여형 활동 설계, 그룹 토론 운영, 워크숍 키트 제작" },
+              { title: "사후 관리", items: "결과보고서, 참석자 통계, 만족도 조사, 사진 납품" },
+            ].map((s) => (
+              <div key={s.title} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                <h3 className="font-bold text-sm mb-1">{s.title}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">{s.items}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* 비용 간략 안내 */}
+          <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
+            <h3 className="font-bold text-sm mb-2">세미나·워크숍 대행 비용 안내</h3>
+            <p className="text-sm text-slate-600 leading-[1.8]">
+              소규모 세미나(50명)는 약 300만 원부터, 100명 이상 세미나는
+              약 600만 원부터 시작합니다. 연사 섭외, 자료집 제작, 현장 운영
+              범위에 따라 달라지며, 행사 정보를 알려주시면 1영업일 내에
+              항목별 상세 견적서를 보내드립니다.
+            </p>
+            <Link href="/guide/pricing" className="inline-block mt-3 text-sm text-blue-600 font-medium hover:underline">
+              비용·견적 상세 안내 →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -194,13 +263,13 @@ export default async function SeminarPage() {
           <div className="p-8 md:p-10 rounded-2xl border border-slate-200/80 bg-white shadow-sm flex flex-col md:flex-row gap-8 md:gap-14 items-start">
             <div className="flex-1">
               <h2 className="text-xl md:text-2xl font-bold mb-5">
-                기획부터 디자인까지, 한 팀이 만드는 완성도
+                교육 효과를 높이는 시안물 디자인
               </h2>
               <p className="text-slate-600 text-sm leading-[1.8] mb-6">
-                세미나·워크숍에서도 디자인 퀄리티는 참가자의 첫인상을
-                결정합니다. 파란컴퍼니는 기획팀과 디자인팀이 처음부터
-                함께 움직여, 포스터·현수막·자료집·명찰 등 모든 시안물을
-                통일된 톤으로 제작합니다.
+                세미나 자료집과 워크숍 교재는 참가자의 학습 효과에 직접
+                영향을 줍니다. 파란컴퍼니 디자인팀은 교육 목표를 이해한
+                상태에서 자료집·리플렛·포스터·명찰을 제작하기 때문에
+                내용 전달력이 높고 가독성이 뛰어납니다.
               </p>
               <Link
                 href="/services/design"
@@ -238,7 +307,7 @@ export default async function SeminarPage() {
             {eventTypes.map((et) => (
               <div key={et.title} className="p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
-                  <img src={et.icon} alt={et.title} className="w-14 h-14 object-contain" />
+                  <Image src={et.icon} alt={et.title} width={56} height={56} className="object-contain" />
                 </div>
                 <h3 className="font-bold text-lg mb-3">{et.title}</h3>
                 <p className="text-slate-500 text-sm leading-[1.7]">{et.desc}</p>

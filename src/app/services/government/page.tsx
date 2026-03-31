@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { PORTFOLIOS } from "@/lib/portfolioData";
@@ -10,6 +11,8 @@ import ServiceProcess from "../_components/ServiceProcess";
 import ServiceCTA from "../_components/ServiceCTA";
 import TrustBadges from "../_components/TrustBadges";
 import ServiceSNS from "../_components/ServiceSNS";
+import HeroSlideshow from "../_components/HeroSlideshow";
+import ServiceSubNav from "../_components/ServiceSubNav";
 import ReasonStylePicker from "../_components/ReasonStylePicker";
 
 const SITE_URL = "https://parancompany.co.kr";
@@ -28,6 +31,7 @@ export const metadata: Metadata = {
     description: "정부·지자체·공기업 행사 전문. 조달 규정에 맞춘 투명한 행사 대행. 250+ 프로젝트 경험.",
     type: "website",
     url: `${SITE_URL}/services/government`,
+    images: [{ url: "/og-image.png?v=2", width: 1200, height: 630, alt: "공공기관 행사 대행 - 파란컴퍼니" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -121,18 +125,25 @@ export default async function GovernmentPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
-      {/* ━━ Hero (다크, GNB 이어짐) ━━ */}
-      <section className="bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40">
-        <div className="mx-auto max-w-[1200px] px-5 md:px-8">
-          {/* 브레드크럼 */}
-          <nav className="text-[11px] text-white/40 mb-16 md:mb-24">
+      {/* Hero */}
+      <section className="relative bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
+        <HeroSlideshow
+          images={[
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-10.webp", alt: "공공기관 행사 대행 - 고양 학교체육 성장 컨퍼런스 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/kls/photo-12.webp", alt: "공공기관 행사 대행 - KLS 국제학술대회 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-12.webp", alt: "공공기관 행사 대행 - 지역사회 역량강화 프로그램 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-15.webp", alt: "공공기관 행사 대행 - 필승해군캠프 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-17.webp", alt: "관공서 행사 대행 - 찾아가는 경기학부모교육 현장" },
+          ]}
+        />
+        <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
+          <nav aria-label="breadcrumb" className="text-[11px] text-white/40 mb-16 md:mb-24">
             <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
             <span className="mx-2 text-white/20">/</span>
             <Link href="/services" className="hover:text-white/70 transition-colors">서비스</Link>
             <span className="mx-2 text-white/20">/</span>
             <span className="text-white/60">공공기관 행사 대행</span>
           </nav>
-
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6">
               공공기관 행사 대행
@@ -146,12 +157,14 @@ export default async function GovernmentPage() {
         </div>
       </section>
 
+      <ServiceSubNav />
+
       {/* ━━ 본문 + SNS 사이드 ━━ */}
       <section className="py-16 md:py-24 px-5 md:px-8">
         <div className="mx-auto max-w-[900px] relative">
 
           {/* SNS — 세로 배치, 본문 오른쪽 바깥 고정 */}
-          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-0 sticky" style={{ position: "sticky", top: 100 }}>
+          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-[100px] sticky">
             <ServiceSNS layout="vertical" />
           </aside>
 
@@ -159,48 +172,100 @@ export default async function GovernmentPage() {
             공공기관 행사 대행, 왜 전문 업체에 맡겨야 할까요?
           </h2>
 
-              <p className="text-slate-600 leading-[1.8] mb-6">
-                공공기관 행사 대행은 일반 기업행사와 다릅니다. 조달 규정에 따른
-                입찰·계약 절차, 예산 집행 기준, 결과보고서 양식, 정산 증빙 등
-                공공기관 특유의 행정 프로세스를 정확히 이해하고 있어야 합니다.
-                행사 자체는 잘 치르면서도, 사전에 계약 서류를 정확히 준비하고
-                사후에 감사 대비 정산 자료를 빠짐없이 제출하는 업체를 선택하는 것이 중요합니다.
-              </p>
+          <p className="text-slate-600 leading-[1.8] mb-6">
+            공공기관 행사 대행은 일반 기업행사와 다릅니다. 조달 규정에 따른
+            입찰·계약 절차, 예산 집행 기준, 결과보고서 양식, 정산 증빙 등
+            공공기관 특유의 행정 프로세스를 정확히 이해하고 있어야 합니다.
+            행사 자체는 잘 치르면서도, 사전에 계약 서류를 정확히 준비하고
+            사후에 감사 대비 정산 자료를 빠짐없이 제출하는 업체를 선택하는 것이 중요합니다.
+          </p>
 
-              {/* 중간 하이라이트 박스 */}
-              <div className="my-8 p-5 rounded-xl bg-blue-50/60 border-l-4 border-blue-500">
-                <p className="text-slate-700 text-sm leading-[1.8] font-medium">
-                  파란컴퍼니는 교육부, 해군, 경기도교육청, 수원시, 고양시 등
-                  다수의 공공기관 행사를 수행하며 풍부한 경험을 쌓았습니다.
-                  직접생산확인증명서(행사대행업)와 여성기업확인서를
-                  보유하고 있어 나라장터 입찰 및 수의계약 모두 가능합니다.
-                </p>
+          <div className="my-8 p-5 rounded-xl bg-blue-50/60 border-l-4 border-blue-500">
+            <p className="text-slate-700 text-sm leading-[1.8] font-medium">
+              파란컴퍼니는 교육부, 해군, 경기도교육청, 수원시, 고양시 등
+              다수의 공공기관 행사를 수행하며 풍부한 경험을 쌓았습니다.
+              직접생산확인증명서(행사대행업)와 여성기업확인서를
+              보유하고 있어 나라장터 입찰 및 수의계약 모두 가능합니다.
+            </p>
+          </div>
+
+          <p className="text-slate-600 leading-[1.8] mb-6">
+            공공기관 행사 대행에서 가장 중요한 것은 행정 대응 능력입니다.
+            행사 기획서, 산출내역서, 결과보고서, 참석자명부, 사진대지 등
+            공공기관에서 요구하는 모든 행정 서류를 기본으로 제공하며,
+            기획부터 시안물 디자인, 음향·조명·영상 등 현장 운영,
+            그리고 결과보고서 납품까지 한 번에 처리하는 원스톱 서비스가
+            가장 큰 강점입니다.
+          </p>
+
+          <p className="text-slate-600 leading-[1.8] mb-6">
+            관공서 행사 대행 경험이 풍부한 파란컴퍼니는 연간 100여 회의
+            행사를 수행하고 있으며, 행사 규모 50명~400명까지
+            다양한 규모의 행사를 대행한 실적이 있습니다.
+            공공기관 행사 대행 비용은 행사 규모와 서비스 범위에 따라
+            달라지며, 행사 정보를 알려주시면 1영업일 내에 산출내역서가
+            포함된 상세 견적서를 보내드립니다.
+          </p>
+
+          <p className="text-slate-600 leading-[1.8]">
+            또한 파란컴퍼니는 자체 디자인팀을 보유하고 있어 포스터, 현수막,
+            리플렛, 자료집, 명찰 등 행사에 필요한 모든 시안물을 직접
+            디자인합니다. 외주 없이 한 팀에서 기획과 디자인을 동시에
+            진행하기 때문에 행사 컨셉이 일관되고, 수정·보완이 빠릅니다.
+          </p>
+
+          {/* 행사 사진 */}
+          <div className="my-10 rounded-2xl overflow-hidden shadow-md">
+            <Image
+              src="https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-01.webp"
+              alt="공공기관 행사 대행 현장 사진 - 중앙아시아 교육협력포럼 (약 300명 규모)"
+              width={900}
+              height={500}
+              className="w-full h-auto object-cover"
+            />
+            <div className="flex items-center justify-between px-4 py-2 bg-slate-50">
+              <p className="text-xs text-slate-400">
+                중앙아시아 교육협력포럼 | 경기도교육청 | 약 300명 규모
+              </p>
+              <Link href="/work/international-forum" className="text-xs text-blue-600 font-medium hover:underline shrink-0 ml-4">
+                이 행사 상세 보기 →
+              </Link>
+            </div>
+          </div>
+
+          {/* 서비스 범위 */}
+          <h2 className="text-xl md:text-2xl font-bold mt-14 mb-6">
+            공공기관 행사 대행 서비스 범위
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { title: "기획·행정 대응", items: "기획안 작성, 산출내역서, 프로그램 구성, 입찰 서류 준비" },
+              { title: "연사·사회자 섭외", items: "주제별 전문 연사, 전문 사회자, 패널 구성, 속기록" },
+              { title: "디자인·제작", items: "포스터, 현수막, 리플렛, 자료집, 명찰, 초청장, 전시패널" },
+              { title: "현장 운영", items: "음향·조명·영상, 참가자 접수, 동선 관리, 의전 프로토콜" },
+              { title: "촬영·중계", items: "사진·영상 촬영, 하이브리드(온·오프라인) 중계" },
+              { title: "결과보고·정산", items: "결과보고서, 정산내역서, 참석자명부, 사진대지, 만족도 조사" },
+            ].map((s) => (
+              <div key={s.title} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                <h3 className="font-bold text-sm mb-1">{s.title}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">{s.items}</p>
               </div>
+            ))}
+          </div>
 
-              <p className="text-slate-600 leading-[1.8] mb-6">
-                공공기관 행사 대행에서 가장 중요한 것은 행정 대응 능력입니다.
-                행사 기획서, 산출내역서, 결과보고서, 참석자명부, 사진대지 등
-                공공기관에서 요구하는 모든 행정 서류를 기본으로 제공하며,
-                기획부터 시안물 디자인, 음향·조명·영상 등 현장 운영,
-                그리고 결과보고서 납품까지 한 번에 처리하는 원스톱 서비스가
-                가장 큰 강점입니다.
-              </p>
-
-              <p className="text-slate-600 leading-[1.8] mb-6">
-                관공서 행사 대행 경험이 풍부한 파란컴퍼니는 연간 약 15~20건의
-                공공기관 행사를 수행하고 있으며, 행사 규모 50명~400명까지
-                다양한 규모의 행사를 대행한 실적이 있습니다.
-                공공기관 행사 대행 비용은 행사 규모와 서비스 범위에 따라
-                달라지며, 행사 정보를 알려주시면 1영업일 내에 산출내역서가
-                포함된 상세 견적서를 보내드립니다.
-              </p>
-
-              <p className="text-slate-600 leading-[1.8]">
-                또한 파란컴퍼니는 자체 디자인팀을 보유하고 있어 포스터, 현수막,
-                리플렛, 자료집, 명찰 등 행사에 필요한 모든 시안물을 직접
-                디자인합니다. 외주 없이 한 팀에서 기획과 디자인을 동시에
-                진행하기 때문에 행사 컨셉이 일관되고, 수정·보완이 빠릅니다.
-              </p>
+          {/* 비용 간략 안내 */}
+          <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
+            <h3 className="font-bold text-sm mb-2">공공기관 행사 대행 비용 안내</h3>
+            <p className="text-sm text-slate-600 leading-[1.8]">
+              소규모 세미나(50명)는 약 300만 원부터, 중규모 포럼(150명)은
+              약 800만 원부터, 대규모 국제행사(300명 이상)는 약 2,000만 원부터
+              시작합니다. 공공기관 예산 기준에 맞춘 산출내역서와 견적서를 제출하며,
+              행사 정보를 알려주시면 1영업일 내에 안내드립니다.
+            </p>
+            <Link href="/guide/pricing" className="inline-block mt-3 text-sm text-blue-600 font-medium hover:underline">
+              비용·견적 상세 안내 →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -213,15 +278,14 @@ export default async function GovernmentPage() {
           <div className="p-8 md:p-10 rounded-2xl border border-slate-200/80 bg-white shadow-sm flex flex-col md:flex-row gap-8 md:gap-14 items-start">
             <div className="flex-1">
               <h2 className="text-xl md:text-2xl font-bold mb-5">
-                기획부터 디자인까지, 한 팀이 만드는 완성도
+                기관 격에 맞는 시안물, 외주 없이 한 번에
               </h2>
               <p className="text-slate-600 text-sm leading-[1.8] mb-6">
-                공공기관 행사는 기관의 격에 맞는 디자인 퀄리티가 중요합니다.
-                파란컴퍼니는 기획팀과 디자인팀이 처음부터 함께 움직여,
-                행사 컨셉에 맞는 포스터·현수막·리플렛·자료집·명찰 등
-                모든 시안물을 통일된 톤으로 제작합니다.
-                외부 디자인 업체에 별도로 의뢰할 필요가 없어
-                커뮤니케이션 비용이 줄고, 수정 반영이 빠릅니다.
+                공공기관 행사는 절제되고 신뢰감 있는 디자인이 필요합니다.
+                파란컴퍼니는 기획과 디자인을 동시에 진행하여 기관 요구사항이
+                시안물에 즉시 반영됩니다. 포스터·현수막·리플렛·자료집·명찰 등
+                외부 업체 없이 자체 제작하므로 예산 절감과 빠른 납품이
+                가능합니다.
               </p>
               <Link
                 href="/services/design"
@@ -264,7 +328,7 @@ export default async function GovernmentPage() {
                 className="p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm"
               >
                 <div className="flex justify-center mb-4">
-                  <img src={et.icon} alt={et.title} className="w-14 h-14 object-contain" />
+                  <Image src={et.icon} alt={et.title} width={56} height={56} className="object-contain" />
                 </div>
                 <h3 className="font-bold text-lg mb-3">{et.title}</h3>
                 <p className="text-slate-500 text-sm leading-[1.7]">
