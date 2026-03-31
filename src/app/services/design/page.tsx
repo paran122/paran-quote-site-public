@@ -1,0 +1,306 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
+import { PORTFOLIOS } from "@/lib/portfolioData";
+import type { Portfolio, PortfolioMedia } from "@/types";
+import ServiceFAQ from "../_components/ServiceFAQ";
+import ServicePortfolio from "../_components/ServicePortfolio";
+import ServiceCTA from "../_components/ServiceCTA";
+import TrustBadges from "../_components/TrustBadges";
+import ServiceSNS from "../_components/ServiceSNS";
+
+const SITE_URL = "https://parancompany.co.kr";
+
+export const metadata: Metadata = {
+  title: "행사 디자인·시안물 제작 — 포스터·현수막·리플렛·자료집 전문",
+  description:
+    "행사 디자인 전문 에이전시. 포스터, 현수막, 리플렛, 자료집, 명찰, 초청장 등 행사에 필요한 모든 시안물을 자체 디자인팀이 제작합니다. 기획과 디자인을 동시에 진행하여 일관된 퀄리티. 무료 견적 요청.",
+  keywords: [
+    "행사디자인", "행사시안물", "포스터디자인", "현수막디자인",
+    "리플렛디자인", "자료집디자인", "명찰디자인", "행사대행",
+  ],
+  alternates: { canonical: `${SITE_URL}/services/design` },
+  openGraph: {
+    title: "행사 디자인·시안물 제작 | 파란컴퍼니",
+    description: "포스터·현수막·리플렛·자료집 등 행사 시안물 전문. 자체 디자인팀 보유. 250+ 프로젝트 경험.",
+    type: "website",
+    url: `${SITE_URL}/services/design`,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "행사 디자인·시안물 제작 | 파란컴퍼니",
+    description: "포스터·현수막·리플렛·자료집 등 행사 시안물 전문. 자체 디자인팀 보유.",
+  },
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "홈", item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "서비스", item: `${SITE_URL}/services` },
+    { "@type": "ListItem", position: 3, name: "행사 디자인·시안물", item: `${SITE_URL}/services/design` },
+  ],
+};
+
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "행사 디자인·시안물 제작",
+  description: "포스터, 현수막, 리플렛, 자료집, 명찰, 초청장 등 행사에 필요한 모든 시안물을 자체 디자인팀이 제작",
+  provider: { "@type": "Organization", name: "파란컴퍼니", url: SITE_URL },
+  areaServed: { "@type": "Country", name: "대한민국" },
+  serviceType: "Event Design",
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    { "@type": "Question", name: "행사 디자인만 별도로 의뢰할 수 있나요?", acceptedAnswer: { "@type": "Answer", text: "네, 디자인만 별도로 의뢰하실 수 있습니다. 포스터, 현수막, 리플렛, 자료집, 명찰 등 필요한 시안물만 선택하여 제작이 가능합니다." } },
+    { "@type": "Question", name: "시안물 수정은 몇 회까지 가능한가요?", acceptedAnswer: { "@type": "Answer", text: "기본 3회 수정이 포함되어 있으며, 추가 수정도 협의 가능합니다. 1차 시안 제출 후 피드백을 반영하여 빠르게 수정합니다. 보통 1영업일 내 수정 반영됩니다." } },
+    { "@type": "Question", name: "디자인 작업 기간은 얼마나 걸리나요?", acceptedAnswer: { "@type": "Answer", text: "1~2종 시안물은 3~5영업일, 6~9종 풀 패키지는 약 2주 소요됩니다. 급한 일정의 경우 우선 작업도 가능하니 미리 문의해 주세요." } },
+    { "@type": "Question", name: "인쇄·제작까지 포함되나요?", acceptedAnswer: { "@type": "Answer", text: "네, 디자인부터 인쇄·제작까지 원스톱으로 진행합니다. 포스터, 현수막, 리플렛, 자료집 등의 인쇄물 제작과 배송까지 관리합니다." } },
+  ],
+};
+
+const designItems = [
+  {
+    title: "포스터·현수막",
+    desc: "행사 컨셉에 맞는 포스터와 현수막을 디자인합니다. 실내외 현수막, 가로·세로 배너, X배너 등 다양한 규격에 대응합니다.",
+    examples: "포스터, 현수막, X배너, 엑스배너, 걸개현수막",
+  },
+  {
+    title: "리플렛·자료집",
+    desc: "행사 프로그램 안내 리플렛, 발표 자료집, 교육 교재 등을 편집·디자인합니다. 인쇄용 고해상도 작업과 PDF 납품 모두 가능합니다.",
+    examples: "3단 리플렛, 자료집, 교육 교재, 프로그램북",
+  },
+  {
+    title: "명찰·초청장",
+    desc: "참가자 명찰, VIP 초청장, 참가 확인증 등을 디자인합니다. 행사 전체 시안물과 통일된 디자인 톤을 유지합니다.",
+    examples: "명찰, 초청장, 참가확인증, 수료증",
+  },
+  {
+    title: "카드뉴스·SNS 콘텐츠",
+    desc: "행사 홍보용 카드뉴스, SNS 이미지, 웹 배너 등 온라인 콘텐츠를 제작합니다. 플랫폼별 최적 사이즈로 제작합니다.",
+    examples: "카드뉴스, 인스타그램 이미지, 웹 배너",
+  },
+];
+
+// 디자인 페이지는 모든 포트폴리오가 대상 (모든 행사에 디자인 작업 포함)
+const DESIGN_SLUGS = [
+  "parent-education", "international-forum", "goyang-conference", "kls",
+  "culture-club-showcase", "auto-seminar-fall", "community-energy",
+  "navy-camp", "auto-seminar-summer", "culture-club-operation",
+  "artist-rights", "auto-seminar-spring", "education-council-booth",
+  "jcs-sns",
+];
+
+export default async function DesignPage() {
+  let portfolios: Portfolio[] = [];
+  let media: PortfolioMedia[] = [];
+
+  try {
+    [portfolios, media] = await Promise.all([
+      fetchPortfolios(),
+      fetchAllPortfolioMedia(),
+    ]);
+  } catch {
+    portfolios = PORTFOLIOS;
+  }
+
+  const filtered = portfolios
+    .filter((p) => p.isVisible && p.slug && DESIGN_SLUGS.includes(p.slug))
+    .slice(0, 3);
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+
+      {/* Hero */}
+      <section className="bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40">
+        <div className="mx-auto max-w-[1200px] px-5 md:px-8">
+          <nav className="text-[11px] text-white/40 mb-16 md:mb-24">
+            <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
+            <span className="mx-2 text-white/20">/</span>
+            <Link href="/services" className="hover:text-white/70 transition-colors">서비스</Link>
+            <span className="mx-2 text-white/20">/</span>
+            <span className="text-white/60">행사 디자인·시안물</span>
+          </nav>
+          <div className="text-center max-w-3xl mx-auto">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6">
+              행사 디자인·시안물 제작
+            </h1>
+            <p className="text-base md:text-lg text-slate-300 leading-relaxed mb-10">
+              포스터, 현수막, 리플렛, 자료집, 명찰 등
+              행사에 필요한 모든 시안물을 자체 디자인팀이 제작합니다.
+            </p>
+            <TrustBadges variant="dark" />
+          </div>
+        </div>
+      </section>
+
+      {/* 본문 + SNS */}
+      <section className="py-16 md:py-24 px-5 md:px-8">
+        <div className="mx-auto max-w-[900px] relative">
+          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-0 sticky" style={{ position: "sticky", top: 100 }}>
+            <ServiceSNS layout="vertical" />
+          </aside>
+
+          <h2 className="text-xl md:text-2xl font-bold mb-8">
+            행사 디자인, 왜 기획사에 맡겨야 할까요?
+          </h2>
+
+          <p className="text-slate-600 leading-[1.8] mb-6">
+            행사 디자인은 단순히 예쁜 시안물을 만드는 것이 아닙니다.
+            행사의 목적, 참가자 특성, 행사장 환경을 모두 고려하여
+            디자인해야 합니다. 일반 디자인 업체에 별도 의뢰하면
+            행사 맥락을 설명하는 데 시간이 걸리고, 기획 의도와
+            디자인 결과물 사이에 괴리가 생기기 쉽습니다.
+          </p>
+
+          <div className="my-8 p-5 rounded-xl bg-blue-50/60 border-l-4 border-blue-500">
+            <p className="text-slate-700 text-sm leading-[1.8] font-medium">
+              파란컴퍼니는 250건 이상의 행사에서 포스터·현수막·리플렛·자료집·명찰
+              등 총 6~9종의 시안물을 직접 디자인해 왔습니다.
+              기획팀과 디자인팀이 한 팀이기 때문에 행사 컨셉이 시안물에
+              자연스럽게 반영되고, 수정 반영이 빠릅니다.
+            </p>
+          </div>
+
+          <p className="text-slate-600 leading-[1.8] mb-6">
+            기획과 디자인을 동시에 진행하는 것이 가장 큰 강점입니다.
+            행사 컨셉이 확정되면 바로 디자인 작업에 들어가기 때문에
+            별도의 디자인 브리핑이 필요 없고, 기획 변경 사항이
+            실시간으로 시안물에 반영됩니다. 포스터, 현수막, 리플렛,
+            자료집, 명찰 등 모든 시안물이 하나의 디자인 톤으로
+            통일됩니다.
+          </p>
+
+          <p className="text-slate-600 leading-[1.8] mb-6">
+            디자인만 별도로 의뢰하는 것도 가능합니다. 행사 기획은
+            자체적으로 진행하되, 시안물 디자인만 전문가에게 맡기고 싶은
+            경우에도 포스터 1종부터 풀 패키지까지 유연하게 대응합니다.
+          </p>
+
+          <p className="text-slate-600 leading-[1.8]">
+            인쇄·제작까지 원스톱으로 진행합니다. 디자인 파일 납품은
+            물론, 인쇄물 제작과 행사장 배송까지 한 번에 처리하여
+            담당자의 업무 부담을 줄여드립니다.
+          </p>
+        </div>
+      </section>
+
+      {/* 자체 디자인팀 강점 */}
+      <section className="py-16 md:py-24 px-5 md:px-8">
+        <div className="mx-auto max-w-[1200px]">
+          <div className="p-8 md:p-10 rounded-2xl border border-slate-200/80 bg-white shadow-sm flex flex-col md:flex-row gap-8 md:gap-14 items-start">
+            <div className="flex-1">
+              <h2 className="text-xl md:text-2xl font-bold mb-5">
+                자체 디자인팀이 만드는 차이
+              </h2>
+              <p className="text-slate-600 text-sm leading-[1.8] mb-6">
+                외부 디자인 업체에 별도로 의뢰하면 기획 의도를 전달하는 데
+                시간이 걸리고, 수정 요청마다 추가 비용이 발생합니다.
+                파란컴퍼니는 기획팀과 디자인팀이 같은 공간에서 함께 일하기
+                때문에 커뮤니케이션 비용이 제로이고, 수정 반영이
+                1영업일 이내로 빠릅니다.
+              </p>
+            </div>
+            <div className="flex-shrink-0 w-full md:w-auto">
+              <div className="grid grid-cols-3 gap-3 text-center">
+                {[
+                  { num: "6~9종", label: "행사당 시안물" },
+                  { num: "자체", label: "디자인팀 보유" },
+                  { num: "1일", label: "수정 반영" },
+                ].map((s) => (
+                  <div key={s.label} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                    <div className="text-xl font-extrabold text-blue-600 font-num">{s.num}</div>
+                    <div className="text-xs text-slate-500 mt-1">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 디자인 항목 */}
+      <section className="bg-slate-50 py-16 md:py-24 px-5 md:px-8">
+        <div className="mx-auto max-w-[1200px]">
+          <h2 className="text-xl md:text-2xl font-bold mb-10">
+            제작 가능한 시안물
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {designItems.map((item) => (
+              <div key={item.title} className="p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+                <h3 className="font-bold text-lg mb-3">{item.title}</h3>
+                <p className="text-slate-500 text-sm leading-[1.7] mb-3">{item.desc}</p>
+                <p className="text-xs text-slate-400">{item.examples}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 포트폴리오 */}
+      <section className="py-16 md:py-24 px-5 md:px-8">
+        <div className="mx-auto max-w-[1200px]">
+          <ServicePortfolio
+            title="행사 디자인 수행 사례"
+            portfolios={filtered}
+            media={media}
+            altPrefix="행사 디자인 시안물 제작 사례"
+          />
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-16 md:py-24 px-5 md:px-8">
+        <div className="mx-auto max-w-[800px]">
+          <h2 className="text-xl md:text-2xl font-bold mb-10">
+            행사 디자인 자주 묻는 질문
+          </h2>
+          <ServiceFAQ
+            items={[
+              {
+                q: "행사 디자인만 별도로 의뢰할 수 있나요?",
+                a: "네, 디자인만 별도로 의뢰하실 수 있습니다. 포스터, 현수막, 리플렛, 자료집, 명찰 등 필요한 시안물만 선택하여 제작이 가능합니다. 행사 기획과 함께 의뢰하시면 더 일관된 결과물을 받으실 수 있습니다.",
+              },
+              {
+                q: "시안물 수정은 몇 회까지 가능한가요?",
+                a: "기본 3회 수정이 포함되어 있으며, 추가 수정도 협의 가능합니다. 1차 시안 제출 후 피드백을 반영하여 빠르게 수정합니다. 보통 1영업일 내에 수정이 반영됩니다.",
+              },
+              {
+                q: "디자인 작업 기간은 얼마나 걸리나요?",
+                a: "1~2종 시안물은 3~5영업일, 6~9종 풀 패키지는 약 2주 소요됩니다. 급한 일정의 경우 우선 작업도 가능하니 미리 문의해 주세요.",
+              },
+              {
+                q: "인쇄·제작까지 포함되나요?",
+                a: "네, 디자인부터 인쇄·제작까지 원스톱으로 진행합니다. 포스터, 현수막, 리플렛, 자료집 등의 인쇄물 제작과 행사장 배송까지 관리합니다. 인쇄 비용은 수량과 규격에 따라 별도 안내합니다.",
+              },
+            ]}
+          />
+          <div className="text-center mt-8">
+            <Link href="/faq" className="text-sm text-blue-600 font-medium hover:underline">
+              전체 FAQ 보기 →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <ServiceCTA
+        title="행사 디자인, 기획부터 함께하는 전문 팀에 맡기세요"
+        relatedServices={[
+          { href: "/services/government", label: "공공기관 행사 대행" },
+          { href: "/services/corporate", label: "기업행사 기획·대행" },
+          { href: "/services/conference", label: "컨퍼런스·포럼 기획" },
+          { href: "/guide/pricing", label: "비용·견적 안내" },
+        ]}
+      />
+    </>
+  );
+}

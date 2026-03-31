@@ -9,14 +9,14 @@ import { PRICE_CATEGORIES, PACKAGE_EXAMPLES, formatPriceRange } from "@/lib/pric
 export default function PricingClient() {
   return (
     <GuideClient
-      title="행사 비용 가이드"
-      description="항목별 비용 범위와 규모별 예산 설계를 참고하세요"
+      title="행사 대행 비용·견적 안내"
+      description="항목별 가격과 규모별 예산 가이드를 확인하세요"
     >
       <div className="space-y-8">
         {/* 안내 문구 */}
         <div className="rounded-lg border border-slate-200 bg-slate-50/60 p-4">
           <p className="text-sm leading-relaxed text-slate-500">
-            아래 금액은 소규모 기준 최소 단가이며, 행사 규모·장소·세부 요구사항에 따라 달라집니다.
+            아래 행사 대행 비용은 소규모 기준 최소 단가이며, 행사 규모·장소·세부 요구사항에 따라 달라집니다.
             정확한 견적은 상담 후 항목별로 투명하게 산출해 드립니다.
           </p>
         </div>
