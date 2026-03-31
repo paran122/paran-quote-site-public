@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 const reasons = [
   { title: "여성기업 인증", desc: "여성기업확인서를 보유한 여성기업으로, 수의계약 한도 내에서 별도 입찰 없이 직접 계약이 가능합니다.", icon: "/icons/service-icon-certification-v3.png" },
   { title: "조달 입찰 참여 가능", desc: "행사대행업 직접생산확인증명서를 보유하여 나라장터 조달 입찰에 참여할 수 있습니다.", icon: "/icons/service-icon-document-v3.png" },
@@ -17,7 +19,7 @@ export default function ReasonStylePicker() {
           {reasons.map((r) => (
             <div key={r.title} className="p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm text-center">
               <div className="flex justify-center mb-5">
-                <img src={r.icon} alt={r.title} className="w-16 h-16 object-contain" />
+                <Image src={r.icon} alt={r.title} width={64} height={64} className="object-contain" />
               </div>
               <h3 className="font-bold text-lg mb-3">{r.title}</h3>
               <p className="text-slate-500 text-sm leading-[1.7]">{r.desc}</p>

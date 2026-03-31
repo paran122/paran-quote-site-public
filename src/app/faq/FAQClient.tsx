@@ -174,7 +174,7 @@ const categories: FAQCategory[] = [
         question: "지금까지 몇 건의 행사를 수행했나요?",
         answer: (
           <>
-            2015년 설립 이후 <strong className="text-slate-900">250건 이상</strong>의 행사를 성공적으로 수행했습니다. 연간 <strong className="text-slate-900">100회 이상</strong>의 행사를 운영하고 있으며, 고객 재계약률 <strong className="text-slate-900">90%</strong>가 저희 서비스 품질에 대한 가장 확실한 지표입니다.
+            2015년 설립 이후 <strong className="text-slate-900">250건 이상</strong>의 행사를 성공적으로 수행했습니다. 연간 <strong className="text-slate-900">100여 회</strong>의 행사를 운영하고 있으며, 고객 재계약률 <strong className="text-slate-900">90%</strong>가 저희 서비스 품질에 대한 가장 확실한 지표입니다.
           </>
         ),
       },

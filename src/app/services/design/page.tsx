@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { PORTFOLIOS } from "@/lib/portfolioData";
 import type { Portfolio, PortfolioMedia } from "@/types";
 import ServiceFAQ from "../_components/ServiceFAQ";
 import ServicePortfolio from "../_components/ServicePortfolio";
+import ServiceProcess from "../_components/ServiceProcess";
 import ServiceCTA from "../_components/ServiceCTA";
 import TrustBadges from "../_components/TrustBadges";
 import ServiceSNS from "../_components/ServiceSNS";
+import HeroSlideshow from "../_components/HeroSlideshow";
+import ServiceSubNav from "../_components/ServiceSubNav";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -25,6 +29,7 @@ export const metadata: Metadata = {
     description: "포스터·현수막·리플렛·자료집 등 행사 시안물 전문. 자체 디자인팀 보유. 250+ 프로젝트 경험.",
     type: "website",
     url: `${SITE_URL}/services/design`,
+    images: [{ url: "/og-image.png?v=2", width: 1200, height: 630, alt: "행사 디자인·시안물 제작 - 파란컴퍼니" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -66,21 +71,25 @@ const faqJsonLd = {
 
 const designItems = [
   {
+    icon: "/icons/service-icon-poster-v1.png",
     title: "포스터·현수막",
     desc: "행사 컨셉에 맞는 포스터와 현수막을 디자인합니다. 실내외 현수막, 가로·세로 배너, X배너 등 다양한 규격에 대응합니다.",
     examples: "포스터, 현수막, X배너, 엑스배너, 걸개현수막",
   },
   {
+    icon: "/icons/service-icon-leaflet-v1.png",
     title: "리플렛·자료집",
     desc: "행사 프로그램 안내 리플렛, 발표 자료집, 교육 교재 등을 편집·디자인합니다. 인쇄용 고해상도 작업과 PDF 납품 모두 가능합니다.",
     examples: "3단 리플렛, 자료집, 교육 교재, 프로그램북",
   },
   {
+    icon: "/icons/service-icon-badge-v1.png",
     title: "명찰·초청장",
     desc: "참가자 명찰, VIP 초청장, 참가 확인증 등을 디자인합니다. 행사 전체 시안물과 통일된 디자인 톤을 유지합니다.",
     examples: "명찰, 초청장, 참가확인증, 수료증",
   },
   {
+    icon: "/icons/service-icon-cardnews-v1.png",
     title: "카드뉴스·SNS 콘텐츠",
     desc: "행사 홍보용 카드뉴스, SNS 이미지, 웹 배너 등 온라인 콘텐츠를 제작합니다. 플랫폼별 최적 사이즈로 제작합니다.",
     examples: "카드뉴스, 인스타그램 이미지, 웹 배너",
@@ -89,11 +98,7 @@ const designItems = [
 
 // 디자인 페이지는 모든 포트폴리오가 대상 (모든 행사에 디자인 작업 포함)
 const DESIGN_SLUGS = [
-  "parent-education", "international-forum", "goyang-conference", "kls",
-  "culture-club-showcase", "auto-seminar-fall", "community-energy",
-  "navy-camp", "auto-seminar-summer", "culture-club-operation",
-  "artist-rights", "auto-seminar-spring", "education-council-booth",
-  "jcs-sns",
+  "education-council-booth", "jcs-sns", "parent-education",
 ];
 
 export default async function DesignPage() {
@@ -109,9 +114,9 @@ export default async function DesignPage() {
     portfolios = PORTFOLIOS;
   }
 
-  const filtered = portfolios
-    .filter((p) => p.isVisible && p.slug && DESIGN_SLUGS.includes(p.slug))
-    .slice(0, 3);
+  const filtered = DESIGN_SLUGS
+    .map((slug) => portfolios.find((p) => p.isVisible && p.slug === slug))
+    .filter((p): p is Portfolio => !!p);
 
   return (
     <>
@@ -120,9 +125,18 @@ export default async function DesignPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* Hero */}
-      <section className="bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40">
-        <div className="mx-auto max-w-[1200px] px-5 md:px-8">
-          <nav className="text-[11px] text-white/40 mb-16 md:mb-24">
+      <section className="relative bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
+        <HeroSlideshow
+          images={[
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-04.webp", alt: "행사 디자인 - 교육감협의회 전시부스 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-16.webp", alt: "행사 디자인 - 찾아가는 경기학부모교육 인쇄물 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-09.webp", alt: "행사 시안물 제작 - 교육감협의회 전시부스" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-20.webp", alt: "행사 시안물 제작 - 경기학부모교육 포스터·현수막" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-14.webp", alt: "행사 디자인 제작 - 교육감협의회 등신대" },
+          ]}
+        />
+        <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
+          <nav aria-label="breadcrumb" className="text-[11px] text-white/40 mb-16 md:mb-24">
             <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
             <span className="mx-2 text-white/20">/</span>
             <Link href="/services" className="hover:text-white/70 transition-colors">서비스</Link>
@@ -142,10 +156,12 @@ export default async function DesignPage() {
         </div>
       </section>
 
+      <ServiceSubNav />
+
       {/* 본문 + SNS */}
       <section className="py-16 md:py-24 px-5 md:px-8">
         <div className="mx-auto max-w-[900px] relative">
-          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-0 sticky" style={{ position: "sticky", top: 100 }}>
+          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-[100px] sticky">
             <ServiceSNS layout="vertical" />
           </aside>
 
@@ -190,6 +206,39 @@ export default async function DesignPage() {
             물론, 인쇄물 제작과 행사장 배송까지 한 번에 처리하여
             담당자의 업무 부담을 줄여드립니다.
           </p>
+
+          {/* 시안물 사진 */}
+          <div className="my-10 rounded-2xl overflow-hidden shadow-md">
+            <Image
+              src="https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-07.webp"
+              alt="행사 디자인 시안물 적용 현장 - 교육감협의회 전시부스·대형등신대"
+              width={900}
+              height={500}
+              className="w-full h-auto object-cover"
+            />
+            <div className="flex items-center justify-between px-4 py-2 bg-slate-50">
+              <p className="text-xs text-slate-400">
+                교육감협의회 부스 설치 | 경기도교육청 | 전시부스·대형등신대·테이블등신대 제작
+              </p>
+              <Link href="/work/education-council-booth" className="text-xs text-blue-600 font-medium hover:underline shrink-0 ml-4">
+                이 행사 상세 보기 →
+              </Link>
+            </div>
+          </div>
+
+          {/* 비용 간략 안내 */}
+          <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
+            <h3 className="font-bold text-sm mb-2">행사 디자인 비용 안내</h3>
+            <p className="text-sm text-slate-600 leading-[1.8]">
+              포스터·현수막 등 1~2종 시안물은 개별 견적으로, 6~9종
+              풀 패키지는 행사 대행 견적에 포함됩니다. 디자인만 별도
+              의뢰하는 것도 가능하며, 수량과 규격에 따라 달라집니다.
+              행사 정보를 알려주시면 1영업일 내에 안내드립니다.
+            </p>
+            <Link href="/guide/pricing" className="inline-block mt-3 text-sm text-blue-600 font-medium hover:underline">
+              비용·견적 상세 안내 →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -236,6 +285,9 @@ export default async function DesignPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {designItems.map((item) => (
               <div key={item.title} className="p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+                <div className="flex justify-center mb-4">
+                  <Image src={item.icon} alt={item.title} width={56} height={56} className="object-contain" />
+                </div>
                 <h3 className="font-bold text-lg mb-3">{item.title}</h3>
                 <p className="text-slate-500 text-sm leading-[1.7] mb-3">{item.desc}</p>
                 <p className="text-xs text-slate-400">{item.examples}</p>
@@ -256,6 +308,9 @@ export default async function DesignPage() {
           />
         </div>
       </section>
+
+      {/* 프로세스 */}
+      <ServiceProcess />
 
       {/* FAQ */}
       <section className="py-16 md:py-24 px-5 md:px-8">

@@ -17,15 +17,27 @@ export default function DesignerSidebar() {
   const [active, setActive] = useState("hero");
 
   useEffect(() => {
+    const visibleSet = new Set<string>();
+    const sectionOrder = sections.map((s) => s.id);
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActive(entry.target.id);
+            visibleSet.add(entry.target.id);
+          } else {
+            visibleSet.delete(entry.target.id);
           }
         });
+        // 화면에 보이는 섹션 중 가장 위(순서상 앞)를 활성화
+        for (const id of sectionOrder) {
+          if (visibleSet.has(id)) {
+            setActive(id);
+            break;
+          }
+        }
       },
-      { rootMargin: "-30% 0px -40% 0px" }
+      { rootMargin: "-120px 0px -45% 0px", threshold: 0.1 }
     );
 
     function observeAll() {

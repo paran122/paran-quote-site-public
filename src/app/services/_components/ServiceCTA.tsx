@@ -47,7 +47,7 @@ export default function ServiceCTA({ title, relatedServices }: Props) {
               href="https://pf.kakao.com/_xkexdLG"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-outline btn-lg w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#FEE500] px-6 py-3.5 text-sm font-semibold text-[#3B1C1C] transition-all hover:bg-[#F5DC00] w-full sm:w-auto"
             >
               카카오톡 상담
             </a>

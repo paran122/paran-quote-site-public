@@ -80,9 +80,20 @@ export default function Footer() {
               <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-400">바로가기</div>
               <div className="space-y-2 text-xs text-white/40">
                 <Link href="/company" className="block transition-colors hover:text-white">회사소개</Link>
+                <Link href="/services" className="block transition-colors hover:text-white">서비스</Link>
                 <Link href="/work" className="block transition-colors hover:text-white">포트폴리오</Link>
                 <Link href="/faq" className="block transition-colors hover:text-white">FAQ</Link>
                 <Link href="/blog" className="block transition-colors hover:text-white">블로그</Link>
+              </div>
+            </div>
+            <div>
+              <Link href="/services" className="mb-3 block text-xs font-semibold uppercase tracking-wider text-blue-400 transition-colors hover:text-blue-300">서비스</Link>
+              <div className="space-y-2 text-xs text-white/40">
+                <Link href="/services/corporate" className="block transition-colors hover:text-white">기업행사 대행</Link>
+                <Link href="/services/government" className="block transition-colors hover:text-white">공공기관 행사</Link>
+                <Link href="/services/conference" className="block transition-colors hover:text-white">컨퍼런스·포럼</Link>
+                <Link href="/services/seminar" className="block transition-colors hover:text-white">세미나·워크숍</Link>
+                <Link href="/services/design" className="block transition-colors hover:text-white">행사 디자인</Link>
               </div>
             </div>
             <div>
@@ -174,6 +185,7 @@ export default function Footer() {
           <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
             <div className="flex items-center gap-3 text-[8px] text-white/40">
               <Link href="/company" className="transition-colors hover:text-white">회사소개</Link>
+              <Link href="/services" className="transition-colors hover:text-white">서비스</Link>
               <Link href="/work" className="transition-colors hover:text-white">포트폴리오</Link>
               <Link href="/blog" className="transition-colors hover:text-white">블로그</Link>
               <Link href="/faq" className="transition-colors hover:text-white">FAQ</Link>

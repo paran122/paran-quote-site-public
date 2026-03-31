@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { PORTFOLIOS } from "@/lib/portfolioData";
@@ -10,16 +11,18 @@ import ServiceProcess from "../_components/ServiceProcess";
 import ServiceCTA from "../_components/ServiceCTA";
 import TrustBadges from "../_components/TrustBadges";
 import ServiceSNS from "../_components/ServiceSNS";
+import HeroSlideshow from "../_components/HeroSlideshow";
+import ServiceSubNav from "../_components/ServiceSubNav";
 
 const SITE_URL = "https://parancompany.co.kr";
 
 export const metadata: Metadata = {
-  title: "컨퍼런스·포럼 대행 — 학술대회·국제포럼 기획 전문",
+  title: "컨퍼런스·포럼 대행 — 학술대회·심포지엄·국제포럼 기획 전문",
   description:
-    "컨퍼런스·포럼 대행 전문 에이전시. 학술대회, 국제 컨퍼런스, 정책 포럼을 기획부터 운영까지 원스톱 대행합니다. 하이브리드 행사 지원. KLS 국제학술대회 등 다수 실적. 무료 견적 요청.",
+    "컨퍼런스·포럼 대행 전문 에이전시. 학술대회, 심포지엄, 국제 컨퍼런스, 정책 포럼을 기획부터 운영까지 원스톱 대행합니다. 하이브리드 행사 지원. KLS 국제학술대회 등 다수 실적. 무료 견적 요청.",
   keywords: [
     "컨퍼런스대행", "포럼대행", "학술대회대행", "국제컨퍼런스",
-    "행사대행", "행사대행업체", "컨퍼런스기획", "포럼기획",
+    "행사대행", "행사대행업체", "컨퍼런스기획", "심포지엄",
   ],
   alternates: { canonical: `${SITE_URL}/services/conference` },
   openGraph: {
@@ -27,6 +30,7 @@ export const metadata: Metadata = {
     description: "학술대회·국제포럼 전문. 기획부터 운영까지 원스톱 대행. 하이브리드 행사 지원.",
     type: "website",
     url: `${SITE_URL}/services/conference`,
+    images: [{ url: "/og-image.png?v=2", width: 1200, height: 630, alt: "컨퍼런스·포럼 대행 - 파란컴퍼니" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -74,8 +78,8 @@ const eventTypes = [
   },
   {
     icon: "/icons/service-icon-academic-v1.png",
-    title: "학술 포럼·학술대회",
-    desc: "교육기관·연구기관·학회의 학술 포럼과 학술대회를 대행합니다. 논문 발표 세션 운영, 포스터 세션 관리, 참가자 등록 시스템까지 지원합니다.",
+    title: "학술대회·심포지엄",
+    desc: "교육기관·연구기관·학회의 학술대회, 심포지엄, 학술 포럼을 대행합니다. 논문 발표 세션 운영, 포스터 세션 관리, 참가자 등록 시스템까지 지원합니다.",
   },
   {
     icon: "/icons/service-icon-debate-v1.png",
@@ -117,9 +121,18 @@ export default async function ConferencePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* Hero */}
-      <section className="bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40">
-        <div className="mx-auto max-w-[1200px] px-5 md:px-8">
-          <nav className="text-[11px] text-white/40 mb-16 md:mb-24">
+      <section className="relative bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
+        <HeroSlideshow
+          images={[
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/kls/photo-05.webp", alt: "컨퍼런스 대행 - KLS 국제학술대회 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-04.webp", alt: "포럼 대행 - 중앙아시아 교육협력포럼 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-09.webp", alt: "컨퍼런스 대행 - 고양 학교체육 성장 컨퍼런스 현장" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/kls/photo-10.webp", alt: "학술대회 대행 - KLS 국제학술대회" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-10.webp", alt: "심포지엄 대행 - 중앙아시아 교육협력포럼" },
+          ]}
+        />
+        <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
+          <nav aria-label="breadcrumb" className="text-[11px] text-white/40 mb-16 md:mb-24">
             <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
             <span className="mx-2 text-white/20">/</span>
             <Link href="/services" className="hover:text-white/70 transition-colors">서비스</Link>
@@ -131,7 +144,7 @@ export default async function ConferencePage() {
               컨퍼런스·포럼 대행
             </h1>
             <p className="text-base md:text-lg text-slate-300 leading-relaxed mb-10">
-              학술대회, 국제 컨퍼런스, 정책 포럼을
+              학술대회, 심포지엄, 국제 컨퍼런스, 정책 포럼을
               기획부터 운영까지 원스톱으로 대행합니다.
             </p>
             <TrustBadges variant="dark" />
@@ -139,10 +152,12 @@ export default async function ConferencePage() {
         </div>
       </section>
 
+      <ServiceSubNav />
+
       {/* 본문 + SNS */}
       <section className="py-16 md:py-24 px-5 md:px-8">
         <div className="mx-auto max-w-[900px] relative">
-          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-0 sticky" style={{ position: "sticky", top: 100 }}>
+          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-[100px] sticky">
             <ServiceSNS layout="vertical" />
           </aside>
 
@@ -187,6 +202,59 @@ export default async function ConferencePage() {
             행사 컨셉에 맞는 통일된 비주얼 아이덴티티를 제공하여
             행사의 전문성과 격을 높입니다.
           </p>
+
+          {/* 행사 사진 */}
+          <div className="my-10 rounded-2xl overflow-hidden shadow-md">
+            <Image
+              src="https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/kls/photo-03.webp"
+              alt="컨퍼런스 대행 현장 사진 - KLS 한국어교육 국제학술대회 (약 400명 규모)"
+              width={900}
+              height={500}
+              className="w-full h-auto object-cover"
+            />
+            <div className="flex items-center justify-between px-4 py-2 bg-slate-50">
+              <p className="text-xs text-slate-400">
+                KLS 한국어교육 국제학술대회 | 경기도교육청 | 약 400명 규모
+              </p>
+              <Link href="/work/kls" className="text-xs text-blue-600 font-medium hover:underline shrink-0 ml-4">
+                이 행사 상세 보기 →
+              </Link>
+            </div>
+          </div>
+
+          {/* 서비스 범위 */}
+          <h2 className="text-xl md:text-2xl font-bold mt-14 mb-6">
+            컨퍼런스·포럼 대행 서비스 범위
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { title: "기획·프로그램 구성", items: "행사 컨셉 설계, 프로그램 구성, 타임라인 작성, 연사·패널 섭외" },
+              { title: "디자인·제작", items: "포스터, 현수막, 리플렛, 자료집, 명찰, 초청장, 포토존" },
+              { title: "현장 운영", items: "음향·조명·영상 세팅, 참가자 접수, 동선 관리, 의전" },
+              { title: "하이브리드·촬영", items: "온라인 실시간 중계, 동시통역, 사진·영상 촬영" },
+              { title: "참가자 관리", items: "사전 등록 시스템, 현장 접수, 명찰·자료집 배포" },
+              { title: "사후 관리", items: "결과보고서, 참석자 통계, 만족도 조사, 사진대지" },
+            ].map((s) => (
+              <div key={s.title} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                <h3 className="font-bold text-sm mb-1">{s.title}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">{s.items}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* 비용 간략 안내 */}
+          <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
+            <h3 className="font-bold text-sm mb-2">컨퍼런스·포럼 대행 비용 안내</h3>
+            <p className="text-sm text-slate-600 leading-[1.8]">
+              100명 규모 컨퍼런스는 약 800만 원부터, 300명 이상 대규모
+              포럼·심포지엄은 약 2,000만 원부터 시작합니다.
+              연사 섭외, 동시통역, 하이브리드 운영 여부에 따라 달라지며,
+              행사 정보를 알려주시면 1영업일 내에 항목별 상세 견적서를 보내드립니다.
+            </p>
+            <Link href="/guide/pricing" className="inline-block mt-3 text-sm text-blue-600 font-medium hover:underline">
+              비용·견적 상세 안내 →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -196,13 +264,13 @@ export default async function ConferencePage() {
           <div className="p-8 md:p-10 rounded-2xl border border-slate-200/80 bg-white shadow-sm flex flex-col md:flex-row gap-8 md:gap-14 items-start">
             <div className="flex-1">
               <h2 className="text-xl md:text-2xl font-bold mb-5">
-                기획부터 디자인까지, 한 팀이 만드는 완성도
+                컨퍼런스 격에 맞는 통일된 비주얼
               </h2>
               <p className="text-slate-600 text-sm leading-[1.8] mb-6">
-                컨퍼런스는 행사의 격에 맞는 디자인 퀄리티가 중요합니다.
-                파란컴퍼니는 기획팀과 디자인팀이 처음부터 함께 움직여,
-                행사 컨셉에 맞는 초청장·포스터·현수막·자료집·명찰 등
-                모든 시안물을 통일된 톤으로 제작합니다.
+                컨퍼런스는 연사와 참가자 모두에게 전문적인 인상을 줘야 합니다.
+                파란컴퍼니는 기획 단계에서 확정된 컨셉을 디자인팀이 바로
+                반영하여, 초청장부터 포스터·현수막·자료집·명찰까지
+                하나의 비주얼 아이덴티티로 완성합니다.
               </p>
               <Link
                 href="/services/design"
@@ -240,7 +308,7 @@ export default async function ConferencePage() {
             {eventTypes.map((et) => (
               <div key={et.title} className="p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
-                  <img src={et.icon} alt={et.title} className="w-14 h-14 object-contain" />
+                  <Image src={et.icon} alt={et.title} width={56} height={56} className="object-contain" />
                 </div>
                 <h3 className="font-bold text-lg mb-3">{et.title}</h3>
                 <p className="text-slate-500 text-sm leading-[1.7]">{et.desc}</p>
