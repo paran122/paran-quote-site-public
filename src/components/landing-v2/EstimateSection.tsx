@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { Mic, MessageSquare, PartyPopper, PenTool, Check, Plus, Minus, X, ChevronDown, Loader2, Paperclip, FileText, Image as ImageIcon } from "lucide-react";
+import { Mic, MessageSquare, PenTool, Check, Plus, Minus, X, ChevronDown, Loader2, Paperclip, FileText, Image as ImageIcon } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { showToast } from "@/components/ui/Toast";
 import { BorderBeam } from "@/components/ui/border-beam";
@@ -47,10 +47,9 @@ interface EventType {
 }
 
 const ICONS: Record<string, { icon: LucideIcon; bg: string; iconBg: string }> = {
-  seminar: { icon: Mic, bg: "bg-gray-100/80", iconBg: "bg-gray-200/80" },
-  forum: { icon: MessageSquare, bg: "bg-gray-100/80", iconBg: "bg-gray-200/80" },
-  festival: { icon: PartyPopper, bg: "bg-gray-100/80", iconBg: "bg-gray-200/80" },
-  editorial: { icon: PenTool, bg: "bg-gray-100/80", iconBg: "bg-gray-200/80" },
+  seminar: { icon: Mic, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
+  forum: { icon: MessageSquare, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
+  editorial: { icon: PenTool, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
 };
 
 const eventTypes: EventType[] = ESTIMATE_EVENT_TYPES.map((et) => ({
@@ -127,6 +126,21 @@ export default function Estimate() {
   );
   const [showOrder, setShowOrder] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const estimateCardRef = useRef<HTMLDivElement>(null);
+
+  // 견적내기 확장 시 카드 하단이 보이도록 스크롤
+  useEffect(() => {
+    if (expanded && estimateCardRef.current) {
+      const timer = setTimeout(() => {
+        const rect = estimateCardRef.current!.getBoundingClientRect();
+        const bottomGap = rect.bottom - window.innerHeight;
+        if (bottomGap > -60) {
+          window.scrollBy({ top: bottomGap + 60, behavior: "smooth" });
+        }
+      }, 350);
+      return () => clearTimeout(timer);
+    }
+  }, [expanded]);
 
   // Order form state
   const [form, setForm] = useState<OrderForm>(INITIAL_FORM);
@@ -299,9 +313,9 @@ export default function Estimate() {
           <p className="mb-6 text-xs text-gray-500 md:mb-14 md:text-base">행사 유형에 따른 예상 견적을 확인하세요</p>
         </BlurFade>
 
-        <div className="grid gap-4 lg:grid-cols-2 lg:gap-6">
+        <div className="grid items-end gap-4 lg:grid-cols-2 lg:gap-6">
           {/* Left: Event Type Selector */}
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-1 lg:gap-3 lg:self-start">
+          <div className="grid grid-cols-2 gap-2 lg:grid-cols-1 lg:gap-3 lg:self-end">
             {eventTypes.map((event, i) => (
               <BlurFade key={event.id} delay={0.15 + i * 0.05}>
                 <button
@@ -327,7 +341,7 @@ export default function Estimate() {
           </div>
 
           {/* Right: Estimate Detail */}
-          <div className="flex h-full">
+          <div ref={estimateCardRef} className="flex">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active.id}
