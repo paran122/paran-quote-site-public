@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,12 +14,34 @@ const navItems: { label: string; anchor: string; isPage?: boolean }[] = [
   { label: "블로그", anchor: "/blog", isPage: true },
 ];
 
+const serviceSubItems = [
+  { href: "/services/corporate", label: "기업행사" },
+  { href: "/services/government", label: "공공기관" },
+  { href: "/services/conference", label: "컨퍼런스·포럼" },
+  { href: "/services/seminar", label: "세미나·워크숍" },
+  { href: "/services/design", label: "행사 디자인" },
+];
+
 export default function GNB() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [serviceDropdown, setServiceDropdown] = useState(false);
+  const [mobileServiceOpen, setMobileServiceOpen] = useState(false);
+  const dropdownTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const serviceRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
   const router = useRouter();
 
   const isLanding = pathname === "/";
+
+  const handleServiceEnter = () => {
+    if (dropdownTimeout.current) clearTimeout(dropdownTimeout.current);
+    setServiceDropdown(true);
+  };
+
+  const handleServiceLeave = () => {
+    dropdownTimeout.current = setTimeout(() => setServiceDropdown(false), 150);
+  };
 
   const isActive = (item: typeof navItems[number]) =>
     item.isPage && (item.anchor === "/" ? pathname === "/" : pathname.startsWith(item.anchor));
@@ -59,7 +81,7 @@ export default function GNB() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-blue-400/10 bg-[#0f1a3c] backdrop-blur-xl">
+    <header ref={headerRef} className="fixed top-0 left-0 right-0 z-50 border-b border-blue-400/10 bg-[#0f1a3c] backdrop-blur-xl">
       <div className="mx-auto flex max-w-[1200px] items-center justify-between px-5 py-3 md:px-8">
         {/* Logo */}
         <a
@@ -72,25 +94,48 @@ export default function GNB() {
             alt="파란컴퍼니"
             width={120}
             height={53}
-            className="h-8 w-auto md:h-9"
+            className="h-9 w-auto md:h-10"
             priority
           />
         </a>
 
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-6 md:flex">
-          {navItems.map((item) => (
-            <a
-              key={item.anchor}
-              href={item.anchor}
-              onClick={(e) => handleNavClick(e, item)}
-              className={`text-xs font-medium transition-colors hover:text-white/80 ${
-                isActive(item) ? "text-white" : "text-white/40"
-              }`}
-            >
-              {item.label}
-            </a>
-          ))}
+          {navItems.map((item) => {
+            if (item.anchor === "/services") {
+              return (
+                <div
+                  key={item.anchor}
+                  ref={serviceRef}
+                  className="flex items-center"
+                  onMouseEnter={handleServiceEnter}
+                  onMouseLeave={handleServiceLeave}
+                >
+                  <a
+                    href={item.anchor}
+                    onClick={(e) => handleNavClick(e, item)}
+                    className={`text-xs font-medium transition-colors hover:text-white/80 ${
+                      isActive(item) ? "text-white" : "text-white/40"
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                </div>
+              );
+            }
+            return (
+              <a
+                key={item.anchor}
+                href={item.anchor}
+                onClick={(e) => handleNavClick(e, item)}
+                className={`text-xs font-medium transition-colors hover:text-white/80 ${
+                  isActive(item) ? "text-white" : "text-white/40"
+                }`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
           <a
             href="/?scrollTo=contact"
             onClick={(e) => handleNavClick(e, { label: "문의하기", anchor: "#contact" })}
@@ -123,6 +168,47 @@ export default function GNB() {
         </div>
       </div>
 
+      {/* Desktop Service Dropdown — GNB 하단 구분선에 딱 맞춤 */}
+      <AnimatePresence>
+        {serviceDropdown && (
+          <motion.div
+            initial={{ opacity: 0, scaleY: 0 }}
+            animate={{ opacity: 1, scaleY: 1 }}
+            exit={{ opacity: 0, scaleY: 0 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute top-[calc(100%-1px)] origin-top hidden md:block"
+            style={{
+              left: serviceRef.current
+                ? serviceRef.current.getBoundingClientRect().left
+                : undefined,
+            }}
+            onMouseEnter={handleServiceEnter}
+            onMouseLeave={handleServiceLeave}
+          >
+            <div className="min-w-[140px] border-t border-blue-400/10 bg-[#0f1a3c] py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+              {serviceSubItems.map((sub) => (
+                <a
+                  key={sub.href}
+                  href={sub.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setServiceDropdown(false);
+                    router.push(sub.href);
+                  }}
+                  className={`block px-4 py-2 text-xs transition-colors ${
+                    pathname === sub.href
+                      ? "text-white bg-white/10"
+                      : "text-white/50 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {sub.label}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
@@ -133,18 +219,87 @@ export default function GNB() {
             className="overflow-hidden border-t border-blue-400/10 bg-[#0f1a3c] backdrop-blur-xl md:hidden"
           >
             <div className="flex flex-col gap-4 px-6 py-6">
-              {navItems.map((item) => (
-                <a
-                  key={item.anchor}
-                  href={item.anchor}
-                  onClick={(e) => handleNavClick(e, item)}
-                  className={`text-sm transition-colors hover:text-white ${
-                    isActive(item) ? "text-white" : "text-white/50"
-                  }`}
-                >
-                  {item.label}
-                </a>
-              ))}
+              {navItems.map((item) => {
+                if (item.anchor === "/services") {
+                  return (
+                    <div key={item.anchor}>
+                      <button
+                        onClick={() => setMobileServiceOpen(!mobileServiceOpen)}
+                        className={`flex w-full items-center justify-between text-sm transition-colors hover:text-white ${
+                          isActive(item) ? "text-white" : "text-white/50"
+                        }`}
+                      >
+                        {item.label}
+                        <motion.span
+                          animate={{ rotate: mobileServiceOpen ? 180 : 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-white/40"
+                        >
+                          ▾
+                        </motion.span>
+                      </button>
+                      <AnimatePresence>
+                        {mobileServiceOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="flex flex-col gap-3 pl-4 pt-3">
+                              <a
+                                href="/services"
+                                onClick={(e) => {
+                                  handleNavClick(e, item);
+                                }}
+                                className={`text-sm transition-colors ${
+                                  pathname === "/services"
+                                    ? "text-white"
+                                    : "text-white/40 hover:text-white"
+                                }`}
+                              >
+                                전체 서비스
+                              </a>
+                              {serviceSubItems.map((sub) => (
+                                <a
+                                  key={sub.href}
+                                  href={sub.href}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setMobileOpen(false);
+                                    setMobileServiceOpen(false);
+                                    router.push(sub.href);
+                                  }}
+                                  className={`text-sm transition-colors ${
+                                    pathname === sub.href
+                                      ? "text-white"
+                                      : "text-white/40 hover:text-white"
+                                  }`}
+                                >
+                                  {sub.label}
+                                </a>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
+                return (
+                  <a
+                    key={item.anchor}
+                    href={item.anchor}
+                    onClick={(e) => handleNavClick(e, item)}
+                    className={`text-sm transition-colors hover:text-white ${
+                      isActive(item) ? "text-white" : "text-white/50"
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
               <a
                 href="/?scrollTo=contact"
                 onClick={(e) => handleNavClick(e, { label: "문의하기", anchor: "#contact" })}
