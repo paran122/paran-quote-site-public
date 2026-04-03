@@ -26,10 +26,9 @@ function buildItemRows(items: CartItemForEmail[]): string {
 }
 
 export function adminNotifySubject(data: QuoteEmailData): string {
-  if (data.type === "inquiry") {
-    return `[문의 접수] ${data.contactName}님 (${data.quoteNumber})`;
-  }
-  return `[견적 접수] ${data.organization} - ${data.eventName} (${data.quoteNumber})`;
+  const label = data.type === "inquiry" ? "문의 접수" : "견적 접수";
+  const name = data.organization || data.contactName;
+  return `[${label}]-${name}`;
 }
 
 export function adminNotifyHtml(data: QuoteEmailData): string {
