@@ -99,7 +99,8 @@ function buildItemRows(items: CartItemForEmail[]): string {
 
 export function adminNotifySubject(data: QuoteEmailData): string {
   const label = data.type === "inquiry" ? "문의 접수" : "견적 접수";
-  const name = data.organization || data.contactName;
+  const org = data.organization && data.organization !== "문의" ? data.organization : "";
+  const name = org || data.contactName;
   return `[${label}]-${name}`;
 }
 
@@ -123,6 +124,10 @@ export function adminNotifyHtml(data: QuoteEmailData): string {
               <td style="padding:8px 0;font-size:13px;color:#94a3b8;width:100px">이름</td>
               <td style="padding:8px 0;font-size:14px;color:#1e293b;font-weight:600">${data.contactName}</td>
             </tr>
+            ${data.organization && data.organization !== "문의" ? `<tr>
+              <td style="padding:8px 0;font-size:13px;color:#94a3b8">소속</td>
+              <td style="padding:8px 0;font-size:14px;color:#1e293b;font-weight:600">${data.organization}</td>
+            </tr>` : ""}
             <tr>
               <td style="padding:8px 0;font-size:13px;color:#94a3b8">연락처</td>
               <td style="padding:8px 0;font-size:14px;color:#1e293b">${data.phone}</td>

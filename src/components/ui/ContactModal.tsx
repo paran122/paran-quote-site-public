@@ -30,12 +30,13 @@ const PHONE_REGEX = /^[\d\-]{9,15}$/;
 
 interface ContactForm {
   contactName: string;
+  organization: string;
   phone: string;
   email: string;
   message: string;
 }
 
-const INITIAL_FORM: ContactForm = { contactName: "", phone: "", email: "", message: "" };
+const INITIAL_FORM: ContactForm = { contactName: "", organization: "", phone: "", email: "", message: "" };
 
 function getFieldError(form: ContactForm, key: string): string | null {
   if (key === "contactName" && !form.contactName.trim()) return "이름을 입력해주세요";
@@ -167,7 +168,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
       await submitQuoteViaApi({
         quote_number: quoteNumber,
         contact_name: form.contactName,
-        organization: "문의",
+        organization: form.organization.trim() || "문의",
         phone: form.phone,
         email: form.email,
         event_name: "문의",
@@ -248,6 +249,20 @@ export default function ContactModal({ isOpen, onClose }: Props) {
               </div>
               <div>
                 <label className="mb-1.5 block text-[13px] font-medium text-slate-600">
+                  소속(회사/기관)
+                </label>
+                <input
+                  type="text"
+                  placeholder="파란컴퍼니"
+                  value={form.organization}
+                  onChange={(e) => updateField("organization", e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-[14px] text-slate-900 placeholder-slate-300 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary/20"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="mb-1.5 block text-[13px] font-medium text-slate-600">
                   연락처 <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -266,26 +281,26 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                   <p className="mt-1 text-[12px] text-red-400">{getFieldError(form, "phone")}</p>
                 )}
               </div>
-            </div>
-            <div>
-              <label className="mb-1.5 block text-[13px] font-medium text-slate-600">
-                이메일 <span className="text-red-400">*</span>
-              </label>
-              <input
-                type="email"
-                placeholder="example@email.com"
-                value={form.email}
-                onChange={(e) => updateField("email", e.target.value)}
-                onBlur={() => handleBlur("email")}
-                className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-[14px] text-slate-900 placeholder-slate-300 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary/20 ${
-                  touched.email && getFieldError(form, "email")
-                    ? "border-red-300"
-                    : "border-slate-200"
-                }`}
-              />
-              {touched.email && getFieldError(form, "email") && (
-                <p className="mt-1 text-[12px] text-red-400">{getFieldError(form, "email")}</p>
-              )}
+              <div>
+                <label className="mb-1.5 block text-[13px] font-medium text-slate-600">
+                  이메일 <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="email"
+                  placeholder="example@email.com"
+                  value={form.email}
+                  onChange={(e) => updateField("email", e.target.value)}
+                  onBlur={() => handleBlur("email")}
+                  className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-[14px] text-slate-900 placeholder-slate-300 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary/20 ${
+                    touched.email && getFieldError(form, "email")
+                      ? "border-red-300"
+                      : "border-slate-200"
+                  }`}
+                />
+                {touched.email && getFieldError(form, "email") && (
+                  <p className="mt-1 text-[12px] text-red-400">{getFieldError(form, "email")}</p>
+                )}
+              </div>
             </div>
           </div>
 
