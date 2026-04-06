@@ -126,6 +126,39 @@ export async function POST(request: Request) {
     const isInquiry =
       data.event_name === "문의" || data.event_type === "문의";
 
+    // 첨부파일 signed URL 생성 (7일 유효 — 이메일에서 다운로드용)
+    let emailAttachments: { name: string; url: string; size: number; type: string }[] | undefined;
+    if (data.attachments && data.attachments.length > 0) {
+      try {
+        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+        if (url && serviceKey) {
+          const { createClient: createServiceClient } = await import("@supabase/supabase-js");
+          const serviceDb = createServiceClient(url, serviceKey, {
+            auth: { persistSession: false, autoRefreshToken: false },
+          });
+          const paths = data.attachments.map((a) => a.url);
+          const { data: signedData } = await serviceDb.storage
+            .from("contact-attachments")
+            .createSignedUrls(paths, 7 * 24 * 60 * 60); // 7일
+
+          if (signedData) {
+            const urlMap: Record<string, string> = {};
+            for (const item of signedData) {
+              if (item.signedUrl && item.path) urlMap[item.path] = item.signedUrl;
+            }
+            emailAttachments = data.attachments.map((a) => ({
+              ...a,
+              url: urlMap[a.url] || a.url,
+            }));
+          }
+        }
+      } catch (err) {
+        console.error("[api/quote] Failed to generate signed URLs for email:", err);
+        // signed URL 실패해도 파일명만이라도 이메일에 표시
+        emailAttachments = data.attachments;
+      }
+    }
+
     const emailData: QuoteEmailData = {
       quoteNumber: data.quote_number,
       contactName: data.contact_name,
@@ -143,6 +176,7 @@ export async function POST(request: Request) {
       totalAmount: data.total_amount,
       discountAmount: data.discount_amount,
       type: isInquiry ? "inquiry" : "quote",
+      attachments: emailAttachments,
     };
 
     const emailResult = await sendQuoteNotification(emailData);

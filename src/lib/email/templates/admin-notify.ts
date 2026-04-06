@@ -1,4 +1,4 @@
-import type { QuoteEmailData, CartItemForEmail } from "./types";
+import type { QuoteEmailData, CartItemForEmail, EmailAttachment } from "./types";
 
 function formatKRW(amount: number): string {
   if (amount >= 10000) {
@@ -8,6 +8,78 @@ function formatKRW(amount: number): string {
     return `${eok}억 ${man.toLocaleString("ko-KR")}만원`;
   }
   return `${amount.toLocaleString("ko-KR")}만원`;
+}
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)}KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
+}
+
+function isImageType(type: string): boolean {
+  return type.startsWith("image/");
+}
+
+function fileIcon(type: string): string {
+  if (isImageType(type)) return "🖼";
+  if (type.includes("pdf")) return "📄";
+  if (type.includes("word") || type.includes("document")) return "📝";
+  if (type.includes("excel") || type.includes("spreadsheet")) return "📊";
+  if (type.includes("powerpoint") || type.includes("presentation")) return "📑";
+  return "📎";
+}
+
+function buildAttachmentSection(attachments: EmailAttachment[]): string {
+  if (!attachments || attachments.length === 0) return "";
+
+  const imageFiles = attachments.filter((a) => isImageType(a.type));
+  const docFiles = attachments.filter((a) => !isImageType(a.type));
+
+  let html = `
+          <div style="margin:20px 0 0">
+            <h2 style="margin:0 0 12px;font-size:15px;color:#1d4ed8;font-weight:700">첨부 파일 (${attachments.length}개)</h2>`;
+
+  // 이미지 미리보기
+  if (imageFiles.length > 0) {
+    html += `<div style="margin-bottom:12px">`;
+    for (const img of imageFiles) {
+      const isSignedUrl = img.url.startsWith("http");
+      html += `
+            <div style="margin-bottom:8px;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden">
+              ${isSignedUrl ? `<img src="${img.url}" alt="${img.name}" style="max-width:100%;max-height:300px;display:block" />` : ""}
+              <div style="padding:8px 12px;background:#f8fafc;display:flex;align-items:center">
+                <span style="font-size:13px;color:#334155">${img.name}</span>
+                <span style="font-size:12px;color:#94a3b8;margin-left:8px">${formatFileSize(img.size)}</span>
+                ${isSignedUrl ? `<a href="${img.url}" style="margin-left:auto;font-size:12px;color:#1d4ed8;text-decoration:none;font-weight:600">다운로드</a>` : ""}
+              </div>
+            </div>`;
+    }
+    html += `</div>`;
+  }
+
+  // 문서 파일 목록
+  if (docFiles.length > 0) {
+    html += `<table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden">`;
+    for (const doc of docFiles) {
+      const isSignedUrl = doc.url.startsWith("http");
+      html += `
+              <tr>
+                <td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#334155">
+                  ${fileIcon(doc.type)} ${doc.name}
+                  <span style="font-size:12px;color:#94a3b8;margin-left:6px">${formatFileSize(doc.size)}</span>
+                </td>
+                <td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;text-align:right">
+                  ${isSignedUrl ? `<a href="${doc.url}" style="font-size:12px;color:#1d4ed8;text-decoration:none;font-weight:600;background:#eff6ff;padding:4px 10px;border-radius:4px">다운로드</a>` : `<span style="font-size:12px;color:#94a3b8">관리자 페이지에서 확인</span>`}
+                </td>
+              </tr>`;
+    }
+    html += `</table>`;
+  }
+
+  html += `
+            <p style="margin:8px 0 0;font-size:11px;color:#94a3b8">* 다운로드 링크는 7일간 유효합니다. 이후에는 관리자 페이지에서 확인해주세요.</p>
+          </div>`;
+
+  return html;
 }
 
 function buildItemRows(items: CartItemForEmail[]): string {
@@ -26,10 +98,9 @@ function buildItemRows(items: CartItemForEmail[]): string {
 }
 
 export function adminNotifySubject(data: QuoteEmailData): string {
-  if (data.type === "inquiry") {
-    return `[문의 접수] ${data.contactName}님 (${data.quoteNumber})`;
-  }
-  return `[견적 접수] ${data.organization} - ${data.eventName} (${data.quoteNumber})`;
+  const label = data.type === "inquiry" ? "문의 접수" : "견적 접수";
+  const name = data.organization || data.contactName;
+  return `[${label}]-${name}`;
 }
 
 export function adminNotifyHtml(data: QuoteEmailData): string {
@@ -65,6 +136,7 @@ export function adminNotifyHtml(data: QuoteEmailData): string {
             <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;font-weight:600">문의 내용</div>
             <div style="font-size:14px;color:#334155;line-height:1.6;white-space:pre-wrap">${data.memo || "-"}</div>
           </div>
+          ${data.attachments ? buildAttachmentSection(data.attachments) : ""}
         </td></tr>
         <tr><td style="padding:20px 32px;background:#f8fafc;border-top:1px solid #e2e8f0">
           <p style="margin:0;font-size:12px;color:#94a3b8;text-align:center">파란컴퍼니 / 02-6342-2800 / info@parancompany.co.kr</p>
@@ -150,6 +222,8 @@ export function adminNotifyHtml(data: QuoteEmailData): string {
             <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;font-weight:600">메모</div>
             <div style="font-size:14px;color:#334155;line-height:1.6;white-space:pre-wrap">${data.memo}</div>
           </div>` : ""}
+
+          ${data.attachments ? buildAttachmentSection(data.attachments) : ""}
         </td></tr>
         <tr><td style="padding:20px 32px;background:#f8fafc;border-top:1px solid #e2e8f0">
           <p style="margin:0;font-size:12px;color:#94a3b8;text-align:center">파란컴퍼니 / 02-6342-2800 / info@parancompany.co.kr</p>

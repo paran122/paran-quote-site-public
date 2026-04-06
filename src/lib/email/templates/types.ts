@@ -1,3 +1,10 @@
+export interface EmailAttachment {
+  name: string;
+  url: string;
+  size: number;
+  type: string;
+}
+
 export interface QuoteEmailData {
   quoteNumber: string;
   contactName: string;
@@ -16,6 +23,7 @@ export interface QuoteEmailData {
   discountAmount?: number;
   /** "견적" | "문의" */
   type: "quote" | "inquiry";
+  attachments?: EmailAttachment[];
 }
 
 export interface CartItemForEmail {
