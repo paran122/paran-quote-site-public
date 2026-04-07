@@ -560,7 +560,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                 ) : (
                   <div className="grid grid-cols-2 gap-3 sm:gap-6">
                     {sortedDesignWorks.map((work, idx) => (
-                      <BlurFade key={work.id} delay={0.03 * Math.min(idx, 10)}>
+                      <BlurFade key={work.id} delay={idx < 6 ? 0.03 * idx : 0}>
                         <button
                           onClick={() => setLightboxWork(work)}
                           className="group relative block w-full text-left rounded-[10px] overflow-hidden bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200"
@@ -571,8 +571,9 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                               alt={`${work.title} — ${work.event}`}
                               fill
                               className="object-cover transition-transform duration-500 group-hover:scale-105"
-                              sizes="(max-width: 640px) 50vw, 50vw"
+                              sizes="(max-width: 640px) calc(50vw - 12px), calc(50vw - 140px)"
                               unoptimized
+                              {...(idx < 4 ? { priority: true } : { loading: "lazy" as const })}
                             />
 
                             {/* 호버 오버레이 */}
@@ -626,7 +627,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                             : [];
 
                       return (
-                        <BlurFade key={pf.id} delay={0.04 * Math.min(idx, 8)}>
+                        <BlurFade key={pf.id} delay={idx < 6 ? 0.04 * idx : 0}>
                           <Link
                             href={`/work/${pf.slug || pf.id}`}
                             className="group flex h-full flex-col rounded-[10px] overflow-hidden bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200"
