@@ -37,7 +37,7 @@ const DESIGN_CATEGORIES = [
 ] as const;
 
 /** 디자인별 전체 보기 정렬: 첫 4개 고정 + 나머지 랜덤 */
-const PINNED_IDS = ["b03", "b08", "l01", "l04"];
+const PINNED_IDS = ["b03", "b08", "b01", "b04"];
 
 function shuffleArray<T>(arr: T[]): T[] {
   const shuffled = [...arr];
