@@ -248,19 +248,6 @@ export default function GNB() {
                             className="overflow-hidden"
                           >
                             <div className="flex flex-col gap-3 pl-4 pt-3">
-                              <a
-                                href="/services"
-                                onClick={(e) => {
-                                  handleNavClick(e, item);
-                                }}
-                                className={`text-sm transition-colors ${
-                                  pathname === "/services"
-                                    ? "text-white"
-                                    : "text-white/40 hover:text-white"
-                                }`}
-                              >
-                                전체 서비스
-                              </a>
                               {serviceSubItems.map((sub) => (
                                 <a
                                   key={sub.href}

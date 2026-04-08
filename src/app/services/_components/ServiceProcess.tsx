@@ -4,7 +4,14 @@ import Link from "next/link";
 import { Star } from "lucide-react";
 import { useState } from "react";
 
-const steps = [
+const steps: Array<{
+  num: string;
+  title: string;
+  desc: string;
+  isStrength: boolean;
+  strengthMsg: string;
+  clickLabel?: boolean;
+}> = [
   {
     num: "01",
     title: "상담",
@@ -25,6 +32,7 @@ const steps = [
     desc: "포스터, 현수막, 명찰, 자료집 등\n시안물을 디자인하고 제작합니다.",
     isStrength: true,
     strengthMsg: "자체 디자인팀이 행사 컨셉에 맞는 시안물을 통일된 톤으로 빠르게 제작합니다.",
+    clickLabel: true,
   },
   {
     num: "04",
@@ -42,6 +50,15 @@ const steps = [
   },
 ];
 
+/* click 라벨: 원 상단 테두리 중앙에 텍스트 */
+function ClickLabel() {
+  return (
+    <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-20 px-2 bg-slate-50 text-[9px] font-bold text-blue-500 tracking-widest">
+      click
+    </span>
+  );
+}
+
 export default function ServiceProcess() {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
@@ -52,11 +69,35 @@ export default function ServiceProcess() {
           진행 프로세스
         </h2>
 
+
         <div className="relative">
           {/* 연결 라인 (데스크톱) */}
           <div className="hidden md:block absolute top-[42px] left-[10%] right-[10%] h-px bg-blue-200" />
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-4">
+          {/* 모바일: 가로 컴팩트 */}
+          <div className="flex md:hidden flex-col gap-3">
+            {steps.map((s) => (
+              <div key={s.num} className="flex items-center gap-3">
+                <div className="relative shrink-0">
+                  {s.isStrength && (
+                    <Star className="absolute -top-1 -right-1 w-3 h-3 text-blue-500 fill-blue-500" />
+                  )}
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold font-num ${
+                    s.isStrength ? "bg-blue-600 text-white" : "bg-white border-2 border-blue-200 text-blue-600"
+                  }`}>
+                    {s.num}
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-sm">{s.title}</h3>
+                  <p className="text-slate-500 text-xs leading-relaxed truncate">{s.desc.replace(/\n/g, " ")}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 데스크톱: 기존 5열 */}
+          <div className="hidden md:grid md:grid-cols-5 gap-4">
             {steps.map((s, i) => (
               <div
                 key={s.num}
@@ -65,14 +106,12 @@ export default function ServiceProcess() {
                 onMouseLeave={() => setActiveIdx(null)}
                 onClick={() => setActiveIdx(activeIdx === i ? null : i)}
               >
-                {/* 별 표시 (강점만) */}
                 {s.isStrength && (
                   <div className="absolute -top-1 left-1/2 translate-x-2 z-20">
                     <Star className="w-4 h-4 text-blue-500 fill-blue-500" />
                   </div>
                 )}
 
-                {/* 숫자 원 */}
                 <div
                   className={`relative z-10 mx-auto w-[84px] h-[84px] rounded-full flex flex-col items-center justify-center shadow-sm mb-5 transition-all duration-300 ${
                     activeIdx === i
@@ -89,6 +128,7 @@ export default function ServiceProcess() {
                   >
                     {s.num}
                   </span>
+                  {s.clickLabel && <ClickLabel />}
                 </div>
 
                 <h3
@@ -99,7 +139,6 @@ export default function ServiceProcess() {
                   {s.title}
                 </h3>
 
-                {/* 기본 설명 또는 강점 메시지 */}
                 <div className="min-h-[48px]">
                   {activeIdx === i && s.isStrength && s.strengthMsg ? (
                     <p className="text-blue-600 text-xs leading-relaxed font-medium animate-[fadeIn_0.2s_ease-out]">

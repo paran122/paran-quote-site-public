@@ -13,6 +13,7 @@ import TrustBadges from "../_components/TrustBadges";
 import ServiceSNS from "../_components/ServiceSNS";
 import HeroSlideshow from "../_components/HeroSlideshow";
 import ServiceSubNav from "../_components/ServiceSubNav";
+import CardCarousel from "../_components/CardCarousel";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -132,14 +133,14 @@ export default async function ConferencePage() {
           ]}
         />
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
-          <nav aria-label="breadcrumb" className="text-[11px] text-white/40 mb-16 md:mb-24">
+          <nav aria-label="breadcrumb" className="hidden md:block text-[11px] text-white/40 mb-24">
             <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
             <span className="mx-2 text-white/20">/</span>
             <Link href="/services" className="hover:text-white/70 transition-colors">서비스</Link>
             <span className="mx-2 text-white/20">/</span>
             <span className="text-white/60">컨퍼런스·포럼 대행</span>
           </nav>
-          <div className="text-center max-w-3xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto pt-16 md:pt-0">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6">
               컨퍼런스·포럼 대행
             </h1>
@@ -226,7 +227,7 @@ export default async function ConferencePage() {
           <h2 className="text-xl md:text-2xl font-bold mt-14 mb-6">
             컨퍼런스·포럼 대행 서비스 범위
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4">
             {[
               { title: "기획·프로그램 구성", items: "행사 컨셉 설계, 프로그램 구성, 타임라인 작성, 연사·패널 섭외" },
               { title: "디자인·제작", items: "포스터, 현수막, 리플렛, 자료집, 명찰, 초청장, 포토존" },
@@ -235,9 +236,9 @@ export default async function ConferencePage() {
               { title: "참가자 관리", items: "사전 등록 시스템, 현장 접수, 명찰·자료집 배포" },
               { title: "사후 관리", items: "결과보고서, 참석자 통계, 만족도 조사, 사진대지" },
             ].map((s) => (
-              <div key={s.title} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-                <h3 className="font-bold text-sm mb-1">{s.title}</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">{s.items}</p>
+              <div key={s.title} className="px-3 py-2.5 sm:p-4 rounded-xl bg-slate-50 border border-slate-100 text-center sm:text-left">
+                <h3 className="font-bold text-sm">{s.title}</h3>
+                <p className="hidden sm:block text-xs text-slate-500 leading-relaxed mt-1">{s.items}</p>
               </div>
             ))}
           </div>
@@ -259,7 +260,7 @@ export default async function ConferencePage() {
       </section>
 
       {/* 기획·디자인 강점 */}
-      <section className="py-16 md:py-24 px-5 md:px-8">
+      <section className="pt-0 pb-16 md:pt-0 md:pb-24 px-5 md:px-8">
         <div className="mx-auto max-w-[1200px]">
           <div className="p-8 md:p-10 rounded-2xl border border-slate-200/80 bg-white shadow-sm flex flex-col md:flex-row gap-8 md:gap-14 items-start">
             <div className="flex-1">
@@ -304,9 +305,9 @@ export default async function ConferencePage() {
           <h2 className="text-xl md:text-2xl font-bold mb-10">
             이런 컨퍼런스·포럼을 대행합니다
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <CardCarousel>
             {eventTypes.map((et) => (
-              <div key={et.title} className="p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+              <div key={et.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
                   <Image src={et.icon} alt={et.title} width={56} height={56} className="object-contain" />
                 </div>
@@ -314,7 +315,7 @@ export default async function ConferencePage() {
                 <p className="text-slate-500 text-sm leading-[1.7]">{et.desc}</p>
               </div>
             ))}
-          </div>
+          </CardCarousel>
         </div>
       </section>
 
@@ -326,6 +327,7 @@ export default async function ConferencePage() {
             portfolios={filtered}
             media={media}
             altPrefix="컨퍼런스 포럼 대행 사례"
+            mobileCarousel
           />
         </div>
       </section>

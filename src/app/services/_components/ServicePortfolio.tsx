@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Portfolio, PortfolioMedia } from "@/types";
+import CardCarousel from "./CardCarousel";
 
 const categoryStyle: Record<string, string> = {
   포럼: "bg-purple-100 text-purple-700",
@@ -38,9 +39,59 @@ interface Props {
   portfolios: Portfolio[];
   media: PortfolioMedia[];
   altPrefix?: string;
+  mobileCarousel?: boolean;
 }
 
-export default function ServicePortfolio({ title, portfolios, media, altPrefix }: Props) {
+export default function ServicePortfolio({ title, portfolios, media, altPrefix, mobileCarousel }: Props) {
+  const cards = portfolios.map((pf) => {
+    const photo = getFirstPhoto(pf, media);
+    const cat = getDisplayCategory(pf);
+    const badgeStyle = categoryStyle[cat] || "bg-slate-100 text-slate-700";
+
+    return (
+      <Link
+        key={pf.id}
+        href={`/work/${pf.slug}`}
+        className={`group block rounded-xl border border-slate-200/80 bg-white shadow-sm overflow-hidden hover:shadow-lg transition-all ${
+          mobileCarousel ? "snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink" : ""
+        }`}
+      >
+        <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+          {photo ? (
+            <Image
+              src={photo}
+              alt={altPrefix ? `${altPrefix} - ${pf.title}` : pf.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-slate-300 text-sm">
+              사진 없음
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          <div className="absolute bottom-3 left-3 flex items-center gap-2">
+            <span
+              className={`px-2 py-0.5 rounded text-xs font-medium ${badgeStyle}`}
+            >
+              {cat}
+            </span>
+            <span className="text-xs text-white/80">{pf.year}</span>
+          </div>
+        </div>
+        <div className="p-4">
+          <p className="text-xs text-slate-400 mb-1">{pf.client}</p>
+          <h3 className="font-bold text-sm group-hover:text-blue-600 transition-colors line-clamp-1">
+            {pf.title}
+          </h3>
+          {pf.attendees && (
+            <p className="text-xs text-slate-400 mt-1">{pf.attendees}</p>
+          )}
+        </div>
+      </Link>
+    );
+  });
+
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
@@ -53,54 +104,15 @@ export default function ServicePortfolio({ title, portfolios, media, altPrefix }
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {portfolios.map((pf) => {
-          const photo = getFirstPhoto(pf, media);
-          const cat = getDisplayCategory(pf);
-          const badgeStyle = categoryStyle[cat] || "bg-slate-100 text-slate-700";
-
-          return (
-            <Link
-              key={pf.id}
-              href={`/work/${pf.slug}`}
-              className="group block rounded-xl border border-slate-200/80 bg-white shadow-sm overflow-hidden hover:shadow-lg transition-all"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
-                {photo ? (
-                  <Image
-                    src={photo}
-                    alt={altPrefix ? `${altPrefix} - ${pf.title}` : pf.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-300 text-sm">
-                    사진 없음
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                  <span
-                    className={`px-2 py-0.5 rounded text-xs font-medium ${badgeStyle}`}
-                  >
-                    {cat}
-                  </span>
-                  <span className="text-xs text-white/80">{pf.year}</span>
-                </div>
-              </div>
-              <div className="p-4">
-                <p className="text-xs text-slate-400 mb-1">{pf.client}</p>
-                <h3 className="font-bold text-sm group-hover:text-blue-600 transition-colors line-clamp-1">
-                  {pf.title}
-                </h3>
-                {pf.attendees && (
-                  <p className="text-xs text-slate-400 mt-1">{pf.attendees}</p>
-                )}
-              </div>
-            </Link>
-          );
-        })}
-      </div>
+      {mobileCarousel ? (
+        <CardCarousel desktopGrid="sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
+          {cards}
+        </CardCarousel>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {cards}
+        </div>
+      )}
     </div>
   );
 }
