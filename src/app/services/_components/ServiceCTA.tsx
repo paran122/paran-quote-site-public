@@ -39,7 +39,7 @@ export default function ServiceCTA({ title, relatedServices }: Props) {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link href="/?scrollTo=contact">
-              <PulsatingButton className="px-8 py-3.5 text-sm font-semibold rounded-lg">
+              <PulsatingButton className="px-8 py-3.5 text-sm font-semibold rounded-xl">
                 무료 견적 요청하기
               </PulsatingButton>
             </Link>
@@ -47,13 +47,13 @@ export default function ServiceCTA({ title, relatedServices }: Props) {
               href="https://pf.kakao.com/_xkexdLG"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#FEE500] px-6 py-3.5 text-sm font-semibold text-[#3B1C1C] transition-all hover:bg-[#F5DC00] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#FEE500] px-6 py-3.5 text-sm font-semibold text-[#3B1C1C] transition-all hover:bg-[#F5DC00] w-full sm:w-auto"
             >
               카카오톡 상담
             </a>
             <a
               href="tel:02-6342-2800"
-              className="btn-outline btn-lg w-full sm:w-auto"
+              className="btn-outline btn-lg rounded-xl w-full sm:w-auto"
             >
               02-6342-2800
             </a>

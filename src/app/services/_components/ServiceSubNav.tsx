@@ -10,6 +10,7 @@ const items = [
   { href: "/services/conference", label: "컨퍼런스·포럼" },
   { href: "/services/seminar", label: "세미나·워크숍" },
   { href: "/services/design", label: "행사 디자인" },
+  { href: "#", label: "파란디자인", external: true },
 ];
 
 export default function ServiceSubNav() {
@@ -34,6 +35,16 @@ export default function ServiceSubNav() {
         <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide -mx-1 py-1">
           {items.map((item) => {
             const isActive = pathname === item.href;
+            if ("external" in item) {
+              return (
+                <span
+                  key={item.label}
+                  className="shrink-0 px-4 py-2.5 text-sm font-medium rounded-lg text-slate-400 cursor-default"
+                >
+                  {item.label}
+                </span>
+              );
+            }
             return (
               <Link
                 key={item.href}

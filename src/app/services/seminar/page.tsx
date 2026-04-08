@@ -13,6 +13,7 @@ import TrustBadges from "../_components/TrustBadges";
 import ServiceSNS from "../_components/ServiceSNS";
 import HeroSlideshow from "../_components/HeroSlideshow";
 import ServiceSubNav from "../_components/ServiceSubNav";
+import CardCarousel from "../_components/CardCarousel";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -134,14 +135,14 @@ export default async function SeminarPage() {
           ]}
         />
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
-          <nav aria-label="breadcrumb" className="text-[11px] text-white/40 mb-16 md:mb-24">
+          <nav aria-label="breadcrumb" className="hidden md:block text-[11px] text-white/40 mb-24">
             <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
             <span className="mx-2 text-white/20">/</span>
             <Link href="/services" className="hover:text-white/70 transition-colors">서비스</Link>
             <span className="mx-2 text-white/20">/</span>
             <span className="text-white/60">세미나·워크숍 대행</span>
           </nav>
-          <div className="text-center max-w-3xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto pt-16 md:pt-0">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6">
               세미나·워크숍 대행
             </h1>
@@ -225,7 +226,7 @@ export default async function SeminarPage() {
           <h2 className="text-xl md:text-2xl font-bold mt-14 mb-6">
             세미나·워크숍 대행 서비스 범위
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4">
             {[
               { title: "기획·커리큘럼 설계", items: "교육 목표 분석, 프로그램 구성, 타임라인 작성, 시나리오 작성" },
               { title: "연사·강사 섭외", items: "전문 연사, 강사, 전문 사회자, 퍼실리테이터 섭외" },
@@ -234,9 +235,9 @@ export default async function SeminarPage() {
               { title: "워크숍 도구", items: "참여형 활동 설계, 그룹 토론 운영, 워크숍 키트 제작" },
               { title: "사후 관리", items: "결과보고서, 참석자 통계, 만족도 조사, 사진 납품" },
             ].map((s) => (
-              <div key={s.title} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-                <h3 className="font-bold text-sm mb-1">{s.title}</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">{s.items}</p>
+              <div key={s.title} className="px-3 py-2.5 sm:p-4 rounded-xl bg-slate-50 border border-slate-100 text-center sm:text-left">
+                <h3 className="font-bold text-sm">{s.title}</h3>
+                <p className="hidden sm:block text-xs text-slate-500 leading-relaxed mt-1">{s.items}</p>
               </div>
             ))}
           </div>
@@ -258,7 +259,7 @@ export default async function SeminarPage() {
       </section>
 
       {/* 기획·디자인 강점 */}
-      <section className="py-16 md:py-24 px-5 md:px-8">
+      <section className="pt-0 pb-16 md:pt-0 md:pb-24 px-5 md:px-8">
         <div className="mx-auto max-w-[1200px]">
           <div className="p-8 md:p-10 rounded-2xl border border-slate-200/80 bg-white shadow-sm flex flex-col md:flex-row gap-8 md:gap-14 items-start">
             <div className="flex-1">
@@ -303,9 +304,9 @@ export default async function SeminarPage() {
           <h2 className="text-xl md:text-2xl font-bold mb-10">
             이런 세미나·워크숍을 대행합니다
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <CardCarousel>
             {eventTypes.map((et) => (
-              <div key={et.title} className="p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+              <div key={et.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
                   <Image src={et.icon} alt={et.title} width={56} height={56} className="object-contain" />
                 </div>
@@ -313,7 +314,7 @@ export default async function SeminarPage() {
                 <p className="text-slate-500 text-sm leading-[1.7]">{et.desc}</p>
               </div>
             ))}
-          </div>
+          </CardCarousel>
         </div>
       </section>
 
@@ -325,6 +326,7 @@ export default async function SeminarPage() {
             portfolios={filtered}
             media={media}
             altPrefix="세미나 워크숍 대행 사례"
+            mobileCarousel
           />
         </div>
       </section>

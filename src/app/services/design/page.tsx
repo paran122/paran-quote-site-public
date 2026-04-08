@@ -12,6 +12,7 @@ import TrustBadges from "../_components/TrustBadges";
 import ServiceSNS from "../_components/ServiceSNS";
 import HeroSlideshow from "../_components/HeroSlideshow";
 import ServiceSubNav from "../_components/ServiceSubNav";
+import CardCarousel from "../_components/CardCarousel";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -136,14 +137,14 @@ export default async function DesignPage() {
           ]}
         />
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
-          <nav aria-label="breadcrumb" className="text-[11px] text-white/40 mb-16 md:mb-24">
+          <nav aria-label="breadcrumb" className="hidden md:block text-[11px] text-white/40 mb-24">
             <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
             <span className="mx-2 text-white/20">/</span>
             <Link href="/services" className="hover:text-white/70 transition-colors">서비스</Link>
             <span className="mx-2 text-white/20">/</span>
             <span className="text-white/60">행사 디자인·시안물</span>
           </nav>
-          <div className="text-center max-w-3xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto pt-16 md:pt-0">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6">
               행사 디자인·시안물 제작
             </h1>
@@ -243,7 +244,7 @@ export default async function DesignPage() {
       </section>
 
       {/* 자체 디자인팀 강점 */}
-      <section className="py-16 md:py-24 px-5 md:px-8">
+      <section className="pt-0 pb-16 md:pt-0 md:pb-24 px-5 md:px-8">
         <div className="mx-auto max-w-[1200px]">
           <div className="p-8 md:p-10 rounded-2xl border border-slate-200/80 bg-white shadow-sm flex flex-col md:flex-row gap-8 md:gap-14 items-start">
             <div className="flex-1">
@@ -282,9 +283,9 @@ export default async function DesignPage() {
           <h2 className="text-xl md:text-2xl font-bold mb-10">
             제작 가능한 시안물
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <CardCarousel>
             {designItems.map((item) => (
-              <div key={item.title} className="p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+              <div key={item.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
                   <Image src={item.icon} alt={item.title} width={56} height={56} className="object-contain" />
                 </div>
@@ -293,7 +294,7 @@ export default async function DesignPage() {
                 <p className="text-xs text-slate-400">{item.examples}</p>
               </div>
             ))}
-          </div>
+          </CardCarousel>
         </div>
       </section>
 
@@ -305,6 +306,7 @@ export default async function DesignPage() {
             portfolios={filtered}
             media={media}
             altPrefix="행사 디자인 시안물 제작 사례"
+            mobileCarousel
           />
         </div>
       </section>
