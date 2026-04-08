@@ -50,7 +50,11 @@ export async function PATCH(
     if (err instanceof Error && err.name === "ZodError") {
       return NextResponse.json({ error: "입력값이 올바르지 않습니다", details: err }, { status: 400 });
     }
-    const msg = err instanceof Error ? err.message : "수정 실패";
+    const msg = err instanceof Error
+      ? err.message
+      : (typeof err === "object" && err !== null && "message" in err)
+        ? String((err as Record<string, unknown>).message)
+        : "수정 실패";
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

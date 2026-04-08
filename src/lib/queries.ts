@@ -436,14 +436,15 @@ export async function createBlogPost(input: Record<string, unknown>): Promise<Bl
 
 export async function updateBlogPost(id: string, updates: Record<string, unknown>): Promise<BlogPost> {
   const db = requireClient();
-  const { data, error } = await db
+  const { error } = await db
     .from("blog_posts")
     .update(updates)
-    .eq("id", id)
-    .select()
-    .single();
+    .eq("id", id);
   if (error) throw error;
-  return mapRow<BlogPost>(data);
+  // update 후 별도 조회 (RLS select 정책과 무관하게 동작)
+  const post = await fetchBlogPostById(id);
+  if (!post) throw new Error("업데이트 후 포스트를 찾을 수 없습니다");
+  return post;
 }
 
 export async function deleteBlogPost(id: string) {
