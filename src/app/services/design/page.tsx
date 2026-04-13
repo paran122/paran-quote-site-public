@@ -13,6 +13,7 @@ import ServiceSNS from "../_components/ServiceSNS";
 import HeroSlideshow from "../_components/HeroSlideshow";
 import ServiceSubNav from "../_components/ServiceSubNav";
 import CardCarousel from "../_components/CardCarousel";
+import ImageSlideshow from "../_components/ImageSlideshow";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -128,12 +129,12 @@ export default async function DesignPage() {
       {/* Hero */}
       <section className="relative bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
         <HeroSlideshow
+          contain
           images={[
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-04.webp", alt: "행사 디자인 - 교육감협의회 전시부스 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-16.webp", alt: "행사 디자인 - 찾아가는 경기학부모교육 인쇄물 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-09.webp", alt: "행사 시안물 제작 - 교육감협의회 전시부스" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-20.webp", alt: "행사 시안물 제작 - 경기학부모교육 포스터·현수막" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-14.webp", alt: "행사 디자인 제작 - 교육감협의회 등신대" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/booth-large.webp", alt: "전시부스 디자인 시안 - 교육감협의회 대형전시부스" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/standee-large.webp", alt: "행사 디자인 시안 - 교육감협의회 대형등신대" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/booth.webp", alt: "행사 시안물 제작 - 교육감협의회 부스 디자인" },
+            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/table-standee.webp", alt: "행사 디자인 제작 - 교육감협의회 테이블 등신대" },
           ]}
         />
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
@@ -208,23 +209,22 @@ export default async function DesignPage() {
             담당자의 업무 부담을 줄여드립니다.
           </p>
 
-          {/* 시안물 사진 */}
+          {/* 리플렛 시안물 슬라이드쇼 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
-            <Image
-              src="https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/photo-07.webp"
-              alt="행사 디자인 시안물 적용 현장 - 교육감협의회 전시부스·대형등신대"
-              width={900}
-              height={500}
-              className="w-full h-auto object-cover"
+            <ImageSlideshow
+              images={[
+                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet.webp", alt: "리플렛 디자인 - 찾아가는 경기학부모교육", caption: "리플렛 | 찾아가는 경기학부모교육" },
+                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/booth-large.webp", alt: "전시부스 디자인 - 교육감협의회 대형전시부스", caption: "전시부스 | 교육감협의회 부스 설치" },
+                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/goyang-conference/leaflet.webp", alt: "리플렛 디자인 - 고양 학교체육 성장 컨퍼런스", caption: "리플렛 | 고양 학교체육 성장 컨퍼런스" },
+                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/goyang-conference/booth-large.webp", alt: "전시부스 디자인 - 고양 학교체육 컨퍼런스", caption: "전시부스 | 고양 학교체육 성장 컨퍼런스" },
+                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/international-forum/leaflet.webp", alt: "리플렛 디자인 - 중앙아시아 교육협력포럼", caption: "리플렛 | 중앙아시아 교육협력포럼" },
+                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/booth.webp", alt: "전시부스 디자인 - 교육감협의회 부스", caption: "전시부스 | 교육감협의회 부스 설치" },
+                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/kls/leaflet.webp", alt: "리플렛 디자인 - KLS 한국어교육 국제학술대회", caption: "리플렛 | KLS 한국어교육 국제학술대회" },
+                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/international-forum/booth-large-2.webp", alt: "전시부스 디자인 - 중앙아시아 교육협력포럼", caption: "전시부스 | 중앙아시아 교육협력포럼" },
+              ]}
+              linkHref="/work"
+              linkText="포트폴리오 전체 보기 →"
             />
-            <div className="flex items-center justify-between px-4 py-2 bg-slate-50">
-              <p className="text-xs text-slate-400">
-                교육감협의회 부스 설치 | 경기도교육청 | 전시부스·대형등신대·테이블등신대 제작
-              </p>
-              <Link href="/work/education-council-booth" className="text-xs text-blue-600 font-medium hover:underline shrink-0 ml-4">
-                이 행사 상세 보기 →
-              </Link>
-            </div>
           </div>
 
           {/* 비용 간략 안내 */}
@@ -295,6 +295,35 @@ export default async function DesignPage() {
               </div>
             ))}
           </CardCarousel>
+        </div>
+      </section>
+
+      {/* 파란디자인 CTA */}
+      <section className="py-12 md:py-16 px-5 md:px-8">
+        <div className="mx-auto max-w-[1200px]">
+          <a
+            href="https://parandesign.kr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block rounded-2xl overflow-hidden bg-gradient-to-r from-[#0f1a3c] to-[#1e3a6e] p-8 md:p-12 transition-transform hover:scale-[1.01]"
+          >
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div>
+                <p className="text-blue-300 text-sm font-medium mb-2">파란컴퍼니 디자인 전문 브랜드</p>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                  파란디자인
+                </h3>
+                <p className="text-slate-300 text-sm md:text-base leading-relaxed max-w-lg">
+                  행사 시안물 외에도 브랜딩, 인쇄물, 편집 디자인이 필요하시다면
+                  파란디자인에서 더 다양한 디자인 서비스를 만나보세요.
+                </p>
+              </div>
+              <div className="shrink-0 flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 border border-white/20 text-white font-medium text-sm group-hover:bg-white/20 transition-colors">
+                파란디자인 바로가기
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-1"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+              </div>
+            </div>
+          </a>
         </div>
       </section>
 

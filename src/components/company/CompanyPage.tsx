@@ -537,7 +537,7 @@ function FeatureBand({ onContact }: { onContact: () => void }) {
         >
           <div className="flex items-center justify-center">
             <Image
-              src="/logos/paran-white.svg"
+              src="/logo-white.png"
               alt="파란컴퍼니 로고"
               width={320}
               height={140}
