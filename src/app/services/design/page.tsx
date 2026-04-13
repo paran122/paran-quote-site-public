@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
+import { Flag, BookOpen, IdentificationBadge, DeviceMobile } from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { PORTFOLIOS } from "@/lib/portfolioData";
 import type { Portfolio, PortfolioMedia } from "@/types";
 import ServiceFAQ from "../_components/ServiceFAQ";
@@ -71,27 +72,32 @@ const faqJsonLd = {
   ],
 };
 
-const designItems = [
+const designItems: Array<{
+  icon: PhosphorIcon;
+  title: string;
+  desc: string;
+  examples: string;
+}> = [
   {
-    icon: "/icons/service-icon-poster-v1.png",
+    icon: Flag,
     title: "포스터·현수막",
     desc: "행사 컨셉에 맞는 포스터와 현수막을 디자인합니다. 실내외 현수막, 가로·세로 배너, X배너 등 다양한 규격에 대응합니다.",
     examples: "포스터, 현수막, X배너, 엑스배너, 걸개현수막",
   },
   {
-    icon: "/icons/service-icon-leaflet-v1.png",
+    icon: BookOpen,
     title: "리플렛·자료집",
     desc: "행사 프로그램 안내 리플렛, 발표 자료집, 교육 교재 등을 편집·디자인합니다. 인쇄용 고해상도 작업과 PDF 납품 모두 가능합니다.",
     examples: "3단 리플렛, 자료집, 교육 교재, 프로그램북",
   },
   {
-    icon: "/icons/service-icon-badge-v1.png",
+    icon: IdentificationBadge,
     title: "명찰·초청장",
     desc: "참가자 명찰, VIP 초청장, 참가 확인증 등을 디자인합니다. 행사 전체 시안물과 통일된 디자인 톤을 유지합니다.",
     examples: "명찰, 초청장, 참가확인증, 수료증",
   },
   {
-    icon: "/icons/service-icon-cardnews-v1.png",
+    icon: DeviceMobile,
     title: "카드뉴스·SNS 콘텐츠",
     desc: "행사 홍보용 카드뉴스, SNS 이미지, 웹 배너 등 온라인 콘텐츠를 제작합니다. 플랫폼별 최적 사이즈로 제작합니다.",
     examples: "카드뉴스, 인스타그램 이미지, 웹 배너",
@@ -287,7 +293,9 @@ export default async function DesignPage() {
             {designItems.map((item) => (
               <div key={item.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
-                  <Image src={item.icon} alt={item.title} width={56} height={56} className="object-contain" />
+                  <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center">
+                    <item.icon size={28} weight="fill" color="#2563EB" />
+                  </div>
                 </div>
                 <h3 className="font-bold text-lg mb-3">{item.title}</h3>
                 <p className="text-slate-500 text-sm leading-[1.7] mb-3">{item.desc}</p>

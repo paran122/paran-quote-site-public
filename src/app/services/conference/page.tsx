@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { Globe, BookBookmark, Megaphone, Monitor } from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { PORTFOLIOS } from "@/lib/portfolioData";
 import type { Portfolio, PortfolioMedia } from "@/types";
@@ -71,24 +73,24 @@ const faqJsonLd = {
   ],
 };
 
-const eventTypes = [
+const eventTypes: Array<{ icon: PhosphorIcon; title: string; desc: string }> = [
   {
-    icon: "/icons/service-icon-forum-v4.png",
+    icon: Globe,
     title: "국제 컨퍼런스",
     desc: "국내외 연사를 초청하는 대규모 국제 컨퍼런스를 기획·운영합니다. 동시통역, 하이브리드 중계, VIP 의전, 네트워킹 세션까지 포함됩니다.",
   },
   {
-    icon: "/icons/service-icon-academic-v1.png",
+    icon: BookBookmark,
     title: "학술대회·심포지엄",
     desc: "교육기관·연구기관·학회의 학술대회, 심포지엄, 학술 포럼을 대행합니다. 논문 발표 세션 운영, 포스터 세션 관리, 참가자 등록 시스템까지 지원합니다.",
   },
   {
-    icon: "/icons/service-icon-debate-v1.png",
+    icon: Megaphone,
     title: "정책 포럼·토론회",
     desc: "정부·지자체·공공기관의 정책 포럼, 공청회, 토론회를 기획합니다. 전문 사회자 섭외, 토론 패널 구성, 속기록 서비스를 제공합니다.",
   },
   {
-    icon: "/icons/service-icon-hybrid-v1.png",
+    icon: Monitor,
     title: "하이브리드 컨퍼런스",
     desc: "온라인과 오프라인을 동시에 운영하는 하이브리드 행사를 지원합니다. 실시간 영상 중계, 온라인 참가자 관리, 실시간 Q&A 시스템을 제공합니다.",
   },
@@ -309,7 +311,9 @@ export default async function ConferencePage() {
             {eventTypes.map((et) => (
               <div key={et.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
-                  <Image src={et.icon} alt={et.title} width={56} height={56} className="object-contain" />
+                  <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center">
+                    <et.icon size={28} weight="fill" color="#2563EB" />
+                  </div>
                 </div>
                 <h3 className="font-bold text-lg mb-3">{et.title}</h3>
                 <p className="text-slate-500 text-sm leading-[1.7]">{et.desc}</p>

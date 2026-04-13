@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { CalendarCheck, Palette, Video, Check, ChevronDown } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { CalendarCheck, PaintBrush, VideoCamera } from "@phosphor-icons/react";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { Check, ChevronDown } from "lucide-react";
 
 const services: {
   id: string;
@@ -12,7 +13,7 @@ const services: {
   title: string;
   tag: string;
   desc: string;
-  icon: LucideIcon;
+  icon: PhosphorIcon;
   details: string[];
   headerGradient: string;
   tagColor: string;
@@ -51,7 +52,7 @@ const services: {
     title: "공간 디자인",
     tag: "디자인",
     desc: "행사 공간의 시각적 완성도를 높이는 디자인·제작 서비스",
-    icon: Palette,
+    icon: PaintBrush,
     headerGradient: "bg-[#e8def8]",
     tagColor: "text-purple-700 bg-purple-500/10",
     iconColor: "text-purple-500",
@@ -73,7 +74,7 @@ const services: {
     title: "콘텐츠 제작",
     tag: "미디어",
     desc: "홍보·보고 영상, SNS 콘텐츠(카드뉴스·숏폼·웹툰) 등 다양한 미디어 콘텐츠를 기획·제작합니다",
-    icon: Video,
+    icon: VideoCamera,
     headerGradient: "bg-[#d9f2d0]",
     tagColor: "text-green-700 bg-green-500/10",
     iconColor: "text-green-500",
@@ -101,7 +102,7 @@ function ServiceCardMobile({ service, i }: { service: typeof services[0]; i: num
           className={`flex w-full flex-col items-center justify-center ${service.headerGradient} px-2 py-5 text-center`}
         >
           <div className="mb-1.5 flex h-6 w-6 items-center justify-center rounded-md bg-white/60">
-            <Icon className={`h-3 w-3 ${service.iconColor}`} strokeWidth={1.5} />
+            <Icon size={12} weight="fill" className={service.iconColor} />
           </div>
           <h3 className="text-[10px] font-bold leading-tight text-gray-900">{service.title}</h3>
           <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="mt-1">
@@ -172,7 +173,7 @@ export default function Services() {
                   <div className={`${service.headerGradient} px-7 pb-5 pt-6`}>
                     <div className="mb-3 flex items-center gap-3">
                       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/60">
-                        <Icon className={`h-5 w-5 ${service.iconColor}`} strokeWidth={1.5} />
+                        <Icon size={20} weight="fill" className={service.iconColor} />
                       </div>
                       <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider ${service.tagColor}`}>
                         {service.tag}
