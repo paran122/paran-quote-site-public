@@ -57,7 +57,7 @@ export default function Footer() {
           <div>
             <div className="mb-4">
               <Image
-                src="/logo-white.svg"
+                src="/logo-white.png"
                 alt="파란컴퍼니"
                 width={120}
                 height={53}
@@ -152,7 +152,7 @@ export default function Footer() {
             <div>
               <div className="mb-2">
                 <Image
-                  src="/logo-white.svg"
+                  src="/logo-white.png"
                   alt="파란컴퍼니"
                   width={120}
                   height={53}

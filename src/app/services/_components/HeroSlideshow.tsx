@@ -7,9 +7,11 @@ interface Props {
   images: Array<{ src: string; alt: string }>;
   /** 전환 간격 (ms) */
   interval?: number;
+  /** true면 이미지를 잘리지 않게 contain으로 표시 */
+  contain?: boolean;
 }
 
-export default function HeroSlideshow({ images, interval = 5000 }: Props) {
+export default function HeroSlideshow({ images, interval = 5000, contain }: Props) {
   const [current, setCurrent] = useState(0);
 
   const next = useCallback(() => {
@@ -37,7 +39,7 @@ export default function HeroSlideshow({ images, interval = 5000 }: Props) {
             src={img.src}
             alt={img.alt}
             fill
-            className="object-cover object-[50%_35%]"
+            className={contain ? "object-contain" : "object-cover object-[50%_35%]"}
             priority={i === 0}
             sizes="100vw"
           />
