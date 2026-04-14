@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import TrustBadges from "./_components/TrustBadges";
+import { Buildings, Bank, Microphone, Chalkboard, PaintBrush, CurrencyKrw } from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -100,38 +101,44 @@ const serviceJsonLd = {
   },
 };
 
-const services = [
+const services: Array<{
+  href: string;
+  icon: PhosphorIcon;
+  title: string;
+  desc: string;
+  cta: string;
+}> = [
   {
     href: "/services/corporate",
-    icon: "/icons/service-icon-exhibition-v4.png",
+    icon: Buildings,
     title: "기업행사 기획·대행",
     desc: "세미나, 워크숍, 시무식, 송년회, 창립기념행사, 팀빌딩 등 기업 행사를 기획부터 운영까지 책임집니다.",
     cta: "기업행사 대행 자세히 보기 →",
   },
   {
     href: "/services/government",
-    icon: "/icons/service-icon-government-v1.png",
+    icon: Bank,
     title: "공공기관 행사 대행",
     desc: "정부·지자체·공기업 행사를 조달 규정에 맞춰 기획·운영합니다. 여성기업 인증 보유.",
     cta: "공공기관 행사 대행 자세히 보기 →",
   },
   {
     href: "/services/conference",
-    icon: "/icons/service-icon-seminar-v4.png",
+    icon: Microphone,
     title: "컨퍼런스·포럼·학술대회",
     desc: "컨퍼런스, 포럼, 학술대회, 심포지엄을 하이브리드 운영까지 지원합니다.",
     cta: "컨퍼런스·포럼 대행 자세히 보기 →",
   },
   {
     href: "/services/seminar",
-    icon: "/icons/service-icon-education-v4.png",
+    icon: Chalkboard,
     title: "세미나·워크숍 기획",
     desc: "전문 세미나와 참여형 워크숍을 기획하고, 연사·사회자 섭외부터 운영까지 대행합니다.",
     cta: "세미나·워크숍 대행 자세히 보기 →",
   },
   {
     href: "/services/design",
-    icon: "/icons/service-icon-design-v1.png",
+    icon: PaintBrush,
     title: "행사 디자인·시안물",
     desc: "포스터, 현수막, 리플렛, 자료집, 명찰 등 행사에 필요한 모든 시안물을 디자인합니다.",
     cta: "행사 디자인 자세히 보기 →",
@@ -152,7 +159,7 @@ export default function ServicesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
 
       {/* Hero */}
-      <section className="bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40">
+      <section className="bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40">
         <div className="mx-auto max-w-[1200px] px-5 md:px-8">
           <nav aria-label="breadcrumb" className="text-[11px] text-white/40 mb-16 md:mb-24">
             <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
@@ -201,8 +208,8 @@ export default function ServicesPage() {
                 href={svc.href}
                 className="group block p-5 md:p-6 rounded-xl border border-slate-200/80 bg-white shadow-sm hover:border-blue-200 hover:shadow-lg transition-all"
               >
-                <div className="w-14 h-14 mb-4 group-hover:scale-110 transition-transform">
-                  <Image src={svc.icon} alt={svc.title} width={56} height={56} className="object-contain" />
+                <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <svc.icon size={28} weight="fill" color="#2563EB" />
                 </div>
                 <h3 className="text-lg font-bold mb-1 group-hover:text-blue-600 transition-colors">
                   {svc.title}
@@ -221,8 +228,8 @@ export default function ServicesPage() {
               href="/guide/pricing"
               className="group block p-5 md:p-6 rounded-xl border border-slate-200/80 bg-white shadow-sm hover:border-blue-200 hover:shadow-lg transition-all"
             >
-              <div className="w-14 h-14 mb-4 group-hover:scale-110 transition-transform">
-                <Image src="/icons/service-icon-pricing-v1.png" alt="비용·견적 안내" width={56} height={56} className="object-contain" />
+              <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <CurrencyKrw size={28} weight="fill" color="#2563EB" />
               </div>
               <h3 className="text-lg font-bold mb-1 group-hover:text-blue-600 transition-colors">
                 비용·견적 안내

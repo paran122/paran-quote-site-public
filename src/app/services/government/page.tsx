@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { Megaphone, Globe, GraduationCap, Buildings } from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { PORTFOLIOS } from "@/lib/portfolioData";
 import type { Portfolio, PortfolioMedia } from "@/types";
@@ -72,24 +74,24 @@ const faqJsonLd = {
   ],
 };
 
-const eventTypes = [
+const eventTypes: Array<{ icon: PhosphorIcon; title: string; desc: string }> = [
   {
-    icon: "/icons/service-icon-debate-v1.png",
+    icon: Megaphone,
     title: "정책 세미나·토론회",
     desc: "정부 부처·지자체의 정책 세미나, 공청회, 토론회를 기획·운영합니다. 주제에 맞는 전문 사회자를 섭외하고, 속기록 서비스와 실시간 자막을 제공합니다. 토론 패널 구성과 질의응답 진행까지 포함됩니다.",
   },
   {
-    icon: "/icons/service-icon-forum-v4.png",
+    icon: Globe,
     title: "학술 포럼·국제 컨퍼런스",
     desc: "교육부·연구기관·학회의 학술 포럼, 국제 컨퍼런스를 대행합니다. 국내외 연사 섭외, 동시통역(영·중·일), 논문 발표 세션 운영, 하이브리드(온·오프라인) 행사를 지원합니다.",
   },
   {
-    icon: "/icons/service-icon-education-v4.png",
+    icon: GraduationCap,
     title: "교육·연수 프로그램",
     desc: "공무원 연수, 역량강화 교육, 직무교육, 신규 임용자 교육 등을 대행합니다. 교육 목표에 맞는 커리큘럼 설계부터 강사 섭외, 교육 자료 제작, 현장 운영, 만족도 조사까지 전 과정을 책임집니다.",
   },
   {
-    icon: "/icons/service-icon-exhibition-v4.png",
+    icon: Buildings,
     title: "기관 행사 운영·전시",
     desc: "장병 캠프, 문화 프로그램, 전시부스 설치 등 기관 특성에 맞는 행사를 기획·운영합니다. 기관의 브랜드 아이덴티티를 반영한 공간 연출과 참가자 경험 설계를 제공합니다.",
   },
@@ -127,7 +129,7 @@ export default async function GovernmentPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* Hero */}
-      <section className="relative bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
+      <section className="relative bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
         <HeroSlideshow
           images={[
             { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-10.webp", alt: "공공기관 행사 대행 - 고양 학교체육 성장 컨퍼런스 현장" },
@@ -329,7 +331,9 @@ export default async function GovernmentPage() {
                 className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm"
               >
                 <div className="flex justify-center mb-4">
-                  <Image src={et.icon} alt={et.title} width={56} height={56} className="object-contain" />
+                  <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center">
+                    <et.icon size={28} weight="fill" color="#2563EB" />
+                  </div>
                 </div>
                 <h3 className="font-bold text-lg mb-3">{et.title}</h3>
                 <p className="text-slate-500 text-sm leading-[1.7]">

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { Microphone, Trophy, GraduationCap, UsersThree } from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { PORTFOLIOS } from "@/lib/portfolioData";
 import type { Portfolio, PortfolioMedia } from "@/types";
@@ -72,24 +74,24 @@ const faqJsonLd = {
   ],
 };
 
-const eventTypes = [
+const eventTypes: Array<{ icon: PhosphorIcon; title: string; desc: string }> = [
   {
-    icon: "/icons/service-icon-seminar-v4.png",
+    icon: Microphone,
     title: "산업 세미나·컨퍼런스",
     desc: "업계 트렌드 공유, 신제품 발표, 기술 세미나 등 산업별 전문 세미나를 기획·운영합니다. 연사 섭외, 자료집 제작, 참가자 관리까지 포함됩니다.",
   },
   {
-    icon: "/icons/service-icon-vision-v1.png",
+    icon: Trophy,
     title: "시무식·송년회·창립기념행사",
     desc: "시무식, 송년회, 창립기념행사, 비전선포식, 성과발표회 등 기업의 중요한 연례 행사를 대행합니다. 기업 브랜드에 맞는 연출과 프로그램을 기획합니다.",
   },
   {
-    icon: "/icons/service-icon-education-v4.png",
+    icon: GraduationCap,
     title: "기업 교육·연수",
     desc: "신입사원 교육, 리더십 워크숍, 직무교육 등 기업 맞춤 교육 프로그램을 기획합니다. 커리큘럼 설계부터 강사 섭외, 교육 자료 제작까지 지원합니다.",
   },
   {
-    icon: "/icons/service-icon-culture-v1.png",
+    icon: UsersThree,
     title: "팀빌딩·기공식·착공식",
     desc: "팀빌딩 프로그램, 기공식, 착공식, 준공식 등 기업 특성에 맞는 행사를 기획·운영합니다. 참가자 경험을 중심으로 프로그램을 설계합니다.",
   },
@@ -124,7 +126,7 @@ export default async function CorporatePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* Hero */}
-      <section className="relative bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
+      <section className="relative bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
         <HeroSlideshow
           images={[
             { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-05.webp", alt: "기업행사 대행 - 추계 자동차부품산업 세미나 현장" },
@@ -312,7 +314,9 @@ export default async function CorporatePage() {
             {eventTypes.map((et) => (
               <div key={et.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
-                  <Image src={et.icon} alt={et.title} width={56} height={56} className="object-contain" />
+                  <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center">
+                    <et.icon size={28} weight="fill" color="#2563EB" />
+                  </div>
                 </div>
                 <h3 className="font-bold text-lg mb-3">{et.title}</h3>
                 <p className="text-slate-500 text-sm leading-[1.7]">{et.desc}</p>

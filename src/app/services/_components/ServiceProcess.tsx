@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Star } from "@phosphor-icons/react";
 import { useState } from "react";
 
 const steps: Array<{
@@ -80,7 +80,7 @@ export default function ServiceProcess() {
               <div key={s.num} className="flex items-center gap-3">
                 <div className="relative shrink-0">
                   {s.isStrength && (
-                    <Star className="absolute -top-1 -right-1 w-3 h-3 text-blue-500 fill-blue-500" />
+                    <Star size={12} weight="fill" className="absolute -top-1 -right-1 text-blue-500" />
                   )}
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold font-num ${
                     s.isStrength ? "bg-blue-600 text-white" : "bg-white border-2 border-blue-200 text-blue-600"
@@ -108,7 +108,7 @@ export default function ServiceProcess() {
               >
                 {s.isStrength && (
                   <div className="absolute -top-1 left-1/2 translate-x-2 z-20">
-                    <Star className="w-4 h-4 text-blue-500 fill-blue-500" />
+                    <Star size={16} weight="fill" className="text-blue-500" />
                   </div>
                 )}
 

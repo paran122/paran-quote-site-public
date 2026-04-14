@@ -3,6 +3,9 @@
 # media (업로드용 임시 폴더)
 /videos
 
+# 백업
+/supabase-backup
+
 # dependencies
 /node_modules
 /.pnp

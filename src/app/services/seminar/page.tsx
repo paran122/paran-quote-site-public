@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { Microphone, GraduationCap, Handshake, CalendarCheck } from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { PORTFOLIOS } from "@/lib/portfolioData";
 import type { Portfolio, PortfolioMedia } from "@/types";
@@ -72,24 +74,24 @@ const faqJsonLd = {
   ],
 };
 
-const eventTypes = [
+const eventTypes: Array<{ icon: PhosphorIcon; title: string; desc: string }> = [
   {
-    icon: "/icons/service-icon-seminar-v4.png",
+    icon: Microphone,
     title: "전문 세미나",
     desc: "산업별 전문 세미나를 기획·운영합니다. 주제 선정, 연사 섭외, 자료집 제작, 참가자 관리, 현장 운영까지 전 과정을 책임집니다.",
   },
   {
-    icon: "/icons/service-icon-education-v4.png",
+    icon: GraduationCap,
     title: "교육·연수 프로그램",
     desc: "역량강화 교육, 직무교육, 신규 임용자 교육 등을 대행합니다. 교육 목표에 맞는 커리큘럼 설계부터 강사 섭외, 교육 자료 제작까지 지원합니다.",
   },
   {
-    icon: "/icons/service-icon-workshop-v1.png",
+    icon: Handshake,
     title: "참여형 워크숍",
     desc: "그룹 토론, 아이디어 발산, 팀빌딩 등 참가자가 직접 참여하는 워크숍을 설계합니다. 퍼실리테이터 섭외와 워크숍 도구 준비까지 포함됩니다.",
   },
   {
-    icon: "/icons/service-icon-series-v1.png",
+    icon: CalendarCheck,
     title: "정기 세미나·시리즈",
     desc: "월간·분기별 정기 세미나 시리즈를 운영합니다. 연간 계획 수립, 회차별 주제 기획, 참가자 DB 관리, 만족도 추적까지 지속적으로 관리합니다.",
   },
@@ -124,7 +126,7 @@ export default async function SeminarPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* Hero */}
-      <section className="relative bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
+      <section className="relative bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
         <HeroSlideshow
           images={[
             { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-08.webp", alt: "세미나 대행 - 지역사회 역량강화 프로그램 현장" },
@@ -308,7 +310,9 @@ export default async function SeminarPage() {
             {eventTypes.map((et) => (
               <div key={et.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
-                  <Image src={et.icon} alt={et.title} width={56} height={56} className="object-contain" />
+                  <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center">
+                    <et.icon size={28} weight="fill" color="#2563EB" />
+                  </div>
                 </div>
                 <h3 className="font-bold text-lg mb-3">{et.title}</h3>
                 <p className="text-slate-500 text-sm leading-[1.7]">{et.desc}</p>

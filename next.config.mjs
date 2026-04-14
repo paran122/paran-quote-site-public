@@ -5,6 +5,13 @@ const nextConfig = {
       config.watchOptions = {
         poll: 1000,
         aggregateTimeout: 300,
+        ignored: [
+          "**/public/images/**",
+          "**/public/logos/**",
+          "**/public/icons/**",
+          "**/scripts/**",
+          "**/.next/cache/**",
+        ],
       };
     }
     return config;

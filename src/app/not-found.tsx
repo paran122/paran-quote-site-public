@@ -65,7 +65,7 @@ export default function NotFound() {
   return (
     <>
       <GNB />
-      <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#050510] px-4">
+      <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#091041] px-4">
         {/* Particles */}
         <Particles quantity={80} staticity={15} ease={30} color="#60a5fa" className="opacity-70" />
         <Particles quantity={30} staticity={10} ease={20} color="#22d3ee" className="opacity-40" />

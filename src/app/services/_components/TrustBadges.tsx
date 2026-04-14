@@ -1,4 +1,4 @@
-import { CheckCircle } from "lucide-react";
+import { CheckCircle } from "@phosphor-icons/react/dist/ssr";
 
 const badges = [
   "250+ 프로젝트",
@@ -24,7 +24,7 @@ export default function TrustBadges({ variant = "light" }: Props) {
               : "bg-white border border-slate-200/80 text-slate-600"
           }`}
         >
-          <CheckCircle className={`w-3.5 h-3.5 ${isDark ? "text-blue-400" : "text-blue-500"}`} />
+          <CheckCircle size={14} weight="fill" className={isDark ? "text-blue-400" : "text-blue-500"} />
           {b}
         </span>
       ))}

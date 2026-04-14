@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -68,21 +68,60 @@ function estimateReadTime(content?: string): number {
 /* ════════════════════════════════════════════════════════
    메인 컴포넌트
    ════════════════════════════════════════════════════════ */
-export default function BlogListClient({ posts: initialPosts, featuredPosts = [], categories, totalCount }: Props) {
+export default function BlogListClient({ posts: initialPosts, featuredPosts = [], categories, totalCount: initialTotalCount }: Props) {
   const [activeCategory, setActiveCategory] = useState("전체");
   const [contactOpen, setContactOpen] = useState(false);
   const [morePosts, setMorePosts] = useState<BlogPost[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const [morePage, setMorePage] = useState(1);
+  const [categoryPosts, setCategoryPosts] = useState<BlogPost[] | null>(null);
+  const [categoryTotalCount, setCategoryTotalCount] = useState(initialTotalCount);
+
+  // 카테고리 변경 시 서버에서 해당 카테고리 글 전체를 가져옴
+  useEffect(() => {
+    if (activeCategory === "전체") {
+      setCategoryPosts(null);
+      setCategoryTotalCount(initialTotalCount);
+      setMorePosts([]);
+      setMorePage(1);
+      return;
+    }
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const params = new URLSearchParams();
+        params.set("category", activeCategory);
+        params.set("page", "1");
+        const res = await fetch(`/api/blog?${params.toString()}`);
+        const data = await res.json() as { posts: BlogPost[]; totalCount: number; hasMore: boolean };
+        if (!cancelled) {
+          setCategoryPosts(data.posts);
+          setCategoryTotalCount(data.totalCount);
+          setMorePosts([]);
+          setMorePage(1);
+        }
+      } catch {
+        if (!cancelled) {
+          setCategoryPosts([]);
+          setCategoryTotalCount(0);
+        }
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [activeCategory, initialTotalCount]);
+
+  const totalCount = categoryTotalCount;
 
   const mergedCategories = Array.from(
     new Set([...CATEGORY_ORDER, ...categories]),
   );
   const allCategories = ["전체", ...mergedCategories];
 
-  const filtered = initialPosts.filter(
-    (post) => activeCategory === "전체" || post.category === activeCategory,
-  );
+  // "전체"이면 initialPosts 사용, 카테고리 선택 시 서버에서 가져온 데이터 사용
+  const filtered = activeCategory === "전체"
+    ? initialPosts
+    : (categoryPosts ?? initialPosts.filter((post) => post.category === activeCategory));
 
   // 에디터 추천: DB에서 is_featured=true인 글 (sort_order 정렬)
   const featuredIds = new Set(featuredPosts.map((p) => p.id));
@@ -110,18 +149,19 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
     ? filteredFeatured[0]
     : (heroCandidates[4] ?? null);
 
-  // More articles: 메가+서브+가이드 섹션에 사용된 글 제외
+  // More articles: 메가+서브+에디터픽+가이드 섹션에 사용된 글 제외
   const usedIds = new Set([
     featured?.id,
     ...subCards.map((p) => p.id),
     ...guideSectionPosts.map((p) => p.id),
+    editorPick?.id,
   ].filter(Boolean));
   const remaining = filtered.filter((p) => !featuredIds.has(p.id) && !usedIds.has(p.id));
   const moreArticles = [...remaining, ...morePosts];
 
   // 이미 표시된 총 갯수로 "더 보기" 가능 여부 계산
   const displayedCount = usedIds.size + moreArticles.length + (editorPick ? 1 : 0);
-  const hasMoreToLoad = activeCategory === "전체" && displayedCount < totalCount;
+  const hasMoreToLoad = displayedCount < totalCount;
 
   const loadMore = useCallback(async () => {
     if (loadingMore) return;

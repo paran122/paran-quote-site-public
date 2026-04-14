@@ -50,7 +50,7 @@ const categoryStyle: Record<string, string> = {
   콘텐츠: "bg-orange-100 text-orange-700",
 };
 
-function SafeImage({ src, alt, fill, sizes, className, priority, onLoad }: {
+function SafeImage({ src, alt, fill, sizes, className, priority, onLoad, onError }: {
   src: string;
   alt: string;
   fill?: boolean;
@@ -58,13 +58,14 @@ function SafeImage({ src, alt, fill, sizes, className, priority, onLoad }: {
   className?: string;
   priority?: boolean;
   onLoad?: () => void;
+  onError?: () => void;
 }) {
   const [hasError, setHasError] = useState(false);
 
   if (hasError || !src) {
     return (
-      <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
-        <span className="text-sm text-slate-400">이미지 로드 실패</span>
+      <div className="w-full h-full bg-slate-100 flex items-center justify-center">
+        <span className="text-xs text-slate-300">이미지를 불러올 수 없습니다</span>
       </div>
     );
   }
@@ -78,8 +79,25 @@ function SafeImage({ src, alt, fill, sizes, className, priority, onLoad }: {
       className={className}
       priority={priority}
       onLoad={onLoad}
-      onError={() => setHasError(true)}
+      onError={() => { setHasError(true); onError?.(); }}
     />
+  );
+}
+
+function PhotoGridItem({ photo }: { photo: { url: string; label: string } }) {
+  const [hidden, setHidden] = useState(false);
+  if (hidden) return null;
+  return (
+    <div className="relative aspect-square rounded-[8px] overflow-hidden bg-slate-100">
+      <SafeImage
+        src={photo.url}
+        alt={photo.label}
+        fill
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+        className="object-cover"
+        onError={() => setHidden(true)}
+      />
+    </div>
   );
 }
 
@@ -273,9 +291,6 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
         <div className="relative aspect-[16/10] rounded-[10px] overflow-hidden bg-slate-100 mb-2">
           {hasGallery ? (
             <>
-              {!imageLoaded && (
-                <div className="absolute inset-0 bg-slate-200 animate-pulse" />
-              )}
               <SafeImage
                 key={galleryImages[galleryIndex]}
                 src={galleryImages[galleryIndex]}
@@ -283,8 +298,7 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
                 fill
                 sizes="(max-width: 960px) 100vw, 960px"
                 priority
-                className={`object-contain transition-opacity duration-300 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
-                onLoad={() => setImageLoaded(true)}
+                className="object-contain"
               />
               {galleryImages.length > 1 && (
                 <>
@@ -472,18 +486,7 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
               {(photoExpanded ? photoImages : photoImages.slice(0, PHOTO_PREVIEW_COUNT)).map((photo, idx) => (
-                <div
-                  key={idx}
-                  className="relative aspect-square rounded-[8px] overflow-hidden bg-slate-100"
-                >
-                  <SafeImage
-                    src={photo.url}
-                    alt={photo.label}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-cover"
-                  />
-                </div>
+                <PhotoGridItem key={idx} photo={photo} />
               ))}
             </div>
             {photoImages.length > PHOTO_PREVIEW_COUNT && (

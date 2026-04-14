@@ -91,7 +91,7 @@ export default function Process() {
                       animation: `border-sweep ${3 + i * 0.3}s linear infinite`,
                     }}
                   />
-                  <div className="relative z-10 h-full overflow-hidden rounded-[11px] bg-[#0f1d3d]">
+                  <div className="relative z-10 h-full overflow-hidden rounded-[11px] bg-[#091041]">
                     <div
                       className="pointer-events-none absolute inset-0 opacity-[0.18]"
                       style={{
@@ -166,7 +166,7 @@ export default function Process() {
                           animation: `border-sweep ${3 + globalIdx * 0.3}s linear infinite`,
                         }}
                       />
-                      <div className="relative z-10 h-full overflow-hidden rounded-[7px] bg-[#0f1d3d]">
+                      <div className="relative z-10 h-full overflow-hidden rounded-[7px] bg-[#091041]">
                         <div
                           className="pointer-events-none absolute inset-0 opacity-[0.18]"
                           style={{

@@ -72,7 +72,7 @@ export default function DesignerSidebar() {
   };
 
   return (
-    <nav className="fixed left-0 top-0 z-40 hidden h-screen w-40 flex-col justify-center border-r border-blue-400/10 bg-[#0f1a3c] lg:flex">
+    <nav className="fixed left-0 top-0 z-40 hidden h-screen w-40 flex-col justify-center border-r border-blue-400/10 bg-[#091041] lg:flex">
       <div className="flex flex-col gap-0.5 px-3">
         {sections.map(({ id, label }) => {
           const isActive = active === id;
