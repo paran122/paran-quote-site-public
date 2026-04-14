@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Particles } from "@/components/ui/particles";
 import { PulsatingButton } from "@/components/ui/pulsating-button";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { TitleGlitchReveal } from "./HeroTitleAnimations";
@@ -9,36 +8,7 @@ import { TitleGlitchReveal } from "./HeroTitleAnimations";
 export default function HeroParticle() {
 
   return (
-    <section id="hero" className="relative flex min-h-screen items-center overflow-hidden bg-[#050510]">
-      {/* Primary particles */}
-      <Particles
-        quantity={120}
-        staticity={15}
-        ease={30}
-        color="#60a5fa"
-        className="opacity-80"
-      />
-      {/* Secondary particles */}
-      <Particles
-        quantity={40}
-        staticity={10}
-        ease={20}
-        color="#22d3ee"
-        className="opacity-50"
-      />
-
-      {/* Glow orbs */}
-      <div className="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-blue-600/20 blur-[120px]" />
-      <div className="pointer-events-none absolute -right-40 bottom-1/4 h-96 w-96 rounded-full bg-indigo-600/15 blur-[120px]" />
-
-      {/* Subtle grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage: `linear-gradient(rgba(96,165,250,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(96,165,250,0.4) 1px, transparent 1px)`,
-          backgroundSize: "80px 80px",
-        }}
-      />
+    <section id="hero" className="relative flex min-h-screen items-center overflow-hidden bg-[#070720]">
 
       {/* Content: Left text + Right video */}
       <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-6 pt-24 pb-16 md:px-12 lg:grid-cols-2 lg:gap-16 lg:pt-0 lg:pb-0">
@@ -125,7 +95,7 @@ export default function HeroParticle() {
                   muted
                   loop
                   playsInline
-                  preload="metadata"
+                  preload="auto"
                   poster="/hero-poster.jpg"
                   className="absolute inset-0 h-full w-full object-cover"
                 >

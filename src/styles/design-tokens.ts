@@ -57,7 +57,7 @@ export const colors = {
     light: "bg-slate-50",          // 교차 섹션 배경, Hero
     card: "bg-white",              // 카드 배경
     dark: "bg-slate-900",          // 다크 섹션 (랜딩 Hero)
-    footer: "#0a0f2c",             // 푸터 배경
+    footer: "#091041",             // 푸터 배경
   },
 
   // 보더 색상

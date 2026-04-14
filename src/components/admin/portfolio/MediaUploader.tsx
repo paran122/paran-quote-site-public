@@ -60,7 +60,7 @@ export default function MediaUploader({
   }
 
   async function handleDelete(item: MediaItem) {
-    if (!confirm("이 사진을 삭제하시겠습니까?")) return;
+    if (!confirm("삭제하면 복구할 수 없습니다. 정말 삭제하시겠습니까?")) return;
 
     setDeleting((prev) => new Set(prev).add(item.id));
 
@@ -137,11 +137,19 @@ export default function MediaUploader({
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
           {media.map((item) => (
             <div key={item.id} className="relative group aspect-square">
-              <img
-                src={item.url}
-                alt={item.label}
-                className="w-full h-full object-cover rounded-sm border border-slate-200"
-              />
+              {item.type === "video" ? (
+                <div className="w-full h-full bg-slate-800 rounded-sm border border-slate-200 flex flex-col items-center justify-center text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span className="text-xs mt-1 text-slate-300">영상</span>
+                </div>
+              ) : (
+                <img
+                  src={item.url}
+                  alt={item.label}
+                  className="w-full h-full object-cover rounded-sm border border-slate-200"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              )}
               <button
                 onClick={() => handleDelete(item)}
                 disabled={deleting.has(item.id)}

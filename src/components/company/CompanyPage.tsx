@@ -497,14 +497,14 @@ function FeatureBand({ onContact }: { onContact: () => void }) {
 
   return (
     <Section fullWidth className="py-0">
-      <div ref={ref} className="grid min-h-[480px] md:grid-cols-2">
+      <div ref={ref} className="grid md:min-h-[480px] md:grid-cols-2">
         {/* left — light blue */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="flex flex-col justify-center bg-blue-50 px-8 py-16 md:px-16"
+          className="flex flex-col justify-center bg-blue-50 px-8 py-10 md:px-16 md:py-16"
         >
           <span className="text-xs font-semibold tracking-widest text-blue-500">
             WHY PARAN
@@ -533,7 +533,7 @@ function FeatureBand({ onContact }: { onContact: () => void }) {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative flex flex-col justify-between overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 px-8 py-16 md:px-16"
+          className="relative flex flex-col justify-between overflow-hidden bg-[#091041] px-8 py-10 md:px-16 md:py-16"
         >
           <div className="flex items-center justify-center">
             <Image
@@ -567,7 +567,7 @@ interface ServiceAccordionItem {
   title: string;
   description: string;
   tags: string[];
-  image: string;
+  images: string[];
 }
 
 const serviceItems: ServiceAccordionItem[] = [
@@ -577,7 +577,12 @@ const serviceItems: ServiceAccordionItem[] = [
     description:
       "클라이언트의 목표와 예산을 분석하고, 행사 컨셉 설계부터 프로그램 구성, 현장 운영, 사후 관리까지 전 과정을 체계적으로 관리합니다. 참가자 동선 설계, 연사 섭외, 의전 프로토콜, 안전 관리 등 행사의 성패를 좌우하는 디테일까지 놓치지 않습니다.",
     tags: ["세미나", "컨퍼런스", "포럼", "축제", "교육연수", "런칭행사"],
-    image: "/images/service-planning-C.png",
+    images: [
+      "/images/company-services/planning-1.webp",
+      "/images/company-services/planning-2.webp",
+      "/images/company-services/planning-3.webp",
+      "/images/company-services/planning-4.webp",
+    ],
   },
   {
     number: "02",
@@ -585,7 +590,11 @@ const serviceItems: ServiceAccordionItem[] = [
     description:
       "행사의 목적과 브랜드 아이덴티티에 맞는 공간을 설계하고, 참가자의 경험을 극대화하는 연출을 제공합니다. 3D 렌더링으로 사전 시뮬레이션을 진행하여 시행착오를 줄이고, 로비부터 메인홀까지 일관된 비주얼 경험을 만듭니다.",
     tags: ["로비연출", "조형물", "체험부스", "포토존", "사이니지", "무대디자인"],
-    image: "/images/service-design-C.png",
+    images: [
+      "/images/company-services/design-1.webp",
+      "/images/company-services/design-2.webp",
+      "/images/company-services/design-3.webp",
+    ],
   },
   {
     number: "03",
@@ -593,7 +602,12 @@ const serviceItems: ServiceAccordionItem[] = [
     description:
       "행사 홍보부터 현장 기록, 결과 보고까지 전문 콘텐츠 팀이 높은 퀄리티의 결과물을 제작합니다. 사전 티저 영상, 현장 스케치 영상, SNS 카드뉴스, 사진 촬영 및 보정, 결과보고서까지 행사의 시작과 끝을 콘텐츠로 완성합니다.",
     tags: ["홍보영상", "SNS콘텐츠", "e-러닝", "실시간중계", "결과보고서"],
-    image: "/images/service-contents-C.png",
+    images: [
+      "/images/company-services/contents-1.webp",
+      "/images/company-services/contents-2.webp",
+      "/images/company-services/contents-3.webp",
+      "/images/company-services/contents-4.webp",
+    ],
   },
   {
     number: "04",
@@ -601,7 +615,13 @@ const serviceItems: ServiceAccordionItem[] = [
     description:
       "전시회, 박람회, 체험존 등 다양한 전시 공간을 설계부터 시공, 철거까지 원스톱으로 진행합니다. 캐릭터 조형물, 대형 현수막, LED 디스플레이 등 시선을 사로잡는 요소와 효율적인 관람 동선을 결합하여 방문객 체류 시간을 극대화합니다.",
     tags: ["전시부스", "박람회", "체험존", "조형물제작", "LED설치", "시공관리"],
-    image: "/images/service-exhibition-C.png",
+    images: [
+      "/images/company-services/exhibition-1.webp",
+      "/images/company-services/exhibition-2.webp",
+      "/images/company-services/exhibition-3.webp",
+      "/images/company-services/exhibition-4.webp",
+      "/images/company-services/exhibition-5.webp",
+    ],
   },
   {
     number: "05",
@@ -609,7 +629,12 @@ const serviceItems: ServiceAccordionItem[] = [
     description:
       "행사 초대장, 프로그램북, 현수막, 배너 등 인쇄물부터 참가자 기념품, VIP 선물 세트까지 행사에 필요한 모든 제작물을 디자인하고 납품합니다. 브랜드 가이드라인에 맞춘 일관된 디자인으로 행사의 완성도를 한 단계 높입니다.",
     tags: ["초대장", "프로그램북", "현수막", "배너", "기념품", "굿즈"],
-    image: "/images/service-print-C.png",
+    images: [
+      "/images/company-services/print-1.webp",
+      "/images/company-services/print-2.webp",
+      "/images/company-services/print-3.webp",
+      "/images/company-services/print-4.webp",
+    ],
   },
 ];
 
@@ -618,6 +643,17 @@ function ServiceCard({ item, isOpen, onToggle }: {
   isOpen: boolean;
   onToggle: () => void;
 }) {
+  const [imgIdx, setImgIdx] = useState(0);
+  const hasMultiple = item.images.length > 1;
+
+  useEffect(() => {
+    if (!hasMultiple) return;
+    const timer = setInterval(() => {
+      setImgIdx((prev) => (prev + 1) % item.images.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [hasMultiple, item.images.length]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -625,61 +661,77 @@ function ServiceCard({ item, isOpen, onToggle }: {
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5 }}
       onClick={onToggle}
-      className="group relative w-full cursor-pointer overflow-hidden rounded-2xl bg-[#f8f9fa] md:w-[460px]"
+      className="group w-full cursor-pointer md:w-[calc(50%-16px)] md:max-w-[440px]"
     >
-      <div className="relative h-[280px] md:h-[522px]">
-        {/* 배경 이미지 */}
-        <Image
-          src={item.image}
-          alt={item.title}
-          fill
-          className={`object-contain transition-all duration-700 ${isOpen ? "scale-105 blur-sm opacity-15" : "scale-100 blur-0 opacity-100"}`}
-          sizes="(max-width: 768px) 100vw, 600px"
-        />
-
-        {/* 항상 표시: 넘버 + 제목 (위치/크기만 전환) */}
-        <div className="absolute inset-x-0 top-0 p-6 md:p-8">
-          <div className="flex items-baseline gap-2">
-            <p className={`font-medium text-slate-500 transition-all duration-500 ${isOpen ? "w-0 overflow-hidden opacity-0" : "text-sm opacity-100"}`}>
-              {item.number}
-            </p>
-            <h3 className={`font-bold text-slate-900 transition-all duration-500 ${isOpen ? "text-lg md:text-xl" : "text-xl md:text-2xl"}`}>
-              {item.title}
-            </h3>
+      {/* 이미지 카드 */}
+      <div className="relative overflow-hidden rounded-2xl bg-slate-900">
+        <div className="relative h-[240px] md:h-[320px]">
+          {/* 제목 오버레이 (이미지 위) */}
+          <div className={`absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-black/50 via-black/20 to-transparent px-5 pt-4 pb-10 transition-opacity duration-500 ${isOpen ? "opacity-0" : "opacity-100"}`}>
+            <span className="text-xs font-medium tracking-wider text-white/80" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>{item.number}</span>
+            <h3 className="mt-0.5 text-base font-semibold text-white md:text-lg" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.7), 0 0 2px rgba(0,0,0,0.3)' }}>{item.title}</h3>
           </div>
-        </div>
+          {/* Crossfade: 모든 이미지를 겹쳐놓고 opacity로 전환 — 흰 공백 없음 */}
+          {item.images.map((src, i) => (
+            <div
+              key={src}
+              className="absolute inset-0 transition-opacity duration-1000"
+              style={{ opacity: i === imgIdx ? 1 : 0 }}
+            >
+              <Image
+                src={src}
+                alt={item.title}
+                fill
+                className={`object-cover transition-all duration-700 ${isOpen ? "scale-[1.02] opacity-60" : "scale-100 opacity-100"}`}
+                sizes="(max-width: 768px) 100vw, 560px"
+              />
+            </div>
+          ))}
 
-        {/* 접힌 상태: 하단 화살표 */}
-        <div
-          className={`absolute inset-x-0 bottom-0 p-6 transition-opacity duration-500 md:p-8 ${isOpen ? "pointer-events-none opacity-0" : "opacity-100"}`}
-        >
-          <div className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500 transition-colors group-hover:border-slate-500 group-hover:bg-white">
-            <ArrowRight className="h-4 w-4" />
-          </div>
-        </div>
-
-        {/* 펼친 상태: 설명 + 태그 + 닫기 */}
-        <div
-          className={`absolute inset-x-0 bottom-0 top-16 flex flex-col justify-between p-6 pt-0 transition-all duration-500 md:p-8 md:pt-0 ${isOpen ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"}`}
-        >
-          <div className="mt-4">
-            <p className="text-sm leading-relaxed text-slate-600 md:text-base">
-              {item.description}
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {item.tags.map((tag) => (
+          {/* 슬라이드 인디케이터 (여러 장일 때만) */}
+          {hasMultiple && !isOpen && (
+            <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+              {item.images.map((_, i) => (
                 <span
-                  key={tag}
-                  className="rounded-full bg-slate-200/80 px-3 py-1 text-xs font-medium text-slate-700 backdrop-blur-sm"
-                >
-                  {tag}
-                </span>
+                  key={i}
+                  className={`block h-1 rounded-full transition-all ${i === imgIdx ? "w-4 bg-white" : "w-1.5 bg-white/50"}`}
+                />
               ))}
             </div>
+          )}
+
+          {/* 접힌 상태: 하단 화살표 */}
+          <div
+            className={`absolute inset-x-0 bottom-0 p-6 transition-opacity duration-500 ${isOpen ? "pointer-events-none opacity-0" : "opacity-100"}`}
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/40 bg-black/30 text-white shadow-md backdrop-blur-sm transition-colors group-hover:bg-black/50">
+              <ArrowRight className="h-4 w-4 drop-shadow-sm" />
+            </div>
           </div>
-          <div className="flex items-center">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500">
-              <ChevronDown className="h-4 w-4 rotate-180" />
+
+          {/* 펼친 상태: 설명 + 태그 */}
+          <div
+            className={`absolute inset-0 flex flex-col justify-between rounded-2xl bg-white/80 px-6 pt-8 pb-6 backdrop-blur-none transition-all duration-500 md:px-8 md:pt-10 md:pb-8 ${isOpen ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"}`}
+          >
+            <div>
+              <p className="text-sm leading-relaxed text-slate-700 md:text-base">
+                {item.description}
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {item.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full bg-slate-200/80 px-3 py-1 text-xs font-medium text-slate-700 backdrop-blur-sm"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-300 text-slate-500">
+                <ChevronDown className="h-4 w-4 rotate-180" />
+              </div>
             </div>
           </div>
         </div>
@@ -693,7 +745,8 @@ function AccordionServices() {
   const [mobileIdx, setMobileIdx] = useState(0);
 
   return (
-    <Section className="py-14 md:py-28">
+    <Section fullWidth className="bg-[#f1f3f8] py-14 md:py-28">
+      <div className="mx-auto max-w-[1200px] px-5 md:px-8">
       <div className="text-center">
         <motion.span
           initial={{ opacity: 0 }}
@@ -724,7 +777,7 @@ function AccordionServices() {
       </div>
 
       {/* Desktop: card grid */}
-      <div className="mt-12 hidden flex-wrap justify-center gap-[28px] md:flex">
+      <div className="mt-12 hidden flex-wrap justify-center gap-x-8 gap-y-12 md:flex">
         {serviceItems.map((item, i) => (
           <ServiceCard
             key={item.number}
@@ -744,22 +797,23 @@ function AccordionServices() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.25 }}
-            className="overflow-hidden rounded-2xl bg-[#f8f9fa]"
+            className=""
           >
+            <div className="mb-2 flex items-baseline gap-2 px-1">
+              <span className="text-xs font-medium text-slate-400">{serviceItems[mobileIdx].number}</span>
+              <h3 className="text-lg font-bold text-slate-900">{serviceItems[mobileIdx].title}</h3>
+            </div>
+            <div className="overflow-hidden rounded-2xl bg-[#f8f9fa]">
             <div className="relative h-[200px]">
               <Image
-                src={serviceItems[mobileIdx].image}
+                src={serviceItems[mobileIdx].images[0]}
                 alt={serviceItems[mobileIdx].title}
                 fill
-                className="object-contain"
+                className="object-cover"
                 sizes="100vw"
               />
             </div>
             <div className="p-5">
-              <div className="flex items-baseline gap-2">
-                <span className="text-xs font-medium text-slate-400">{serviceItems[mobileIdx].number}</span>
-                <h3 className="text-lg font-bold text-slate-900">{serviceItems[mobileIdx].title}</h3>
-              </div>
               <p className="mt-2 line-clamp-3 min-h-[3.75rem] text-xs leading-relaxed text-slate-600">
                 {serviceItems[mobileIdx].description}
               </p>
@@ -773,6 +827,7 @@ function AccordionServices() {
                   </span>
                 ))}
               </div>
+            </div>
             </div>
           </motion.div>
         </AnimatePresence>
@@ -804,6 +859,7 @@ function AccordionServices() {
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>
+      </div>
       </div>
     </Section>
   );

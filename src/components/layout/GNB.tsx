@@ -83,7 +83,7 @@ export default function GNB() {
   };
 
   return (
-    <header ref={headerRef} className="fixed top-0 left-0 right-0 z-50 border-b border-blue-400/10 bg-[#0f1a3c] backdrop-blur-xl">
+    <header ref={headerRef} className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#091041] ">
       <div className="mx-auto flex max-w-[1200px] items-center justify-between px-5 py-3 md:px-8">
         {/* Logo + Site Switcher */}
         <div className="flex items-center gap-2 md:gap-3">
@@ -95,8 +95,8 @@ export default function GNB() {
             <Image
               src="/logo-white.png"
               alt="파란컴퍼니"
-              width={120}
-              height={53}
+              width={360}
+              height={109}
               className="h-9 w-auto md:h-10"
               priority
             />
@@ -277,7 +277,7 @@ export default function GNB() {
             onMouseEnter={handleServiceEnter}
             onMouseLeave={handleServiceLeave}
           >
-            <div className="min-w-[140px] border-t border-blue-400/10 bg-[#0f1a3c] py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+            <div className="min-w-[140px] border-t border-white/5 bg-[#091041] py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
               {serviceSubItems.map((sub) => (
                 <a
                   key={sub.href}
@@ -308,7 +308,7 @@ export default function GNB() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden border-t border-blue-400/10 bg-[#0f1a3c] backdrop-blur-xl md:hidden"
+            className="overflow-hidden border-t border-white/5 bg-[#091041]  md:hidden"
           >
             <div className="flex flex-col gap-4 px-6 py-6">
               {navItems.map((item) => {

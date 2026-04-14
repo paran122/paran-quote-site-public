@@ -49,7 +49,7 @@ export default function LandingPage() {
   }, [searchParams]);
 
   return (
-    <main className="lg:pl-40">
+    <main className="bg-[#f0f2fa] lg:pl-40">
       <HeroParticle />
       <About />
       <Portfolio />

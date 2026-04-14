@@ -40,15 +40,8 @@ export default function Footer() {
   const sidebarPl = isHome ? "lg:pl-40" : "";
 
   return (
-    <footer className={`relative overflow-hidden bg-[#0a0f2c] px-4 py-5 md:px-12 md:py-10 ${sidebarPl}`}>
-      {/* Background Gradient */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0"
-        style={{
-          background:
-            "radial-gradient(125% 125% at 50% 10%, #0a0f2c 50%, #3ca2fa22 100%)",
-        }}
-      />
+    <footer className={`relative overflow-hidden bg-[#091041] px-4 py-5 md:px-12 md:py-10 ${sidebarPl}`}>
+      {/* Background — GNB와 동일한 단색 */}
 
       <div className="relative z-10 mx-auto max-w-7xl">
         {/* 데스크톱: 3등분 + 짧은 구분선 */}
@@ -59,8 +52,8 @@ export default function Footer() {
               <Image
                 src="/logo-white.png"
                 alt="파란컴퍼니"
-                width={120}
-                height={53}
+                width={360}
+                height={109}
                 className="h-8 w-auto"
               />
             </div>
@@ -139,6 +132,15 @@ export default function Footer() {
                 <a href="https://www.youtube.com/@parancompany" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 transition-colors hover:text-white">
                   <YouTubeIcon className="h-3.5 w-3.5" />
                   YouTube
+                </a>
+              </div>
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-blue-400">패밀리 사이트</div>
+                <a href="https://parandesign.kr" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-white/40 transition-colors hover:text-white">
+                  파란디자인
+                  <svg className="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5zm7.25-.75a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V6.31l-5.47 5.47a.75.75 0 01-1.06-1.06l5.47-5.47H12.25a.75.75 0 01-.75-.75z" clipRule="evenodd" />
+                  </svg>
                 </a>
               </div>
             </div>

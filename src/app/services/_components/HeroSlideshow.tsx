@@ -25,7 +25,7 @@ export default function HeroSlideshow({ images, interval = 5000, contain }: Prop
   }, [next, interval, images.length]);
 
   return (
-    <div className="absolute inset-0 overflow-hidden bg-[#0f1a3c]">
+    <div className="absolute inset-0 overflow-hidden bg-[#091041]">
       {/* 모든 이미지를 항상 렌더링, 현재만 보이고 나머지는 숨김 */}
       {images.map((img, i) => (
         <div
@@ -46,7 +46,7 @@ export default function HeroSlideshow({ images, interval = 5000, contain }: Prop
         </div>
       ))}
       {/* 어두운 오버레이 — 텍스트 가독성 확보 */}
-      <div className="absolute inset-0 z-[3] bg-[#0f1a3c]/75" />
+      <div className="absolute inset-0 z-[3] bg-[#091041]/75" />
     </div>
   );
 }

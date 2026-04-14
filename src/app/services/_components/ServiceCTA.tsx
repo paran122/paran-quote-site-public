@@ -31,7 +31,7 @@ export default function ServiceCTA({ title, relatedServices }: Props) {
         </div>
 
         {/* CTA */}
-        <div className="text-center bg-[#0f1a3c] rounded-2xl p-8 md:p-12">
+        <div className="text-center bg-[#091041] rounded-2xl p-8 md:p-12">
           <h2 className="text-xl md:text-2xl font-bold mb-3 text-white">{title}</h2>
           <p className="text-slate-300 text-sm mb-8">
             행사 일정과 규모만 알려주시면, 1영업일 내에 맞춤 견적서를

@@ -133,7 +133,7 @@ export default async function DesignPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* Hero */}
-      <section className="relative bg-[#0f1a3c] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
+      <section className="relative bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
         <HeroSlideshow
           contain
           images={[
@@ -313,7 +313,7 @@ export default async function DesignPage() {
             href="https://parandesign.kr"
             target="_blank"
             rel="noopener noreferrer"
-            className="group block rounded-2xl overflow-hidden bg-gradient-to-r from-[#0f1a3c] to-[#1e3a6e] p-8 md:p-12 transition-transform hover:scale-[1.01]"
+            className="group block rounded-2xl overflow-hidden bg-gradient-to-r from-[#091041] to-[#1e3a6e] p-8 md:p-12 transition-transform hover:scale-[1.01]"
           >
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
