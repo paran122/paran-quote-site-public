@@ -122,7 +122,7 @@ export async function DELETE(request: NextRequest) {
     const db = getClient();
 
     // SECURITY DEFINER 함수로 삭제 (RLS 우회)
-    const { data: rpcResult, error: rpcError } = await db.rpc("admin_delete_media", { media_ids: mediaIds });
+    const { error: rpcError } = await db.rpc("admin_delete_media", { media_ids: mediaIds });
     if (rpcError) {
       return NextResponse.json({ error: rpcError.message }, { status: 500 });
     }
