@@ -149,7 +149,6 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
   // 세션 변경 시 갤러리 리셋
   useEffect(() => {
     setGalleryIndex(0);
-    setImageLoaded(false);
     setPhotoExpanded(false);
   }, [selectedSession]);
 
