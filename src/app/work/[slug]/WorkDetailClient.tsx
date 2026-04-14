@@ -122,7 +122,7 @@ interface WorkDetailClientProps {
 
 export default function WorkDetailClient({ portfolio, media, relatedEvents = [], prevPortfolio, nextPortfolio }: WorkDetailClientProps) {
   const [galleryIndex, setGalleryIndex] = useState(0);
-  const [imageLoaded, setImageLoaded] = useState(false);
+
   const [selectedSession, setSelectedSession] = useState<number | null>(null);
   const [photoExpanded, setPhotoExpanded] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
