@@ -162,7 +162,7 @@ export default async function SeminarPage() {
       {/* 본문 + SNS */}
       <section className="py-16 md:py-24 px-5 md:px-8">
         <div className="mx-auto max-w-[900px] relative">
-          <aside className="hidden xl:flex flex-col items-center gap-3 absolute -right-24 top-[100px] sticky">
+          <aside className="hidden xl:flex flex-col items-center gap-3 fixed right-6 top-1/2 -translate-y-1/2 z-40">
             <ServiceSNS layout="vertical" />
           </aside>
 
