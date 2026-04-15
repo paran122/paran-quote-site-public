@@ -132,7 +132,6 @@ export default async function CorporatePage() {
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-fall/photo-05.webp", alt: "기업행사 대행 - 추계 자동차부품산업 세미나 현장" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-spring/photo-04.webp", alt: "기업행사 대행 - 춘계 자동차부품산업 세미나 현장" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-summer/photo-03.webp", alt: "기업행사 대행 - 하계 자동차부품산업 세미나 현장" },
-            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-fall/photo-09.webp", alt: "기업 세미나 대행 - 추계 자동차부품산업 세미나" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-spring/photo-08.webp", alt: "기업 세미나 대행 - 춘계 자동차부품산업 세미나" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-summer/photo-10.webp", alt: "기업 세미나 대행 - 하계 자동차부품산업 세미나" },
           ]}

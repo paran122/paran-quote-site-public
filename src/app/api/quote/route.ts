@@ -93,6 +93,7 @@ export async function POST(request: Request) {
     }
     const db = createClient(url, anonKey, {
       auth: { persistSession: false, autoRefreshToken: false },
+      db: { schema: "paran_quote_site" },
     });
     const { error: dbError } = await db.from("quotes").insert({
       quote_number: data.quote_number,
