@@ -194,7 +194,6 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
   const hasVideos = videoMedia.length > 0;
 
   const handleGalleryNav = useCallback((dir: "prev" | "next", total: number) => {
-    setImageLoaded(false);
     setGalleryIndex((prev) =>
       dir === "prev"
         ? prev > 0 ? prev - 1 : total - 1
@@ -342,7 +341,6 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
               <button
                 key={idx}
                 onClick={() => {
-                  setImageLoaded(false);
                   setGalleryIndex(idx);
                 }}
                 className={`relative w-[64px] h-[48px] rounded-[6px] overflow-hidden shrink-0 border-2 transition-colors ${
