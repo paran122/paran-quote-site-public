@@ -62,7 +62,7 @@ function portfolioToProject(pf: Portfolio, media: PortfolioMedia[]): Project {
     category: pf.tags[0] ?? pf.eventType,
     deliverables: pf.deliverables ?? [],
     images: images.length > 0 ? images : [{ src: pf.imageUrl ?? "", label: pf.title }],
-    photos: photos.map((m) => ({ src: m.url, label: m.label })),
+    photos: photos.slice(0, 5).map((m) => ({ src: m.url, label: m.label })),
     video: video?.url,
     portfolioId: pf.id,
   };
@@ -786,8 +786,8 @@ function CardPhotoRotator({ photos, sizes, stagger = 0, priority = false }: { ph
           />
         </motion.div>
       </AnimatePresence>
-      {/* 다음 이미지 프리로드 (숨김) */}
-      {photos.length > 1 && !errorSet.has(nextIdx) && (
+      {/* 다음 이미지 프리로드 (뷰포트 안에서만) */}
+      {inView && photos.length > 1 && !errorSet.has(nextIdx) && (
         <Image
           src={photos[nextIdx].src}
           alt=""
