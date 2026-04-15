@@ -3,9 +3,9 @@ import { createClient } from "@supabase/supabase-js";
 
 function getClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) throw new Error("Missing Supabase env vars");
-  return createClient(url, key);
+  return createClient(url, key, { db: { schema: "paran_quote_site" } });
 }
 
 function getStorageClient() {
@@ -73,11 +73,11 @@ export async function POST(
 
     const storage = getStorageClient();
     const { error: uploadError } = await storage.storage
-      .from("portfolio")
+      .from("qs-portfolio")
       .upload(storagePath, optimized, { contentType, upsert: false });
     if (uploadError) throw uploadError;
 
-    const { data: urlData } = storage.storage.from("portfolio").getPublicUrl(storagePath);
+    const { data: urlData } = storage.storage.from("qs-portfolio").getPublicUrl(storagePath);
 
     // DB에 레코드 추가
     const db = getClient();
@@ -130,7 +130,7 @@ export async function DELETE(request: NextRequest) {
     // Storage 파일 삭제
     if (storagePaths?.length) {
       const storage = getStorageClient();
-      await storage.storage.from("portfolio").remove(storagePaths);
+      await storage.storage.from("qs-portfolio").remove(storagePaths);
     }
 
     return NextResponse.json({ success: true, deleted: mediaIds.length });

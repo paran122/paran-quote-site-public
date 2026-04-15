@@ -6,7 +6,7 @@ function getClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) throw new Error("Missing Supabase env vars");
-  return createClient(url, key);
+  return createClient(url, key, { db: { schema: "paran_quote_site" } });
 }
 
 /** 서버 전용 Supabase 클라이언트 (service_role 키) */
@@ -25,7 +25,7 @@ async function deleteStorageFiles(paths: string[]) {
   // 50개씩 배치
   for (let i = 0; i < paths.length; i += 50) {
     const batch = paths.slice(i, i + 50);
-    const { error } = await admin.storage.from("portfolio").remove(batch);
+    const { error } = await admin.storage.from("qs-portfolio").remove(batch);
     if (error) {
       errors.push(`Storage batch ${i}: ${error.message}`);
     }

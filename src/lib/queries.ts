@@ -1,10 +1,16 @@
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 import { Portfolio, EventPhoto, EventReview, PortfolioMedia, BlogPost } from "@/types";
 
 /** Supabase 클라이언트를 반환하거나, 미연결 시 에러를 throw (catalogStore catch에서 처리) */
 function requireClient() {
   if (!supabase) throw new Error("Supabase not configured");
   return supabase;
+}
+
+/** 서버 변경 작업용 admin 클라이언트 (RLS 우회). 없으면 anon 클라이언트 폴백 */
+function requireAdminClient() {
+  if (supabaseAdmin) return supabaseAdmin;
+  return requireClient();
 }
 
 // ── snake_case → camelCase 변환 ──
@@ -424,7 +430,7 @@ export async function fetchBlogPostById(id: string): Promise<BlogPost | null> {
 }
 
 export async function createBlogPost(input: Record<string, unknown>): Promise<BlogPost> {
-  const db = requireClient();
+  const db = requireAdminClient();
   const { data, error } = await db
     .from("blog_posts")
     .insert(input)
@@ -435,20 +441,20 @@ export async function createBlogPost(input: Record<string, unknown>): Promise<Bl
 }
 
 export async function updateBlogPost(id: string, updates: Record<string, unknown>): Promise<BlogPost> {
-  const db = requireClient();
-  const { error } = await db
+  const db = requireAdminClient();
+  const { data, error } = await db
     .from("blog_posts")
     .update(updates)
-    .eq("id", id);
+    .eq("id", id)
+    .select()
+    .single();
   if (error) throw error;
-  // update 후 별도 조회 (RLS select 정책과 무관하게 동작)
-  const post = await fetchBlogPostById(id);
-  if (!post) throw new Error("업데이트 후 포스트를 찾을 수 없습니다");
-  return post;
+  if (!data) throw new Error("업데이트된 행이 없습니다");
+  return mapRow<BlogPost>(data);
 }
 
 export async function deleteBlogPost(id: string) {
-  const db = requireClient();
+  const db = requireAdminClient();
   const { error } = await db
     .from("blog_posts")
     .delete()

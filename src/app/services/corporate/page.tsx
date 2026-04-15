@@ -129,12 +129,12 @@ export default async function CorporatePage() {
       <section className="relative bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
         <HeroSlideshow
           images={[
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-05.webp", alt: "기업행사 대행 - 추계 자동차부품산업 세미나 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-04.webp", alt: "기업행사 대행 - 춘계 자동차부품산업 세미나 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-03.webp", alt: "기업행사 대행 - 하계 자동차부품산업 세미나 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-09.webp", alt: "기업 세미나 대행 - 추계 자동차부품산업 세미나" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-08.webp", alt: "기업 세미나 대행 - 춘계 자동차부품산업 세미나" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-summer/photo-10.webp", alt: "기업 세미나 대행 - 하계 자동차부품산업 세미나" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-fall/photo-05.webp", alt: "기업행사 대행 - 추계 자동차부품산업 세미나 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-spring/photo-04.webp", alt: "기업행사 대행 - 춘계 자동차부품산업 세미나 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-summer/photo-03.webp", alt: "기업행사 대행 - 하계 자동차부품산업 세미나 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-fall/photo-09.webp", alt: "기업 세미나 대행 - 추계 자동차부품산업 세미나" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-spring/photo-08.webp", alt: "기업 세미나 대행 - 춘계 자동차부품산업 세미나" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-summer/photo-10.webp", alt: "기업 세미나 대행 - 하계 자동차부품산업 세미나" },
           ]}
         />
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
@@ -212,7 +212,7 @@ export default async function CorporatePage() {
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
             <Image
-              src="https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-fall/photo-02.webp"
+              src="https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-fall/photo-02.webp"
               alt="기업행사 대행 현장 사진 - 자동차부품산업 세미나 (약 200명 규모)"
               width={900}
               height={500}
