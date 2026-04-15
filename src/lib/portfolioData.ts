@@ -173,7 +173,7 @@ export const PORTFOLIOS: Portfolio[] = [
     venue: "서울",
     emoji: "",
     description: "한국문화예술교육진흥원 | 행사운영 | 시안물: 상세페이지, 카드뉴스, 인스타그램, 리플렛, 현수막, 배너",
-    imageUrl: `${S}/culture-club-operation/photo-01.webp`,
+    imageUrl: `${S}/culture-club-operation/photo-02.webp`,
     tags: ["행사운영", "상세페이지", "카드뉴스", "인스타그램", "리플렛", "현수막", "배너"],
     gradientType: "corporate",
     isVisible: true,

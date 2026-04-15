@@ -135,7 +135,7 @@ export default async function GovernmentPage() {
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/goyang-conference/photo-10.webp", alt: "공공기관 행사 대행 - 고양 학교체육 성장 컨퍼런스 현장" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-12.webp", alt: "공공기관 행사 대행 - KLS 국제학술대회 현장" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-12.webp", alt: "공공기관 행사 대행 - 지역사회 역량강화 프로그램 현장" },
-            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/navy-camp/photo-15.webp", alt: "공공기관 행사 대행 - 필승해군캠프 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/navy-camp/photo-16.webp", alt: "공공기관 행사 대행 - 필승해군캠프 현장" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/parent-education/photo-17.webp", alt: "관공서 행사 대행 - 찾아가는 경기학부모교육 현장" },
           ]}
         />

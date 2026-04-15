@@ -131,7 +131,7 @@ export default async function SeminarPage() {
           images={[
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-08.webp", alt: "세미나 대행 - 지역사회 역량강화 프로그램 현장" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-spring/photo-06.webp", alt: "세미나 대행 - 춘계 자동차부품산업 세미나 현장" },
-            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/artist-rights/photo-03.webp", alt: "워크숍 대행 - 예술인 권리보호 교육 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/artist-rights/photo-04.webp", alt: "워크숍 대행 - 예술인 권리보호 교육 현장" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-15.webp", alt: "교육 세미나 대행 - 지역사회 역량강화 프로그램" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-spring/photo-12.webp", alt: "교육 세미나 대행 - 춘계 자동차부품산업 세미나" },
           ]}
