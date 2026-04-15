@@ -68,7 +68,8 @@ interface CheckedState {
 function getDefaultChecked(items: EstimateItem[]): CheckedState {
   const state: CheckedState = {};
   for (const item of items) {
-    state[item.name] = { checked: !!item.default, qty: 1 };
+    const defaultQty = item.unit === "인" || item.unit === "인/일" ? 50 : 1;
+    state[item.name] = { checked: !!item.default, qty: defaultQty };
   }
   return state;
 }
@@ -285,7 +286,10 @@ export default function Estimate() {
   const changeQty = (name: string, delta: number) => {
     setCheckedItems((prev) => {
       const current = prev[name].qty;
-      const next = Math.max(1, current + delta);
+      // "인" 단위(커피·다과, 케이터링 등)는 10씩 증감
+      const item = active.items.find((i) => i.name === name);
+      const step = item?.unit === "인" || item?.unit === "인/일" ? 10 : 1;
+      const next = Math.max(step, current + delta * step);
       return { ...prev, [name]: { ...prev[name], qty: next } };
     });
   };

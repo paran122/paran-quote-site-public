@@ -53,6 +53,8 @@ function portfolioToProject(pf: Portfolio, media: PortfolioMedia[]): Project {
   const video = mine.find((m) => m.type === "video");
 
   const images = gallery.map((m) => ({ src: m.url, label: m.label }));
+  const fallbackPhoto = pf.imageUrl ? [{ src: pf.imageUrl, label: pf.title }] : [];
+  const photoList = photos.slice(0, 5).map((m) => ({ src: m.url, label: m.label }));
 
   return {
     slug: pf.slug ?? pf.id,
@@ -61,8 +63,8 @@ function portfolioToProject(pf: Portfolio, media: PortfolioMedia[]): Project {
     date,
     category: pf.tags[0] ?? pf.eventType,
     deliverables: pf.deliverables ?? [],
-    images: images.length > 0 ? images : [{ src: pf.imageUrl ?? "", label: pf.title }],
-    photos: photos.slice(0, 5).map((m) => ({ src: m.url, label: m.label })),
+    images: images.length > 0 ? images : fallbackPhoto,
+    photos: photoList.length > 0 ? photoList : fallbackPhoto,
     video: video?.url,
     portfolioId: pf.id,
   };
