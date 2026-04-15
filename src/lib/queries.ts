@@ -57,7 +57,7 @@ export async function fetchAllPortfolioMedia(): Promise<PortfolioMedia[]> {
   const db = requireClient();
   const { data, error } = await db
     .from("portfolio_media")
-    .select("id, portfolio_id, type, url, label, sort_order")
+    .select("id, portfolio_id, event_slug, type, url, label, sort_order")
     .order("sort_order");
   if (error) throw error;
   return (data ?? []).map((r) => mapRow<PortfolioMedia>(r));

@@ -11,6 +11,7 @@ const steps: Array<{
   isStrength: boolean;
   strengthMsg: string;
   clickLabel?: boolean;
+  externalLink?: string;
 }> = [
   {
     num: "01",
@@ -33,6 +34,7 @@ const steps: Array<{
     isStrength: true,
     strengthMsg: "자체 디자인팀이 행사 컨셉에 맞는 시안물을 통일된 톤으로 빠르게 제작합니다.",
     clickLabel: true,
+    externalLink: "https://parandesign.kr",
   },
   {
     num: "04",
@@ -104,7 +106,13 @@ export default function ServiceProcess() {
                 className="relative text-center cursor-pointer group"
                 onMouseEnter={() => setActiveIdx(i)}
                 onMouseLeave={() => setActiveIdx(null)}
-                onClick={() => setActiveIdx(activeIdx === i ? null : i)}
+                onClick={() => {
+                  if (s.externalLink) {
+                    window.open(s.externalLink, "_blank", "noopener,noreferrer");
+                  } else {
+                    setActiveIdx(activeIdx === i ? null : i);
+                  }
+                }}
               >
                 {s.isStrength && (
                   <div className="absolute -top-1 left-1/2 translate-x-2 z-20">

@@ -196,7 +196,7 @@ function CardPhotoRotator({ photos, gradientType }: {
 }
 
 export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageClientProps) {
-  const [viewMode, setViewMode] = useState<ViewMode>("design");
+  const [viewMode, setViewMode] = useState<ViewMode>("event");
   const [categoryFilter, setCategoryFilter] = useState("전체");
   const [designFilter, setDesignFilter] = useState("전체");
   const [yearFilter, setYearFilter] = useState("전체");

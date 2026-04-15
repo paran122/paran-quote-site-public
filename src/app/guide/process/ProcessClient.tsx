@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import GuideClient from "../GuideClient";
 
 interface Step {
@@ -8,6 +9,8 @@ interface Step {
   timing: string;
   description: string;
   details: string[];
+  link?: string;
+  linkLabel?: string;
 }
 
 const steps: Step[] = [
@@ -59,6 +62,8 @@ const steps: Step[] = [
       "음향·영상·조명 장비 사양 확정",
       "참가자 모집 및 사전 등록 관리",
     ],
+    link: "/services/design",
+    linkLabel: "디자인 서비스 자세히 보기",
   },
   {
     number: "05",
@@ -145,6 +150,15 @@ export default function ProcessClient() {
                     </li>
                   ))}
                 </ul>
+                {step.link && (
+                  <Link
+                    href={step.link}
+                    className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100"
+                  >
+                    {step.linkLabel || "자세히 보기"}
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                )}
               </div>
             </div>
             {/* Connector line */}
