@@ -70,7 +70,7 @@
 행사 포트폴리오 관리, 블로그 MD 업로드 트리거 안내는 `직원-가이드.md` 참조.
 
 ## 스킬 시스템 (개발자용)
-- Supabase MCP 프로젝트: `syzsqdgvculdzfepdlsi` / 스키마: `public`
+- Supabase MCP 프로젝트: `aiarnrhftmuffmcninyl` / 스키마: `paran_quote_site`
 - 행사: portfolios, portfolio_media, event_reviews / Storage 버킷: `portfolio`
 - 블로그: blog_posts / Storage 버킷: `blog` / 이미지: `/api/admin/blog/upload`
 - 이미지 편집/보정: Replicate MCP (우선), 나노바나나 Pro MCP (폴백)

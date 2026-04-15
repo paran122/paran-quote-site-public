@@ -549,7 +549,7 @@ function ImagePickerModal({
 
   // 포트폴리오 폴더 목록
   const portfolioFolders = Array.from(
-    new Set(images.filter((img) => img.bucket === "portfolio" && img.folder).map((img) => img.folder!)),
+    new Set(images.filter((img) => img.bucket === "qs-portfolio" && img.folder).map((img) => img.folder!)),
   ).sort();
 
   const filtered = images.filter((img) => {

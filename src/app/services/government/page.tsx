@@ -132,11 +132,11 @@ export default async function GovernmentPage() {
       <section className="relative bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
         <HeroSlideshow
           images={[
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-10.webp", alt: "공공기관 행사 대행 - 고양 학교체육 성장 컨퍼런스 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/kls/photo-12.webp", alt: "공공기관 행사 대행 - KLS 국제학술대회 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-12.webp", alt: "공공기관 행사 대행 - 지역사회 역량강화 프로그램 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/navy-camp/photo-15.webp", alt: "공공기관 행사 대행 - 필승해군캠프 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/parent-education/photo-17.webp", alt: "관공서 행사 대행 - 찾아가는 경기학부모교육 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/goyang-conference/photo-10.webp", alt: "공공기관 행사 대행 - 고양 학교체육 성장 컨퍼런스 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-12.webp", alt: "공공기관 행사 대행 - KLS 국제학술대회 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-12.webp", alt: "공공기관 행사 대행 - 지역사회 역량강화 프로그램 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/navy-camp/photo-15.webp", alt: "공공기관 행사 대행 - 필승해군캠프 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/parent-education/photo-17.webp", alt: "관공서 행사 대행 - 찾아가는 경기학부모교육 현장" },
           ]}
         />
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
@@ -220,7 +220,7 @@ export default async function GovernmentPage() {
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
             <Image
-              src="https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-01.webp"
+              src="https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/photo-01.webp"
               alt="공공기관 행사 대행 현장 사진 - 중앙아시아 교육협력포럼 (약 300명 규모)"
               width={900}
               height={500}

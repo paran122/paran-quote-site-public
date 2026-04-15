@@ -5,7 +5,7 @@ function getDbClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) throw new Error("Missing Supabase env vars");
-  return createClient(url, key);
+  return createClient(url, key, { db: { schema: "paran_quote_site" } });
 }
 
 function getStorageClient() {
@@ -71,15 +71,15 @@ export async function GET() {
 
     // 2. 블로그 Storage
     const { data: blogFiles } = await storage.storage
-      .from("blog")
+      .from("qs-blog")
       .list("images", { limit: 100, sortBy: { column: "created_at", order: "desc" } });
 
     if (blogFiles) {
       for (const f of blogFiles) {
         if (f.name && /\.(webp|jpg|jpeg|png|gif)$/i.test(f.name)) {
-          const { data } = storage.storage.from("blog").getPublicUrl(`images/${f.name}`);
+          const { data } = storage.storage.from("qs-blog").getPublicUrl(`images/${f.name}`);
           if (!seen.has(data.publicUrl)) {
-            results.push({ url: data.publicUrl, name: f.name, bucket: "blog" });
+            results.push({ url: data.publicUrl, name: f.name, bucket: "qs-blog" });
           }
         }
       }
@@ -100,20 +100,20 @@ export async function GET() {
     // 4. 포트폴리오 이미지 — DB slug 기준으로 Storage 조회
     for (const [slug, title] of Object.entries(slugToTitle)) {
       const { data: files } = await storage.storage
-        .from("portfolio")
+        .from("qs-portfolio")
         .list(slug, { limit: 30, sortBy: { column: "created_at", order: "desc" } });
 
       if (files) {
         for (const f of files) {
           if (f.name && /\.(webp|jpg|jpeg|png|gif)$/i.test(f.name)) {
             const { data } = storage.storage
-              .from("portfolio")
+              .from("qs-portfolio")
               .getPublicUrl(`${slug}/${f.name}`);
             if (!seen.has(data.publicUrl)) {
               results.push({
                 url: data.publicUrl,
                 name: `${title}/${f.name}`,
-                bucket: "portfolio",
+                bucket: "qs-portfolio",
                 folder: title,
               });
             }

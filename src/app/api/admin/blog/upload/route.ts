@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
 
     const supabase = getClient();
     const { error: uploadError } = await supabase.storage
-      .from("blog")
+      .from("qs-blog")
       .upload(storagePath, optimized, {
         contentType: ext === "webp" ? "image/webp" : file.type,
         upsert: false,
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: uploadError.message }, { status: 500 });
     }
 
-    const { data: urlData } = supabase.storage.from("blog").getPublicUrl(storagePath);
+    const { data: urlData } = supabase.storage.from("qs-blog").getPublicUrl(storagePath);
 
     return NextResponse.json({ url: urlData.publicUrl });
   } catch (err) {

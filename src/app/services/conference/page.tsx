@@ -127,11 +127,11 @@ export default async function ConferencePage() {
       <section className="relative bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
         <HeroSlideshow
           images={[
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/kls/photo-05.webp", alt: "컨퍼런스 대행 - KLS 국제학술대회 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-04.webp", alt: "포럼 대행 - 중앙아시아 교육협력포럼 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/goyang-conference/photo-09.webp", alt: "컨퍼런스 대행 - 고양 학교체육 성장 컨퍼런스 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/kls/photo-10.webp", alt: "학술대회 대행 - KLS 국제학술대회" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/international-forum/photo-10.webp", alt: "심포지엄 대행 - 중앙아시아 교육협력포럼" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-05.webp", alt: "컨퍼런스 대행 - KLS 국제학술대회 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/photo-04.webp", alt: "포럼 대행 - 중앙아시아 교육협력포럼 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/goyang-conference/photo-09.webp", alt: "컨퍼런스 대행 - 고양 학교체육 성장 컨퍼런스 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-10.webp", alt: "학술대회 대행 - KLS 국제학술대회" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/photo-10.webp", alt: "심포지엄 대행 - 중앙아시아 교육협력포럼" },
           ]}
         />
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
@@ -209,7 +209,7 @@ export default async function ConferencePage() {
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
             <Image
-              src="https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/kls/photo-03.webp"
+              src="https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-03.webp"
               alt="컨퍼런스 대행 현장 사진 - KLS 한국어교육 국제학술대회 (약 400명 규모)"
               width={900}
               height={500}

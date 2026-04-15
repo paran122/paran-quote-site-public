@@ -129,11 +129,11 @@ export default async function SeminarPage() {
       <section className="relative bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
         <HeroSlideshow
           images={[
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-08.webp", alt: "세미나 대행 - 지역사회 역량강화 프로그램 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-06.webp", alt: "세미나 대행 - 춘계 자동차부품산업 세미나 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/artist-rights/photo-03.webp", alt: "워크숍 대행 - 예술인 권리보호 교육 현장" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-15.webp", alt: "교육 세미나 대행 - 지역사회 역량강화 프로그램" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/auto-seminar-spring/photo-12.webp", alt: "교육 세미나 대행 - 춘계 자동차부품산업 세미나" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-08.webp", alt: "세미나 대행 - 지역사회 역량강화 프로그램 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-spring/photo-06.webp", alt: "세미나 대행 - 춘계 자동차부품산업 세미나 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/artist-rights/photo-03.webp", alt: "워크숍 대행 - 예술인 권리보호 교육 현장" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-15.webp", alt: "교육 세미나 대행 - 지역사회 역량강화 프로그램" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-spring/photo-12.webp", alt: "교육 세미나 대행 - 춘계 자동차부품산업 세미나" },
           ]}
         />
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
@@ -208,7 +208,7 @@ export default async function SeminarPage() {
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
             <Image
-              src="https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/community-energy/photo-01.webp"
+              src="https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-01.webp"
               alt="세미나 대행 현장 사진 - 지역사회 역량강화 프로그램 (약 100명 규모)"
               width={900}
               height={500}

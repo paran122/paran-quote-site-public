@@ -137,10 +137,10 @@ export default async function DesignPage() {
         <HeroSlideshow
           contain
           images={[
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/booth-large.webp", alt: "전시부스 디자인 시안 - 교육감협의회 대형전시부스" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/standee-large.webp", alt: "행사 디자인 시안 - 교육감협의회 대형등신대" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/booth.webp", alt: "행사 시안물 제작 - 교육감협의회 부스 디자인" },
-            { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/table-standee.webp", alt: "행사 디자인 제작 - 교육감협의회 테이블 등신대" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/booth-large.webp", alt: "전시부스 디자인 시안 - 교육감협의회 대형전시부스" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/standee-large.webp", alt: "행사 디자인 시안 - 교육감협의회 대형등신대" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/booth.webp", alt: "행사 시안물 제작 - 교육감협의회 부스 디자인" },
+            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/table-standee.webp", alt: "행사 디자인 제작 - 교육감협의회 테이블 등신대" },
           ]}
         />
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
@@ -219,14 +219,14 @@ export default async function DesignPage() {
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
             <ImageSlideshow
               images={[
-                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/parent-education/leaflet.webp", alt: "리플렛 디자인 - 찾아가는 경기학부모교육", caption: "리플렛 | 찾아가는 경기학부모교육" },
-                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/booth-large.webp", alt: "전시부스 디자인 - 교육감협의회 대형전시부스", caption: "전시부스 | 교육감협의회 부스 설치" },
-                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/goyang-conference/leaflet.webp", alt: "리플렛 디자인 - 고양 학교체육 성장 컨퍼런스", caption: "리플렛 | 고양 학교체육 성장 컨퍼런스" },
-                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/goyang-conference/booth-large.webp", alt: "전시부스 디자인 - 고양 학교체육 컨퍼런스", caption: "전시부스 | 고양 학교체육 성장 컨퍼런스" },
-                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/international-forum/leaflet.webp", alt: "리플렛 디자인 - 중앙아시아 교육협력포럼", caption: "리플렛 | 중앙아시아 교육협력포럼" },
-                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/education-council-booth/booth.webp", alt: "전시부스 디자인 - 교육감협의회 부스", caption: "전시부스 | 교육감협의회 부스 설치" },
-                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/kls/leaflet.webp", alt: "리플렛 디자인 - KLS 한국어교육 국제학술대회", caption: "리플렛 | KLS 한국어교육 국제학술대회" },
-                { src: "https://syzsqdgvculdzfepdlsi.supabase.co/storage/v1/object/public/portfolio/international-forum/booth-large-2.webp", alt: "전시부스 디자인 - 중앙아시아 교육협력포럼", caption: "전시부스 | 중앙아시아 교육협력포럼" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/parent-education/leaflet.webp", alt: "리플렛 디자인 - 찾아가는 경기학부모교육", caption: "리플렛 | 찾아가는 경기학부모교육" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/booth-large.webp", alt: "전시부스 디자인 - 교육감협의회 대형전시부스", caption: "전시부스 | 교육감협의회 부스 설치" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/goyang-conference/leaflet.webp", alt: "리플렛 디자인 - 고양 학교체육 성장 컨퍼런스", caption: "리플렛 | 고양 학교체육 성장 컨퍼런스" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/goyang-conference/booth-large.webp", alt: "전시부스 디자인 - 고양 학교체육 컨퍼런스", caption: "전시부스 | 고양 학교체육 성장 컨퍼런스" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/leaflet.webp", alt: "리플렛 디자인 - 중앙아시아 교육협력포럼", caption: "리플렛 | 중앙아시아 교육협력포럼" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/booth.webp", alt: "전시부스 디자인 - 교육감협의회 부스", caption: "전시부스 | 교육감협의회 부스 설치" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/leaflet.webp", alt: "리플렛 디자인 - KLS 한국어교육 국제학술대회", caption: "리플렛 | KLS 한국어교육 국제학술대회" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/booth-large-2.webp", alt: "전시부스 디자인 - 중앙아시아 교육협력포럼", caption: "전시부스 | 중앙아시아 교육협력포럼" },
               ]}
               linkHref="/work"
               linkText="포트폴리오 전체 보기 →"
