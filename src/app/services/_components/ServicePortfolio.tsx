@@ -76,7 +76,6 @@ export default function ServicePortfolio({ title, portfolios, media, altPrefix, 
             >
               {cat}
             </span>
-            <span className="text-xs text-white/80">{pf.year}</span>
           </div>
         </div>
         <div className="p-4">

@@ -569,8 +569,6 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
                   <div className="mt-1 flex items-center gap-1 text-[11px] text-slate-400">
                     <MapPin className="h-3 w-3" />
                     <span>{evt.venue}</span>
-                    <span className="mx-0.5">·</span>
-                    <span>{evt.year}</span>
                   </div>
                 </div>
               </Link>
