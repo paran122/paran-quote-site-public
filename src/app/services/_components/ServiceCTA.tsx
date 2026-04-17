@@ -37,9 +37,9 @@ export default function ServiceCTA({ title, relatedServices }: Props) {
             행사 일정과 규모만 알려주시면, 1영업일 내에 맞춤 견적서를
             보내드립니다.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link href="/?scrollTo=contact">
-              <PulsatingButton className="px-8 py-3.5 text-sm font-semibold rounded-xl">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md sm:max-w-none mx-auto">
+            <Link href="/?scrollTo=contact" className="w-full sm:w-auto">
+              <PulsatingButton className="w-full px-8 py-3.5 text-sm font-semibold rounded-xl">
                 무료 견적 요청하기
               </PulsatingButton>
             </Link>
@@ -47,13 +47,13 @@ export default function ServiceCTA({ title, relatedServices }: Props) {
               href="https://pf.kakao.com/_xkexdLG"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#FEE500] px-6 py-3.5 text-sm font-semibold text-[#3B1C1C] transition-all hover:bg-[#F5DC00] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#FEE500] px-8 py-3.5 text-sm font-semibold text-[#3B1C1C] transition-all hover:bg-[#F5DC00] w-full sm:w-auto"
             >
               카카오톡 상담
             </a>
             <a
               href="tel:02-6342-2800"
-              className="btn-outline btn-lg rounded-xl w-full sm:w-auto"
+              className="inline-flex items-center justify-center rounded-xl border border-white/30 text-white px-8 py-3.5 text-sm font-semibold transition-all hover:bg-white/10 w-full sm:w-auto"
             >
               02-6342-2800
             </a>

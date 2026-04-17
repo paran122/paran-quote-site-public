@@ -192,30 +192,32 @@ export default async function GovernmentPage() {
             </p>
           </div>
 
-          <p className="text-slate-600 leading-[1.8] mb-6">
-            공공기관 행사 대행에서 가장 중요한 것은 행정 대응 능력입니다.
-            행사 기획서, 산출내역서, 결과보고서, 참석자명부, 사진대지 등
-            공공기관에서 요구하는 모든 행정 서류를 기본으로 제공하며,
-            기획부터 시안물 디자인, 음향·조명·영상 등 현장 운영,
-            그리고 결과보고서 납품까지 한 번에 처리하는 원스톱 서비스가
-            가장 큰 강점입니다.
-          </p>
+          <div className="hidden md:block">
+            <p className="text-slate-600 leading-[1.8] mb-6">
+              공공기관 행사 대행에서 가장 중요한 것은 행정 대응 능력입니다.
+              행사 기획서, 산출내역서, 결과보고서, 참석자명부, 사진대지 등
+              공공기관에서 요구하는 모든 행정 서류를 기본으로 제공하며,
+              기획부터 시안물 디자인, 음향·조명·영상 등 현장 운영,
+              그리고 결과보고서 납품까지 한 번에 처리하는 원스톱 서비스가
+              가장 큰 강점입니다.
+            </p>
 
-          <p className="text-slate-600 leading-[1.8] mb-6">
-            관공서 행사 대행 경험이 풍부한 파란컴퍼니는 연간 100여 회의
-            행사를 수행하고 있으며, 행사 규모 50명~400명까지
-            다양한 규모의 행사를 대행한 실적이 있습니다.
-            공공기관 행사 대행 비용은 행사 규모와 서비스 범위에 따라
-            달라지며, 행사 정보를 알려주시면 1영업일 내에 산출내역서가
-            포함된 상세 견적서를 보내드립니다.
-          </p>
+            <p className="text-slate-600 leading-[1.8] mb-6">
+              관공서 행사 대행 경험이 풍부한 파란컴퍼니는 연간 100여 회의
+              행사를 수행하고 있으며, 행사 규모 50명~400명까지
+              다양한 규모의 행사를 대행한 실적이 있습니다.
+              공공기관 행사 대행 비용은 행사 규모와 서비스 범위에 따라
+              달라지며, 행사 정보를 알려주시면 1영업일 내에 산출내역서가
+              포함된 상세 견적서를 보내드립니다.
+            </p>
 
-          <p className="text-slate-600 leading-[1.8]">
-            또한 파란컴퍼니는 자체 디자인팀을 보유하고 있어 포스터, 현수막,
-            리플렛, 자료집, 명찰 등 행사에 필요한 모든 시안물을 직접
-            디자인합니다. 외주 없이 한 팀에서 기획과 디자인을 동시에
-            진행하기 때문에 행사 컨셉이 일관되고, 수정·보완이 빠릅니다.
-          </p>
+            <p className="text-slate-600 leading-[1.8]">
+              또한 파란컴퍼니는 자체 디자인팀을 보유하고 있어 포스터, 현수막,
+              리플렛, 자료집, 명찰 등 행사에 필요한 모든 시안물을 직접
+              디자인합니다. 외주 없이 한 팀에서 기획과 디자인을 동시에
+              진행하기 때문에 행사 컨셉이 일관되고, 수정·보완이 빠릅니다.
+            </p>
+          </div>
 
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
@@ -260,10 +262,11 @@ export default async function GovernmentPage() {
           <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
             <h3 className="font-bold text-sm mb-2">공공기관 행사 대행 비용 안내</h3>
             <p className="text-sm text-slate-600 leading-[1.8]">
-              소규모 세미나(50명)는 약 300만 원부터, 중규모 포럼(150명)은
+              <span className="md:hidden">소규모 300만 원~, 중규모 800만 원~, 대규모 2,000만 원~. 1영업일 내 산출내역서 포함 견적 제공.</span>
+              <span className="hidden md:inline">소규모 세미나(50명)는 약 300만 원부터, 중규모 포럼(150명)은
               약 800만 원부터, 대규모 국제행사(300명 이상)는 약 2,000만 원부터
               시작합니다. 공공기관 예산 기준에 맞춘 산출내역서와 견적서를 제출하며,
-              행사 정보를 알려주시면 1영업일 내에 안내드립니다.
+              행사 정보를 알려주시면 1영업일 내에 안내드립니다.</span>
             </p>
             <Link href="/guide/pricing" className="inline-block mt-3 text-sm text-blue-600 font-medium hover:underline">
               비용·견적 상세 안내 →
@@ -284,11 +287,12 @@ export default async function GovernmentPage() {
                 기관 격에 맞는 시안물, 외주 없이 한 번에
               </h2>
               <p className="text-slate-600 text-sm leading-[1.8] mb-6">
-                공공기관 행사는 절제되고 신뢰감 있는 디자인이 필요합니다.
+                <span className="md:hidden">자체 디자인팀이 포스터·현수막·리플렛·자료집·명찰을 직접 제작합니다.</span>
+                <span className="hidden md:inline">공공기관 행사는 절제되고 신뢰감 있는 디자인이 필요합니다.
                 파란컴퍼니는 기획과 디자인을 동시에 진행하여 기관 요구사항이
                 시안물에 즉시 반영됩니다. 포스터·현수막·리플렛·자료집·명찰 등
                 외부 업체 없이 자체 제작하므로 예산 절감과 빠른 납품이
-                가능합니다.
+                가능합니다.</span>
               </p>
               <Link
                 href="/services/design"
@@ -324,11 +328,11 @@ export default async function GovernmentPage() {
           <h2 className="text-xl md:text-2xl font-bold mb-10">
             이런 공공기관 행사를 대행합니다
           </h2>
-          <CardCarousel>
+          <CardCarousel mobileFullWidth>
             {eventTypes.map((et) => (
               <div
                 key={et.title}
-                className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm"
+                className="snap-center shrink-0 w-full sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm"
               >
                 <div className="flex justify-center mb-4">
                   <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center">

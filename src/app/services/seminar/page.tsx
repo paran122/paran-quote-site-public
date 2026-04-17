@@ -186,24 +186,26 @@ export default async function SeminarPage() {
             </p>
           </div>
 
-          <p className="text-slate-600 leading-[1.8] mb-6">
-            세미나 대행에서 가장 중요한 것은 행사 목적에 맞는 프로그램
-            구성입니다. 단순 강연형인지, 참여형 워크숍인지, 정기 시리즈인지에
-            따라 프로그램 설계, 연사 섭외, 교육 자료 형태가 완전히 달라집니다.
-            파란컴퍼니는 행사 목적을 정확히 파악한 후 최적의 프로그램을
-            제안합니다.
-          </p>
+          <div className="hidden md:block">
+            <p className="text-slate-600 leading-[1.8] mb-6">
+              세미나 대행에서 가장 중요한 것은 행사 목적에 맞는 프로그램
+              구성입니다. 단순 강연형인지, 참여형 워크숍인지, 정기 시리즈인지에
+              따라 프로그램 설계, 연사 섭외, 교육 자료 형태가 완전히 달라집니다.
+              파란컴퍼니는 행사 목적을 정확히 파악한 후 최적의 프로그램을
+              제안합니다.
+            </p>
 
-          <p className="text-slate-600 leading-[1.8] mb-6">
-            세미나 대행 비용은 규모, 연사, 자료집 제작 범위에 따라 달라집니다.
-            행사 정보를 알려주시면 1영업일 내에 상세 견적서를 보내드립니다.
-          </p>
+            <p className="text-slate-600 leading-[1.8] mb-6">
+              세미나 대행 비용은 규모, 연사, 자료집 제작 범위에 따라 달라집니다.
+              행사 정보를 알려주시면 1영업일 내에 상세 견적서를 보내드립니다.
+            </p>
 
-          <p className="text-slate-600 leading-[1.8]">
-            자체 디자인팀이 포스터, 현수막, 자료집, 명찰 등 세미나에
-            필요한 모든 시안물을 직접 디자인합니다. 행사 컨셉에 맞는
-            통일된 비주얼을 제공하여 참가자에게 전문적인 인상을 줍니다.
-          </p>
+            <p className="text-slate-600 leading-[1.8]">
+              자체 디자인팀이 포스터, 현수막, 자료집, 명찰 등 세미나에
+              필요한 모든 시안물을 직접 디자인합니다. 행사 컨셉에 맞는
+              통일된 비주얼을 제공하여 참가자에게 전문적인 인상을 줍니다.
+            </p>
+          </div>
 
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
@@ -248,10 +250,11 @@ export default async function SeminarPage() {
           <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
             <h3 className="font-bold text-sm mb-2">세미나·워크숍 대행 비용 안내</h3>
             <p className="text-sm text-slate-600 leading-[1.8]">
-              소규모 세미나(50명)는 약 300만 원부터, 100명 이상 세미나는
+              <span className="md:hidden">소규모 300만 원~, 100명 이상 600만 원~. 1영업일 내 상세 견적 제공.</span>
+              <span className="hidden md:inline">소규모 세미나(50명)는 약 300만 원부터, 100명 이상 세미나는
               약 600만 원부터 시작합니다. 연사 섭외, 자료집 제작, 현장 운영
               범위에 따라 달라지며, 행사 정보를 알려주시면 1영업일 내에
-              항목별 상세 견적서를 보내드립니다.
+              항목별 상세 견적서를 보내드립니다.</span>
             </p>
             <Link href="/guide/pricing" className="inline-block mt-3 text-sm text-blue-600 font-medium hover:underline">
               비용·견적 상세 안내 →
@@ -269,10 +272,11 @@ export default async function SeminarPage() {
                 교육 효과를 높이는 시안물 디자인
               </h2>
               <p className="text-slate-600 text-sm leading-[1.8] mb-6">
-                세미나 자료집과 워크숍 교재는 참가자의 학습 효과에 직접
+                <span className="md:hidden">자체 디자인팀이 자료집·리플렛·포스터·명찰을 교육 목표에 맞게 제작합니다.</span>
+                <span className="hidden md:inline">세미나 자료집과 워크숍 교재는 참가자의 학습 효과에 직접
                 영향을 줍니다. 파란컴퍼니 디자인팀은 교육 목표를 이해한
                 상태에서 자료집·리플렛·포스터·명찰을 제작하기 때문에
-                내용 전달력이 높고 가독성이 뛰어납니다.
+                내용 전달력이 높고 가독성이 뛰어납니다.</span>
               </p>
               <Link
                 href="/services/design"
@@ -306,9 +310,9 @@ export default async function SeminarPage() {
           <h2 className="text-xl md:text-2xl font-bold mb-10">
             이런 세미나·워크숍을 대행합니다
           </h2>
-          <CardCarousel>
+          <CardCarousel mobileFullWidth>
             {eventTypes.map((et) => (
-              <div key={et.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+              <div key={et.title} className="snap-center shrink-0 w-full sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
                   <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center">
                     <et.icon size={28} weight="fill" color="#2563EB" />

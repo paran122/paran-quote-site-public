@@ -76,24 +76,26 @@ export default function ServiceProcess() {
           {/* 연결 라인 (데스크톱) */}
           <div className="hidden md:block absolute top-[42px] left-[10%] right-[10%] h-px bg-blue-200" />
 
-          {/* 모바일: 가로 컴팩트 */}
-          <div className="flex md:hidden flex-col gap-3">
-            {steps.map((s) => (
-              <div key={s.num} className="flex items-center gap-3">
-                <div className="relative shrink-0">
-                  {s.isStrength && (
-                    <Star size={12} weight="fill" className="absolute -top-1 -right-1 text-blue-500" />
-                  )}
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold font-num ${
-                    s.isStrength ? "bg-blue-600 text-white" : "bg-white border-2 border-blue-200 text-blue-600"
-                  }`}>
-                    {s.num}
+          {/* 모바일: 가로 프로세스 */}
+          <div className="flex md:hidden items-center justify-between px-2">
+            {steps.map((s, i) => (
+              <div key={s.num} className="flex items-center">
+                <div className="flex flex-col items-center">
+                  <div className="relative">
+                    {s.isStrength && (
+                      <Star size={10} weight="fill" className="absolute -top-1 -right-1 text-blue-500 z-10" />
+                    )}
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold font-num ${
+                      s.isStrength ? "bg-blue-600 text-white" : "bg-white border-2 border-blue-200 text-blue-600"
+                    }`}>
+                      {s.num}
+                    </div>
                   </div>
+                  <span className="mt-1.5 text-[11px] font-semibold text-slate-700">{s.title}</span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-sm">{s.title}</h3>
-                  <p className="text-slate-500 text-xs leading-relaxed truncate">{s.desc.replace(/\n/g, " ")}</p>
-                </div>
+                {i < steps.length - 1 && (
+                  <div className="w-4 sm:w-6 h-px bg-blue-200 mx-1 sm:mx-2 mb-4" />
+                )}
               </div>
             ))}
           </div>

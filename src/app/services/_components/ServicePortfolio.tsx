@@ -53,7 +53,7 @@ export default function ServicePortfolio({ title, portfolios, media, altPrefix, 
         key={pf.id}
         href={`/work/${pf.slug}`}
         className={`group block rounded-xl border border-slate-200/80 bg-white shadow-sm overflow-hidden hover:shadow-lg transition-all ${
-          mobileCarousel ? "snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink" : ""
+          mobileCarousel ? "snap-center shrink-0 w-full sm:w-auto sm:shrink" : ""
         }`}
       >
         <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
@@ -104,7 +104,7 @@ export default function ServicePortfolio({ title, portfolios, media, altPrefix, 
       </div>
 
       {mobileCarousel ? (
-        <CardCarousel desktopGrid="sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
+        <CardCarousel desktopGrid="sm:grid-cols-2 lg:grid-cols-3 sm:gap-6" mobileFullWidth>
           {cards}
         </CardCarousel>
       ) : (

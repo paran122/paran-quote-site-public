@@ -194,26 +194,28 @@ export default async function DesignPage() {
             </p>
           </div>
 
-          <p className="text-slate-600 leading-[1.8] mb-6">
-            기획과 디자인을 동시에 진행하는 것이 가장 큰 강점입니다.
-            행사 컨셉이 확정되면 바로 디자인 작업에 들어가기 때문에
-            별도의 디자인 브리핑이 필요 없고, 기획 변경 사항이
-            실시간으로 시안물에 반영됩니다. 포스터, 현수막, 리플렛,
-            자료집, 명찰 등 모든 시안물이 하나의 디자인 톤으로
-            통일됩니다.
-          </p>
+          <div className="hidden md:block">
+            <p className="text-slate-600 leading-[1.8] mb-6">
+              기획과 디자인을 동시에 진행하는 것이 가장 큰 강점입니다.
+              행사 컨셉이 확정되면 바로 디자인 작업에 들어가기 때문에
+              별도의 디자인 브리핑이 필요 없고, 기획 변경 사항이
+              실시간으로 시안물에 반영됩니다. 포스터, 현수막, 리플렛,
+              자료집, 명찰 등 모든 시안물이 하나의 디자인 톤으로
+              통일됩니다.
+            </p>
 
-          <p className="text-slate-600 leading-[1.8] mb-6">
-            디자인만 별도로 의뢰하는 것도 가능합니다. 행사 기획은
-            자체적으로 진행하되, 시안물 디자인만 전문가에게 맡기고 싶은
-            경우에도 포스터 1종부터 풀 패키지까지 유연하게 대응합니다.
-          </p>
+            <p className="text-slate-600 leading-[1.8] mb-6">
+              디자인만 별도로 의뢰하는 것도 가능합니다. 행사 기획은
+              자체적으로 진행하되, 시안물 디자인만 전문가에게 맡기고 싶은
+              경우에도 포스터 1종부터 풀 패키지까지 유연하게 대응합니다.
+            </p>
 
-          <p className="text-slate-600 leading-[1.8]">
-            인쇄·제작까지 원스톱으로 진행합니다. 디자인 파일 납품은
-            물론, 인쇄물 제작과 행사장 배송까지 한 번에 처리하여
-            담당자의 업무 부담을 줄여드립니다.
-          </p>
+            <p className="text-slate-600 leading-[1.8]">
+              인쇄·제작까지 원스톱으로 진행합니다. 디자인 파일 납품은
+              물론, 인쇄물 제작과 행사장 배송까지 한 번에 처리하여
+              담당자의 업무 부담을 줄여드립니다.
+            </p>
+          </div>
 
           {/* 리플렛 시안물 슬라이드쇼 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
@@ -237,10 +239,11 @@ export default async function DesignPage() {
           <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
             <h3 className="font-bold text-sm mb-2">행사 디자인 비용 안내</h3>
             <p className="text-sm text-slate-600 leading-[1.8]">
-              포스터·현수막 등 1~2종 시안물은 개별 견적으로, 6~9종
+              <span className="md:hidden">1~2종 개별 견적, 6~9종 풀 패키지 가능. 1영업일 내 견적 안내.</span>
+              <span className="hidden md:inline">포스터·현수막 등 1~2종 시안물은 개별 견적으로, 6~9종
               풀 패키지는 행사 대행 견적에 포함됩니다. 디자인만 별도
               의뢰하는 것도 가능하며, 수량과 규격에 따라 달라집니다.
-              행사 정보를 알려주시면 1영업일 내에 안내드립니다.
+              행사 정보를 알려주시면 1영업일 내에 안내드립니다.</span>
             </p>
             <Link href="/guide/pricing" className="inline-block mt-3 text-sm text-blue-600 font-medium hover:underline">
               비용·견적 상세 안내 →
@@ -258,11 +261,12 @@ export default async function DesignPage() {
                 자체 디자인팀이 만드는 차이
               </h2>
               <p className="text-slate-600 text-sm leading-[1.8] mb-6">
-                외부 디자인 업체에 별도로 의뢰하면 기획 의도를 전달하는 데
+                <span className="md:hidden">기획팀과 디자인팀이 함께 일해 수정 반영이 빠르고 추가 비용이 없습니다.</span>
+                <span className="hidden md:inline">외부 디자인 업체에 별도로 의뢰하면 기획 의도를 전달하는 데
                 시간이 걸리고, 수정 요청마다 추가 비용이 발생합니다.
                 파란컴퍼니는 기획팀과 디자인팀이 같은 공간에서 함께 일하기
                 때문에 커뮤니케이션 비용이 제로이고, 수정 반영이
-                1영업일 이내로 빠릅니다.
+                1영업일 이내로 빠릅니다.</span>
               </p>
             </div>
             <div className="flex-shrink-0 w-full md:w-auto">
@@ -289,9 +293,9 @@ export default async function DesignPage() {
           <h2 className="text-xl md:text-2xl font-bold mb-10">
             제작 가능한 시안물
           </h2>
-          <CardCarousel>
+          <CardCarousel mobileFullWidth>
             {designItems.map((item) => (
-              <div key={item.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+              <div key={item.title} className="snap-center shrink-0 w-full sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
                   <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center">
                     <item.icon size={28} weight="fill" color="#2563EB" />
