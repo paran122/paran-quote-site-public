@@ -185,26 +185,28 @@ export default async function ConferencePage() {
             </p>
           </div>
 
-          <p className="text-slate-600 leading-[1.8] mb-6">
-            특히 하이브리드(온·오프라인) 행사가 보편화되면서 영상 중계,
-            온라인 참가자 관리, 실시간 Q&A 등 기술적 운영 역량도
-            갖추고 있어야 합니다. 파란컴퍼니는 오프라인 행사 운영과
-            온라인 중계를 동시에 처리하는 하이브리드 행사 경험을
-            보유하고 있습니다.
-          </p>
+          <div className="hidden md:block">
+            <p className="text-slate-600 leading-[1.8] mb-6">
+              특히 하이브리드(온·오프라인) 행사가 보편화되면서 영상 중계,
+              온라인 참가자 관리, 실시간 Q&A 등 기술적 운영 역량도
+              갖추고 있어야 합니다. 파란컴퍼니는 오프라인 행사 운영과
+              온라인 중계를 동시에 처리하는 하이브리드 행사 경험을
+              보유하고 있습니다.
+            </p>
 
-          <p className="text-slate-600 leading-[1.8] mb-6">
-            컨퍼런스 대행 비용은 규모, 연사 수, 하이브리드 운영 여부,
-            동시통역 필요 여부에 따라 달라집니다. 행사 정보를
-            알려주시면 1영업일 내에 상세 견적서를 보내드립니다.
-          </p>
+            <p className="text-slate-600 leading-[1.8] mb-6">
+              컨퍼런스 대행 비용은 규모, 연사 수, 하이브리드 운영 여부,
+              동시통역 필요 여부에 따라 달라집니다. 행사 정보를
+              알려주시면 1영업일 내에 상세 견적서를 보내드립니다.
+            </p>
 
-          <p className="text-slate-600 leading-[1.8]">
-            자체 디자인팀이 포스터, 현수막, 자료집, 명찰, 초청장 등
-            컨퍼런스에 필요한 모든 시안물을 직접 디자인합니다.
-            행사 컨셉에 맞는 통일된 비주얼 아이덴티티를 제공하여
-            행사의 전문성과 격을 높입니다.
-          </p>
+            <p className="text-slate-600 leading-[1.8]">
+              자체 디자인팀이 포스터, 현수막, 자료집, 명찰, 초청장 등
+              컨퍼런스에 필요한 모든 시안물을 직접 디자인합니다.
+              행사 컨셉에 맞는 통일된 비주얼 아이덴티티를 제공하여
+              행사의 전문성과 격을 높입니다.
+            </p>
+          </div>
 
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
@@ -249,10 +251,11 @@ export default async function ConferencePage() {
           <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
             <h3 className="font-bold text-sm mb-2">컨퍼런스·포럼 대행 비용 안내</h3>
             <p className="text-sm text-slate-600 leading-[1.8]">
-              100명 규모 컨퍼런스는 약 800만 원부터, 300명 이상 대규모
+              <span className="md:hidden">100명 규모 800만 원~, 300명 이상 2,000만 원~. 1영업일 내 상세 견적 제공.</span>
+              <span className="hidden md:inline">100명 규모 컨퍼런스는 약 800만 원부터, 300명 이상 대규모
               포럼·심포지엄은 약 2,000만 원부터 시작합니다.
               연사 섭외, 동시통역, 하이브리드 운영 여부에 따라 달라지며,
-              행사 정보를 알려주시면 1영업일 내에 항목별 상세 견적서를 보내드립니다.
+              행사 정보를 알려주시면 1영업일 내에 항목별 상세 견적서를 보내드립니다.</span>
             </p>
             <Link href="/guide/pricing" className="inline-block mt-3 text-sm text-blue-600 font-medium hover:underline">
               비용·견적 상세 안내 →
@@ -270,10 +273,11 @@ export default async function ConferencePage() {
                 컨퍼런스 격에 맞는 통일된 비주얼
               </h2>
               <p className="text-slate-600 text-sm leading-[1.8] mb-6">
-                컨퍼런스는 연사와 참가자 모두에게 전문적인 인상을 줘야 합니다.
+                <span className="md:hidden">자체 디자인팀이 초청장·포스터·현수막·자료집·명찰을 통일된 컨셉으로 제작합니다.</span>
+                <span className="hidden md:inline">컨퍼런스는 연사와 참가자 모두에게 전문적인 인상을 줘야 합니다.
                 파란컴퍼니는 기획 단계에서 확정된 컨셉을 디자인팀이 바로
                 반영하여, 초청장부터 포스터·현수막·자료집·명찰까지
-                하나의 비주얼 아이덴티티로 완성합니다.
+                하나의 비주얼 아이덴티티로 완성합니다.</span>
               </p>
               <Link
                 href="/services/design"
@@ -307,9 +311,9 @@ export default async function ConferencePage() {
           <h2 className="text-xl md:text-2xl font-bold mb-10">
             이런 컨퍼런스·포럼을 대행합니다
           </h2>
-          <CardCarousel>
+          <CardCarousel mobileFullWidth>
             {eventTypes.map((et) => (
-              <div key={et.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+              <div key={et.title} className="snap-center shrink-0 w-full sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
                   <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center">
                     <et.icon size={28} weight="fill" color="#2563EB" />

@@ -126,7 +126,7 @@ export default async function CorporatePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       {/* Hero */}
-      <section className="relative bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
+      <section className="relative bg-[#091041] py-16 md:pt-16 md:pb-40 overflow-hidden">
         <HeroSlideshow
           images={[
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-fall/photo-05.webp", alt: "기업행사 대행 - 추계 자동차부품산업 세미나 현장" },
@@ -144,11 +144,11 @@ export default async function CorporatePage() {
             <span className="mx-2 text-white/20">/</span>
             <span className="text-white/60">기업행사 대행</span>
           </nav>
-          <div className="text-center max-w-3xl mx-auto pt-16 md:pt-0">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6">
+          <div className="text-center max-w-3xl mx-auto pt-10 md:pt-0">
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4 md:mb-6">
               기업행사 대행
             </h1>
-            <p className="text-base md:text-lg text-slate-300 leading-relaxed mb-10">
+            <p className="text-sm md:text-lg text-slate-300 leading-relaxed mb-6 md:mb-10">
               세미나, 워크숍, 시무식, 송년회, 창립기념행사 등
               기업 행사를 기획부터 디자인·운영까지 원스톱으로 대행합니다.
             </p>
@@ -187,26 +187,28 @@ export default async function CorporatePage() {
             </p>
           </div>
 
-          <p className="text-slate-600 leading-[1.8] mb-6">
-            기업행사 대행에서 가장 중요한 것은 행사 목적에 맞는 기획력입니다.
-            단순히 행사를 &quot;치르는&quot; 것이 아니라, 행사를 통해
-            달성하고자 하는 목표—브랜드 인지도 강화, 고객 네트워킹,
-            임직원 교육—를 정확히 이해하고 프로그램을 설계합니다.
-          </p>
+          <div className="hidden md:block">
+            <p className="text-slate-600 leading-[1.8] mb-6">
+              기업행사 대행에서 가장 중요한 것은 행사 목적에 맞는 기획력입니다.
+              단순히 행사를 &quot;치르는&quot; 것이 아니라, 행사를 통해
+              달성하고자 하는 목표—브랜드 인지도 강화, 고객 네트워킹,
+              임직원 교육—를 정확히 이해하고 프로그램을 설계합니다.
+            </p>
 
-          <p className="text-slate-600 leading-[1.8] mb-6">
-            기업행사 대행 비용은 행사 규모와 서비스 범위에 따라 달라집니다.
-            행사 정보를 알려주시면 1영업일 내에 상세 견적서를 보내드립니다.
-            소규모 세미나부터 200명 이상의 대규모 행사까지 대응 가능하며,
-            연사 섭외, 장소 예약, 케이터링 등 부대 서비스도 함께 제공합니다.
-          </p>
+            <p className="text-slate-600 leading-[1.8] mb-6">
+              기업행사 대행 비용은 행사 규모와 서비스 범위에 따라 달라집니다.
+              행사 정보를 알려주시면 1영업일 내에 상세 견적서를 보내드립니다.
+              소규모 세미나부터 200명 이상의 대규모 행사까지 대응 가능하며,
+              연사 섭외, 장소 예약, 케이터링 등 부대 서비스도 함께 제공합니다.
+            </p>
 
-          <p className="text-slate-600 leading-[1.8]">
-            또한 자체 디자인팀을 보유하고 있어 포스터, 현수막, 리플렛,
-            자료집, 명찰 등 행사에 필요한 모든 시안물을 직접 디자인합니다.
-            외주 없이 한 팀에서 기획과 디자인을 동시에 진행하기 때문에
-            수정·보완이 빠르고, 행사 컨셉이 일관됩니다.
-          </p>
+            <p className="text-slate-600 leading-[1.8]">
+              또한 자체 디자인팀을 보유하고 있어 포스터, 현수막, 리플렛,
+              자료집, 명찰 등 행사에 필요한 모든 시안물을 직접 디자인합니다.
+              외주 없이 한 팀에서 기획과 디자인을 동시에 진행하기 때문에
+              수정·보완이 빠르고, 행사 컨셉이 일관됩니다.
+            </p>
+          </div>
 
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
@@ -251,10 +253,11 @@ export default async function CorporatePage() {
           <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
             <h3 className="font-bold text-sm mb-2">기업행사 대행 비용 안내</h3>
             <p className="text-sm text-slate-600 leading-[1.8]">
-              소규모 세미나(50명)는 약 300만 원부터, 중규모 행사(100~200명)는
+              <span className="md:hidden">소규모 300만 원~, 중규모 800만 원~. 1영업일 내 상세 견적서 제공.</span>
+              <span className="hidden md:inline">소규모 세미나(50명)는 약 300만 원부터, 중규모 행사(100~200명)는
               약 800만 원부터 시작합니다. 시무식, 송년회, 창립기념행사 등
               행사 유형과 필요 서비스에 따라 달라지며,
-              행사 정보를 알려주시면 1영업일 내에 항목별 상세 견적서를 보내드립니다.
+              행사 정보를 알려주시면 1영업일 내에 항목별 상세 견적서를 보내드립니다.</span>
             </p>
             <Link href="/guide/pricing" className="inline-block mt-3 text-sm text-blue-600 font-medium hover:underline">
               비용·견적 상세 안내 →
@@ -272,10 +275,11 @@ export default async function CorporatePage() {
                 기업 브랜드를 담은 행사 디자인
               </h2>
               <p className="text-slate-600 text-sm leading-[1.8] mb-6">
-                기업행사의 시안물은 곧 회사의 얼굴입니다. 파란컴퍼니는
+                <span className="md:hidden">기업 CI/BI에 맞춘 포스터·현수막·리플렛·자료집·명찰을 자체 디자인팀이 직접 제작합니다.</span>
+                <span className="hidden md:inline">기업행사의 시안물은 곧 회사의 얼굴입니다. 파란컴퍼니는
                 기업 CI/BI 가이드에 맞춰 포스터·현수막·리플렛·자료집·명찰을
                 디자인합니다. 기획팀이 확정한 행사 방향이 디자인팀으로
-                바로 전달되어 수정 횟수가 적고 진행이 빠릅니다.
+                바로 전달되어 수정 횟수가 적고 진행이 빠릅니다.</span>
               </p>
               <Link
                 href="/services/design"
@@ -309,9 +313,9 @@ export default async function CorporatePage() {
           <h2 className="text-xl md:text-2xl font-bold mb-10">
             이런 기업행사를 대행합니다
           </h2>
-          <CardCarousel>
+          <CardCarousel mobileFullWidth>
             {eventTypes.map((et) => (
-              <div key={et.title} className="snap-center shrink-0 w-[75vw] sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
+              <div key={et.title} className="snap-center shrink-0 w-full sm:w-auto sm:shrink p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm">
                 <div className="flex justify-center mb-4">
                   <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center">
                     <et.icon size={28} weight="fill" color="#2563EB" />
