@@ -1081,7 +1081,6 @@ export default function Portfolio() {
                     <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium ${categoryStyle[project.category] || "bg-gray-100 text-gray-600"}`}>
                       {project.category}
                     </span>
-                    <span className="text-xs text-gray-300">{project.date}</span>
                   </div>
                   <p className="mb-1 text-xs font-semibold text-blue-500">{project.client}</p>
                   <h3 className="mb-3 text-sm font-bold leading-snug text-gray-800">{project.name}</h3>

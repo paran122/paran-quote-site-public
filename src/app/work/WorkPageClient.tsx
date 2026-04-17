@@ -199,7 +199,6 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
   const [viewMode, setViewMode] = useState<ViewMode>("event");
   const [categoryFilter, setCategoryFilter] = useState("전체");
   const [designFilter, setDesignFilter] = useState("전체");
-  const [yearFilter, setYearFilter] = useState("전체");
   const [search, setSearch] = useState("");
   const [contactOpen, setContactOpen] = useState(false);
   const [lightboxWork, setLightboxWork] = useState<DesignWork | null>(null);
@@ -224,9 +223,6 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
       const rest = shuffleReady ? shuffledRest : DESIGN_WORKS.filter((d) => !PINNED_IDS.includes(d.id));
       list = [...pinned, ...rest];
     }
-    if (yearFilter !== "전체") {
-      list = list.filter((d) => d.year === Number(yearFilter));
-    }
     if (search.trim()) {
       const q = search.trim().toLowerCase();
       list = list.filter((d) =>
@@ -236,7 +232,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
       );
     }
     return list;
-  }, [designFilter, shuffledRest, shuffleReady, yearFilter, search]);
+  }, [designFilter, shuffledRest, shuffleReady, search]);
 
   const visiblePortfolios = useMemo(() => portfolios.filter((p) => p.isVisible), [portfolios]);
 
@@ -259,22 +255,12 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
     return categoriesWithCount.find((c) => c.name === cat)?.count ?? 0;
   };
 
-  /** 연도 목록 */
-  const YEARS = useMemo(() => {
-    const years = Array.from(new Set(visiblePortfolios.map((p) => String(p.year))));
-    years.sort((a, b) => Number(b) - Number(a));
-    return ["전체", ...years];
-  }, [visiblePortfolios]);
-
   /** 필터링 */
   const filtered = useMemo(() => {
     let list = visiblePortfolios;
 
     if (categoryFilter !== "전체") {
       list = list.filter((p) => p.tags[0] === categoryFilter);
-    }
-    if (yearFilter !== "전체") {
-      list = list.filter((p) => p.year === Number(yearFilter));
     }
     if (search.trim()) {
       const q = search.trim().toLowerCase();
@@ -287,7 +273,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
     }
 
     return list;
-  }, [visiblePortfolios, categoryFilter, yearFilter, search]);
+  }, [visiblePortfolios, categoryFilter, search]);
 
   const totalCount = visiblePortfolios.length;
 
@@ -510,24 +496,9 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
               </div>
             </div>
 
-            {/* 공통: 연도 필터 + 검색 */}
-            <div className="mb-4 flex flex-col gap-2 sm:mb-6 sm:flex-row sm:flex-wrap sm:items-center">
-              <div className="flex flex-wrap gap-2">
-                {YEARS.map((y) => (
-                  <button
-                    key={y}
-                    onClick={() => setYearFilter(y)}
-                    className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium font-num transition-colors ${
-                      yearFilter === y
-                        ? "bg-slate-900 text-white"
-                        : "bg-slate-100 text-slate-500 hover:bg-slate-200"
-                    }`}
-                  >
-                    {y === "전체" ? "전체 연도" : y}
-                  </button>
-                ))}
-              </div>
-              <div className="relative w-full sm:ml-auto sm:w-auto sm:min-w-[180px] sm:max-w-[300px] sm:flex-1">
+            {/* 검색 */}
+            <div className="mb-4 flex sm:mb-6 sm:justify-end">
+              <div className="relative w-full sm:w-auto sm:min-w-[180px] sm:max-w-[300px]">
                 <Search
                   size={16}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
@@ -645,7 +616,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                                   {cat}
                                 </span>
                                 <p className="text-[15px] font-bold text-white leading-snug">{pf.title}</p>
-                                <p className="text-[12px] text-white/60 mt-1">{pf.venue} · {pf.year}</p>
+                                <p className="text-[12px] text-white/60 mt-1">{pf.venue}</p>
                                 <div className="mt-3 rounded-full bg-white/20 px-3 py-1 text-[10px] text-white">
                                   자세히 보기
                                 </div>
@@ -660,9 +631,6 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                                     {cat}
                                   </span>
                                 )}
-                                <span className="text-[10px] text-slate-400 font-num sm:text-[12px]">
-                                  {pf.year}
-                                </span>
                               </div>
                               <h3 className="min-h-[2.25rem] text-[12px] font-semibold text-slate-900 leading-snug line-clamp-2 sm:text-[13px]">
                                 {pf.title}
