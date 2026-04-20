@@ -51,45 +51,69 @@ async function verifyToken(token: string): Promise<boolean> {
   }
 }
 
-/** 이전 카페24 사이트 URL 패턴 — 410 Gone 반환 (Google 크롤링 중단 유도) */
-const LEGACY_PATH_PREFIXES = [
-  "/portfolio/",  // /portfolio/44?sca=... (숫자 ID 기반 옛 포트폴리오)
-  "/bbs/",        // /bbs/download.php 등 게시판
-  "/qa",          // 이전 Q&A
-  "/gallery",     // 이전 갤러리
-  "/contact",     // 이전 문의
-  "/shop",        // 이전 쇼핑
-  "/notice",      // 이전 공지사항
-  "/theme",       // 이전 테마 경로
+/**
+ * 이전 카페24 → 현재 Next.js 사이트 URL 매핑
+ *
+ * [규칙] 새 페이지가 존재하면 → 301 리다이렉트 (SEO 파워 승계)
+ *        대응 페이지 없으면  → 410 Gone (크롤링 중단)
+ */
+const LEGACY_REDIRECTS: Record<string, string> = {
+  "/about.php":    "/company",
+  "/service.php":  "/services",
+  "/service2.php": "/services",
+  "/contact.php":  "/",         // 홈 문의 섹션으로
+  "/index.php":    "/",
+  "/portfolio.php": "/work",
+};
+
+/** 대응 페이지가 있는 prefix → 301 */
+const LEGACY_REDIRECT_PREFIXES: [string, string][] = [
+  ["/portfolio", "/work"],    // /portfolio, /portfolio?sca=... → /work
+  ["/gallery",   "/work"],    // /gallery → /work
+];
+
+/** 대응 페이지 없음 → 410 Gone */
+const LEGACY_GONE_PREFIXES = [
+  "/bbs/",        // 게시판
+  "/qa",          // Q&A
+  "/contact",     // /contact.php는 위에서 301, /contact/...는 410
+  "/shop",        // 쇼핑
+  "/notice",      // 공지사항
+  "/theme",       // 테마 경로
   "/type-4",
   "/free",
 ];
-const LEGACY_EXACT_PATHS = [
-  "/about.php",
-  "/service.php",
-  "/service2.php",
-  "/contact.php",
-  "/portfolio.php",
-  "/index.php",
-];
 
-function isLegacyUrl(pathname: string): boolean {
-  if (LEGACY_EXACT_PATHS.includes(pathname)) return true;
-  for (const prefix of LEGACY_PATH_PREFIXES) {
-    if (pathname.startsWith(prefix)) return true;
+function getLegacyResponse(pathname: string, url: string): NextResponse | null {
+  // 1) 정확한 경로 매칭 → 301
+  const exactRedirect = LEGACY_REDIRECTS[pathname];
+  if (exactRedirect) {
+    return NextResponse.redirect(new URL(exactRedirect, url), 301);
   }
-  // /portfolio 정확히 일치 (쿼리 파라미터 포함 접근)
-  if (pathname === "/portfolio") return true;
-  return false;
+
+  // 2) prefix 매칭 → 301 (대응 페이지 있는 것)
+  for (const [prefix, target] of LEGACY_REDIRECT_PREFIXES) {
+    if (pathname === prefix || pathname.startsWith(prefix + "/") || pathname.startsWith(prefix + "?")) {
+      return NextResponse.redirect(new URL(target, url), 301);
+    }
+  }
+
+  // 3) 대응 없는 레거시 → 410
+  for (const prefix of LEGACY_GONE_PREFIXES) {
+    if (pathname.startsWith(prefix)) {
+      return new NextResponse(null, { status: 410, statusText: "Gone" });
+    }
+  }
+
+  return null;
 }
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 이전 카페24 URL → 410 Gone (영구 삭제됨)
-  if (isLegacyUrl(pathname)) {
-    return new NextResponse(null, { status: 410, statusText: "Gone" });
-  }
+  // 이전 카페24 URL → 301 리다이렉트 또는 410 Gone
+  const legacyResponse = getLegacyResponse(pathname, request.url);
+  if (legacyResponse) return legacyResponse;
 
   // /admin/login은 인증 불필요
   if (pathname === "/admin/login") {
