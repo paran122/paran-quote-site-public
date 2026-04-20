@@ -36,7 +36,20 @@ export default function JsonLd() {
       "@type": "QuantitativeValue",
       value: 8,
     },
-    award: "여성기업인증",
+    award: ["여성기업인증", "직접생산확인증명서(행사대행업)"],
+    hasCredential: [
+      {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "여성기업확인서",
+        recognizedBy: { "@type": "Organization", name: "여성기업종합지원센터" },
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "직접생산확인증명서",
+        recognizedBy: { "@type": "Organization", name: "중소벤처기업부" },
+      },
+    ],
+    taxID: "291-86-02802",
     areaServed: {
       "@type": "Country",
       name: "대한민국",

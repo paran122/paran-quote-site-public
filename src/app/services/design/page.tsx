@@ -59,6 +59,17 @@ const serviceJsonLd = {
   provider: { "@type": "Organization", name: "파란컴퍼니", url: SITE_URL },
   areaServed: { "@type": "Country", name: "대한민국" },
   serviceType: "Event Design",
+  serviceArea: [
+    { "@type": "City", name: "서울" },
+    { "@type": "AdministrativeArea", name: "경기도" },
+    { "@type": "Country", name: "대한민국" },
+  ],
+  offers: {
+    "@type": "Offer",
+    priceCurrency: "KRW",
+    description: "행사 규모와 시안물 종류에 따라 별도 견적. 기획 대행 시 디자인 포함 가능.",
+    availability: "https://schema.org/InStock",
+  },
 };
 
 const faqJsonLd = {

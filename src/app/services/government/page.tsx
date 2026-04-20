@@ -61,6 +61,23 @@ const serviceJsonLd = {
   provider: { "@type": "Organization", name: "파란컴퍼니", url: SITE_URL },
   areaServed: { "@type": "Country", name: "대한민국" },
   serviceType: "Government Event Planning",
+  serviceArea: [
+    { "@type": "City", name: "서울" },
+    { "@type": "AdministrativeArea", name: "경기도" },
+    { "@type": "Country", name: "대한민국" },
+  ],
+  offers: {
+    "@type": "Offer",
+    priceCurrency: "KRW",
+    price: "8000000",
+    priceSpecification: {
+      "@type": "PriceSpecification",
+      minPrice: "8000000",
+      priceCurrency: "KRW",
+      description: "소규모 세미나(30~50명) 800만 원부터, 중규모 포럼(100~200명) 2,500만 원부터",
+    },
+    availability: "https://schema.org/InStock",
+  },
 };
 
 const faqJsonLd = {

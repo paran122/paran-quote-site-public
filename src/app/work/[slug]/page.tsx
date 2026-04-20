@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { fetchPortfolioBySlug, fetchPortfolioMedia, fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
+import { fetchPortfolioBySlug, fetchPortfolioMedia, fetchPortfolios, fetchAllPortfolioMedia, fetchEventReviews } from "@/lib/queries";
+import type { EventReview } from "@/types";
 import { PORTFOLIOS } from "@/lib/portfolioData";
 import WorkDetailClient from "./WorkDetailClient";
 import type { Portfolio, PortfolioMedia } from "@/types";
@@ -57,11 +58,13 @@ export default async function WorkDetailPage({ params }: Props) {
   let media: PortfolioMedia[] = [];
   let allPortfolios: Portfolio[] = [];
   let allMedia: PortfolioMedia[] = [];
+  let reviews: EventReview[] = [];
   try {
-    [media, allPortfolios, allMedia] = await Promise.all([
+    [media, allPortfolios, allMedia, reviews] = await Promise.all([
       fetchPortfolioMedia(portfolio.id),
       fetchPortfolios(),
       fetchAllPortfolioMedia(),
+      fetchEventReviews(portfolio.id),
     ]);
   } catch {
     try { media = await fetchPortfolioMedia(portfolio.id); } catch { /* */ }
@@ -110,6 +113,24 @@ export default async function WorkDetailPage({ params }: Props) {
     },
     ...(portfolio.client
       ? { accountablePerson: { "@type": "Organization", name: portfolio.client } }
+      : {}),
+    ...(reviews.length > 0
+      ? {
+          review: reviews.map((r) => ({
+            "@type": "Review",
+            author: {
+              "@type": "Person",
+              name: r.reviewerName,
+              ...(r.organization ? { worksFor: { "@type": "Organization", name: r.organization } } : {}),
+            },
+            reviewBody: r.content,
+            reviewRating: {
+              "@type": "Rating",
+              ratingValue: String(r.rating),
+              bestRating: "5",
+            },
+          })),
+        }
       : {}),
   };
 
