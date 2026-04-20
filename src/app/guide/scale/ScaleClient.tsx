@@ -18,7 +18,7 @@ const scales: ScaleGuide[] = [
   {
     title: "소규모 행사",
     range: "30 ~ 50명",
-    budget: "600만 원~",
+    budget: "800만 원~",
     personnel: "PM 1명 + 스태프 1~2명",
     venue: "세미나룸, 카페, 공공기관 회의실",
     equipment: [
@@ -41,7 +41,7 @@ const scales: ScaleGuide[] = [
   {
     title: "중규모 행사",
     range: "100 ~ 200명",
-    budget: "1,500만 원~",
+    budget: "2,500만 원~",
     personnel: "PM 1명 + 디자이너 + 음향 기사 + 스태프 3~5명",
     venue: "호텔 연회장, 대학 강당, 컨벤션센터 소홀",
     equipment: [
@@ -67,7 +67,7 @@ const scales: ScaleGuide[] = [
   {
     title: "대규모 행사",
     range: "300 ~ 500명 이상",
-    budget: "3,000만 원~",
+    budget: "5,000만 원~",
     personnel: "PM + 부PM + 디자이너 + 음향·영상 기사 + MC + 스태프 7~10명 이상",
     venue: "컨벤션센터, 호텔 그랜드볼룸, 대형 강당",
     equipment: [

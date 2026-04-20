@@ -86,7 +86,7 @@ const categories: FAQCategory[] = [
         question: "세미나 대행 비용은 얼마인가요?",
         answer: (
           <>
-            행사 규모, 형태, 서비스 범위에 따라 달라집니다. 소규모 세미나(30~50명)는 약 <strong className="text-slate-900">700만 원부터</strong>, 중규모 컨퍼런스(100~200명)는 약 <strong className="text-slate-900">1,500만 원부터</strong> 시작합니다. 정확한 견적은 행사 내용을 확인한 후 항목별로 투명하게 산출해 드립니다.
+            행사 규모, 형태, 서비스 범위에 따라 달라집니다. 소규모 세미나(30~50명)는 약 <strong className="text-slate-900">800만 원부터</strong>, 중규모 컨퍼런스(100~200명)는 약 <strong className="text-slate-900">2,500만 원부터</strong> 시작합니다. 정확한 견적은 행사 내용을 확인한 후 항목별로 투명하게 산출해 드립니다.
           </>
         ),
       },
