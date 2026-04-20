@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { fetchPublishedBlogPosts } from "@/lib/queries";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -46,14 +44,7 @@ const breadcrumbLd = {
   ],
 };
 
-export default async function AuthorPage() {
-  let posts: Awaited<ReturnType<typeof fetchPublishedBlogPosts>> = [];
-  try {
-    posts = await fetchPublishedBlogPosts(undefined, 100);
-  } catch {
-    // ignore
-  }
-
+export default function AuthorPage() {
   return (
     <>
       <script
@@ -65,149 +56,115 @@ export default async function AuthorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
-      <div className="min-h-screen bg-slate-50 pt-24 pb-20">
+      {/* ═══ 히어로 (다크) ═══ */}
+      <section className="bg-[#0f1a3c] pt-28 pb-14 sm:pt-32 sm:pb-16">
         <div className="mx-auto max-w-[720px] px-6">
-          {/* 프로필 헤더 */}
-          <div className="flex items-start gap-5">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-primary/10 text-2xl font-bold text-primary">
-              김
-            </div>
-            <div>
-              <h1 className="text-[28px] font-extrabold tracking-tight text-slate-900 sm:text-[32px]">
-                김미경
-              </h1>
-              <p className="mt-1 text-[15px] text-slate-500">
-                파란컴퍼니 주식회사 대표
-              </p>
-              <p className="mt-0.5 text-[14px] text-slate-400">
-                행사 기획 경력 10년 · 250+ 프로젝트 총괄
-              </p>
-            </div>
-          </div>
+          <p className="text-[13px] font-medium tracking-widest text-slate-400">
+            글쓴이 프로필
+          </p>
+          <h1 className="mt-3 text-[32px] font-extrabold tracking-tight text-white sm:text-[40px]">
+            김미경 대표
+          </h1>
+          <p className="mt-3 text-[15px] leading-relaxed text-slate-300">
+            파란컴퍼니(주) 대표 · 행사 기획 경력 10년 · 250+ 공공기관·기업 프로젝트 총괄
+          </p>
+        </div>
+      </section>
 
+      {/* ═══ 본문 ═══ */}
+      <article className="bg-slate-50 pb-20">
+        <div className="mx-auto max-w-[720px] px-6 pt-12">
           {/* 소개 */}
-          <div className="mt-8 rounded-xl border border-slate-200 bg-white p-6">
-            <h2 className="text-[15px] font-bold text-slate-900 mb-3">소개</h2>
-            <p className="text-[14px] leading-[1.8] text-slate-600">
-              2015년부터 공공기관과 기업을 대상으로 세미나, 컨퍼런스, 포럼, 학술대회 등
-              다양한 행사를 기획하고 운영하고 있습니다. 교육부, 해군, 경기도교육청, 수원시 등
-              정부 부처 및 지자체, 공기업의 행사를 수행하며 쌓은 경험을 바탕으로
-              행사 기획의 실무 노하우를 공유합니다.
+          <section className="mb-10">
+            <h2 className="mb-4 text-[17px] font-bold text-slate-900">소개</h2>
+            <p className="text-[15px] leading-[1.9] text-slate-600">
+              김미경 대표는 <strong className="text-slate-800">파란컴퍼니(주) 대표</strong>로서,
+              2015년 회사 설립 이래 공공기관 및 기업 대상 행사 프로젝트를 총괄해왔습니다.
+              세미나·컨퍼런스·포럼 전문가로 <strong className="text-slate-800">행사 기획 총 경력 10년</strong>,
+              공공기관 대상 250건 이상의 행사 프로젝트를 리드했습니다.
             </p>
-          </div>
+          </section>
 
           {/* 전문 분야 */}
-          <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
-            <h2 className="text-[15px] font-bold text-slate-900 mb-3">전문 분야</h2>
-            <ul className="space-y-2 text-[14px] text-slate-600">
-              <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                공공기관 행사 기획·대행 (세미나, 포럼, 컨퍼런스)
+          <section className="mb-10">
+            <h2 className="mb-4 text-[17px] font-bold text-slate-900">전문 분야</h2>
+            <ul className="space-y-2.5 text-[15px] text-slate-600">
+              <li>
+                <strong className="text-slate-800">공공기관 행사 기획·대행</strong>
+                {" — "}세미나, 포럼, 컨퍼런스, 학술대회
               </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                기업행사 기획 (산업 세미나, 워크숍, 비전선포식)
+              <li>
+                <strong className="text-slate-800">기업행사 기획</strong>
+                {" — "}산업 세미나, 워크숍, 비전선포식, 성과발표회
               </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                행사 디자인 총괄 (포스터, 현수막, 자료집, 공간연출)
+              <li>
+                <strong className="text-slate-800">행사 디자인 총괄</strong>
+                {" — "}포스터, 현수막, 자료집, 공간연출, 무대 디자인
               </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                전국 순회 교육·시리즈 행사 운영
+              <li>
+                <strong className="text-slate-800">전국 순회 교육·시리즈 행사 운영</strong>
+                {" — "}다권역 동시 진행, 장기 프로그램
               </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                행사 결과보고서·정산 자료 작성
+              <li>
+                <strong className="text-slate-800">행정 서류</strong>
+                {" — "}결과보고서, 정산 자료, 산출내역서 작성
               </li>
             </ul>
-          </div>
+          </section>
 
           {/* 주요 고객 */}
-          <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
-            <h2 className="text-[15px] font-bold text-slate-900 mb-3">주요 고객</h2>
-            <p className="text-[14px] leading-[1.8] text-slate-600">
-              교육부, 해군, 경기도교육청, 수원시, 한국예술인복지재단, 경기도평생교육진흥원 등
-              정부 부처·지자체·공기업과 민간기업
+          <section className="mb-10">
+            <h2 className="mb-4 text-[17px] font-bold text-slate-900">주요 고객</h2>
+            <p className="text-[15px] leading-[1.9] text-slate-600">
+              경기도교육청 · 교육부 · 대한민국 해군 · 수원시 · 한국예술인복지재단 ·
+              경기도평생교육진흥원 · KAP 한국자동차부품산업진흥재단 등 공공·준공공 영역의
+              행사 기획·운영을 전담합니다.
             </p>
-          </div>
+          </section>
 
           {/* 소속 회사 */}
-          <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
-            <h2 className="text-[15px] font-bold text-slate-900 mb-3">소속 회사</h2>
-            <div className="text-[14px] leading-[1.8] text-slate-600 space-y-1">
-              <p><span className="font-medium text-slate-700">파란컴퍼니 주식회사</span></p>
-              <p>설립 2015년 · 여성기업 인증 · 직접생산확인증명서 보유</p>
-              <p>경기도 수원시 팔달구 효원로 278, 6층 603호</p>
+          <section className="mb-10">
+            <h2 className="mb-4 text-[17px] font-bold text-slate-900">소속 회사</h2>
+            <div className="rounded-lg border border-slate-200 bg-white p-5">
+              <h3 className="text-[16px] font-bold text-slate-900">파란컴퍼니(주)</h3>
+              <ul className="mt-3 space-y-1.5 text-[14px] leading-[1.8] text-slate-600">
+                <li>· <strong className="text-slate-700">2015년 설립</strong> — 행사 전문 에이전시</li>
+                <li>· <strong className="text-slate-700">대표이사</strong> 김미경</li>
+                <li>· <strong className="text-slate-700">여성기업 인증</strong> / 직접생산확인증명서(행사대행업) 보유</li>
+                <li>· 공공기관 수의계약·조달 입찰 참여 자격</li>
+                <li>· 누적 <strong className="text-slate-700">250+ 프로젝트</strong></li>
+                <li>· 경기도 수원시 팔달구 효원로 278, 6층 603호</li>
+                <li>· 패밀리 사이트: <a href="https://parandesign.kr" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">parandesign.kr</a> (디자인)</li>
+              </ul>
             </div>
-          </div>
+          </section>
 
-          {/* 문의 */}
-          <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
-            <h2 className="text-[15px] font-bold text-slate-900 mb-3">문의 및 협업</h2>
-            <div className="text-[14px] text-slate-600 space-y-1">
-              <p>
-                이메일:{" "}
+          {/* 문의 및 협업 */}
+          <section>
+            <h2 className="mb-4 text-[17px] font-bold text-slate-900">문의 및 협업</h2>
+            <p className="mb-3 text-[15px] text-slate-600">
+              행사 기획 의뢰, 공공기관 과업 문의, 협업 제안은 아래로 연락 주시기 바랍니다.
+            </p>
+            <ul className="space-y-1.5 text-[15px] text-slate-600">
+              <li>
+                이메일 —{" "}
                 <a href="mailto:info@parancompany.co.kr" className="text-primary hover:underline">
                   info@parancompany.co.kr
                 </a>
-              </p>
-              <p>
-                전화:{" "}
-                <a href="tel:02-6342-2800" className="text-primary hover:underline">
-                  02-6342-2800
+              </li>
+              <li>
+                대표 번호 — <a href="tel:02-6342-2800" className="text-primary hover:underline">02-6342-2800</a> (평일 09:00~18:00)
+              </li>
+              <li>
+                카카오톡 채널 —{" "}
+                <a href="https://pf.kakao.com/_xkexdLG" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                  파란컴퍼니 상담
                 </a>
-                <span className="text-slate-400"> (평일 09:00~18:00)</span>
-              </p>
-              <p>
-                카카오톡:{" "}
-                <a
-                  href="https://pf.kakao.com/_xkexdLG"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  파란컴퍼니
-                </a>
-              </p>
-            </div>
-          </div>
-
-          {/* 작성한 글 */}
-          {posts.length > 0 && (
-            <div className="mt-10">
-              <h2 className="mb-6 text-[14px] font-semibold tracking-[0.12em] text-slate-900">
-                작성한 글 ({posts.length})
-              </h2>
-              <div className="space-y-4">
-                {posts.map((post) => (
-                  <Link
-                    key={post.id}
-                    href={`/blog/${post.slug}`}
-                    className="group block rounded-lg border border-slate-200 bg-white p-4 transition-all hover:border-primary/30 hover:shadow-sm"
-                  >
-                    <h3 className="text-[15px] font-semibold text-slate-900 group-hover:text-primary transition-colors line-clamp-1">
-                      {post.title}
-                    </h3>
-                    {post.excerpt && (
-                      <p className="mt-1 text-[13px] text-slate-500 line-clamp-1">
-                        {post.excerpt}
-                      </p>
-                    )}
-                    <div className="mt-2 flex items-center gap-2 text-[12px] text-slate-400">
-                      {post.category && <span>{post.category}</span>}
-                      {post.category && <span>·</span>}
-                      <span>
-                        {new Date(post.publishedAt || post.createdAt).toLocaleDateString("ko-KR")}
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
+              </li>
+            </ul>
+          </section>
         </div>
-      </div>
+      </article>
     </>
   );
 }
