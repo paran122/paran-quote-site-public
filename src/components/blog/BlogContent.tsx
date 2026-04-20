@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import DOMPurify from "isomorphic-dompurify";
+import DOMPurify from "dompurify";
 import { ChevronLeft, ChevronRight, X, ArrowLeft, ArrowRight } from "lucide-react";
 
 interface Props {
@@ -47,7 +47,11 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
   const [canScrollRight, setCanScrollRight] = useState(true);
 
   const { cleanHtml: rawCleanHtml, gridImages } = extractPhotoGrid(html);
-  const cleanHtml = useMemo(() => DOMPurify.sanitize(rawCleanHtml), [rawCleanHtml]);
+  const [cleanHtml, setCleanHtml] = useState(rawCleanHtml);
+
+  useEffect(() => {
+    setCleanHtml(DOMPurify.sanitize(rawCleanHtml));
+  }, [rawCleanHtml]);
 
   useEffect(() => {
     if (!contentRef.current) return;

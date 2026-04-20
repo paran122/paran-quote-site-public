@@ -51,8 +51,45 @@ async function verifyToken(token: string): Promise<boolean> {
   }
 }
 
+/** 이전 카페24 사이트 URL 패턴 — 410 Gone 반환 (Google 크롤링 중단 유도) */
+const LEGACY_PATH_PREFIXES = [
+  "/portfolio/",  // /portfolio/44?sca=... (숫자 ID 기반 옛 포트폴리오)
+  "/bbs/",        // /bbs/download.php 등 게시판
+  "/qa",          // 이전 Q&A
+  "/gallery",     // 이전 갤러리
+  "/contact",     // 이전 문의
+  "/shop",        // 이전 쇼핑
+  "/notice",      // 이전 공지사항
+  "/theme",       // 이전 테마 경로
+  "/type-4",
+  "/free",
+];
+const LEGACY_EXACT_PATHS = [
+  "/about.php",
+  "/service.php",
+  "/service2.php",
+  "/contact.php",
+  "/portfolio.php",
+  "/index.php",
+];
+
+function isLegacyUrl(pathname: string): boolean {
+  if (LEGACY_EXACT_PATHS.includes(pathname)) return true;
+  for (const prefix of LEGACY_PATH_PREFIXES) {
+    if (pathname.startsWith(prefix)) return true;
+  }
+  // /portfolio 정확히 일치 (쿼리 파라미터 포함 접근)
+  if (pathname === "/portfolio") return true;
+  return false;
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // 이전 카페24 URL → 410 Gone (영구 삭제됨)
+  if (isLegacyUrl(pathname)) {
+    return new NextResponse(null, { status: 410, statusText: "Gone" });
+  }
 
   // /admin/login은 인증 불필요
   if (pathname === "/admin/login") {
@@ -80,5 +117,25 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/api/admin/:path*",
+    // 이전 카페24 URL → 410 Gone
+    "/portfolio/:path*",
+    "/bbs/:path*",
+    "/qa/:path*",
+    "/gallery/:path*",
+    "/contact/:path*",
+    "/shop/:path*",
+    "/notice/:path*",
+    "/theme/:path*",
+    "/type-4/:path*",
+    "/free/:path*",
+    "/about.php",
+    "/service.php",
+    "/service2.php",
+    "/contact.php",
+    "/portfolio.php",
+    "/index.php",
+  ],
 };

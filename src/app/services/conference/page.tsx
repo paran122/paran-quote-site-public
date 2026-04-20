@@ -66,7 +66,7 @@ const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
-    { "@type": "Question", name: "컨퍼런스 대행 비용은 얼마인가요?", acceptedAnswer: { "@type": "Answer", text: "100명 규모 컨퍼런스는 약 800만 원부터, 300명 이상 대규모 포럼은 약 2,000만 원부터 시작합니다. 연사 섭외, 동시통역, 하이브리드 운영 여부에 따라 달라지며, 상세 견적서를 제공합니다." } },
+    { "@type": "Question", name: "컨퍼런스 대행 비용은 얼마인가요?", acceptedAnswer: { "@type": "Answer", text: "중규모 컨퍼런스(100~200명)는 약 2,500만 원부터, 300명 이상 대규모 포럼은 약 5,000만 원부터 시작합니다. 연사 섭외, 동시통역, 하이브리드 운영 여부에 따라 달라지며, 상세 견적서를 제공합니다." } },
     { "@type": "Question", name: "하이브리드(온·오프라인) 컨퍼런스도 가능한가요?", acceptedAnswer: { "@type": "Answer", text: "네, 온라인 실시간 중계와 오프라인 행사를 동시에 운영하는 하이브리드 컨퍼런스를 지원합니다. 영상 중계 세팅, 온라인 참가자 관리, 실시간 Q&A 운영까지 포함됩니다." } },
     { "@type": "Question", name: "국제 컨퍼런스 동시통역도 가능한가요?", acceptedAnswer: { "@type": "Answer", text: "네, 영어·중국어·일본어 등 동시통역 서비스를 제공합니다. 통역 장비 세팅, 통역사 섭외, 발표 자료 번역 등을 지원합니다." } },
     { "@type": "Question", name: "컨퍼런스 준비 기간은 얼마나 필요한가요?", acceptedAnswer: { "@type": "Answer", text: "100명 규모는 최소 6~8주, 300명 이상 대규모 행사는 최소 10~12주 전 의뢰를 권장합니다. 연사 섭외, 장소 예약, 프로그램 구성, 홍보물 제작 등을 고려한 기간입니다." } },
@@ -251,9 +251,9 @@ export default async function ConferencePage() {
           <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
             <h3 className="font-bold text-sm mb-2">컨퍼런스·포럼 대행 비용 안내</h3>
             <p className="text-sm text-slate-600 leading-[1.8]">
-              <span className="md:hidden">100명 규모 800만 원~, 300명 이상 2,000만 원~. 1영업일 내 상세 견적 제공.</span>
-              <span className="hidden md:inline">100명 규모 컨퍼런스는 약 800만 원부터, 300명 이상 대규모
-              포럼·심포지엄은 약 2,000만 원부터 시작합니다.
+              <span className="md:hidden">중규모(100~200명) 2,500만 원~, 300명 이상 5,000만 원~. 1영업일 내 상세 견적 제공.</span>
+              <span className="hidden md:inline">중규모 컨퍼런스(100~200명)는 약 2,500만 원부터, 300명 이상 대규모
+              포럼·심포지엄은 약 5,000만 원부터 시작합니다.
               연사 섭외, 동시통역, 하이브리드 운영 여부에 따라 달라지며,
               행사 정보를 알려주시면 1영업일 내에 항목별 상세 견적서를 보내드립니다.</span>
             </p>
@@ -353,7 +353,7 @@ export default async function ConferencePage() {
             items={[
               {
                 q: "컨퍼런스 대행 비용은 얼마인가요?",
-                a: "100명 규모 컨퍼런스는 약 800만 원부터, 300명 이상 대규모 포럼은 약 2,000만 원부터 시작합니다. 연사 섭외, 동시통역, 하이브리드 운영 여부에 따라 달라지며, 행사 세부사항 확인 후 상세 견적서를 제공합니다.",
+                a: "중규모 컨퍼런스(100~200명)는 약 2,500만 원부터, 300명 이상 대규모 포럼은 약 5,000만 원부터 시작합니다. 연사 섭외, 동시통역, 하이브리드 운영 여부에 따라 달라지며, 행사 세부사항 확인 후 상세 견적서를 제공합니다.",
               },
               {
                 q: "하이브리드(온·오프라인) 컨퍼런스도 가능한가요?",

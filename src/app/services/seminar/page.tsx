@@ -67,7 +67,7 @@ const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
-    { "@type": "Question", name: "세미나 대행 비용은 얼마인가요?", acceptedAnswer: { "@type": "Answer", text: "소규모 세미나(50명)는 약 300만 원부터, 100명 이상 세미나는 약 600만 원부터 시작합니다. 연사 섭외, 자료집 제작, 현장 운영 범위에 따라 달라집니다." } },
+    { "@type": "Question", name: "세미나 대행 비용은 얼마인가요?", acceptedAnswer: { "@type": "Answer", text: "소규모 세미나(30~50명)는 약 800만 원부터, 100명 이상 세미나는 약 2,500만 원부터 시작합니다. 연사 섭외, 자료집 제작, 현장 운영 범위에 따라 달라집니다." } },
     { "@type": "Question", name: "워크숍 프로그램 설계도 해주시나요?", acceptedAnswer: { "@type": "Answer", text: "네, 워크숍 목표에 맞는 프로그램을 직접 설계합니다. 참여형 활동, 그룹 토론, 실습 세션 등을 포함한 맞춤 커리큘럼을 제안합니다." } },
     { "@type": "Question", name: "연사·강사 섭외도 포함되나요?", acceptedAnswer: { "@type": "Answer", text: "네, 세미나 주제에 맞는 전문 연사·강사를 섭외합니다. 산업별 전문가 네트워크를 보유하고 있어 적합한 연사를 추천해 드립니다." } },
     { "@type": "Question", name: "세미나 준비 기간은 얼마나 필요한가요?", acceptedAnswer: { "@type": "Answer", text: "소규모(50명)는 최소 3~4주, 100명 이상은 최소 6주 전에 의뢰하시는 것이 좋습니다. 연사 섭외, 자료집 제작, 홍보물 디자인 등을 고려한 기간입니다." } },
@@ -250,9 +250,9 @@ export default async function SeminarPage() {
           <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
             <h3 className="font-bold text-sm mb-2">세미나·워크숍 대행 비용 안내</h3>
             <p className="text-sm text-slate-600 leading-[1.8]">
-              <span className="md:hidden">소규모 300만 원~, 100명 이상 600만 원~. 1영업일 내 상세 견적 제공.</span>
-              <span className="hidden md:inline">소규모 세미나(50명)는 약 300만 원부터, 100명 이상 세미나는
-              약 600만 원부터 시작합니다. 연사 섭외, 자료집 제작, 현장 운영
+              <span className="md:hidden">소규모 800만 원~, 100명 이상 2,500만 원~. 1영업일 내 상세 견적 제공.</span>
+              <span className="hidden md:inline">소규모 세미나(30~50명)는 약 800만 원부터, 100명 이상 세미나는
+              약 2,500만 원부터 시작합니다. 연사 섭외, 자료집 제작, 현장 운영
               범위에 따라 달라지며, 행사 정보를 알려주시면 1영업일 내에
               항목별 상세 견적서를 보내드립니다.</span>
             </p>
@@ -352,7 +352,7 @@ export default async function SeminarPage() {
             items={[
               {
                 q: "세미나 대행 비용은 얼마인가요?",
-                a: "소규모 세미나(50명)는 약 300만 원부터, 100명 이상 세미나는 약 600만 원부터 시작합니다. 연사 섭외, 자료집 제작, 현장 운영 범위에 따라 달라지며, 행사 세부사항 확인 후 상세 견적서를 제공합니다.",
+                a: "소규모 세미나(30~50명)는 약 800만 원부터, 100명 이상 세미나는 약 2,500만 원부터 시작합니다. 연사 섭외, 자료집 제작, 현장 운영 범위에 따라 달라지며, 행사 세부사항 확인 후 상세 견적서를 제공합니다.",
               },
               {
                 q: "워크숍 프로그램 설계도 해주시나요?",

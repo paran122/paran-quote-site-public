@@ -67,7 +67,7 @@ const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
-    { "@type": "Question", name: "기업행사 대행 비용은 얼마인가요?", acceptedAnswer: { "@type": "Answer", text: "소규모 세미나(50명)는 약 300만 원부터, 중규모 행사(150명)는 약 800만 원부터 시작합니다. 행사 규모·유형·필요 서비스에 따라 달라지며, 상세 견적서를 1영업일 내에 제공합니다." } },
+    { "@type": "Question", name: "기업행사 대행 비용은 얼마인가요?", acceptedAnswer: { "@type": "Answer", text: "소규모 행사(30~50명)는 약 800만 원부터, 중규모 행사(100~200명)는 약 2,500만 원부터 시작합니다. 행사 규모·유형·필요 서비스에 따라 달라지며, 상세 견적서를 1영업일 내에 제공합니다." } },
     { "@type": "Question", name: "기업행사 준비 기간은 얼마나 필요한가요?", acceptedAnswer: { "@type": "Answer", text: "소규모 세미나는 최소 3~4주, 100명 이상 행사는 6~8주 전 의뢰를 권장합니다. 기획안 작성, 시안물 디자인, 장소 확인, 리허설 등을 고려한 기간입니다." } },
     { "@type": "Question", name: "연사 섭외도 해주시나요?", acceptedAnswer: { "@type": "Answer", text: "네, 행사 주제에 맞는 전문 연사·사회자를 섭외합니다. 산업별 전문가 네트워크를 보유하고 있어 적합한 연사를 추천해 드립니다." } },
     { "@type": "Question", name: "행사 디자인도 포함되나요?", acceptedAnswer: { "@type": "Answer", text: "네, 자체 디자인팀이 포스터·현수막·리플렛·자료집·명찰 등 모든 시안물을 직접 디자인합니다. 외주 없이 한 팀에서 기획과 디자인을 동시에 진행합니다." } },
@@ -253,9 +253,9 @@ export default async function CorporatePage() {
           <div className="mt-10 p-5 rounded-xl border border-blue-100 bg-blue-50/40">
             <h3 className="font-bold text-sm mb-2">기업행사 대행 비용 안내</h3>
             <p className="text-sm text-slate-600 leading-[1.8]">
-              <span className="md:hidden">소규모 300만 원~, 중규모 800만 원~. 1영업일 내 상세 견적서 제공.</span>
-              <span className="hidden md:inline">소규모 세미나(50명)는 약 300만 원부터, 중규모 행사(100~200명)는
-              약 800만 원부터 시작합니다. 시무식, 송년회, 창립기념행사 등
+              <span className="md:hidden">소규모 800만 원~, 중규모 2,500만 원~. 1영업일 내 상세 견적서 제공.</span>
+              <span className="hidden md:inline">소규모 행사(30~50명)는 약 800만 원부터, 중규모 행사(100~200명)는
+              약 2,500만 원부터 시작합니다. 시무식, 송년회, 창립기념행사 등
               행사 유형과 필요 서비스에 따라 달라지며,
               행사 정보를 알려주시면 1영업일 내에 항목별 상세 견적서를 보내드립니다.</span>
             </p>
@@ -355,7 +355,7 @@ export default async function CorporatePage() {
             items={[
               {
                 q: "기업행사 대행 비용은 얼마인가요?",
-                a: "소규모 세미나(50명)는 약 300만 원부터, 중규모 행사(150명)는 약 800만 원부터 시작합니다. 행사 규모·유형·필요 서비스에 따라 달라지며, 행사 세부사항을 확인한 후 1영업일 내에 상세 견적서를 제공합니다.",
+                a: "소규모 행사(30~50명)는 약 800만 원부터, 중규모 행사(100~200명)는 약 2,500만 원부터 시작합니다. 행사 규모·유형·필요 서비스에 따라 달라지며, 행사 세부사항을 확인한 후 1영업일 내에 상세 견적서를 제공합니다.",
               },
               {
                 q: "기업행사 준비 기간은 얼마나 필요한가요?",
