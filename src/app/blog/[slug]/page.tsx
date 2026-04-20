@@ -124,9 +124,10 @@ export default async function BlogDetailPage({ params }: Props) {
     dateModified: post.updatedAt,
     wordCount: postText.split(/\s+/).filter(Boolean).length,
     author: {
-      "@type": "Organization",
-      name: "파란컴퍼니",
-      url: SITE_URL,
+      "@type": "Person",
+      name: "김미경",
+      jobTitle: "대표",
+      worksFor: { "@type": "Organization", name: "파란컴퍼니", url: SITE_URL },
     },
     publisher: {
       "@type": "Organization",
@@ -163,8 +164,12 @@ export default async function BlogDetailPage({ params }: Props) {
 
         {/* ═══ Header (Pitch 스타일: 날짜 위 → 제목 중앙 → 카테고리) ═══ */}
         <MotionSection className="mx-auto max-w-[1000px] px-6 pb-10 pt-12 text-center">
-          {/* 날짜 + 읽기 시간 */}
+          {/* 저자 + 날짜 + 읽기 시간 */}
           <p className="mb-5 text-[16px] text-slate-400 sm:text-[18px]">
+            <Link href="/authors/kim-mikyung" className="text-slate-600 hover:text-primary transition-colors">
+              김미경 대표
+            </Link>
+            <span className="mx-1.5 text-slate-300">|</span>
             {formatDate(post.publishedAt || post.createdAt)}
             <span className="mx-2">·</span>
             {estimateReadTime(post.content)}분 읽기
@@ -221,6 +226,32 @@ export default async function BlogDetailPage({ params }: Props) {
             </div>
           </MotionSection>
         )}
+
+        {/* ═══ 저자 프로필 카드 ═══ */}
+        <MotionSection className="mx-auto max-w-[640px] border-t border-slate-200 px-6 py-10">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-lg font-bold text-primary">
+              김
+            </div>
+            <div className="flex-1">
+              <Link href="/authors/kim-mikyung" className="text-[16px] font-bold text-slate-900 hover:text-primary transition-colors">
+                김미경 대표
+              </Link>
+              <p className="mt-0.5 text-[13px] text-slate-500">
+                파란컴퍼니 · 행사 기획 경력 10년 · 250+ 프로젝트 총괄
+              </p>
+              <p className="mt-2 text-[14px] leading-relaxed text-slate-600">
+                공공기관·기업 대상 세미나, 컨퍼런스, 포럼 등 다양한 행사를 기획·운영하고 있습니다.
+              </p>
+              <Link
+                href="/authors/kim-mikyung"
+                className="mt-2 inline-block text-[13px] font-medium text-primary hover:underline"
+              >
+                다른 글 보기 →
+              </Link>
+            </div>
+          </div>
+        </MotionSection>
 
         {/* ═══ Related Posts (Pitch 스타일 3열 이미지 카드) ═══ */}
         {relatedPosts.length > 0 && (

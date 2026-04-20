@@ -53,6 +53,17 @@ const serviceJsonLd = {
   },
   areaServed: { "@type": "Country", name: "대한민국" },
   serviceType: "Event Planning",
+  serviceArea: [
+    { "@type": "City", name: "서울" },
+    { "@type": "AdministrativeArea", name: "경기도" },
+    { "@type": "Country", name: "대한민국" },
+  ],
+  offers: {
+    "@type": "AggregateOffer",
+    priceCurrency: "KRW",
+    lowPrice: "8000000",
+    description: "소규모 행사 800만 원부터, 중규모 2,500만 원부터, 대규모 5,000만 원부터",
+  },
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "행사 대행 서비스 카탈로그",

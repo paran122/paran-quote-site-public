@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Save, Eye, ArrowLeft, Upload, X, Search, ImageIcon, Check } from "lucide-react";
+import { Save, Eye, ArrowLeft, Upload, X, Search, ImageIcon, Check, Sparkles, Loader2 } from "lucide-react";
 import TiptapEditor from "./TiptapEditor";
 import type { BlogPost } from "@/types";
 
@@ -45,6 +45,124 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
   const [error, setError] = useState("");
   const [slugManual, setSlugManual] = useState(isEdit);
   const [pickerOpen, setPickerOpen] = useState(false);
+
+  // AI 생성
+  const [aiKeyword, setAiKeyword] = useState("");
+  const [aiContext, setAiContext] = useState("");
+  const [aiGenerating, setAiGenerating] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [aiError, setAiError] = useState("");
+
+  const [aiProgress, setAiProgress] = useState("");
+
+  async function handleAiGenerate() {
+    if (!aiKeyword.trim() || aiGenerating) return;
+    setAiError("");
+    setAiGenerating(true);
+    try {
+      // 1단계: 글 생성
+      setAiProgress("글 생성 중...");
+      const res = await fetch("/api/admin/blog/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ keyword: aiKeyword, additionalContext: aiContext || undefined }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "글 생성 실패");
+
+      // 폼에 자동 채움 (이미지 마커 포함된 상태)
+      setTitle(data.title || "");
+      setSlug(data.slug || toSlug(data.title || ""));
+      setSlugManual(true);
+      setExcerpt(data.excerpt || "");
+      setCategory(data.category || "");
+      setTagsInput((data.tags || []).join(", "));
+      setSeoTitle(data.seo_title || "");
+      setSeoDescription(data.seo_description || "");
+      setIsPublished(false);
+      setAiOpen(false);
+      if (data._warning) {
+        setError(data._warning);
+      }
+
+      // 2단계: 본문의 {{IMAGE:...}} 마커를 찾아서 이미지 생성
+      let htmlContent = data.content || "";
+      const imageMarkers = [...htmlContent.matchAll(/\{\{IMAGE:(.*?)\}\}/g)];
+
+      if (imageMarkers.length > 0) {
+        setImgGenerating(true);
+        let firstImageUrl = "";
+
+        for (let i = 0; i < imageMarkers.length; i++) {
+          const marker = imageMarkers[i];
+          const prompt = marker[1].trim();
+          setAiProgress(`이미지 생성 중... (${i + 1}/${imageMarkers.length})`);
+
+          try {
+            const imgRes = await fetch("/api/admin/blog/generate-image", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ prompt }),
+            });
+            const imgData = await imgRes.json();
+            if (imgRes.ok && imgData.url) {
+              const imgTag = `<img src="${imgData.url}" alt="${aiKeyword}" />`;
+              htmlContent = htmlContent.replace(marker[0], imgTag);
+              if (!firstImageUrl) firstImageUrl = imgData.url;
+            } else {
+              // 실패한 마커는 제거
+              htmlContent = htmlContent.replace(marker[0], "");
+            }
+          } catch {
+            htmlContent = htmlContent.replace(marker[0], "");
+          }
+        }
+
+        // 첫 번째 이미지를 썸네일로 설정
+        if (firstImageUrl) {
+          setThumbnailUrl(firstImageUrl);
+        }
+        setImgGenerating(false);
+      }
+
+      setContent(htmlContent);
+      setAiProgress("");
+    } catch (err) {
+      setAiError(err instanceof Error ? err.message : "생성 실패");
+      setAiProgress("");
+    } finally {
+      setAiGenerating(false);
+    }
+  }
+
+  // AI 이미지 생성
+  const [imgPrompt, setImgPrompt] = useState("");
+  const [imgGenerating, setImgGenerating] = useState(false);
+  const [imgError, setImgError] = useState("");
+  const [imgOpen, setImgOpen] = useState(false);
+
+  async function handleImageGenerate() {
+    if (!imgPrompt.trim() || imgGenerating) return;
+    setImgError("");
+    setImgGenerating(true);
+    try {
+      const res = await fetch("/api/admin/blog/generate-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: imgPrompt }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "이미지 생성 실패");
+
+      setThumbnailUrl(data.url);
+      setImgOpen(false);
+      setImgPrompt("");
+    } catch (err) {
+      setImgError(err instanceof Error ? err.message : "이미지 생성 실패");
+    } finally {
+      setImgGenerating(false);
+    }
+  }
 
   function handleTitleChange(value: string) {
     setTitle(value);
@@ -126,6 +244,16 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
           목록으로
         </button>
         <div className="flex items-center gap-2">
+          {!isEdit && (
+            <button
+              onClick={() => setAiOpen(!aiOpen)}
+              className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium
+                text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 transition-colors"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              AI 글 생성
+            </button>
+          )}
           <button
             onClick={() => handleSubmit()}
             disabled={saving || !title || !slug}
@@ -140,6 +268,67 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
       {error && (
         <div className="mb-4 px-4 py-2 bg-red-50 text-red-600 text-sm rounded-sm">
           {error}
+        </div>
+      )}
+
+      {/* AI 글 생성 패널 */}
+      {aiOpen && !isEdit && (
+        <div className="mb-6 rounded-lg border border-indigo-200 bg-indigo-50/50 p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="w-4 h-4 text-indigo-500" />
+            <h3 className="text-sm font-semibold text-slate-900">AI 블로그 글 생성</h3>
+          </div>
+          <p className="text-xs text-slate-500 mb-3">
+            키워드를 입력하면 SEO 최적화된 블로그 초안을 생성합니다. 생성 후 검토·수정한 뒤 발행하세요.
+          </p>
+          <div className="space-y-2">
+            <input
+              type="text"
+              value={aiKeyword}
+              onChange={(e) => setAiKeyword(e.target.value)}
+              placeholder="타겟 키워드 (예: 세미나 기획 체크리스트)"
+              className="w-full text-sm border border-slate-200 rounded-md px-3 py-2
+                focus:outline-none focus:ring-2 focus:ring-indigo-200 bg-white"
+              onKeyDown={(e) => { if (e.key === "Enter") handleAiGenerate(); }}
+            />
+            <textarea
+              value={aiContext}
+              onChange={(e) => setAiContext(e.target.value)}
+              placeholder="추가 요청사항 (선택) — 예: 리스트형으로 작성, 3000자 이상"
+              rows={2}
+              className="w-full text-sm border border-slate-200 rounded-md px-3 py-2
+                focus:outline-none focus:ring-2 focus:ring-indigo-200 bg-white resize-none"
+            />
+          </div>
+          {aiError && (
+            <p className="mt-2 text-xs text-red-500">{aiError}</p>
+          )}
+          <div className="flex items-center gap-2 mt-3">
+            <button
+              onClick={handleAiGenerate}
+              disabled={aiGenerating || !aiKeyword.trim()}
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white
+                bg-indigo-500 rounded-md hover:bg-indigo-600 disabled:opacity-50 transition-colors"
+            >
+              {aiGenerating ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  {aiProgress || "준비 중..."}
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-3.5 h-3.5" />
+                  생성하기
+                </>
+              )}
+            </button>
+            <button
+              onClick={() => setAiOpen(false)}
+              className="px-3 py-2 text-sm text-slate-500 hover:text-slate-700"
+            >
+              닫기
+            </button>
+          </div>
         </div>
       )}
 
@@ -250,11 +439,11 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
                   </div>
                 </div>
               ) : (
-                <div className="flex gap-2">
+                <div className="grid grid-cols-3 gap-2">
                   <button
                     type="button"
                     onClick={() => thumbnailInputRef.current?.click()}
-                    className="flex-1 h-28 border-2 border-dashed border-slate-200 rounded-sm
+                    className="h-28 border-2 border-dashed border-slate-200 rounded-sm
                       flex flex-col items-center justify-center gap-1 text-sm text-slate-400
                       hover:border-primary/30 hover:text-primary/60 transition-colors"
                   >
@@ -264,12 +453,22 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
                   <button
                     type="button"
                     onClick={() => setPickerOpen(true)}
-                    className="flex-1 h-28 border-2 border-dashed border-slate-200 rounded-sm
+                    className="h-28 border-2 border-dashed border-slate-200 rounded-sm
                       flex flex-col items-center justify-center gap-1 text-sm text-slate-400
                       hover:border-primary/30 hover:text-primary/60 transition-colors"
                   >
                     <ImageIcon className="w-5 h-5" />
-                    기존 이미지 선택
+                    기존 이미지
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setImgOpen(!imgOpen)}
+                    className="h-28 border-2 border-dashed border-indigo-200 rounded-sm
+                      flex flex-col items-center justify-center gap-1 text-sm text-indigo-400
+                      hover:border-indigo-400 hover:text-indigo-600 transition-colors"
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    AI 생성
                   </button>
                 </div>
               )}
@@ -284,6 +483,40 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
                   e.target.value = "";
                 }}
               />
+              {/* AI 이미지 생성 패널 */}
+              {imgOpen && (
+                <div className="mt-3 p-3 rounded-md border border-indigo-200 bg-indigo-50/50">
+                  <p className="text-xs text-slate-500 mb-2">이미지 설명을 입력하세요 (한글 가능)</p>
+                  <input
+                    type="text"
+                    value={imgPrompt}
+                    onChange={(e) => setImgPrompt(e.target.value)}
+                    placeholder="예: 세미나 준비 체크리스트 인포그래픽"
+                    className="w-full text-sm border border-slate-200 rounded-md px-3 py-2
+                      focus:outline-none focus:ring-2 focus:ring-indigo-200 bg-white"
+                    onKeyDown={(e) => { if (e.key === "Enter") handleImageGenerate(); }}
+                  />
+                  {imgError && <p className="mt-1 text-xs text-red-500">{imgError}</p>}
+                  <button
+                    onClick={handleImageGenerate}
+                    disabled={imgGenerating || !imgPrompt.trim()}
+                    className="mt-2 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white
+                      bg-indigo-500 rounded-md hover:bg-indigo-600 disabled:opacity-50 transition-colors"
+                  >
+                    {imgGenerating ? (
+                      <>
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                        생성 중... (30초~1분)
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-3 h-3" />
+                        이미지 생성
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
               <ImagePickerModal
                 isOpen={pickerOpen}
                 onClose={() => setPickerOpen(false)}

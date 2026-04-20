@@ -177,6 +177,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${siteUrl}/authors/kim-mikyung`,
+      lastModified: latestBlogDate ?? homepageDate,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
       url: `${siteUrl}/privacy`,
       lastModified: POLICY_UPDATED,
       changeFrequency: "yearly",
