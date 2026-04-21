@@ -325,8 +325,8 @@ body {
 
 /* ─── Blog Prose (detail page) ─── */
 .prose-blog h1 { @apply text-3xl font-extrabold text-slate-900 mt-10 mb-4 tracking-tight; }
-.prose-blog h2 { @apply text-2xl font-bold text-slate-900 mt-10 mb-4 tracking-tight; }
-.prose-blog h3 { @apply text-xl font-bold text-slate-900 mt-8 mb-3; }
+.prose-blog h2 { @apply text-2xl font-bold text-slate-900 mt-14 mb-5 tracking-tight; }
+.prose-blog h3 { @apply text-xl font-bold text-slate-900 mt-10 mb-3; }
 .prose-blog p { @apply text-base leading-[1.8] text-slate-600 mb-5; }
 .prose-blog ul, .prose-blog ol { @apply my-4 ml-5 text-base leading-8 text-slate-600; }
 .prose-blog li { @apply mb-1; }

@@ -160,9 +160,9 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
     <>
       {/* 히어로 캐러셀 */}
       {images.length > 0 && heroItem && (
-        <div className="group relative mx-auto mb-12 max-w-[1100px]">
+        <div className="group relative mx-auto mb-12 max-w-[900px] px-6">
           <div
-            className="relative aspect-[2.2/1] cursor-pointer overflow-hidden"
+            className="relative aspect-[2.2/1] cursor-pointer overflow-hidden rounded-2xl bg-slate-100"
             onClick={() => setLightboxIndex(heroIndex)}
           >
             <Image
@@ -170,7 +170,7 @@ export default function BlogContent({ html, thumbnailUrl, title, afterHero }: Pr
               src={heroItem.src}
               alt={heroItem.alt}
               fill
-              className="object-cover"
+              className="object-contain"
               sizes="960px"
               priority={heroIndex === 0}
             />
