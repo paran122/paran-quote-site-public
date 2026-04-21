@@ -16,6 +16,7 @@ export interface Portfolio {
   eventDate?: string;
   deliverables?: string[];
   attendees?: string;
+  content?: string;
 }
 
 // 포트폴리오 미디어 (통합 테이블)

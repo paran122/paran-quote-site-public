@@ -163,7 +163,7 @@ export default async function BlogDetailPage({ params }: Props) {
         <SocialSidebarFixed {...socialLinks} />
 
         {/* ═══ Header (Pitch 스타일: 날짜 위 → 제목 중앙 → 카테고리) ═══ */}
-        <MotionSection className="mx-auto max-w-[1000px] px-6 pb-10 pt-12 text-center">
+        <MotionSection className="mx-auto max-w-[1000px] px-6 pb-14 pt-20 sm:pb-16 sm:pt-24 text-center">
           {/* 저자 + 날짜 + 읽기 시간 */}
           <p className="mb-5 text-[16px] text-slate-400 sm:text-[18px]">
             <Link href="/authors/kim-mikyung" className="text-slate-600 hover:text-primary transition-colors">
@@ -228,27 +228,42 @@ export default async function BlogDetailPage({ params }: Props) {
         )}
 
         {/* ═══ 저자 프로필 카드 ═══ */}
-        <MotionSection className="mx-auto max-w-[640px] border-t border-slate-200 px-6 py-10">
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-lg font-bold text-primary">
-              김
-            </div>
-            <div className="flex-1">
-              <Link href="/authors/kim-mikyung" className="text-[16px] font-bold text-slate-900 hover:text-primary transition-colors">
-                김미경 대표
-              </Link>
-              <p className="mt-0.5 text-[13px] text-slate-500">
-                파란컴퍼니 · 행사 기획 경력 10년 · 250+ 프로젝트 총괄
-              </p>
-              <p className="mt-2 text-[14px] leading-relaxed text-slate-600">
-                공공기관·기업 대상 세미나, 컨퍼런스, 포럼 등 다양한 행사를 기획·운영하고 있습니다.
-              </p>
-              <Link
-                href="/authors/kim-mikyung"
-                className="mt-2 inline-block text-[13px] font-medium text-primary hover:underline"
-              >
-                다른 글 보기 →
-              </Link>
+        <MotionSection className="mx-auto max-w-[640px] px-6 py-10">
+          <div className="rounded-2xl bg-slate-50 p-6 sm:p-8">
+            <div className="flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white shadow-sm">
+                <Image src="/logo.svg" alt="파란컴퍼니 로고" width={32} height={32} />
+              </div>
+              <div className="flex-1">
+                <p className="text-[12px] font-medium text-slate-400">글쓴이</p>
+                <Link href="/authors/kim-mikyung" className="text-[16px] font-bold text-slate-900 hover:text-primary transition-colors">
+                  김미경 대표
+                </Link>
+                <p className="mt-0.5 text-[13px] text-slate-500">
+                  파란컴퍼니 · 행사 기획 경력 10년 · 250+ 프로젝트 총괄
+                </p>
+                <p className="mt-2 text-[14px] leading-relaxed text-slate-600">
+                  공공기관·기업 대상 세미나, 컨퍼런스, 포럼 등 다양한 행사를 기획·운영하고 있습니다.
+                  파란컴퍼니는 <strong className="font-semibold">2015년 설립</strong>된 <strong className="font-semibold">여성기업 인증</strong>·<strong className="font-semibold">직접생산확인증명서</strong> 보유 행사 전문 에이전시입니다.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {["세미나", "컨퍼런스", "포럼", "공공기관 전문"].map((tag) => (
+                    <span key={tag} className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-3 flex items-center gap-1.5 text-[13px] text-slate-500">
+                  <span>문의</span>
+                  <a href="mailto:info@parancompany.co.kr" className="text-primary hover:underline">
+                    info@parancompany.co.kr
+                  </a>
+                  <span>·</span>
+                  <Link href="/authors/kim-mikyung" className="font-medium text-primary hover:underline">
+                    다른 글 보기 →
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </MotionSection>

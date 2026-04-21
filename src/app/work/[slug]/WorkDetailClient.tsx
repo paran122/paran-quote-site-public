@@ -472,6 +472,26 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
           </div>
         )}
 
+        {/* 상세 본문 (content) */}
+        {portfolio.content && (
+          <div className="mb-8 max-w-[640px]">
+            {portfolio.content.split(/\n## /).map((section, idx) => {
+              if (idx === 0 && !section.trim()) return null;
+              const cleaned = idx === 0 ? section.replace(/^## /, "") : section;
+              const lines = cleaned.split("\n");
+              const heading = lines[0]?.trim();
+              const body = lines.slice(1).join("\n").trim();
+              if (!heading) return null;
+              return (
+                <div key={idx} className="mb-6">
+                  <h3 className="text-[14px] font-semibold text-slate-800 mb-2">{heading}</h3>
+                  <p className="text-[14px] leading-[1.8] text-slate-600">{body}</p>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
         {/* 현장사진 그리드 */}
         {hasPhotos && (
           <section className="mb-8">
