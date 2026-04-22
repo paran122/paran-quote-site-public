@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2, Eye, EyeOff, Star } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Star, Clock } from "lucide-react";
 import type { BlogPost } from "@/types";
 
 export default function AdminBlogPage() {
@@ -106,15 +106,20 @@ export default function AdminBlogPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1.5">
-                      {post.isPublished ? (
-                        <span className="inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                          <Eye className="w-3 h-3" />
-                          발행
-                        </span>
-                      ) : (
+                      {!post.isPublished ? (
                         <span className="inline-flex items-center gap-1 text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
                           <EyeOff className="w-3 h-3" />
                           임시
+                        </span>
+                      ) : post.publishedAt && new Date(post.publishedAt) > new Date() ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+                          <Clock className="w-3 h-3" />
+                          예약
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                          <Eye className="w-3 h-3" />
+                          발행
                         </span>
                       )}
                       {post.isFeatured && (

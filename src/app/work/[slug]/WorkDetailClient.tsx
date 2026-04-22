@@ -466,7 +466,7 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
         {portfolio.description && (
           <div className="mb-8">
             <h2 className="text-[14px] font-semibold text-slate-800 mb-3">행사 소개</h2>
-            <p className="max-w-[640px] text-[14px] leading-[1.8] text-slate-600">
+            <p className="text-[16px] leading-[1.8] text-slate-600">
               {portfolio.description}
             </p>
           </div>
@@ -474,7 +474,7 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
 
         {/* 상세 본문 (content) */}
         {portfolio.content && (
-          <div className="mb-8 max-w-[640px]">
+          <div className="mb-8">
             {portfolio.content.split(/\n## /).map((section, idx) => {
               if (idx === 0 && !section.trim()) return null;
               const cleaned = idx === 0 ? section.replace(/^## /, "") : section;
@@ -484,8 +484,8 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
               if (!heading) return null;
               return (
                 <div key={idx} className="mb-6">
-                  <h3 className="text-[14px] font-semibold text-slate-800 mb-2">{heading}</h3>
-                  <p className="text-[14px] leading-[1.8] text-slate-600">{body}</p>
+                  <h3 className="text-[16px] font-semibold text-slate-800 mb-2">{heading}</h3>
+                  <p className="text-[16px] leading-[1.8] text-slate-600">{body}</p>
                 </div>
               );
             })}
