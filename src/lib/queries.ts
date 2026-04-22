@@ -410,7 +410,7 @@ export async function fetchAllBlogPosts(): Promise<BlogPost[]> {
   const { data, error } = await db
     .from("blog_posts")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("published_at", { ascending: false });
   if (error) throw error;
   return (data ?? []).map((r) => mapRow<BlogPost>(r));
 }
