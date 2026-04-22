@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
+
 import { ArrowRight } from "lucide-react";
 import { Microphone, GraduationCap, Handshake, CalendarCheck } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
@@ -16,6 +16,7 @@ import ServiceSNS from "../_components/ServiceSNS";
 import HeroSlideshow from "../_components/HeroSlideshow";
 import ServiceSubNav from "../_components/ServiceSubNav";
 import CardCarousel from "../_components/CardCarousel";
+import ImageSlideshow from "../_components/ImageSlideshow";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -148,7 +149,7 @@ export default async function SeminarPage() {
           images={[
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-08.webp", alt: "세미나 대행 - 지역사회 역량강화 프로그램 현장" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-spring/photo-06.webp", alt: "세미나 대행 - 춘계 자동차부품산업 세미나 현장" },
-            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/artist-rights/photo-04.webp", alt: "워크숍 대행 - 예술인 권리보호 교육 현장" },
+
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-15.webp", alt: "교육 세미나 대행 - 지역사회 역량강화 프로그램" },
             { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/auto-seminar-spring/photo-12.webp", alt: "교육 세미나 대행 - 춘계 자동차부품산업 세미나" },
           ]}
@@ -226,21 +227,17 @@ export default async function SeminarPage() {
 
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
-            <Image
-              src="https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-01.webp"
-              alt="세미나 대행 현장 사진 - 지역사회 역량강화 프로그램 (약 100명 규모)"
-              width={900}
-              height={500}
-              className="w-full h-auto object-cover"
+            <ImageSlideshow
+              images={[
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-01.webp", alt: "세미나 대행 현장 - 지역사회 역량강화 프로그램", caption: "지역사회 역량강화 프로그램 | 한국에너지정보문화재단 | 약 100명 규모" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-43.webp", alt: "세미나 대행 현장 - 강연 세션", caption: "지역사회 역량강화 프로그램 | 강연 세션" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-08.webp", alt: "세미나 대행 현장 - 현장 견학", caption: "지역사회 역량강화 프로그램 | 현장 견학" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/community-energy/photo-06.webp", alt: "세미나 대행 - 케이터링 세팅", caption: "지역사회 역량강화 프로그램 | 케이터링" },
+              ]}
+              linkHref="/work/community-energy"
+              linkText="이 행사 상세 보기 →"
+              cover
             />
-            <div className="flex items-center justify-between px-4 py-2 bg-slate-50">
-              <p className="text-xs text-slate-400">
-                지역사회 역량강화 프로그램 | 한국에너지정보문화재단 | 약 100명 규모
-              </p>
-              <Link href="/work/community-energy" className="text-xs text-blue-600 font-medium hover:underline shrink-0 ml-4">
-                이 행사 상세 보기 →
-              </Link>
-            </div>
           </div>
 
           {/* 서비스 범위 */}

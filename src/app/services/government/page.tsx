@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Megaphone, Globe, GraduationCap, Buildings } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
@@ -17,6 +16,7 @@ import HeroSlideshow from "../_components/HeroSlideshow";
 import ServiceSubNav from "../_components/ServiceSubNav";
 import ReasonStylePicker from "../_components/ReasonStylePicker";
 import CardCarousel from "../_components/CardCarousel";
+import ImageSlideshow from "../_components/ImageSlideshow";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -238,21 +238,18 @@ export default async function GovernmentPage() {
 
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
-            <Image
-              src="https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/photo-01.webp"
-              alt="공공기관 행사 대행 현장 사진 - 중앙아시아 교육협력포럼 (약 300명 규모)"
-              width={900}
-              height={500}
-              className="w-full h-auto object-cover"
+            <ImageSlideshow
+              images={[
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/photo-01.webp", alt: "공공기관 행사 대행 현장 - 중앙아시아 교육협력포럼", caption: "중앙아시아 교육협력포럼 | 경기도교육청 | 약 300명 규모" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/photo-05.webp", alt: "공공기관 행사 대행 현장 - 포럼 전경", caption: "중앙아시아 교육협력포럼 | 경기도교육청" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/photo-17.webp", alt: "공공기관 행사 대행 현장 - 행사장 전경", caption: "중앙아시아 교육협력포럼 | 경기도교육청" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/photo-24.webp", alt: "공공기관 행사 대행 - 등록 데스크", caption: "중앙아시아 교육협력포럼 | 등록 데스크" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/photo-30.webp", alt: "공공기관 행사 대행 - 케이터링", caption: "중앙아시아 교육협력포럼 | 케이터링" },
+              ]}
+              linkHref="/work/international-forum"
+              linkText="이 행사 상세 보기 →"
+              cover
             />
-            <div className="flex items-center justify-between px-4 py-2 bg-slate-50">
-              <p className="text-xs text-slate-400">
-                중앙아시아 교육협력포럼 | 경기도교육청 | 약 300명 규모
-              </p>
-              <Link href="/work/international-forum" className="text-xs text-blue-600 font-medium hover:underline shrink-0 ml-4">
-                이 행사 상세 보기 →
-              </Link>
-            </div>
           </div>
 
           {/* 서비스 범위 */}

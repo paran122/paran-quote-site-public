@@ -37,10 +37,11 @@ const CATEGORY_ORDER = [
   "기획 가이드",
   "현장 노하우",
   "행사 정보",
+  "행사 유형 가이드",
 ];
 
 /* ── SEO 가이드 카테고리 (히어로 제외 대상) ── */
-const GUIDE_CATEGORIES = new Set(["기획 가이드", "현장 노하우", "행사 정보"]);
+const GUIDE_CATEGORIES = new Set(["기획 가이드", "현장 노하우", "행사 정보", "행사 유형 가이드"]);
 
 /* ── 카테고리 색상 (Pitch 스타일: 눈에 띄게) ── */
 const CATEGORY_COLOR = "text-[13px] font-semibold text-[#4B5EDB]";

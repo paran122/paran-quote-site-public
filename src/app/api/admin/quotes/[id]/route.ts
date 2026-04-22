@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 import { isAuthenticated } from "@/lib/admin-auth";
 
 export async function PATCH(
@@ -10,7 +10,7 @@ export async function PATCH(
   if (!authed) {
     return NextResponse.json({ error: "인증이 필요합니다" }, { status: 401 });
   }
-  if (!supabase) {
+  if (!supabaseAdmin) {
     return NextResponse.json({ error: "DB 미설정" }, { status: 500 });
   }
 
@@ -23,7 +23,7 @@ export async function PATCH(
     return NextResponse.json({ error: "유효하지 않은 상태입니다" }, { status: 400 });
   }
 
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from("quotes")
     .update({ status, updated_at: new Date().toISOString() })
     .eq("id", id);

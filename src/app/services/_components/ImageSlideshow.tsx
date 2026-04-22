@@ -15,6 +15,8 @@ interface Props {
   interval?: number;
   linkHref?: string;
   linkText?: string;
+  /** true면 고정 비율 컨테이너에 object-cover로 표시 */
+  cover?: boolean;
 }
 
 export default function ImageSlideshow({
@@ -22,6 +24,7 @@ export default function ImageSlideshow({
   interval = 4000,
   linkHref,
   linkText,
+  cover,
 }: Props) {
   const [current, setCurrent] = useState(0);
 
@@ -37,7 +40,7 @@ export default function ImageSlideshow({
 
   return (
     <div>
-      <div className="relative aspect-[9/6] bg-slate-100">
+      <div className={`relative bg-slate-100 ${cover ? "aspect-[9/5]" : "aspect-[9/6]"}`}>
         {images.map((img, i) => (
           <div
             key={img.src}
@@ -50,7 +53,7 @@ export default function ImageSlideshow({
               src={img.src}
               alt={img.alt}
               fill
-              className="object-contain bg-white"
+              className={cover ? "object-cover" : "object-contain bg-white"}
               sizes="(max-width: 768px) 100vw, 900px"
               priority={i === 0}
             />

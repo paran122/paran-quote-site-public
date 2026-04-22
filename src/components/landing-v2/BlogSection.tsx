@@ -7,7 +7,7 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import BlogCardStack from "./BlogCardStack";
 import type { BlogPost } from "@/types";
 
-const GUIDE_CATEGORIES = ["기획 가이드", "현장 노하우", "행사 정보"];
+const GUIDE_CATEGORIES = ["기획 가이드", "현장 노하우", "행사 정보", "행사 유형 가이드"];
 
 export default function BlogSection() {
   const [eventPosts, setEventPosts] = useState<BlogPost[]>([]);
