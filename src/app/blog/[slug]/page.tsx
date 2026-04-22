@@ -148,6 +148,23 @@ export default async function BlogDetailPage({ params }: Props) {
     ],
   };
 
+  // FAQ JSON-LD: 본문에서 Q&A 패턴 자동 추출
+  const faqItems: { question: string; answer: string }[] = [];
+  const faqRegex = /<p>\s*<strong>\s*Q\.\s*(.+?)<\/strong>\s*<\/p>\s*<p>\s*A\.\s*(.+?)<\/p>/g;
+  let faqMatch;
+  while ((faqMatch = faqRegex.exec(post.content)) !== null) {
+    faqItems.push({ question: faqMatch[1].trim(), answer: faqMatch[2].trim() });
+  }
+  const faqLd = faqItems.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
+  } : null;
+
   return (
     <MotionPage>
       <script
@@ -158,6 +175,12 @@ export default async function BlogDetailPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
+      {faqLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        />
+      )}
       <div className="min-h-screen bg-slate-50 pt-16">
         {/* ═══ Social Sidebar (데스크탑 1400px+: 왼쪽 고정) ═══ */}
         <SocialSidebarFixed {...socialLinks} />

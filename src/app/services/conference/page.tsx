@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
+
 import { ArrowRight } from "lucide-react";
 import { Globe, BookBookmark, Megaphone, Monitor } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
@@ -16,6 +16,7 @@ import ServiceSNS from "../_components/ServiceSNS";
 import HeroSlideshow from "../_components/HeroSlideshow";
 import ServiceSubNav from "../_components/ServiceSubNav";
 import CardCarousel from "../_components/CardCarousel";
+import ImageSlideshow from "../_components/ImageSlideshow";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -227,21 +228,18 @@ export default async function ConferencePage() {
 
           {/* 행사 사진 */}
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
-            <Image
-              src="https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-03.webp"
-              alt="컨퍼런스 대행 현장 사진 - KLS 한국어교육 국제학술대회 (약 400명 규모)"
-              width={900}
-              height={500}
-              className="w-full h-auto object-cover"
+            <ImageSlideshow
+              images={[
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-03.webp", alt: "컨퍼런스 대행 현장 - KLS 국제학술대회", caption: "KLS 한국어교육 국제학술대회 | 경기도교육청 | 약 400명 규모" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-10.webp", alt: "컨퍼런스 대행 현장 - KLS 행사장 전경", caption: "KLS 한국어교육 국제학술대회 | 경기도교육청" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-15.webp", alt: "컨퍼런스 대행 현장 - KLS 세션 진행", caption: "KLS 한국어교육 국제학술대회 | 세션 진행" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-19.webp", alt: "컨퍼런스 대행 현장 - KLS 발표 세션", caption: "KLS 한국어교육 국제학술대회 | 발표 세션" },
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/kls/photo-07.webp", alt: "컨퍼런스 대행 - KLS 전시 부스", caption: "KLS 한국어교육 국제학술대회 | 전시 부스" },
+              ]}
+              linkHref="/work/kls"
+              linkText="이 행사 상세 보기 →"
+              cover
             />
-            <div className="flex items-center justify-between px-4 py-2 bg-slate-50">
-              <p className="text-xs text-slate-400">
-                KLS 한국어교육 국제학술대회 | 경기도교육청 | 약 400명 규모
-              </p>
-              <Link href="/work/kls" className="text-xs text-blue-600 font-medium hover:underline shrink-0 ml-4">
-                이 행사 상세 보기 →
-              </Link>
-            </div>
           </div>
 
           {/* 서비스 범위 */}
