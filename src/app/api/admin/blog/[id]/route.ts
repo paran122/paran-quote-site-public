@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { fetchBlogPostById, updateBlogPost, deleteBlogPost, fetchBlogPostBySlug } from "@/lib/queries";
+import { fetchBlogPostById, updateBlogPost, fetchBlogPostBySlug } from "@/lib/queries";
 import { blogPostSchema } from "@/lib/validators/blog";
 
 export async function GET(
