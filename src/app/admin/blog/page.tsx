@@ -3,25 +3,29 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2, Eye, EyeOff, Star, Clock, LayoutGrid, List } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Star, Clock, LayoutGrid, List, CheckCircle, CircleDot, MessageSquare } from "lucide-react";
 import Image from "next/image";
 import type { BlogPost } from "@/types";
+
+function isScheduled(post: BlogPost) {
+  return post.isPublished && post.publishedAt && new Date(post.publishedAt) > new Date();
+}
 
 function StatusBadge({ post }: { post: BlogPost }) {
   return (
     <div className="flex items-center gap-1.5">
       {!post.isPublished ? (
-        <span className="inline-flex items-center gap-1 text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+        <span className="inline-flex items-center gap-1 text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full whitespace-nowrap">
           <EyeOff className="w-3 h-3" />
           임시
         </span>
-      ) : post.publishedAt && new Date(post.publishedAt) > new Date() ? (
-        <span className="inline-flex items-center gap-1 text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+      ) : isScheduled(post) ? (
+        <span className="inline-flex items-center gap-1 text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full whitespace-nowrap">
           <Clock className="w-3 h-3" />
           예약
         </span>
       ) : (
-        <span className="inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+        <span className="inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full whitespace-nowrap">
           <Eye className="w-3 h-3" />
           발행
         </span>
@@ -35,11 +39,39 @@ function StatusBadge({ post }: { post: BlogPost }) {
   );
 }
 
+function ReviewBadge({ post, onToggle }: { post: BlogPost; onToggle: (id: string, current: boolean) => void }) {
+  if (!isScheduled(post)) return <span className="inline-block w-12 text-center text-xs text-slate-300">—</span>;
+
+  if (post.isReviewed) {
+    return (
+      <button
+        onClick={() => onToggle(post.id, true)}
+        className="inline-flex items-center gap-1 text-xs text-emerald-600 bg-emerald-50 hover:bg-emerald-100 w-12 justify-center py-0.5 rounded-full transition-colors"
+        title="검수 취소"
+      >
+        <CheckCircle className="w-3 h-3" />
+        완료
+      </button>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => onToggle(post.id, false)}
+      className="inline-flex items-center text-xs text-orange-500 bg-orange-50 hover:bg-orange-100 w-12 justify-center py-0.5 rounded-full transition-colors"
+      title="검수 완료"
+    >
+      대기
+    </button>
+  );
+}
+
 export default function AdminBlogPage() {
   const router = useRouter();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<"table" | "card">("table");
+  const [reviewFilter, setReviewFilter] = useState<"all" | "pending" | "commented">("all");
 
   const [error, setError] = useState("");
 
@@ -68,6 +100,33 @@ export default function AdminBlogPage() {
     }
   }
 
+  async function handleToggleReview(id: string, currentReviewed: boolean) {
+    const newReviewed = !currentReviewed;
+    const res = await fetch(`/api/admin/blog/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        is_reviewed: newReviewed,
+        reviewed_at: newReviewed ? new Date().toISOString() : null,
+      }),
+    });
+    if (res.ok) {
+      const updated = await res.json();
+      setPosts((prev) => prev.map((p) => (p.id === id ? updated : p)));
+    } else {
+      alert("검수 상태 변경에 실패했습니다");
+    }
+  }
+
+  const pendingCount = posts.filter((p) => isScheduled(p) && !p.isReviewed).length;
+  const commentedCount = posts.filter((p) => p.reviewComment).length;
+
+  const filteredPosts = posts.filter((p) => {
+    if (reviewFilter === "pending") return isScheduled(p) && !p.isReviewed;
+    if (reviewFilter === "commented") return Boolean(p.reviewComment);
+    return true;
+  });
+
   function formatDate(dateStr: string) {
     return new Date(dateStr).toLocaleDateString("ko-KR", {
       year: "numeric",
@@ -78,7 +137,7 @@ export default function AdminBlogPage() {
 
   return (
     <div className={viewMode === "card" ? "max-w-5xl" : "max-w-4xl"}>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <p className="text-sm text-slate-500">
             {loading ? "불러오는 중..." : error ? "조회 실패" : `총 ${posts.length}개의 글`}
@@ -108,6 +167,30 @@ export default function AdminBlogPage() {
         </Link>
       </div>
 
+      {/* 필터 */}
+      {!loading && !error && posts.length > 0 && (
+        <div className="flex items-center gap-2 mb-4">
+          <button
+            onClick={() => setReviewFilter("all")}
+            className={`px-3 py-1 text-xs rounded-full transition-colors ${reviewFilter === "all" ? "bg-slate-800 text-white" : "text-slate-500 hover:bg-slate-100"}`}
+          >
+            전체 {posts.length}
+          </button>
+          <button
+            onClick={() => setReviewFilter("pending")}
+            className={`px-3 py-1 text-xs rounded-full transition-colors ${reviewFilter === "pending" ? "bg-orange-500 text-white" : "text-slate-500 hover:bg-slate-100"}`}
+          >
+            검수대기 {pendingCount > 0 && pendingCount}
+          </button>
+          <button
+            onClick={() => setReviewFilter("commented")}
+            className={`px-3 py-1 text-xs rounded-full transition-colors ${reviewFilter === "commented" ? "bg-red-500 text-white" : "text-slate-500 hover:bg-slate-100"}`}
+          >
+            코멘트 {commentedCount > 0 && commentedCount}
+          </button>
+        </div>
+      )}
+
       {error ? (
         <div className="text-center py-12">
           <p className="text-sm text-red-500 mb-3">{error}</p>
@@ -132,25 +215,38 @@ export default function AdminBlogPage() {
             <thead>
               <tr className="border-b border-slate-100 text-left">
                 <th className="px-4 py-3 font-medium text-slate-500">제목</th>
-                <th className="px-4 py-3 font-medium text-slate-500 w-24">상태</th>
+                <th className="px-4 py-3 font-medium text-slate-500 w-20">검수</th>
+                <th className="px-4 py-3 font-medium text-slate-500 w-20">상태</th>
                 <th className="px-4 py-3 font-medium text-slate-500 w-24">카테고리</th>
                 <th className="px-4 py-3 font-medium text-slate-500 w-28">날짜</th>
                 <th className="px-4 py-3 font-medium text-slate-500 w-20">액션</th>
               </tr>
             </thead>
             <tbody>
-              {posts.map((post) => (
+              {filteredPosts.map((post) => (
                 <tr key={post.id} className="border-b border-slate-50 hover:bg-slate-50/50">
                   <td className="px-4 py-3">
-                    <Link
-                      href={`/admin/blog/${post.id}/edit`}
-                      className="text-slate-900 hover:text-primary font-medium"
-                    >
-                      {post.title}
-                    </Link>
-                    {post.slug && (
-                      <p className="text-xs text-slate-400 mt-0.5">/blog/{post.slug}</p>
-                    )}
+                    <div className="flex items-start gap-1.5">
+                      <div className="flex-1">
+                        <Link
+                          href={`/admin/blog/${post.id}/edit`}
+                          className="text-slate-900 hover:text-primary font-medium"
+                        >
+                          {post.title}
+                        </Link>
+                        {post.slug && (
+                          <p className="text-xs text-slate-400 mt-0.5">/blog/{post.slug}</p>
+                        )}
+                      </div>
+                      {post.reviewComment && (
+                        <span className="shrink-0 mt-0.5" title={post.reviewComment}>
+                          <MessageSquare className="w-3.5 h-3.5 text-red-400" />
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <ReviewBadge post={post} onToggle={handleToggleReview} />
                   </td>
                   <td className="px-4 py-3">
                     <StatusBadge post={post} />
@@ -184,7 +280,7 @@ export default function AdminBlogPage() {
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-4">
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <div key={post.id} className="bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
               <Link href={`/admin/blog/${post.id}/edit`} className="block">
                 <div className="relative aspect-[16/9] bg-slate-100">
@@ -201,9 +297,24 @@ export default function AdminBlogPage() {
                       이미지 없음
                     </div>
                   )}
-                  <div className="absolute top-2 left-2">
+                  <div className="absolute top-2 left-2 flex items-center gap-1.5">
                     <StatusBadge post={post} />
                   </div>
+                  {isScheduled(post) && (
+                    <div className="absolute top-2 right-2">
+                      {post.isReviewed ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                          <CheckCircle className="w-3 h-3" />
+                          검수완료
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-xs text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full">
+                          <CircleDot className="w-3 h-3" />
+                          검수대기
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className="p-3">
                   <h3 className="text-sm font-medium text-slate-900 line-clamp-2 mb-1">{post.title}</h3>
@@ -213,7 +324,13 @@ export default function AdminBlogPage() {
                   </div>
                 </div>
               </Link>
-              <div className="flex items-center gap-1 px-3 pb-3">
+              <div className="flex items-center justify-between px-3 pb-3">
+                {isScheduled(post) ? (
+                  <ReviewBadge post={post} onToggle={handleToggleReview} />
+                ) : (
+                  <div />
+                )}
+                <div className="flex items-center gap-1">
                 <button
                   onClick={() => router.push(`/admin/blog/${post.id}/edit`)}
                   className="p-1.5 text-slate-400 hover:text-primary transition-colors"
@@ -228,6 +345,7 @@ export default function AdminBlogPage() {
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
+                </div>
               </div>
             </div>
           ))}

@@ -19,9 +19,10 @@ interface StatCardProps {
   value: number | string;
   icon: React.ElementType;
   href: string;
+  color?: string;
 }
 
-function StatCard({ label, value, icon: Icon, href }: StatCardProps) {
+function StatCard({ label, value, icon: Icon, href, color = "text-slate-400" }: StatCardProps) {
   return (
     <Link
       href={href}
@@ -29,7 +30,7 @@ function StatCard({ label, value, icon: Icon, href }: StatCardProps) {
     >
       <div className="flex items-center justify-between mb-3">
         <span className="text-sm text-slate-500">{label}</span>
-        <Icon className="w-4.5 h-4.5 text-slate-400" />
+        <Icon className={`w-5 h-5 ${color}`} />
       </div>
       <p className="text-2xl font-bold text-slate-900">{value}</p>
     </Link>
@@ -125,10 +126,10 @@ export default function AdminDashboard() {
   return (
     <div className="max-w-5xl">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard label="블로그 글" value={loading ? "-" : counts.blog} icon={FileText} href="/admin/blog" />
-        <StatCard label="포트폴리오" value={loading ? "-" : counts.portfolio} icon={Briefcase} href="/admin/portfolio" />
-        <StatCard label="미디어" value={loading ? "-" : counts.media} icon={ImageIcon} href="/admin/photos" />
-        <StatCard label="견적 요청" value={loading ? "-" : counts.quote} icon={ClipboardList} href="/admin/quotes" />
+        <StatCard label="블로그 글" value={loading ? "-" : counts.blog} icon={FileText} href="/admin/blog" color="text-blue-500" />
+        <StatCard label="포트폴리오" value={loading ? "-" : counts.portfolio} icon={Briefcase} href="/admin/portfolio" color="text-violet-500" />
+        <StatCard label="미디어" value={loading ? "-" : counts.media} icon={ImageIcon} href="/admin/photos" color="text-emerald-500" />
+        <StatCard label="견적 요청" value={loading ? "-" : counts.quote} icon={ClipboardList} href="/admin/quotes" color="text-amber-500" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -139,14 +140,14 @@ export default function AdminDashboard() {
               href="/admin/blog/new"
               className="flex items-center gap-2 px-3 py-2 rounded-sm text-sm text-slate-600 hover:bg-slate-50 transition-colors"
             >
-              <FileText className="w-4 h-4 text-primary" />
+              <FileText className="w-4 h-4 text-blue-500" />
               새 블로그 글 작성
             </Link>
             <Link
               href="/admin/portfolio/new"
               className="flex items-center gap-2 px-3 py-2 rounded-sm text-sm text-slate-600 hover:bg-slate-50 transition-colors"
             >
-              <Briefcase className="w-4 h-4 text-primary" />
+              <Briefcase className="w-4 h-4 text-violet-500" />
               새 포트폴리오 등록
             </Link>
           </div>

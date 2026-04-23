@@ -67,6 +67,9 @@ export interface BlogPost {
   seoDescription?: string;
   ogImageUrl?: string;
   isPublished: boolean;
+  isReviewed: boolean;
+  reviewedAt?: string;
+  reviewComment?: string;
   isFeatured: boolean;
   sortOrder: number;
   naverBlogUrl?: string;
