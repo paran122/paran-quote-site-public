@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { fetchBlogPostById, updateBlogPost, deleteBlogPost, fetchBlogPostBySlug } from "@/lib/queries";
+import { fetchBlogPostById, updateBlogPost, fetchBlogPostBySlug } from "@/lib/queries";
 import { blogPostSchema } from "@/lib/validators/blog";
 
 export async function GET(
@@ -71,7 +71,8 @@ export async function DELETE(
   { params }: { params: { id: string } },
 ) {
   try {
-    await deleteBlogPost(params.id);
+    // 소프트 삭제 — deleted_at 설정
+    await updateBlogPost(params.id, { deleted_at: new Date().toISOString() } as Record<string, unknown>);
     return NextResponse.json({ success: true });
   } catch (err) {
     const msg = err instanceof Error ? err.message : "삭제 실패";

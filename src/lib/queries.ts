@@ -319,6 +319,7 @@ export async function fetchPublishedBlogPosts(
     .from("blog_posts")
     .select("*")
     .eq("is_published", true)
+    .is("deleted_at", null)
     .lte("published_at", new Date().toISOString())
     .order("published_at", { ascending: false })
     .range(offset, offset + limit - 1);
@@ -340,6 +341,7 @@ export async function fetchCompanyBlogPosts(): Promise<BlogPost[]> {
       .from("blog_posts")
       .select("*")
       .eq("is_published", true)
+      .is("deleted_at", null)
       .lte("published_at", now)
       .in("category", ["행사 기획", "행사 후기"])
       .order("published_at", { ascending: false })
@@ -348,6 +350,7 @@ export async function fetchCompanyBlogPosts(): Promise<BlogPost[]> {
       .from("blog_posts")
       .select("*")
       .eq("is_published", true)
+      .is("deleted_at", null)
       .lte("published_at", now)
       .not("category", "in", '("행사 기획","행사 후기")')
       .order("published_at", { ascending: false })
@@ -369,6 +372,7 @@ export async function fetchFeaturedBlogPosts(): Promise<BlogPost[]> {
     .select("*")
     .eq("is_published", true)
     .eq("is_featured", true)
+    .is("deleted_at", null)
     .lte("published_at", new Date().toISOString())
     .order("sort_order", { ascending: true });
   if (error) throw error;
@@ -396,6 +400,7 @@ export async function fetchPublishedBlogPostBySlug(slug: string): Promise<BlogPo
     .select("*")
     .eq("slug", slug)
     .eq("is_published", true)
+    .is("deleted_at", null)
     .lte("published_at", new Date().toISOString())
     .single();
   if (error) {
