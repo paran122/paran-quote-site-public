@@ -56,7 +56,7 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
   }
 
   return (
-    <header className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-6 shrink-0">
+    <header className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-6 lg:pr-[10%] shrink-0">
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuClick}
