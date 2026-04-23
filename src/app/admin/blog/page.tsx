@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2, Eye, EyeOff, Star, Clock, LayoutGrid, List, CheckCircle, CircleDot, MessageSquare } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Star, Clock, LayoutGrid, List, CheckCircle, CircleDot, MessageSquare, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import type { BlogPost } from "@/types";
 
@@ -71,7 +71,7 @@ export default function AdminBlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<"table" | "card">("table");
-  const [reviewFilter, setReviewFilter] = useState<"all" | "pending" | "commented">("all");
+  const [reviewFilter, setReviewFilter] = useState<"all" | "pending" | "commented" | "deleted">("all");
 
   const [error, setError] = useState("");
 
@@ -90,13 +90,28 @@ export default function AdminBlogPage() {
   }, []);
 
   async function handleDelete(id: string, title: string) {
-    if (!confirm(`"${title}" 글을 삭제하시겠습니까?`)) return;
+    if (!confirm(`"${title}" 글을 숨기시겠습니까?`)) return;
 
     const res = await fetch(`/api/admin/blog/${id}`, { method: "DELETE" });
     if (res.ok) {
-      setPosts((prev) => prev.filter((p) => p.id !== id));
+      const updated = await fetch(`/api/admin/blog/${id}`).then((r) => r.json());
+      setPosts((prev) => prev.map((p) => (p.id === id ? updated : p)));
     } else {
       alert("삭제에 실패했습니다");
+    }
+  }
+
+  async function handleRestore(id: string) {
+    const res = await fetch(`/api/admin/blog/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ deleted_at: null }),
+    });
+    if (res.ok) {
+      const updated = await res.json();
+      setPosts((prev) => prev.map((p) => (p.id === id ? updated : p)));
+    } else {
+      alert("복원에 실패했습니다");
     }
   }
 
@@ -118,10 +133,14 @@ export default function AdminBlogPage() {
     }
   }
 
-  const pendingCount = posts.filter((p) => isScheduled(p) && !p.isReviewed).length;
-  const commentedCount = posts.filter((p) => p.reviewComment).length;
+  const activePosts = posts.filter((p) => !p.deletedAt);
+  const pendingCount = activePosts.filter((p) => isScheduled(p) && !p.isReviewed).length;
+  const commentedCount = activePosts.filter((p) => p.reviewComment).length;
+  const deletedCount = posts.filter((p) => p.deletedAt).length;
 
   const filteredPosts = posts.filter((p) => {
+    if (reviewFilter === "deleted") return Boolean(p.deletedAt);
+    if (p.deletedAt) return false; // 숨긴 글은 다른 필터에서 제외
     if (reviewFilter === "pending") return isScheduled(p) && !p.isReviewed;
     if (reviewFilter === "commented") return Boolean(p.reviewComment);
     return true;
@@ -174,7 +193,7 @@ export default function AdminBlogPage() {
             onClick={() => setReviewFilter("all")}
             className={`px-3 py-1 text-xs rounded-full transition-colors ${reviewFilter === "all" ? "bg-slate-800 text-white" : "text-slate-500 hover:bg-slate-100"}`}
           >
-            전체 {posts.length}
+            전체 {activePosts.length}
           </button>
           <button
             onClick={() => setReviewFilter("pending")}
@@ -188,6 +207,14 @@ export default function AdminBlogPage() {
           >
             코멘트 {commentedCount > 0 && commentedCount}
           </button>
+          {deletedCount > 0 && (
+            <button
+              onClick={() => setReviewFilter("deleted")}
+              className={`px-3 py-1 text-xs rounded-full transition-colors ${reviewFilter === "deleted" ? "bg-slate-500 text-white" : "text-slate-400 hover:bg-slate-100"}`}
+            >
+              숨긴 글 {deletedCount}
+            </button>
+          )}
         </div>
       )}
 
@@ -257,20 +284,32 @@ export default function AdminBlogPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <button
-                        onClick={() => router.push(`/admin/blog/${post.id}/edit`)}
-                        className="p-1.5 text-slate-400 hover:text-primary transition-colors"
-                        title="수정"
-                      >
-                        <Pencil className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(post.id, post.title)}
-                        className="p-1.5 text-slate-400 hover:text-red-500 transition-colors"
-                        title="삭제"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      {post.deletedAt ? (
+                        <button
+                          onClick={() => handleRestore(post.id)}
+                          className="p-1.5 text-slate-400 hover:text-emerald-500 transition-colors"
+                          title="복원"
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" />
+                        </button>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => router.push(`/admin/blog/${post.id}/edit`)}
+                            className="p-1.5 text-slate-400 hover:text-primary transition-colors"
+                            title="수정"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(post.id, post.title)}
+                            className="p-1.5 text-slate-400 hover:text-red-500 transition-colors"
+                            title="숨기기"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>

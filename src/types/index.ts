@@ -76,6 +76,7 @@ export interface BlogPost {
   instagramUrl?: string;
   youtubeUrl?: string;
   publishedAt?: string;
+  deletedAt?: string;
   createdAt: string;
   updatedAt: string;
 }

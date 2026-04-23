@@ -22,6 +22,7 @@ export const blogPostSchema = z.object({
   is_featured: z.boolean().default(false),
   sort_order: z.number().int().min(0).default(0),
   published_at: z.string().datetime().optional().nullable(),
+  deleted_at: z.string().datetime().optional().nullable(),
 });
 
 export type BlogPostInput = z.infer<typeof blogPostSchema>;
