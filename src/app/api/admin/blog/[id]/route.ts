@@ -26,6 +26,13 @@ export async function PATCH(
     const body = await request.json();
     const parsed = blogPostSchema.partial().parse(body);
 
+    // partial parse에서 default()가 채운 값 제거 — 요청에 없던 필드가 false/0으로 덮어쓰는 것 방지
+    for (const key of Object.keys(parsed) as (keyof typeof parsed)[]) {
+      if (!(key in body)) {
+        delete parsed[key];
+      }
+    }
+
     // 슬러그 변경 시 중복 체크
     if (parsed.slug) {
       const existing = await fetchBlogPostBySlug(parsed.slug);

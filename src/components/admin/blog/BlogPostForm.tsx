@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Save, Eye, ArrowLeft, Upload, X, Search, ImageIcon, Check, Sparkles, Loader2 } from "lucide-react";
+import { Eye, ArrowLeft, Upload, X, Search, ImageIcon, Check, Sparkles, Loader2, ShieldCheck, Globe } from "lucide-react";
 import TiptapEditor from "./TiptapEditor";
 import type { BlogPost } from "@/types";
 
@@ -25,6 +25,7 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
   const router = useRouter();
   const isEdit = Boolean(post);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
+  const handleSubmitRef = useRef<() => void>(() => {});
 
   const [title, setTitle] = useState(post?.title ?? "");
   const [slug, setSlug] = useState(post?.slug ?? "");
@@ -36,6 +37,8 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
   const [seoTitle, setSeoTitle] = useState(post?.seoTitle ?? "");
   const [seoDescription, setSeoDescription] = useState(post?.seoDescription ?? "");
   const [isPublished, setIsPublished] = useState(post?.isPublished ?? false);
+  const [isReviewed, setIsReviewed] = useState(post?.isReviewed ?? false);
+  const [reviewComment, setReviewComment] = useState(post?.reviewComment ?? "");
   const [isFeatured, setIsFeatured] = useState(post?.isFeatured ?? false);
   const [sortOrder, setSortOrder] = useState(post?.sortOrder ?? 0);
   const [publishedAt, setPublishedAt] = useState(
@@ -45,6 +48,24 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
   const [error, setError] = useState("");
   const [slugManual, setSlugManual] = useState(isEdit);
   const [pickerOpen, setPickerOpen] = useState(false);
+
+  // AdminHeader에 slug/saving 상태 전달
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("blog-form-state", { detail: { slug, saving, isEdit } }));
+  }, [slug, saving, isEdit]);
+
+  // AdminHeader의 저장/미리보기 버튼 클릭 수신
+  const [previewOpen, setPreviewOpen] = useState(false);
+  useEffect(() => {
+    const submitHandler = () => handleSubmitRef.current();
+    const previewHandler = () => setPreviewOpen(true);
+    window.addEventListener("blog-form-submit", submitHandler);
+    window.addEventListener("blog-form-preview", previewHandler);
+    return () => {
+      window.removeEventListener("blog-form-submit", submitHandler);
+      window.removeEventListener("blog-form-preview", previewHandler);
+    };
+  }, []);
 
   // AI 생성
   const [aiKeyword, setAiKeyword] = useState("");
@@ -182,6 +203,41 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
     }
   }
 
+  async function handleToggleReview(newReviewed: boolean) {
+    if (!isEdit || !post) return;
+    const body: Record<string, unknown> = {
+      is_reviewed: newReviewed,
+      reviewed_at: newReviewed ? new Date().toISOString() : null,
+    };
+    // 검수 완료 시 코멘트 초기화
+    if (newReviewed) {
+      body.review_comment = null;
+    }
+    const res = await fetch(`/api/admin/blog/${post.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (res.ok) {
+      setIsReviewed(newReviewed);
+      if (newReviewed) setReviewComment("");
+    } else {
+      alert("검수 상태 변경에 실패했습니다");
+    }
+  }
+
+  async function handleSaveComment() {
+    if (!isEdit || !post) return;
+    const res = await fetch(`/api/admin/blog/${post.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ review_comment: reviewComment || null }),
+    });
+    if (!res.ok) {
+      alert("코멘트 저장에 실패했습니다");
+    }
+  }
+
   async function handleSubmit() {
     setError("");
     setSaving(true);
@@ -203,6 +259,8 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
       seo_description: seoDescription || null,
       og_image_url: thumbnailUrl || null,
       is_published: isPublished,
+      is_reviewed: isReviewed,
+      reviewed_at: isReviewed ? new Date().toISOString() : null,
       is_featured: isFeatured,
       sort_order: sortOrder,
       published_at: publishedAt ? new Date(publishedAt).toISOString() : null,
@@ -232,6 +290,8 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
     }
   }
 
+  handleSubmitRef.current = handleSubmit;
+
   return (
     <div className="max-w-4xl">
       {/* Header */}
@@ -243,26 +303,16 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
           <ArrowLeft className="w-4 h-4" />
           목록으로
         </button>
-        <div className="flex items-center gap-2">
-          {!isEdit && (
-            <button
-              onClick={() => setAiOpen(!aiOpen)}
-              className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium
-                text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 transition-colors"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              AI 글 생성
-            </button>
-          )}
+        {!isEdit && (
           <button
-            onClick={() => handleSubmit()}
-            disabled={saving || !title || !slug}
-            className="btn-primary btn-sm disabled:opacity-50"
+            onClick={() => setAiOpen(!aiOpen)}
+            className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium
+              text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 transition-colors"
           >
-            <Save className="w-3.5 h-3.5" />
-            {saving ? "저장 중..." : "저장"}
+            <Sparkles className="w-3.5 h-3.5" />
+            AI 글 생성
           </button>
-        </div>
+        )}
       </div>
 
       {error && (
@@ -363,6 +413,80 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
 
         {/* 에디터 */}
         <TiptapEditor content={content} onChange={setContent} />
+
+        {/* 팀장 검수 & 발행 */}
+        <div className="grid grid-cols-2 gap-4">
+          {/* 팀장 검수 */}
+          <div className={`rounded-lg border p-5 ${reviewComment ? "border-red-200 bg-red-50/30" : "border-slate-200"}`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <ShieldCheck className={`w-5 h-5 ${isReviewed ? "text-emerald-500" : "text-slate-300"}`} />
+                <div>
+                  <p className="text-sm font-medium text-slate-700">팀장 검수</p>
+                  <p className={`text-xs mt-0.5 ${isReviewed ? "text-emerald-500" : "text-slate-400"}`}>
+                    {isReviewed ? "검수 완료" : "검수 대기 중"}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleToggleReview(!isReviewed)}
+                className={`relative w-11 h-6 rounded-full transition-colors ${isReviewed ? "bg-emerald-500" : "bg-slate-200"}`}
+              >
+                <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isReviewed ? "translate-x-5" : "translate-x-0"}`} />
+              </button>
+            </div>
+            {/* 코멘트 */}
+            {!isReviewed && (
+              <div className="mt-3 pt-3 border-t border-slate-100">
+                <textarea
+                  value={reviewComment}
+                  onChange={(e) => setReviewComment(e.target.value)}
+                  onBlur={handleSaveComment}
+                  placeholder="수정 요청사항을 적어주세요"
+                  rows={2}
+                  className="w-full text-xs border border-slate-200 rounded-md px-3 py-2
+                    focus:outline-none focus:ring-1 focus:ring-red-200 resize-none placeholder:text-slate-300"
+                />
+                {reviewComment && (
+                  <p className="text-[11px] text-slate-400 mt-1">포커스를 벗어나면 자동 저장됩니다</p>
+                )}
+              </div>
+            )}
+            {isReviewed && reviewComment && (
+              <p className="mt-2 text-xs text-slate-400 line-through">{reviewComment}</p>
+            )}
+          </div>
+
+          {/* 발행 */}
+          <div className="rounded-lg border border-slate-200 p-5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Globe className={`w-5 h-5 ${isPublished ? "text-blue-500" : "text-slate-300"}`} />
+                <span className="text-sm font-medium text-slate-700">발행</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsPublished(!isPublished)}
+                className={`relative w-11 h-6 rounded-full transition-colors ${isPublished ? "bg-blue-500" : "bg-slate-200"}`}
+              >
+                <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isPublished ? "translate-x-5" : "translate-x-0"}`} />
+              </button>
+            </div>
+            {isPublished && (
+              <div className="flex items-center gap-2 mt-3 pl-8">
+                <input
+                  type="datetime-local"
+                  value={publishedAt}
+                  onChange={(e) => setPublishedAt(e.target.value)}
+                  className="flex-1 text-sm border border-slate-200 rounded-md px-3 py-1.5
+                    focus:outline-none focus:ring-1 focus:ring-blue-200"
+                />
+                <span className="text-xs text-slate-400 shrink-0">미래 = 예약</span>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* 사이드 설정 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -529,18 +653,8 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
               />
             </div>
 
-            {/* 발행 설정 */}
-            <div className="space-y-3 pt-2 border-t border-slate-100">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={isPublished}
-                  onChange={(e) => setIsPublished(e.target.checked)}
-                  className="rounded border-slate-300"
-                />
-                <span className="text-sm text-slate-700">발행</span>
-              </label>
-
+            {/* 에디터 추천 */}
+            <div className="pt-2 border-t border-slate-100">
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -552,7 +666,7 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
               </label>
 
               {isFeatured && (
-                <div>
+                <div className="mt-2">
                   <label className="block text-sm text-slate-600 mb-1">추천 순서 (0이 가장 먼저)</label>
                   <input
                     type="number"
@@ -562,20 +676,6 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
                     className="w-20 text-sm border border-slate-200 rounded-sm px-3 py-2
                       focus:outline-none focus:ring-1 focus:ring-primary/20"
                   />
-                </div>
-              )}
-
-              {isPublished && (
-                <div>
-                  <label className="block text-sm text-slate-600 mb-1">발행일시 (예약발행)</label>
-                  <input
-                    type="datetime-local"
-                    value={publishedAt}
-                    onChange={(e) => setPublishedAt(e.target.value)}
-                    className="w-full text-sm border border-slate-200 rounded-sm px-3 py-2
-                      focus:outline-none focus:ring-1 focus:ring-primary/20"
-                  />
-                  <p className="text-xs text-slate-400 mt-1">비워두면 즉시 발행됩니다</p>
                 </div>
               )}
             </div>
@@ -656,6 +756,64 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
           </div>
         </div>
       </div>
+
+      {/* 미리보기 모달 */}
+      {previewOpen && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 overflow-y-auto py-8" onClick={() => setPreviewOpen(false)}>
+          <div
+            className="relative w-full max-w-[700px] bg-white rounded-lg shadow-2xl mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 모달 헤더 */}
+            <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-3 bg-white border-b border-slate-200 rounded-t-lg">
+              <span className="text-sm font-medium text-slate-500">미리보기</span>
+              <button onClick={() => setPreviewOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* 본문 미리보기 */}
+            <div className="px-6 py-10">
+              {/* 날짜 + 카테고리 */}
+              <p className="text-center text-sm text-slate-400 mb-4">
+                {publishedAt
+                  ? new Date(publishedAt).toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" })
+                  : new Date().toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" })}
+                {category && <span className="ml-2 text-primary font-medium">{category}</span>}
+              </p>
+
+              {/* 제목 */}
+              <h1 className="text-center text-[28px] sm:text-[36px] font-extrabold leading-tight tracking-tight text-slate-900 mb-8">
+                {title || "제목 없음"}
+              </h1>
+
+              {/* 썸네일 */}
+              {thumbnailUrl && (
+                <div className="mb-10 -mx-6">
+                  <img src={thumbnailUrl} alt={title} className="w-full object-cover" />
+                </div>
+              )}
+
+              {/* 본문 */}
+              <div
+                className="text-[16px] leading-[1.8] text-slate-700 [&>h2]:text-[22px] [&>h2]:font-bold [&>h2]:mt-10 [&>h2]:mb-4 [&>h2]:text-slate-900 [&>h3]:text-[18px] [&>h3]:font-semibold [&>h3]:mt-8 [&>h3]:mb-3 [&>h3]:text-slate-900 [&>p]:mb-5 [&>ul]:mb-5 [&>ul]:pl-6 [&>ul]:list-disc [&>ol]:mb-5 [&>ol]:pl-6 [&>ol]:list-decimal [&>li]:mb-2 [&>img]:my-8 [&>img]:rounded-lg [&>img]:w-full [&>blockquote]:border-l-4 [&>blockquote]:border-primary/30 [&>blockquote]:pl-4 [&>blockquote]:text-slate-500 [&>blockquote]:italic [&>blockquote]:my-6"
+                dangerouslySetInnerHTML={{ __html: content }}
+              />
+
+              {/* 태그 */}
+              {tagsInput && (
+                <div className="flex flex-wrap gap-2 mt-10 pt-6 border-t border-slate-200">
+                  {tagsInput.split(",").map((tag) => tag.trim()).filter(Boolean).map((tag) => (
+                    <span key={tag} className="px-3 py-1 text-xs text-slate-500 bg-slate-100 rounded-full">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

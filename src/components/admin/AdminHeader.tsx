@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { LogOut, ExternalLink, Menu } from "lucide-react";
+import { LogOut, ExternalLink, Menu, Eye, Save } from "lucide-react";
 
 const PAGE_TITLES: Record<string, string> = {
   "/admin": "대시보드",
@@ -33,6 +34,20 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const title = getTitle(pathname);
+  const isBlogEdit = /^\/admin\/blog\/[^/]+\/edit$/.test(pathname) || pathname === "/admin/blog/new";
+
+  // BlogPostForm에서 보내는 slug/saving 상태 수신
+  const [formState, setFormState] = useState<{ slug?: string; saving?: boolean; isEdit?: boolean }>({});
+
+  const handleFormState = useCallback((e: Event) => {
+    const detail = (e as CustomEvent).detail;
+    setFormState(detail);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("blog-form-state", handleFormState);
+    return () => window.removeEventListener("blog-form-state", handleFormState);
+  }, [handleFormState]);
 
   async function handleLogout() {
     await fetch("/api/admin/auth", { method: "DELETE" });
@@ -53,15 +68,37 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
       </div>
 
       <div className="flex items-center gap-3">
-        <a
-          href="/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden sm:flex text-sm text-slate-500 hover:text-slate-700 items-center gap-1"
-        >
-          사이트 보기
-          <ExternalLink className="w-3.5 h-3.5" />
-        </a>
+        {isBlogEdit ? (
+          <>
+            {formState.isEdit && formState.slug && (
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent("blog-form-preview"))}
+                className="hidden sm:flex text-sm text-slate-500 hover:text-slate-700 items-center gap-1"
+              >
+                <Eye className="w-3.5 h-3.5" />
+                미리보기
+              </button>
+            )}
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("blog-form-submit"))}
+              disabled={formState.saving}
+              className="btn-primary btn-sm disabled:opacity-50"
+            >
+              <Save className="w-3.5 h-3.5" />
+              {formState.saving ? "저장 중..." : "저장"}
+            </button>
+          </>
+        ) : (
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:flex text-sm text-slate-500 hover:text-slate-700 items-center gap-1"
+          >
+            사이트 보기
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        )}
         <button
           onClick={handleLogout}
           className="text-sm text-slate-500 hover:text-red-500 flex items-center gap-1 transition-colors"
