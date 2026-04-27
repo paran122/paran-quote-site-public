@@ -30,7 +30,7 @@ export default function JsonLd() {
     url: siteUrl,
     logo: `${siteUrl}/logo.svg`,
     description:
-      "세미나·컨퍼런스·포럼 행사 기획 운영 전문 에이전시. 공공기관·기업 대상 250건 이상의 프로젝트 수행, 기획부터 디자인·운영까지 원스톱 서비스를 제공합니다.",
+      "행사 대행 전문 업체. 세미나·컨퍼런스·포럼 기획부터 운영까지 원스톱 대행 서비스. 공공기관·기업 대상 250건 이상의 프로젝트 수행, 기획·디자인·운영을 책임집니다.",
     foundingDate: "2015",
     numberOfEmployees: {
       "@type": "QuantitativeValue",
@@ -55,6 +55,7 @@ export default function JsonLd() {
       name: "대한민국",
     },
     knowsAbout: [
+      "행사 대행",
       "행사 기획",
       "세미나 대행",
       "컨퍼런스 운영",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import GuideClient from "../GuideClient";
@@ -103,6 +104,23 @@ export default function PricingClient() {
             ))}
           </ul>
         </div>
+      </div>
+
+      {/* 내부 링크 배너 */}
+      <div className="mt-12">
+        <Link
+          href="/work"
+          className="group flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50/50 px-6 py-5 transition-all hover:border-blue-200 hover:bg-blue-50"
+        >
+          <div>
+            <p className="text-[15px] font-semibold text-slate-800">실제 행사 사례가 궁금하신가요?</p>
+            <p className="mt-1 text-[13px] text-slate-500">250+ 프로젝트 포트폴리오를 확인해보세요</p>
+          </div>
+          <span className="flex shrink-0 items-center gap-1 text-[14px] font-medium text-blue-600 transition-transform group-hover:translate-x-0.5">
+            포트폴리오
+            <ArrowRight className="h-4 w-4" />
+          </span>
+        </Link>
       </div>
     </GuideClient>
   );

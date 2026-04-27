@@ -62,28 +62,38 @@ function StatCard({ s, i }: { s: typeof stats[0]; i: number }) {
   const outerCtrl = useAnimation();
   const innerCtrl = useAnimation();
 
+  const mountedRef = useRef(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(cardRef, { once: false, margin: "-60px" });
+
   const animate = useCallback(async () => {
-    while (true) {
+    while (mountedRef.current) {
       outerCtrl.set({ strokeDashoffset: circOuter });
       innerCtrl.set({ strokeDashoffset: circInner });
+      if (!mountedRef.current) break;
       outerCtrl.start({
         strokeDashoffset: circOuter * (1 - pct),
         transition: { delay: i * 0.1 + 0.2, duration: 1.4, ease: "easeOut" },
       });
-      await innerCtrl.start({
-        strokeDashoffset: circInner * (1 - pct),
-        transition: { delay: i * 0.1 + 0.5, duration: 1.2, ease: "easeOut" },
-      });
+      try {
+        await innerCtrl.start({
+          strokeDashoffset: circInner * (1 - pct),
+          transition: { delay: i * 0.1 + 0.5, duration: 1.2, ease: "easeOut" },
+        });
+      } catch { break; }
+      if (!mountedRef.current) break;
       await new Promise((res) => setTimeout(res, 4000));
     }
   }, [outerCtrl, innerCtrl, circOuter, circInner, pct, i]);
 
-  const cardRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(cardRef, { once: false, margin: "-60px" });
-
   useEffect(() => {
+    mountedRef.current = true;
     if (inView) animate();
-    return () => { outerCtrl.stop(); innerCtrl.stop(); };
+    return () => {
+      mountedRef.current = false;
+      outerCtrl.stop();
+      innerCtrl.stop();
+    };
   }, [inView, animate, outerCtrl, innerCtrl]);
 
   return (

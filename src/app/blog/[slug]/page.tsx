@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import {
   fetchPublishedBlogPostBySlug,
   fetchPublishedBlogPosts,
@@ -15,6 +16,118 @@ import type { Portfolio } from "@/types";
 
 /* ── 카테고리 색상 (Pitch 스타일: 눈에 띄게) ── */
 const CATEGORY_COLOR = "text-[13px] font-semibold text-[#4B5EDB]";
+
+/* ── 글 내용 기반 CTA 자동 매칭 ── */
+const CTA_RULES: {
+  keywords: string[];
+  href: string;
+  title: string;
+  description: string;
+  label: string;
+}[] = [
+  // 행사 후기/사례 글 → 회사소개 (파란컴퍼니가 어떤 곳인지)
+  {
+    keywords: ["사례", "후기", "현장", "운영", "대행"],
+    href: "/company",
+    title: "파란컴퍼니는 어떤 회사인가요?",
+    description: "250+ 프로젝트, 재계약률 90%의 행사 전문 에이전시",
+    label: "회사소개",
+  },
+  // 공공기관 관련 글 → 포트폴리오 (공공기관 사례)
+  {
+    keywords: ["공공기관", "교육청", "지자체", "정부", "관공서", "입찰"],
+    href: "/work",
+    title: "공공기관 행사 사례를 확인해보세요",
+    description: "실적의 60% 이상이 공공기관 행사입니다",
+    label: "포트폴리오",
+  },
+  // 비용/견적 관련 글 → 비용 가이드
+  {
+    keywords: ["비용", "견적", "예산", "가격", "단가", "패키지"],
+    href: "/guide/pricing",
+    title: "행사 비용이 궁금하신가요?",
+    description: "규모별·유형별 비용 가이드를 확인해보세요",
+    label: "비용 가이드",
+  },
+  // 준비/기획 관련 글 → 체크리스트
+  {
+    keywords: ["체크리스트", "준비", "기획서", "일정", "D-30"],
+    href: "/guide/checklist",
+    title: "행사 준비, 빠진 건 없나요?",
+    description: "D-30부터 당일까지 체크리스트로 점검하세요",
+    label: "체크리스트",
+  },
+  // 절차/프로세스 관련 글 → 진행 절차
+  {
+    keywords: ["절차", "프로세스", "순서", "단계", "흐름", "큐시트"],
+    href: "/guide/process",
+    title: "행사 진행 절차가 궁금하신가요?",
+    description: "상담부터 결과보고서까지 7단계 프로세스",
+    label: "진행 절차",
+  },
+  // 장소/공간 관련 글 → 장소 가이드
+  {
+    keywords: ["장소", "공간", "연출", "무대", "강당", "호텔", "볼룸", "대관"],
+    href: "/guide/venue",
+    title: "행사 장소 선택이 고민이신가요?",
+    description: "유형별 장소 비교와 대관 가이드를 확인하세요",
+    label: "장소 가이드",
+  },
+  // 규모 관련 글 → 규모별 가이드
+  {
+    keywords: ["규모", "소규모", "대규모", "인원", "100명", "300명", "500명"],
+    href: "/guide/scale",
+    title: "우리 행사 규모에 맞는 구성은?",
+    description: "규모별 예산·인력·장비 가이드를 확인하세요",
+    label: "규모별 가이드",
+  },
+  // 디자인/제작물 관련 글 → 포트폴리오 (디자인 사례)
+  {
+    keywords: ["디자인", "포스터", "현수막", "시안", "리플렛", "배너", "자료집"],
+    href: "/work",
+    title: "행사 디자인 사례가 궁금하신가요?",
+    description: "포스터·현수막·공간연출까지 실제 제작물 확인",
+    label: "포트폴리오",
+  },
+  // 세미나/컨퍼런스/포럼 관련 글 → 포트폴리오
+  {
+    keywords: ["포럼", "컨퍼런스", "세미나", "학술", "심포지엄", "교육", "워크숍"],
+    href: "/work",
+    title: "비슷한 행사 사례가 궁금하신가요?",
+    description: "250+ 프로젝트 포트폴리오를 확인해보세요",
+    label: "포트폴리오",
+  },
+];
+
+function getServiceCTA(
+  category?: string | null,
+  tags?: string[] | null,
+  title?: string,
+): { href: string; title: string; description: string; label: string } {
+  const text = [category, title, ...(tags ?? [])].filter(Boolean).join(" ").toLowerCase();
+
+  let bestMatch = CTA_RULES[0];
+  let bestScore = 0;
+
+  for (const rule of CTA_RULES) {
+    const score = rule.keywords.filter((kw) => text.includes(kw)).length;
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = rule;
+    }
+  }
+
+  if (bestScore === 0) {
+    return {
+      href: "/company",
+      title: "파란컴퍼니는 어떤 회사인가요?",
+      description: "250+ 프로젝트, 재계약률 90%의 행사 전문 에이전시",
+      label: "회사소개",
+    };
+  }
+
+  return bestMatch;
+}
 
 interface Props {
   params: { slug: string };
@@ -249,6 +362,32 @@ export default async function BlogDetailPage({ params }: Props) {
             </div>
           </MotionSection>
         )}
+
+        {/* ═══ 행사 대행 서비스 내부 링크 배너 (글 내용 기반 자동 매칭) ═══ */}
+        {(() => {
+          const cta = getServiceCTA(post.category, post.tags, post.title);
+          return (
+            <MotionSection className="mx-auto max-w-[640px] px-6 py-6">
+              <Link
+                href={cta.href}
+                className="group flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50/50 px-6 py-5 transition-all hover:border-blue-200 hover:bg-blue-50"
+              >
+                <div>
+                  <p className="text-[15px] font-semibold text-slate-800">
+                    {cta.title}
+                  </p>
+                  <p className="mt-1 text-[13px] text-slate-500">
+                    {cta.description}
+                  </p>
+                </div>
+                <span className="flex shrink-0 items-center gap-1 text-[14px] font-medium text-blue-600 transition-transform group-hover:translate-x-0.5">
+                  {cta.label}
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            </MotionSection>
+          );
+        })()}
 
         {/* ═══ 저자 프로필 카드 ═══ */}
         <MotionSection className="mx-auto max-w-[640px] px-6 py-10">
