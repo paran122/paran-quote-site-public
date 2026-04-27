@@ -40,7 +40,7 @@ export default async function BlogPage() {
 
   try {
     [posts, featuredPosts, categories, totalCount] = await Promise.all([
-      fetchPublishedBlogPosts(),
+      fetchPublishedBlogPosts(undefined, 50),
       fetchFeaturedBlogPosts(),
       fetchBlogCategories(),
       fetchPublishedBlogPostCount(),

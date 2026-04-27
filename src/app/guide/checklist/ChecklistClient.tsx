@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import GuideClient from "../GuideClient";
-import { CheckSquare } from "lucide-react";
+import { CheckSquare, ArrowRight } from "lucide-react";
 
 interface CheckItem {
   text: string;
@@ -151,6 +152,23 @@ export default function ChecklistClient() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* 내부 링크 배너 */}
+      <div className="mt-12">
+        <Link
+          href="/company"
+          className="group flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50/50 px-6 py-5 transition-all hover:border-blue-200 hover:bg-blue-50"
+        >
+          <div>
+            <p className="text-[15px] font-semibold text-slate-800">파란컴퍼니는 어떤 회사인가요?</p>
+            <p className="mt-1 text-[13px] text-slate-500">250+ 프로젝트, 재계약률 90%의 행사 전문 에이전시</p>
+          </div>
+          <span className="flex shrink-0 items-center gap-1 text-[14px] font-medium text-blue-600 transition-transform group-hover:translate-x-0.5">
+            회사소개
+            <ArrowRight className="h-4 w-4" />
+          </span>
+        </Link>
       </div>
     </GuideClient>
   );

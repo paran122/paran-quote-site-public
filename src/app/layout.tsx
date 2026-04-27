@@ -47,11 +47,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://parancompany.co.kr"
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "파란컴퍼니 - 행사 전문 에이전시",
+    default: "파란컴퍼니 - 행사 대행 전문",
     template: "%s | 파란컴퍼니",
   },
   description:
-    "공공기관·기업 행사 전문 에이전시. 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지. 250+ 프로젝트 수행 실적, 합리적인 견적으로 성공적인 행사를 만듭니다.",
+    "행사 대행 전문 업체 파란컴퍼니. 공공기관·기업 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지 원스톱 대행. 250+ 프로젝트 수행 실적, 합리적인 견적으로 성공적인 행사를 만듭니다.",
   keywords: [
     "행사 대행",
     "행사 대행사",
@@ -85,9 +85,9 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     url: siteUrl,
     siteName: "파란컴퍼니",
-    title: "파란컴퍼니 - 행사 전문 에이전시",
+    title: "파란컴퍼니 - 행사 대행 전문",
     description:
-      "공공기관·기업 행사 전문 에이전시. 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지. 250+ 프로젝트 수행 실적.",
+      "행사 대행 전문 업체 파란컴퍼니. 공공기관·기업 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지 원스톱 대행. 250+ 프로젝트 수행 실적.",
     images: [
       {
         url: "/og-image.png?v=2",

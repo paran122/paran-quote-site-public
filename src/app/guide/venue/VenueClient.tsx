@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import GuideClient from "../GuideClient";
-import { MapPin } from "lucide-react";
+import { MapPin, ArrowRight } from "lucide-react";
 
 interface VenueType {
   title: string;
@@ -183,6 +184,23 @@ export default function VenueClient() {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* 내부 링크 배너 */}
+      <div className="mt-12">
+        <Link
+          href="/guide/pricing"
+          className="group flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50/50 px-6 py-5 transition-all hover:border-blue-200 hover:bg-blue-50"
+        >
+          <div>
+            <p className="text-[15px] font-semibold text-slate-800">행사 비용이 궁금하신가요?</p>
+            <p className="mt-1 text-[13px] text-slate-500">규모별·유형별 비용 가이드를 확인해보세요</p>
+          </div>
+          <span className="flex shrink-0 items-center gap-1 text-[14px] font-medium text-blue-600 transition-transform group-hover:translate-x-0.5">
+            비용 가이드
+            <ArrowRight className="h-4 w-4" />
+          </span>
+        </Link>
       </div>
     </GuideClient>
   );
