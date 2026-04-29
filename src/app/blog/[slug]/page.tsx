@@ -17,7 +17,27 @@ import type { Portfolio } from "@/types";
 /* ── 카테고리 색상 (Pitch 스타일: 눈에 띄게) ── */
 const CATEGORY_COLOR = "text-[13px] font-semibold text-[#4B5EDB]";
 
-/* ── 글 내용 기반 CTA 자동 매칭 ── */
+/* ── 블로그 슬러그 → 포트폴리오 직접 매핑 (행사 후기/기획 카테고리) ── */
+const BLOG_TO_PORTFOLIO: Record<string, { slug: string; title: string }> = {
+  "공공기관-포럼-기획-대행-사례": { slug: "international-forum", title: "중앙아시아 교육협력포럼" },
+  "전시부스-디자인-시공-교육감협의회": { slug: "education-council-booth", title: "교육감협의회 부스 설치" },
+  "학교체육-컨퍼런스-기획-스포츠-공간연출": { slug: "goyang-conference", title: "고양 학교체육 성장 컨퍼런스" },
+  "결과공유회-기획-문화예술클럽": { slug: "culture-club-showcase", title: "문화예술클럽 결과공유회" },
+  "교육-런칭-행사-기획-KLS-글로벌프리미어": { slug: "kls", title: "KLS 한국어교육 국제학술대회" },
+  "장기-교육-캠프-기획-해군캠프": { slug: "navy-camp", title: "필승해군캠프" },
+  "시리즈-행사-운영-경기학부모교육": { slug: "parent-education", title: "찾아가는 경기학부모교육" },
+  "시리즈-행사-마지막-회차-운영": { slug: "parent-education", title: "찾아가는 경기학부모교육" },
+  "AI-교육-세미나-운영-유튜버-궤도": { slug: "parent-education", title: "찾아가는 경기학부모교육" },
+  "관공서-강당-행사-기획-아누리홀": { slug: "parent-education", title: "찾아가는 경기학부모교육" },
+  "LED-Wall-행사-운영-EBS-스페이스홀": { slug: "parent-education", title: "찾아가는 경기학부모교육" },
+  "학부모-교육-행사-기획-등록-동선": { slug: "parent-education", title: "찾아가는 경기학부모교육" },
+  "전국-순회-교육-운영-예술인-권리보호": { slug: "artist-rights", title: "예술인 권리보호 교육" },
+};
+
+/* ── 글 내용 기반 CTA 자동 매칭 ──
+ * 우선순위: 디자인 카테고리(구체적) → 행사 유형 → 가이드/일반.
+ * 키워드 매칭 점수가 같으면 배열 앞쪽 규칙이 이김.
+ */
 const CTA_RULES: {
   keywords: string[];
   href: string;
@@ -25,23 +45,65 @@ const CTA_RULES: {
   description: string;
   label: string;
 }[] = [
-  // 행사 후기/사례 글 → 회사소개 (파란컴퍼니가 어떤 곳인지)
+  // ── 디자인 카테고리별 (디자인별 필터 deep-link) ──
   {
-    keywords: ["사례", "후기", "현장", "운영", "대행"],
-    href: "/company",
-    title: "파란컴퍼니는 어떤 회사인가요?",
-    description: "250+ 프로젝트, 재계약률 90%의 행사 전문 에이전시",
-    label: "회사소개",
+    keywords: ["현수막", "엑스배너", "x배너", "x-배너", "롤배너", "롤업배너", "배너"],
+    href: "/work?view=design&design=배너·현수막",
+    title: "배너·현수막 디자인 사례를 확인해보세요",
+    description: "실제 행사에서 제작한 현수막·엑스배너 작업물을 보여드립니다",
+    label: "배너·현수막 디자인",
   },
-  // 공공기관 관련 글 → 포트폴리오 (공공기관 사례)
   {
-    keywords: ["공공기관", "교육청", "지자체", "정부", "관공서", "입찰"],
-    href: "/work",
-    title: "공공기관 행사 사례를 확인해보세요",
-    description: "실적의 60% 이상이 공공기관 행사입니다",
-    label: "포트폴리오",
+    keywords: ["포스터"],
+    href: "/work?view=design&design=포스터",
+    title: "행사 포스터 디자인 사례",
+    description: "공공기관·기업 행사 포스터 작업물을 모아봤어요",
+    label: "포스터 디자인",
   },
-  // 비용/견적 관련 글 → 비용 가이드
+  {
+    keywords: ["자료집", "카탈로그", "책자", "에세이집", "제본", "무선제본", "중철제본"],
+    href: "/work?view=design&design=카탈로그",
+    title: "자료집·카탈로그 디자인 사례",
+    description: "편집부터 제본까지 완성된 행사 자료집을 확인하세요",
+    label: "카탈로그 디자인",
+  },
+  {
+    keywords: ["리플렛", "리플릿", "팸플릿"],
+    href: "/work?view=design&design=리플렛",
+    title: "리플렛 디자인 사례",
+    description: "행사 안내·홍보용 리플렛 디자인을 보여드립니다",
+    label: "리플렛 디자인",
+  },
+  {
+    keywords: ["카드뉴스", "sns 콘텐츠", "sns콘텐츠", "인스타그램"],
+    href: "/work?view=design&design=카드뉴스",
+    title: "카드뉴스·SNS 콘텐츠 사례",
+    description: "행사 결과·홍보를 위한 카드뉴스 작업물을 모았어요",
+    label: "카드뉴스 디자인",
+  },
+  {
+    keywords: ["전시부스", "포토존", "체험부스", "공간연출"],
+    href: "/work?view=design&design=전시부스",
+    title: "전시부스·포토존 디자인 사례",
+    description: "공공기관·기업 행사장 부스와 포토존을 확인하세요",
+    label: "전시부스 디자인",
+  },
+  // ── 행사 유형별 (행사별 필터 deep-link) ──
+  {
+    keywords: ["포럼", "심포지엄"],
+    href: "/work?view=event&category=포럼",
+    title: "포럼·심포지엄 대행 사례",
+    description: "국제 포럼·학술 행사 운영 실적을 확인하세요",
+    label: "포럼 사례",
+  },
+  {
+    keywords: ["세미나", "컨퍼런스", "학술"],
+    href: "/work?view=event&category=세미나",
+    title: "세미나·컨퍼런스 대행 사례",
+    description: "기업·공공기관 세미나 운영 사례를 확인하세요",
+    label: "세미나 사례",
+  },
+  // ── 가이드/일반 ──
   {
     keywords: ["비용", "견적", "예산", "가격", "단가", "패키지"],
     href: "/guide/pricing",
@@ -49,15 +111,13 @@ const CTA_RULES: {
     description: "규모별·유형별 비용 가이드를 확인해보세요",
     label: "비용 가이드",
   },
-  // 준비/기획 관련 글 → 체크리스트
   {
-    keywords: ["체크리스트", "준비", "기획서", "일정", "D-30"],
+    keywords: ["체크리스트", "기획서", "d-30", "d30"],
     href: "/guide/checklist",
     title: "행사 준비, 빠진 건 없나요?",
     description: "D-30부터 당일까지 체크리스트로 점검하세요",
     label: "체크리스트",
   },
-  // 절차/프로세스 관련 글 → 진행 절차
   {
     keywords: ["절차", "프로세스", "순서", "단계", "흐름", "큐시트"],
     href: "/guide/process",
@@ -65,15 +125,13 @@ const CTA_RULES: {
     description: "상담부터 결과보고서까지 7단계 프로세스",
     label: "진행 절차",
   },
-  // 장소/공간 관련 글 → 장소 가이드
   {
-    keywords: ["장소", "공간", "연출", "무대", "강당", "호텔", "볼룸", "대관"],
+    keywords: ["장소", "무대", "강당", "호텔", "볼룸", "대관", "행사장"],
     href: "/guide/venue",
     title: "행사 장소 선택이 고민이신가요?",
     description: "유형별 장소 비교와 대관 가이드를 확인하세요",
     label: "장소 가이드",
   },
-  // 규모 관련 글 → 규모별 가이드
   {
     keywords: ["규모", "소규모", "대규모", "인원", "100명", "300명", "500명"],
     href: "/guide/scale",
@@ -81,32 +139,36 @@ const CTA_RULES: {
     description: "규모별 예산·인력·장비 가이드를 확인하세요",
     label: "규모별 가이드",
   },
-  // 디자인/제작물 관련 글 → 포트폴리오 (디자인 사례)
   {
-    keywords: ["디자인", "포스터", "현수막", "시안", "리플렛", "배너", "자료집"],
+    keywords: ["공공기관", "교육청", "지자체", "정부", "관공서", "입찰", "rfp"],
     href: "/work",
-    title: "행사 디자인 사례가 궁금하신가요?",
-    description: "포스터·현수막·공간연출까지 실제 제작물 확인",
-    label: "포트폴리오",
-  },
-  // 세미나/컨퍼런스/포럼 관련 글 → 포트폴리오
-  {
-    keywords: ["포럼", "컨퍼런스", "세미나", "학술", "심포지엄", "교육", "워크숍"],
-    href: "/work",
-    title: "비슷한 행사 사례가 궁금하신가요?",
-    description: "250+ 프로젝트 포트폴리오를 확인해보세요",
+    title: "공공기관 행사 사례를 확인해보세요",
+    description: "실적의 60% 이상이 공공기관 행사입니다",
     label: "포트폴리오",
   },
 ];
 
 function getServiceCTA(
+  slug?: string | null,
   category?: string | null,
   tags?: string[] | null,
   title?: string,
 ): { href: string; title: string; description: string; label: string } {
+  // 1) 슬러그 직접 매칭이 있으면 해당 포트폴리오 상세로
+  if (slug && BLOG_TO_PORTFOLIO[slug]) {
+    const pf = BLOG_TO_PORTFOLIO[slug];
+    return {
+      href: `/work/${pf.slug}`,
+      title: "이 글의 행사 사례를 자세히 보기",
+      description: `${pf.title} 포트폴리오에서 더 많은 현장 사진과 디자인을 확인하세요`,
+      label: "행사 사례 보기",
+    };
+  }
+
+  // 2) 키워드 점수 기반 매칭
   const text = [category, title, ...(tags ?? [])].filter(Boolean).join(" ").toLowerCase();
 
-  let bestMatch = CTA_RULES[0];
+  let bestMatch: typeof CTA_RULES[number] | null = null;
   let bestScore = 0;
 
   for (const rule of CTA_RULES) {
@@ -117,16 +179,15 @@ function getServiceCTA(
     }
   }
 
-  if (bestScore === 0) {
-    return {
-      href: "/company",
-      title: "파란컴퍼니는 어떤 회사인가요?",
-      description: "250+ 프로젝트, 재계약률 90%의 행사 전문 에이전시",
-      label: "회사소개",
-    };
-  }
+  if (bestMatch) return bestMatch;
 
-  return bestMatch;
+  // 3) 폴백 — 회사소개
+  return {
+    href: "/company",
+    title: "파란컴퍼니는 어떤 회사인가요?",
+    description: "250+ 프로젝트, 재계약률 90%의 행사 전문 에이전시",
+    label: "회사소개",
+  };
 }
 
 interface Props {
@@ -365,7 +426,7 @@ export default async function BlogDetailPage({ params }: Props) {
 
         {/* ═══ 행사 대행 서비스 내부 링크 배너 (글 내용 기반 자동 매칭) ═══ */}
         {(() => {
-          const cta = getServiceCTA(post.category, post.tags, post.title);
+          const cta = getServiceCTA(post.slug, post.category, post.tags, post.title);
           return (
             <MotionSection className="mx-auto max-w-[640px] px-6 py-6">
               <Link

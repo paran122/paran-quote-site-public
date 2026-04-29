@@ -204,6 +204,24 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
   const [lightboxWork, setLightboxWork] = useState<DesignWork | null>(null);
   const closeLightbox = useCallback(() => setLightboxWork(null), []);
 
+  /** URL 쿼리 파라미터로 초기 필터 설정 (블로그 CTA 등에서 deep-link) */
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const view = params.get("view");
+    const design = params.get("design");
+    const category = params.get("category");
+
+    if (view === "design") {
+      setViewMode("design");
+      if (design && DESIGN_CATEGORIES.some((c) => c.key === design)) {
+        setDesignFilter(design);
+      }
+    } else if (view === "event") {
+      setViewMode("event");
+      if (category) setCategoryFilter(category);
+    }
+  }, []);
+
   /** 디자인 작업물 정렬: 고정 4개 + 나머지 랜덤 (클라이언트에서만 셔플) */
   const [shuffledRest, setShuffledRest] = useState<DesignWork[]>([]);
   const [shuffleReady, setShuffleReady] = useState(false);
