@@ -68,9 +68,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const homepageDate = latestContent[0] ?? new Date("2026-03-30");
 
   // 정적 페이지: 마지막 코드 수정 기준 고정 날짜
-  const GUIDE_UPDATED = new Date("2026-03-30"); // 가격 v1.2 반영
-  const SERVICES_UPDATED = new Date("2026-03-30");
-  const COMPANY_UPDATED = new Date("2026-03-19");
+  const GUIDE_UPDATED = new Date("2026-04-27"); // SEO 메타 "행사 대행" 키워드 + 내부 링크 배너 반영
+  const SERVICES_UPDATED = new Date("2026-04-27");
+  const COMPANY_UPDATED = new Date("2026-04-27");
   const POLICY_UPDATED = new Date("2026-03-10");
 
   const staticPages: MetadataRoute.Sitemap = [
