@@ -131,19 +131,62 @@ export default function RootLayout({
       lang="ko"
       className={`${notoSansKR.variable} ${plusJakartaSans.variable} ${dmSans.variable} ${inter.variable} ${GeistSans.variable} ${GeistMono.variable}`}
     >
+      <Script id="gtm-init" strategy="afterInteractive">
+        {`
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-MG8KFNPW');
+        `}
+      </Script>
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-323NGQ108L"
         strategy="afterInteractive"
       />
-      <Script id="ga4-init" strategy="afterInteractive">
+      <Script id="gtag-init" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'G-323NGQ108L');
+          gtag('config', 'AW-18041893092');
+        `}
+      </Script>
+      <Script id="paran-engagement" strategy="afterInteractive">
+        {`
+          (function(){
+            var engaged=false, scrolled=false;
+            function onScroll(){ scrolled=true; window.removeEventListener('scroll', onScroll); }
+            window.addEventListener('scroll', onScroll, {passive:true});
+            setTimeout(function(){
+              if(scrolled && !engaged){
+                engaged=true;
+                if(window.gtag){ window.gtag('event','engaged_view_60s',{event_category:'engagement',value:1}); }
+                window.dataLayer.push({event:'engaged_view_60s'});
+              }
+            }, 60000);
+            document.addEventListener('submit', function(e){
+              var f=e.target;
+              if(!f || f.tagName!=='FORM') return;
+              var id=f.id || f.getAttribute('name') || 'unknown';
+              if(window.gtag){
+                window.gtag('event','generate_lead',{event_category:'conversion',form_id:id});
+              }
+              window.dataLayer.push({event:'generate_lead', form_id:id});
+            }, true);
+          })();
         `}
       </Script>
       <body className="font-body antialiased min-h-screen flex flex-col">
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MG8KFNPW"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <PublicShell>
           <JsonLd />
           <SiteDataLoader />
