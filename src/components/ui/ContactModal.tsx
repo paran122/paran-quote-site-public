@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { X, Loader2, Paperclip, FileText, Image as ImageIcon } from "lucide-react";
+import { X, Loader2, Paperclip, FileText, Image as ImageIcon, Check } from "lucide-react";
 import { showToast } from "@/components/ui/Toast";
+import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/referralSources";
+import { formatPhoneNumber } from "@/lib/phoneFormat";
 
 const MAX_FILES = 5;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -48,11 +50,10 @@ function getFieldError(form: ContactForm, key: string): string | null {
     if (!form.email.trim()) return "이메일을 입력해주세요";
     if (!EMAIL_REGEX.test(form.email.trim())) return "올바른 이메일 형식 (예: email@company.com)";
   }
-  if (key === "message" && !form.message.trim()) return "문의 내용을 입력해주세요";
   return null;
 }
 
-const REQUIRED_FIELDS = ["contactName", "phone", "email", "message"] as const;
+const REQUIRED_FIELDS = ["contactName", "phone", "email"] as const;
 
 interface Props {
   isOpen: boolean;
@@ -65,7 +66,15 @@ export default function ContactModal({ isOpen, onClose }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [referralSources, setReferralSources] = useState<string[]>([]);
+  const [referralOther, setReferralOther] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const toggleReferral = (source: string) => {
+    setReferralSources((prev) =>
+      prev.includes(source) ? prev.filter((s) => s !== source) : [...prev, source]
+    );
+  };
 
   // ESC 키로 닫기
   useEffect(() => {
@@ -95,6 +104,8 @@ export default function ContactModal({ isOpen, onClose }: Props) {
       setForm(INITIAL_FORM);
       setTouched({});
       setFiles([]);
+      setReferralSources([]);
+      setReferralOther("");
     }
   }, [isOpen]);
 
@@ -174,7 +185,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
         event_name: "문의",
         event_date: new Date().toISOString().slice(0, 10),
         event_type: "문의",
-        memo: form.message,
+        memo: prependReferralToMemo(referralSources, form.message, referralOther),
         cart_items: [],
         total_amount: 0,
         attachments,
@@ -267,9 +278,11 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 </label>
                 <input
                   type="tel"
+                  inputMode="numeric"
+                  maxLength={14}
                   placeholder="010-1234-5678"
                   value={form.phone}
-                  onChange={(e) => updateField("phone", e.target.value)}
+                  onChange={(e) => updateField("phone", formatPhoneNumber(e.target.value))}
                   onBlur={() => handleBlur("phone")}
                   className={`w-full rounded-lg border bg-white px-3.5 py-2.5 text-[14px] text-slate-900 placeholder-slate-300 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary/20 ${
                     touched.phone && getFieldError(form, "phone")
@@ -304,25 +317,55 @@ export default function ContactModal({ isOpen, onClose }: Props) {
             </div>
           </div>
 
+          {/* 유입경로 */}
+          <div className="mt-4">
+            <div className="mb-1.5 flex items-center gap-1.5">
+              <label className="text-[13px] font-medium text-slate-600">유입경로</label>
+              <span className="text-[11px] text-slate-400">중복 선택 가능</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {REFERRAL_SOURCES.map((src) => {
+                const selected = referralSources.includes(src);
+                return (
+                  <button
+                    key={src}
+                    type="button"
+                    onClick={() => toggleReferral(src)}
+                    className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-colors ${
+                      selected
+                        ? "border-blue-500 bg-blue-50 text-blue-600"
+                        : "border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:text-slate-700"
+                    }`}
+                  >
+                    {selected && <Check className="h-3 w-3" strokeWidth={3} />}
+                    {src}
+                  </button>
+                );
+              })}
+            </div>
+            {referralSources.includes(REFERRAL_OTHER) && (
+              <input
+                type="text"
+                placeholder="어떤 경로로 알게 되셨나요? (예: 박람회, 명함, 추천글 등)"
+                value={referralOther}
+                onChange={(e) => setReferralOther(e.target.value)}
+                maxLength={80}
+                className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-[13px] text-slate-900 placeholder-slate-300 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary/20"
+              />
+            )}
+          </div>
+
           <div className="mt-4">
             <label className="mb-1.5 block text-[13px] font-medium text-slate-600">
-              문의 내용 <span className="text-red-400">*</span>
+              문의 내용
             </label>
             <textarea
               rows={4}
-              placeholder="프로젝트에 대해 알려주세요"
+              placeholder="행사명, 예상 인원수, 참고 사항 등 자유롭게 적어주세요."
               value={form.message}
               onChange={(e) => updateField("message", e.target.value)}
-              onBlur={() => handleBlur("message")}
-              className={`w-full resize-none rounded-lg border bg-white px-3.5 py-2.5 text-[14px] text-slate-900 placeholder-slate-300 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary/20 ${
-                touched.message && getFieldError(form, "message")
-                  ? "border-red-300"
-                  : "border-slate-200"
-              }`}
+              className="w-full resize-none rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-[14px] text-slate-900 placeholder-slate-300 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary/20"
             />
-            {touched.message && getFieldError(form, "message") && (
-              <p className="mt-1 text-[12px] text-red-400">{getFieldError(form, "message")}</p>
-            )}
           </div>
 
           {/* 파일 첨부 */}

@@ -1,4 +1,5 @@
 import type { QuoteEmailData, CartItemForEmail } from "./types";
+import { parseReferralFromMemo } from "../../referralSources";
 
 function formatKRW(amount: number): string {
   if (amount >= 10000) {
@@ -48,10 +49,14 @@ export function customerConfirmHtml(data: QuoteEmailData): string {
             ${data.contactName}님, 안녕하세요.<br/>
             파란컴퍼니에 문의해 주셔서 감사합니다.
           </p>
+          ${(() => {
+            const { body } = parseReferralFromMemo(data.memo);
+            return body ? `
           <div style="padding:16px;background:#f8fafc;border-radius:8px;border-left:3px solid #1d4ed8;margin-bottom:20px">
             <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;font-weight:600">문의 내용</div>
-            <div style="font-size:14px;color:#334155;line-height:1.6;white-space:pre-wrap">${data.memo || "-"}</div>
-          </div>
+            <div style="font-size:14px;color:#334155;line-height:1.6;white-space:pre-wrap">${body}</div>
+          </div>` : "";
+          })()}
           <p style="margin:0;font-size:14px;color:#64748b;line-height:1.7">
             확인 후 빠른 시일 내에 회신 드리겠습니다.<br/>
             급한 건은 전화(02-6342-2800)로 연락 주시면 더 빠르게 도움드릴 수 있습니다.

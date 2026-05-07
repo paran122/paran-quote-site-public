@@ -8,6 +8,8 @@ import type { LucideIcon } from "lucide-react";
 import { showToast } from "@/components/ui/Toast";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { ESTIMATE_EVENT_TYPES, formatPriceWon } from "@/lib/pricing";
+import { REFERRAL_SOURCES, REFERRAL_OTHER, buildReferralLine } from "@/lib/referralSources";
+import { formatPhoneNumber, KOREAN_PHONE_REGEX } from "@/lib/phoneFormat";
 
 const MAX_FILES = 5;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -74,7 +76,7 @@ function getDefaultChecked(items: EstimateItem[]): CheckedState {
   return state;
 }
 
-const PHONE_REGEX = /^01[016789]-?\d{3,4}-?\d{4}$/;
+const PHONE_REGEX = KOREAN_PHONE_REGEX;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface OrderForm {
@@ -149,10 +151,18 @@ export default function Estimate() {
   const [submitting, setSubmitting] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [referralSources, setReferralSources] = useState<string[]>([]);
+  const [referralOther, setReferralOther] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const updateField = (key: keyof OrderForm, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const toggleReferral = (source: string) => {
+    setReferralSources((prev) =>
+      prev.includes(source) ? prev.filter((s) => s !== source) : [...prev, source]
+    );
   };
 
   const handleBlur = (key: string) => {
@@ -163,6 +173,8 @@ export default function Estimate() {
     setForm(INITIAL_FORM);
     setTouched({});
     setFiles([]);
+    setReferralSources([]);
+    setReferralOther("");
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -229,8 +241,10 @@ export default function Estimate() {
         unit: item.unit,
       }));
 
-    // Combine position, budgetRange, memo into one memo field
+    // Combine referral, position, budgetRange, memo into one memo field
     const memoParts: string[] = [];
+    const referralLine = buildReferralLine(referralSources, referralOther);
+    if (referralLine) memoParts.push(referralLine);
     if (form.position) memoParts.push(`직급/직책: ${form.position}`);
     if (form.budgetRange) memoParts.push(`예산 범위: ${form.budgetRange}`);
     if (form.memo) memoParts.push(form.memo);
@@ -615,7 +629,7 @@ export default function Estimate() {
                           </div>
                           <div>
                             <label className="mb-1.5 block text-xs font-medium text-gray-500">연락처 <span className="text-red-400">*</span></label>
-                            <input type="tel" placeholder="010-1234-5678" value={form.phone} onChange={(e) => updateField("phone", e.target.value)} onBlur={() => handleBlur("phone")} className={`w-full rounded-xl border bg-gray-50/50 px-4 py-3 text-sm text-gray-900 placeholder-gray-300 outline-none transition-all focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100 ${touched.phone && getFieldError(form, "phone") ? "border-red-300" : "border-gray-200"}`} />
+                            <input type="tel" inputMode="numeric" maxLength={14} placeholder="010-1234-5678" value={form.phone} onChange={(e) => updateField("phone", formatPhoneNumber(e.target.value))} onBlur={() => handleBlur("phone")} className={`w-full rounded-xl border bg-gray-50/50 px-4 py-3 text-sm text-gray-900 placeholder-gray-300 outline-none transition-all focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100 ${touched.phone && getFieldError(form, "phone") ? "border-red-300" : "border-gray-200"}`} />
                             {touched.phone && getFieldError(form, "phone") && <p className="mt-1 text-xs text-red-400">{getFieldError(form, "phone")}</p>}
                           </div>
                           <div>
@@ -659,6 +673,44 @@ export default function Estimate() {
                           </div>
                         </div>
                       </div>
+                      <div>
+                        <div className="mb-3 flex items-center gap-2 md:mb-4">
+                          <div className="h-5 w-1 rounded-full bg-indigo-500" />
+                          <h4 className="text-sm font-bold text-gray-900">유입경로</h4>
+                          <span className="text-[11px] text-gray-400">중복 선택 가능</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {REFERRAL_SOURCES.map((src) => {
+                            const selected = referralSources.includes(src);
+                            return (
+                              <button
+                                key={src}
+                                type="button"
+                                onClick={() => toggleReferral(src)}
+                                className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                                  selected
+                                    ? "border-blue-500 bg-blue-50 text-blue-600"
+                                    : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                }`}
+                              >
+                                {selected && <Check className="h-3 w-3" strokeWidth={3} />}
+                                {src}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        {referralSources.includes(REFERRAL_OTHER) && (
+                          <input
+                            type="text"
+                            placeholder="어떤 경로로 알게 되셨나요? (예: 박람회, 명함, 추천글 등)"
+                            value={referralOther}
+                            onChange={(e) => setReferralOther(e.target.value)}
+                            maxLength={80}
+                            className="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm text-gray-900 placeholder-gray-300 outline-none transition-all focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                          />
+                        )}
+                      </div>
+
                       <div>
                         <div className="mb-3 flex items-center gap-2 md:mb-4">
                           <div className="h-5 w-1 rounded-full bg-indigo-500" />
