@@ -14,6 +14,7 @@ import {
   Paperclip,
   Download,
 } from "lucide-react";
+import { parseReferralFromMemo } from "@/lib/referralSources";
 
 /* ── 타입 ── */
 export interface QuoteItem {
@@ -322,13 +323,26 @@ export function QuoteDetail({
         </div>
       )}
 
-      {/* 고객 메모 */}
-      {q.memo && (
-        <div>
-          <span className="text-xs text-slate-400">고객 메모</span>
-          <p className="text-sm text-slate-700 mt-0.5 whitespace-pre-wrap">{q.memo}</p>
-        </div>
-      )}
+      {/* 유입경로 + 고객 메모 (분리 표시) */}
+      {(() => {
+        const { referral, body } = parseReferralFromMemo(q.memo);
+        return (
+          <>
+            {referral && (
+              <div className="rounded-lg border border-blue-100 bg-blue-50/50 px-3 py-2">
+                <span className="text-xs font-semibold text-blue-500">유입경로</span>
+                <p className="mt-0.5 text-sm font-medium text-blue-900">{referral}</p>
+              </div>
+            )}
+            {body && (
+              <div>
+                <span className="text-xs text-slate-400">고객 메모</span>
+                <p className="text-sm text-slate-700 mt-0.5 whitespace-pre-wrap">{body}</p>
+              </div>
+            )}
+          </>
+        );
+      })()}
 
       {/* 첨부 파일 */}
       {q.attachments && q.attachments.length > 0 && (

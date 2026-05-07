@@ -1,4 +1,5 @@
 import type { QuoteEmailData, CartItemForEmail, EmailAttachment } from "./types";
+import { parseReferralFromMemo } from "../../referralSources";
 
 function formatKRW(amount: number): string {
   if (amount >= 10000) {
@@ -105,6 +106,15 @@ export function adminNotifySubject(data: QuoteEmailData): string {
 }
 
 export function adminNotifyHtml(data: QuoteEmailData): string {
+  const { referral, body: memoBody } = parseReferralFromMemo(data.memo);
+  const referralBlock = referral
+    ? `
+          <div style="margin:20px 0 0;padding:16px;background:#eff6ff;border-radius:8px;border-left:3px solid #3b82f6">
+            <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;font-weight:600">유입경로</div>
+            <div style="font-size:14px;color:#1e40af;line-height:1.6;font-weight:600">${referral}</div>
+          </div>`
+    : "";
+
   if (data.type === "inquiry") {
     return `
 <!DOCTYPE html>
@@ -137,9 +147,10 @@ export function adminNotifyHtml(data: QuoteEmailData): string {
               <td style="padding:8px 0;font-size:14px;color:#1e293b">${data.email}</td>
             </tr>
           </table>
+          ${referralBlock}
           <div style="margin:20px 0 0;padding:16px;background:#f8fafc;border-radius:8px;border-left:3px solid #1d4ed8">
             <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;font-weight:600">문의 내용</div>
-            <div style="font-size:14px;color:#334155;line-height:1.6;white-space:pre-wrap">${data.memo || "-"}</div>
+            <div style="font-size:14px;color:#334155;line-height:1.6;white-space:pre-wrap">${memoBody || "-"}</div>
           </div>
           ${data.attachments ? buildAttachmentSection(data.attachments) : ""}
         </td></tr>
@@ -222,10 +233,11 @@ export function adminNotifyHtml(data: QuoteEmailData): string {
             <span style="margin-left:16px;font-size:22px;color:#fff;font-weight:800">${formatKRW(data.totalAmount)}</span>
           </div>
 
-          ${data.memo ? `
+          ${referralBlock}
+          ${memoBody ? `
           <div style="margin:20px 0 0;padding:16px;background:#f8fafc;border-radius:8px;border-left:3px solid #1d4ed8">
             <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;font-weight:600">메모</div>
-            <div style="font-size:14px;color:#334155;line-height:1.6;white-space:pre-wrap">${data.memo}</div>
+            <div style="font-size:14px;color:#334155;line-height:1.6;white-space:pre-wrap">${memoBody}</div>
           </div>` : ""}
 
           ${data.attachments ? buildAttachmentSection(data.attachments) : ""}

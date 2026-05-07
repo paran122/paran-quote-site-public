@@ -4,9 +4,11 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { Phone, Mail, Printer, MapPin, Loader2, Paperclip, X, FileText, Image as ImageIcon } from "lucide-react";
+import { Phone, Mail, Printer, MapPin, Loader2, Paperclip, X, FileText, Image as ImageIcon, Check } from "lucide-react";
 import { showToast } from "@/components/ui/Toast";
 import AnimatedCheckbox from "@/components/ui/AnimatedCheckbox";
+import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/referralSources";
+import { formatPhoneNumber } from "@/lib/phoneFormat";
 
 const MAX_FILES = 5;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -51,11 +53,10 @@ function getFieldError(form: ContactForm, key: string): string | null {
     if (!form.email.trim()) return "이메일을 입력해주세요";
     if (!EMAIL_REGEX.test(form.email.trim())) return "올바른 이메일 형식 (예: email@company.com)";
   }
-  if (key === "message" && !form.message.trim()) return "문의 내용을 입력해주세요";
   return null;
 }
 
-const REQUIRED_FIELDS = ["contactName", "phone", "email", "message"] as const;
+const REQUIRED_FIELDS = ["contactName", "phone", "email"] as const;
 
 export default function Contact() {
   const [form, setForm] = useState<ContactForm>(INITIAL_FORM);
@@ -64,10 +65,18 @@ export default function Contact() {
   const [privacyAgreed, setPrivacyAgreed] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [referralSources, setReferralSources] = useState<string[]>([]);
+  const [referralOther, setReferralOther] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const updateField = (key: keyof ContactForm, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const toggleReferral = (source: string) => {
+    setReferralSources((prev) =>
+      prev.includes(source) ? prev.filter((s) => s !== source) : [...prev, source]
+    );
   };
 
   const handleBlur = (key: string) => {
@@ -147,7 +156,7 @@ export default function Contact() {
         event_name: "문의",
         event_date: new Date().toISOString().slice(0, 10),
         event_type: "문의",
-        memo: form.message,
+        memo: prependReferralToMemo(referralSources, form.message, referralOther),
         cart_items: [],
         total_amount: 0,
         attachments,
@@ -157,6 +166,8 @@ export default function Contact() {
       setTouched({});
       setPrivacyAgreed(false);
       setFiles([]);
+      setReferralSources([]);
+      setReferralOther("");
     } catch {
       showToast("오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
@@ -265,9 +276,11 @@ export default function Contact() {
                         <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">연락처 <span className="text-red-400">*</span></label>
                         <input
                           type="tel"
+                          inputMode="numeric"
+                          maxLength={14}
                           placeholder="010-1234-5678"
                           value={form.phone}
-                          onChange={(e) => updateField("phone", e.target.value)}
+                          onChange={(e) => updateField("phone", formatPhoneNumber(e.target.value))}
                           onBlur={() => handleBlur("phone")}
                           className={`w-full rounded border bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.phone && getFieldError(form, "phone") ? "border-red-300" : "border-gray-200"}`}
                         />
@@ -289,18 +302,54 @@ export default function Contact() {
                   </div>
                 </div>
 
+                {/* 유입경로 */}
+                <div className="mb-2 md:mb-8">
+                  <div className="mb-1 flex items-center gap-1 md:mb-4 md:gap-2">
+                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">유입경로</h3>
+                    <span className="text-[8px] text-gray-400 md:text-[11px]">중복 선택 가능</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1 md:gap-2">
+                    {REFERRAL_SOURCES.map((src) => {
+                      const selected = referralSources.includes(src);
+                      return (
+                        <button
+                          key={src}
+                          type="button"
+                          onClick={() => toggleReferral(src)}
+                          className={`flex items-center gap-1 rounded-full border px-2 py-1 text-[9px] font-medium transition-colors md:gap-1.5 md:px-3.5 md:py-2 md:text-xs ${
+                            selected
+                              ? "border-blue-500 bg-blue-50 text-blue-600"
+                              : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                          }`}
+                        >
+                          {selected && <Check className="h-2.5 w-2.5 md:h-3 md:w-3" strokeWidth={3} />}
+                          {src}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {referralSources.includes(REFERRAL_OTHER) && (
+                    <input
+                      type="text"
+                      placeholder="어떤 경로로 알게 되셨나요? (예: 박람회, 명함, 추천글 등)"
+                      value={referralOther}
+                      onChange={(e) => setReferralOther(e.target.value)}
+                      maxLength={80}
+                      className="mt-1.5 w-full rounded border border-gray-200 bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:mt-2.5 md:rounded-lg md:px-4 md:py-2.5 md:text-sm"
+                    />
+                  )}
+                </div>
+
                 {/* 문의 내용 */}
                 <div className="mb-2 md:mb-8">
-                  <h3 className="mb-1 text-[10px] font-bold text-gray-900 md:mb-4 md:text-base">문의 내용 <span className="text-red-400">*</span></h3>
+                  <h3 className="mb-1 text-[10px] font-bold text-gray-900 md:mb-4 md:text-base">문의 내용</h3>
                   <textarea
                     rows={3}
-                    placeholder="프로젝트에 대해 알려주세요"
+                    placeholder="행사명, 예상 인원수, 참고 사항 등 자유롭게 적어주세요."
                     value={form.message}
                     onChange={(e) => updateField("message", e.target.value)}
-                    onBlur={() => handleBlur("message")}
-                    className={`w-full resize-none rounded border bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.message && getFieldError(form, "message") ? "border-red-300" : "border-gray-200"}`}
+                    className="w-full resize-none rounded border border-gray-200 bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm"
                   />
-                  {touched.message && getFieldError(form, "message") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "message")}</p>}
                 </div>
 
                 {/* 파일 첨부 */}
