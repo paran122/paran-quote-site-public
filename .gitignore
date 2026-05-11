@@ -95,6 +95,10 @@ docs/.bkit-memory.json
 *.png
 !public/**/*.png
 !src/app/apple-icon.png
+# Windows screenshot files (한글 Windows 기본 캡처 파일명) — public 폴더에 떨어져도 무시
+public/화면 캡처*.png
+public/screenshot*.png
+public/Screenshot*.png
 .git-private-backup/
 
 # Local Netlify folder

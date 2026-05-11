@@ -15,6 +15,7 @@ import {
   Download,
 } from "lucide-react";
 import { parseReferralFromMemo } from "@/lib/referralSources";
+import { formatPriceWon } from "@/lib/pricing";
 
 /* ── 타입 ── */
 export interface QuoteItem {
@@ -300,7 +301,7 @@ export function QuoteDetail({
               <div key={i} className="flex justify-between text-sm">
                 <span className="text-slate-700">{item.name}</span>
                 <span className="text-slate-900">
-                  {item.price.toLocaleString("ko-KR")}원
+                  {formatPriceWon(item.price)}
                   {(item.qty || item.quantity) && (
                     <span className="text-slate-400 ml-1">
                       x{item.qty || item.quantity}
@@ -311,12 +312,12 @@ export function QuoteDetail({
             ))}
             <div className="border-t border-slate-100 pt-1 mt-1 flex justify-between font-medium text-sm">
               <span>합계</span>
-              <span>{q.total_amount.toLocaleString("ko-KR")}원</span>
+              <span>{formatPriceWon(q.total_amount)}</span>
             </div>
             {q.discount_amount && q.discount_amount > 0 && (
               <div className="flex justify-between text-sm text-red-500">
                 <span>할인</span>
-                <span>-{q.discount_amount.toLocaleString("ko-KR")}원</span>
+                <span>-{formatPriceWon(q.discount_amount)}</span>
               </div>
             )}
           </div>
@@ -411,7 +412,7 @@ export function QuoteRow({
       {!inquiry && (
         <div className="text-right shrink-0">
           <p className="text-sm font-semibold text-slate-900">
-            {q.total_amount.toLocaleString("ko-KR")}원
+            {formatPriceWon(q.total_amount)}
           </p>
         </div>
       )}
