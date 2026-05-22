@@ -24,7 +24,9 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
   process.exit(1);
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+  db: { schema: "paran_quote_site" },
+});
 
 // 백업 폴더: 프로젝트 상위에 생성 (git에 포함되지 않도록)
 const BACKUP_ROOT = path.resolve(__dirname, "../../supabase-backup/parancompany");
@@ -32,6 +34,8 @@ const STORAGE_DIR = path.join(BACKUP_ROOT, "storage");
 const DB_DIR = path.join(BACKUP_ROOT, "db");
 
 const BUCKETS = ["portfolio", "blog"];
+// paran_quote_site 스키마에 실제로 존재하는 테이블만 백업
+// (이전엔 categories, event_types, services, site_settings, quote_comments도 있었으나 삭제됨 — 옛 백업 파일은 보존)
 const DB_TABLES = [
   "blog_posts",
   "blog_research",
@@ -39,12 +43,7 @@ const DB_TABLES = [
   "portfolios",
   "portfolio_media",
   "event_reviews",
-  "categories",
-  "event_types",
-  "services",
-  "site_settings",
   "quotes",
-  "quote_comments",
   "quote_notes",
 ];
 
