@@ -33,7 +33,9 @@ const BACKUP_ROOT = path.resolve(__dirname, "../../supabase-backup/parancompany"
 const STORAGE_DIR = path.join(BACKUP_ROOT, "storage");
 const DB_DIR = path.join(BACKUP_ROOT, "db");
 
-const BUCKETS = ["portfolio", "blog"];
+// 실제 운영 버킷은 qs- 접두사 (paran_quote_site 스키마 전용)
+// "portfolio"/"blog"는 마이그레이션 전 옛 버킷이라 백업 대상 아님
+const BUCKETS = ["qs-portfolio", "qs-blog"];
 // paran_quote_site 스키마에 실제로 존재하는 테이블만 백업
 // (이전엔 categories, event_types, services, site_settings, quote_comments도 있었으나 삭제됨 — 옛 백업 파일은 보존)
 const DB_TABLES = [
