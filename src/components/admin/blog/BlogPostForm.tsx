@@ -510,14 +510,23 @@ export default function BlogPostForm({ post }: BlogPostFormProps) {
             {/* 카테고리 */}
             <div>
               <label className="block text-sm text-slate-600 mb-1">카테고리</label>
-              <input
-                type="text"
+              <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                placeholder="예: 행사 기획, 꿀팁"
                 className="w-full text-sm border border-slate-200 rounded-sm px-3 py-2
-                  focus:outline-none focus:ring-1 focus:ring-primary/20"
-              />
+                  focus:outline-none focus:ring-1 focus:ring-primary/20 bg-white"
+              >
+                <option value="">선택 안 함</option>
+                <option value="행사 기획">행사 기획 (포트폴리오 행사 기획·노하우 사례)</option>
+                <option value="행사 후기">행사 후기 (포트폴리오 행사 현장 스케치·운영 후기)</option>
+                <option value="기획 가이드">기획 가이드 (방법론·대행사 선정·견적서)</option>
+                <option value="현장 노하우">현장 노하우 (큐시트·체크리스트·MC·제작물)</option>
+                <option value="행사 정보">행사 정보 (행사 유형 비교·행사장·장비)</option>
+                <option value="행사 유형 가이드">행사 유형 가이드 (송년회·시상식·창립 등)</option>
+              </select>
+              <p className="mt-1 text-xs text-slate-400">
+                * &ldquo;행사 기획&rdquo;/&ldquo;행사 후기&rdquo;는 랜딩페이지 블로그 섹션·블로그 히어로 영역에 직접 노출됩니다.
+              </p>
             </div>
 
             {/* 태그 */}
