@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { BlogPostCard } from "@/components/ui/card-18";
 import ContactModal from "@/components/ui/ContactModal";
 import type { BlogPost } from "@/types";
@@ -77,6 +77,39 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
   const [morePage, setMorePage] = useState(1);
   const [categoryPosts, setCategoryPosts] = useState<BlogPost[] | null>(null);
   const [categoryTotalCount, setCategoryTotalCount] = useState(initialTotalCount);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // 카테고리 탭 가로 스크롤 인디케이터 (모바일 전용)
+  const tabsScrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateTabsScrollState = useCallback(() => {
+    const el = tabsScrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    updateTabsScrollState();
+    window.addEventListener("resize", updateTabsScrollState);
+    return () => window.removeEventListener("resize", updateTabsScrollState);
+  }, [updateTabsScrollState]);
+
+  const scrollTabs = useCallback((direction: "left" | "right") => {
+    const el = tabsScrollRef.current;
+    if (!el) return;
+    const amount = Math.max(160, el.clientWidth * 0.7);
+    el.scrollBy({ left: direction === "right" ? amount : -amount, behavior: "smooth" });
+  }, []);
 
   // 카테고리 변경 시 서버에서 해당 카테고리 글 전체를 가져옴
   useEffect(() => {
@@ -143,12 +176,16 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
     : [];
 
   // 에디터 추천: featuredPosts 중 첫 번째 1개
+  // 모바일 + 카테고리 선택 시에는 별도 EDITOR'S PICK 섹션 노출 안 함 (해당 글은 More Articles로 자동 흡수)
+  const hideCuratedOnMobile = isMobile && activeCategory !== "전체";
   const filteredFeatured = featuredPosts.filter(
     (p) => activeCategory === "전체" || p.category === activeCategory,
   );
-  const editorPick: BlogPost | null = filteredFeatured.length > 0
-    ? filteredFeatured[0]
-    : (heroCandidates[4] ?? null);
+  const editorPick: BlogPost | null = hideCuratedOnMobile
+    ? null
+    : (filteredFeatured.length > 0
+        ? filteredFeatured[0]
+        : (heroCandidates[4] ?? null));
 
   // More articles: 메가+서브+에디터픽+가이드 섹션에 사용된 글 제외
   const usedIds = new Set([
@@ -161,7 +198,8 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
   const moreArticles = [...remaining, ...morePosts];
 
   // 이미 표시된 총 갯수로 "더 보기" 가능 여부 계산
-  const displayedCount = usedIds.size + moreArticles.length + (editorPick ? 1 : 0);
+  // usedIds에 editorPick.id가 이미 포함되므로 중복 가산하지 않음
+  const displayedCount = usedIds.size + moreArticles.length;
   const hasMoreToLoad = displayedCount < totalCount;
 
   const loadMore = useCallback(async () => {
@@ -223,21 +261,53 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
           {/* Category Tabs */}
           <motion.div
             variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const } } }}
-            className="mt-7 flex gap-1.5 overflow-x-auto scrollbar-hide"
+            className="relative mt-7"
           >
-            {allCategories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`whitespace-nowrap rounded-md px-2.5 py-1 text-[15px] transition-colors ${
-                  activeCategory === cat
-                    ? "bg-indigo-50 font-medium text-indigo-600"
-                    : "text-slate-800 hover:bg-slate-50"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+            <div
+              ref={tabsScrollRef}
+              onScroll={updateTabsScrollState}
+              className="flex gap-1.5 overflow-x-auto scrollbar-hide"
+            >
+              {allCategories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`whitespace-nowrap rounded-md px-2.5 py-1 text-[15px] transition-colors ${
+                    activeCategory === cat
+                      ? "bg-indigo-50 font-medium text-indigo-600"
+                      : "text-slate-800 hover:bg-slate-50"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            {/* 모바일 전용 스크롤 버튼: 왼쪽 < (스크롤 시작 위치가 아닐 때만) */}
+            <button
+              type="button"
+              aria-label="이전 카테고리 보기"
+              aria-hidden={!canScrollLeft}
+              tabIndex={canScrollLeft ? 0 : -1}
+              onClick={() => scrollTabs("left")}
+              className={`absolute left-0 top-0 bottom-0 flex w-10 items-center justify-start bg-gradient-to-r from-slate-50 via-slate-50/85 to-transparent transition-opacity sm:hidden ${
+                canScrollLeft ? "opacity-100" : "pointer-events-none opacity-0"
+              }`}
+            >
+              <ChevronLeft className="h-4 w-4 text-slate-500" />
+            </button>
+            {/* 모바일 전용 스크롤 버튼: 오른쪽 > (더 스크롤 가능할 때만) */}
+            <button
+              type="button"
+              aria-label="다음 카테고리 보기"
+              aria-hidden={!canScrollRight}
+              tabIndex={canScrollRight ? 0 : -1}
+              onClick={() => scrollTabs("right")}
+              className={`absolute right-0 top-0 bottom-0 flex w-10 items-center justify-end bg-gradient-to-l from-slate-50 via-slate-50/85 to-transparent transition-opacity sm:hidden ${
+                canScrollRight ? "opacity-100" : "pointer-events-none opacity-0"
+              }`}
+            >
+              <ChevronRight className="h-4 w-4 text-slate-500" />
+            </button>
           </motion.div>
         </div>
       </motion.div>
@@ -269,13 +339,19 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
 
         {/* ═══ Sub-Featured (3열 이미지 카드) ═══ */}
         {subCards.length > 0 && (
-          <motion.div variants={fadeIn} className="-mr-6 mt-12 flex snap-x sm:mt-24 snap-mandatory gap-5 overflow-x-auto pr-6 pb-2 scrollbar-hide sm:mr-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-10 sm:overflow-visible sm:pr-0 sm:pb-0 lg:grid-cols-3">
-            {subCards.map((post, i) => (
-              <div key={post.id} className="w-[80%] flex-shrink-0 snap-start sm:w-auto">
-                <ArticleCard post={post} index={i + 1} />
-              </div>
-            ))}
-          </motion.div>
+          <>
+            {/* 모바일: 자동 슬라이드 캐러셀 (한 화면에 1개씩)
+                key: 카테고리 전환으로 subCards 구성이 바뀌면 캐러셀을 처음부터 재시작 */}
+            <motion.div variants={fadeIn} className="mt-12 sm:hidden">
+              <MobileSubCarousel key={subCards.map((p) => p.id).join("|")} posts={subCards} />
+            </motion.div>
+            {/* 데스크탑: 기존 2~3열 그리드 */}
+            <motion.div variants={fadeIn} className="hidden sm:mt-24 sm:grid sm:grid-cols-2 sm:gap-10 lg:grid-cols-3">
+              {subCards.map((post, i) => (
+                <ArticleCard key={post.id} post={post} index={i + 1} />
+              ))}
+            </motion.div>
+          </>
         )}
 
         {/* ═══ 에디터 추천 ═══ */}
@@ -293,11 +369,14 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
         {/* ═══ More Articles (Pitch 스타일 3열 이미지 카드 그리드) ═══ */}
         {(moreArticles.length > 0 || hasMoreToLoad) && (
           <motion.div variants={fadeIn} className="mt-10 pt-6 sm:mt-24 sm:pt-16">
-            <div className="mb-10">
-              <h2 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
-                MORE ARTICLES
-              </h2>
-            </div>
+            {/* 카테고리 선택 + 모바일에서는 레이블 숨김 (일반 그리드처럼 자연스럽게) */}
+            {!hideCuratedOnMobile && (
+              <div className="mb-10">
+                <h2 className="text-[14px] font-semibold tracking-[0.12em] text-slate-900">
+                  MORE ARTICLES
+                </h2>
+              </div>
+            )}
 
             <motion.div
               initial="hidden"
@@ -394,6 +473,88 @@ export default function BlogListClient({ posts: initialPosts, featuredPosts = []
 /* ════════════════════════════════════════════════════════
    Sub-components
    ════════════════════════════════════════════════════════ */
+
+/** Mobile Sub-Featured Carousel
+ *  한 화면에 1개씩 풀폭 표시 + 4.5초 자동 슬라이드
+ *  - 점 인디케이터 클릭으로 수동 이동 가능
+ *  - 사용자가 터치하면 일시정지, 손 떼고 3초 뒤 자동 재개
+ *  - 드래그 스와이프(좌/우) 지원
+ */
+function MobileSubCarousel({ posts }: { posts: BlogPost[] }) {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const resumeTimerRef = useRef<number | null>(null);
+
+  // 자동 슬라이드
+  useEffect(() => {
+    if (paused || posts.length <= 1) return;
+    const id = window.setInterval(() => {
+      setIndex((i) => (i + 1) % posts.length);
+    }, 4500);
+    return () => window.clearInterval(id);
+  }, [paused, posts.length]);
+
+  // 컴포넌트 unmount 시 resume 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current);
+    };
+  }, []);
+
+  const pauseTemporarily = useCallback(() => {
+    setPaused(true);
+    if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = window.setTimeout(() => setPaused(false), 3500);
+  }, []);
+
+  const goTo = useCallback((next: number) => {
+    setIndex(((next % posts.length) + posts.length) % posts.length);
+    pauseTemporarily();
+  }, [posts.length, pauseTemporarily]);
+
+  return (
+    <div className="relative">
+      <div className="overflow-hidden">
+        <motion.div
+          className="flex touch-pan-y"
+          animate={{ x: `-${index * 100}%` }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] as const }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.18}
+          onDragStart={() => setPaused(true)}
+          onDragEnd={(_, info) => {
+            const threshold = 60;
+            if (info.offset.x < -threshold) goTo(index + 1);
+            else if (info.offset.x > threshold) goTo(index - 1);
+            else pauseTemporarily();
+          }}
+        >
+          {posts.map((p, i) => (
+            <div key={p.id} className="w-full flex-shrink-0 pr-1">
+              <ArticleCard post={p} index={i + 1} />
+            </div>
+          ))}
+        </motion.div>
+      </div>
+      {posts.length > 1 && (
+        <div className="mt-5 flex items-center justify-center gap-1.5">
+          {posts.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-label={`${i + 1}번째 글로 이동`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === index ? "w-6 bg-slate-900" : "w-1.5 bg-slate-300 hover:bg-slate-400"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 /** Article Card — Pitch 스타일: 이미지 → 제목(밑줄) → 카테고리 → 설명
  *  hover: 밑줄 사라짐 + 텍스트 primary 색 */
