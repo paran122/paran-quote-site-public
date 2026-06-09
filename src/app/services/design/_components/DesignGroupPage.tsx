@@ -53,7 +53,7 @@ export default function DesignGroupPage({ group }: { group: DesignGroup }) {
           <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-12 items-center">
             <div>
               <p className="mb-4 text-[12px] font-bold uppercase tracking-[0.14em] text-blue-300">{group.label}</p>
-              <h1 className="text-2xl md:text-4xl lg:text-[44px] font-bold tracking-tight text-white mb-5 leading-[1.2]">{group.h1}</h1>
+              <h1 className="text-2xl md:text-4xl lg:text-[42px] font-bold tracking-tight text-white mb-5 leading-[1.35] md:leading-[1.3]">{group.h1}</h1>
               <p className="text-base md:text-lg text-slate-300 leading-relaxed mb-7">{group.intro}</p>
               <div className="mb-8 flex flex-wrap gap-2.5">
                 {["시안 3~5일", "수정 3회 포함", "AI+PSD+PDF 원본 제공"].map((b) => (
