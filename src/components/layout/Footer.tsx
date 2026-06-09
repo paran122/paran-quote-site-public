@@ -135,12 +135,9 @@ export default function Footer() {
                 </a>
               </div>
               <div className="mt-4 pt-4 border-t border-white/10">
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-blue-400">패밀리 사이트</div>
-                <a href="https://parandesign.kr" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-white/40 transition-colors hover:text-white">
-                  파란디자인
-                  <svg className="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5zm7.25-.75a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V6.31l-5.47 5.47a.75.75 0 01-1.06-1.06l5.47-5.47H12.25a.75.75 0 01-.75-.75z" clipRule="evenodd" />
-                  </svg>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-blue-400">디자인 서비스</div>
+                <a href="/services/design" className="block text-xs text-white/40 transition-colors hover:text-white">
+                  행사 디자인 · 인쇄물 · 콘텐츠 · 공간
                 </a>
               </div>
             </div>

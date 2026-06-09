@@ -14,21 +14,33 @@ const navItems: { label: string; anchor: string; isPage?: boolean }[] = [
   { label: "블로그", anchor: "/blog", isPage: true },
 ];
 
-const serviceSubItems = [
-  { href: "/services/corporate", label: "기업행사" },
-  { href: "/services/government", label: "공공기관" },
-  { href: "/services/conference", label: "컨퍼런스·포럼" },
-  { href: "/services/seminar", label: "세미나·워크숍" },
-  { href: "/services/design", label: "행사 디자인" },
+const serviceGroups: { title: string; href: string; items: { href: string; label: string; desc?: string }[] }[] = [
+  {
+    title: "행사대행",
+    href: "/services",
+    items: [
+      { href: "/services/corporate", label: "기업행사", desc: "워크숍·세미나·비전선포식" },
+      { href: "/services/government", label: "공공기관", desc: "조달·수의계약 행사 대행" },
+      { href: "/services/conference", label: "컨퍼런스·포럼", desc: "대규모 학술·국제행사" },
+      { href: "/services/seminar", label: "세미나·워크숍", desc: "교육·연수 프로그램" },
+    ],
+  },
+  {
+    title: "디자인",
+    href: "/services/design",
+    items: [
+      { href: "/services/design/print", label: "인쇄물", desc: "포스터·리플렛·현수막·카탈로그" },
+      { href: "/services/design/digital", label: "콘텐츠", desc: "카드뉴스·PPT 발표자료" },
+      { href: "/services/design/space", label: "공간", desc: "전시부스·행사 패키지" },
+    ],
+  },
 ];
 
 export default function GNB() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [serviceDropdown, setServiceDropdown] = useState(false);
   const [mobileServiceOpen, setMobileServiceOpen] = useState(false);
-  const [siteSwitcherOpen, setSiteSwitcherOpen] = useState(false);
   const dropdownTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const siteSwitcherTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const serviceRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
@@ -85,111 +97,17 @@ export default function GNB() {
   return (
     <header ref={headerRef} className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#091041] ">
       <div className="mx-auto flex max-w-[1200px] items-center justify-between px-5 py-3 md:px-8">
-        {/* Logo + Site Switcher */}
-        <div className="flex items-center gap-2 md:gap-3">
-          <a
-            href="/"
-            onClick={handleLogoClick}
-            className="relative block"
-          >
-            <Image
-              src="/logo-white.png"
-              alt="파란컴퍼니"
-              width={360}
-              height={109}
-              className="h-9 w-auto md:h-10"
-              priority
-            />
-          </a>
-
-          {/* Site Switcher */}
-          <div
-            className="relative"
-            onMouseEnter={() => {
-              if (siteSwitcherTimeout.current) clearTimeout(siteSwitcherTimeout.current);
-              setSiteSwitcherOpen(true);
-            }}
-            onMouseLeave={() => {
-              siteSwitcherTimeout.current = setTimeout(() => setSiteSwitcherOpen(false), 150);
-            }}
-          >
-            <button
-              onClick={() => setSiteSwitcherOpen(!siteSwitcherOpen)}
-              className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white/80 transition-colors hover:bg-white/15"
-              aria-expanded={siteSwitcherOpen}
-              aria-haspopup="true"
-            >
-              <span className="h-2 w-2 rounded-full bg-blue-400" />
-              행사대행
-              <svg
-                className={`h-3.5 w-3.5 transition-transform ${siteSwitcherOpen ? "rotate-180" : ""}`}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-
-            <AnimatePresence>
-              {siteSwitcherOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute left-0 top-full z-50 mt-1.5 min-w-[160px] overflow-hidden rounded-lg bg-[#1a2a52] shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
-                  role="menu"
-                >
-                  <div className="py-1">
-                    <div
-                      className="flex items-center justify-between px-4 py-2.5 text-xs text-white/90"
-                      role="menuitem"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-blue-400" />
-                        행사대행
-                      </div>
-                      <span className="rounded bg-blue-500/30 px-1.5 py-0.5 text-[10px] text-blue-300">
-                        현재
-                      </span>
-                    </div>
-                    <a
-                      href="https://parandesign.kr"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between px-4 py-2.5 text-xs text-white/50 transition-colors hover:bg-white/5 hover:text-white/80"
-                      role="menuitem"
-                      onClick={() => setSiteSwitcherOpen(false)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                        디자인
-                      </div>
-                      <svg
-                        className="h-3 w-3"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5zm7.25-.75a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V6.31l-5.47 5.47a.75.75 0 01-1.06-1.06l5.47-5.47H12.25a.75.75 0 01-.75-.75z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
+        {/* Logo */}
+        <a href="/" onClick={handleLogoClick} className="relative block">
+          <Image
+            src="/logo-white.png"
+            alt="파란컴퍼니"
+            width={360}
+            height={109}
+            className="h-9 w-auto md:h-10"
+            priority
+          />
+        </a>
 
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-6 md:flex">
@@ -277,24 +195,47 @@ export default function GNB() {
             onMouseEnter={handleServiceEnter}
             onMouseLeave={handleServiceLeave}
           >
-            <div className="min-w-[140px] border-t border-white/5 bg-[#091041] py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
-              {serviceSubItems.map((sub) => (
-                <a
-                  key={sub.href}
-                  href={sub.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setServiceDropdown(false);
-                    router.push(sub.href);
-                  }}
-                  className={`block px-4 py-2 text-xs transition-colors ${
-                    pathname === sub.href
-                      ? "text-white bg-white/10"
-                      : "text-white/50 hover:text-white hover:bg-white/5"
-                  }`}
+            <div className="flex gap-0 border-t border-white/5 bg-[#091041] shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+              {serviceGroups.map((group, gi) => (
+                <div
+                  key={group.title}
+                  className={`min-w-[240px] py-4 px-3 ${gi === 0 ? "border-r border-white/5" : ""}`}
                 >
-                  {sub.label}
-                </a>
+                  <a
+                    href={group.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setServiceDropdown(false);
+                      router.push(group.href);
+                    }}
+                    className="block px-3 pb-2 mb-1 text-[10px] font-bold uppercase tracking-[0.12em] text-blue-300/80 hover:text-blue-200 transition-colors"
+                  >
+                    {group.title} <span className="text-white/30">전체 →</span>
+                  </a>
+                  {group.items.map((sub) => (
+                    <a
+                      key={sub.href}
+                      href={sub.href}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setServiceDropdown(false);
+                        router.push(sub.href);
+                      }}
+                      className={`block rounded-lg px-3 py-2 transition-colors ${
+                        pathname === sub.href
+                          ? "bg-white/10"
+                          : "hover:bg-white/5"
+                      }`}
+                    >
+                      <span className={`block text-xs font-medium ${pathname === sub.href ? "text-white" : "text-white/80"}`}>
+                        {sub.label}
+                      </span>
+                      {sub.desc && (
+                        <span className="mt-0.5 block text-[11px] text-white/35">{sub.desc}</span>
+                      )}
+                    </a>
+                  ))}
+                </div>
               ))}
             </div>
           </motion.div>
@@ -339,25 +280,41 @@ export default function GNB() {
                             transition={{ duration: 0.2 }}
                             className="overflow-hidden"
                           >
-                            <div className="flex flex-col gap-3 pl-4 pt-3">
-                              {serviceSubItems.map((sub) => (
-                                <a
-                                  key={sub.href}
-                                  href={sub.href}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    setMobileOpen(false);
-                                    setMobileServiceOpen(false);
-                                    router.push(sub.href);
-                                  }}
-                                  className={`text-sm transition-colors ${
-                                    pathname === sub.href
-                                      ? "text-white"
-                                      : "text-white/40 hover:text-white"
-                                  }`}
-                                >
-                                  {sub.label}
-                                </a>
+                            <div className="flex flex-col gap-4 pl-4 pt-3">
+                              {serviceGroups.map((group) => (
+                                <div key={group.title} className="flex flex-col gap-2.5">
+                                  <a
+                                    href={group.href}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setMobileOpen(false);
+                                      setMobileServiceOpen(false);
+                                      router.push(group.href);
+                                    }}
+                                    className="text-[10px] font-bold uppercase tracking-[0.12em] text-blue-300/80"
+                                  >
+                                    {group.title} 전체 →
+                                  </a>
+                                  {group.items.map((sub) => (
+                                    <a
+                                      key={sub.href}
+                                      href={sub.href}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        setMobileOpen(false);
+                                        setMobileServiceOpen(false);
+                                        router.push(sub.href);
+                                      }}
+                                      className={`text-sm transition-colors ${
+                                        pathname === sub.href
+                                          ? "text-white"
+                                          : "text-white/40 hover:text-white"
+                                      }`}
+                                    >
+                                      {sub.label}
+                                    </a>
+                                  ))}
+                                </div>
                               ))}
                             </div>
                           </motion.div>

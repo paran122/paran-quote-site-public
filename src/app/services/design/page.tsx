@@ -177,6 +177,36 @@ export default async function DesignPage() {
 
       <ServiceSubNav />
 
+      {/* 디자인 분야 3그룹 */}
+      <section className="py-12 md:py-16 px-5 md:px-8">
+        <div className="mx-auto max-w-[1200px]">
+          <h2 className="text-xl md:text-2xl font-bold mb-3">디자인 분야</h2>
+          <p className="text-slate-500 text-sm mb-8">필요한 분야를 선택하면 상세 항목과 견적을 확인할 수 있습니다.</p>
+          <div className="grid sm:grid-cols-3 gap-4 md:gap-5">
+            {[
+              { href: "/services/design/print", label: "인쇄물", desc: "포스터·리플렛·현수막·카탈로그" },
+              { href: "/services/design/digital", label: "콘텐츠", desc: "카드뉴스·PPT 발표자료" },
+              { href: "/services/design/space", label: "공간", desc: "전시부스·행사 패키지" },
+            ].map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="group p-6 md:p-7 rounded-2xl border border-slate-200/80 bg-white shadow-sm hover:border-blue-300 hover:shadow-md transition-all"
+              >
+                <h3 className="font-bold text-lg mb-2 group-hover:text-blue-600 transition-colors">{g.label}</h3>
+                <p className="text-sm text-slate-500 leading-relaxed mb-3">{g.desc}</p>
+                <span className="text-sm text-blue-600 font-medium">자세히 보기 →</span>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-5">
+            <Link href="/services/design/estimate" className="inline-block text-sm text-blue-600 font-medium hover:underline">
+              디자인 견적 바로 계산하기 →
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* 본문 + SNS */}
       <section className="py-16 md:py-24 px-5 md:px-8">
         <div className="mx-auto max-w-[900px] relative">
@@ -321,32 +351,30 @@ export default async function DesignPage() {
         </div>
       </section>
 
-      {/* 파란디자인 CTA */}
+      {/* 디자인 견적 계산기 CTA */}
       <section className="py-12 md:py-16 px-5 md:px-8">
         <div className="mx-auto max-w-[1200px]">
-          <a
-            href="https://parandesign.kr"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/services/design/estimate"
             className="group block rounded-2xl overflow-hidden bg-gradient-to-r from-[#091041] to-[#1e3a6e] p-8 md:p-12 transition-transform hover:scale-[1.01]"
           >
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
-                <p className="text-blue-300 text-sm font-medium mb-2">파란컴퍼니 디자인 전문 브랜드</p>
+                <p className="text-blue-300 text-sm font-medium mb-2">디자인 셀프 견적</p>
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                  파란디자인
+                  디자인 견적, 직접 계산해보세요
                 </h3>
                 <p className="text-slate-300 text-sm md:text-base leading-relaxed max-w-lg">
-                  행사 시안물 외에도 브랜딩, 인쇄물, 편집 디자인이 필요하시다면
-                  파란디자인에서 더 다양한 디자인 서비스를 만나보세요.
+                  포스터·리플렛·현수막·PPT·카드뉴스·전시부스 등 필요한 항목을 선택하면
+                  예상 견적을 바로 확인할 수 있습니다. 2개 이상 선택 시 10% 할인.
                 </p>
               </div>
               <div className="shrink-0 flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 border border-white/20 text-white font-medium text-sm group-hover:bg-white/20 transition-colors">
-                파란디자인 바로가기
+                견적 계산하기
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-1"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
               </div>
             </div>
-          </a>
+          </Link>
         </div>
       </section>
 
