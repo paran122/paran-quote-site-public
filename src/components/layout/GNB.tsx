@@ -14,9 +14,10 @@ const navItems: { label: string; anchor: string; isPage?: boolean }[] = [
   { label: "블로그", anchor: "/blog", isPage: true },
 ];
 
-const serviceGroups: { title: string; items: { href: string; label: string; desc?: string }[] }[] = [
+const serviceGroups: { title: string; href: string; items: { href: string; label: string; desc?: string }[] }[] = [
   {
     title: "행사대행",
+    href: "/services",
     items: [
       { href: "/services/corporate", label: "기업행사", desc: "워크숍·세미나·비전선포식" },
       { href: "/services/government", label: "공공기관", desc: "조달·수의계약 행사 대행" },
@@ -26,12 +27,11 @@ const serviceGroups: { title: string; items: { href: string; label: string; desc
   },
   {
     title: "디자인",
+    href: "/services/design",
     items: [
-      { href: "/services/design", label: "행사 디자인", desc: "행사 시안물 전체" },
       { href: "/services/design/print", label: "인쇄물", desc: "포스터·리플렛·현수막·카탈로그" },
-      { href: "/services/design/digital", label: "콘텐츠", desc: "카드뉴스·PPT" },
+      { href: "/services/design/digital", label: "콘텐츠", desc: "카드뉴스·PPT 발표자료" },
       { href: "/services/design/space", label: "공간", desc: "전시부스·행사 패키지" },
-      { href: "/services/design/estimate", label: "디자인 견적", desc: "셀프 견적 계산기" },
     ],
   },
 ];
@@ -287,9 +287,17 @@ export default function GNB() {
                   key={group.title}
                   className={`min-w-[240px] py-4 px-3 ${gi === 0 ? "border-r border-white/5" : ""}`}
                 >
-                  <div className="px-3 pb-2 mb-1 text-[10px] font-bold uppercase tracking-[0.12em] text-blue-300/80">
-                    {group.title}
-                  </div>
+                  <a
+                    href={group.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setServiceDropdown(false);
+                      router.push(group.href);
+                    }}
+                    className="block px-3 pb-2 mb-1 text-[10px] font-bold uppercase tracking-[0.12em] text-blue-300/80 hover:text-blue-200 transition-colors"
+                  >
+                    {group.title} <span className="text-white/30">전체 →</span>
+                  </a>
                   {group.items.map((sub) => (
                     <a
                       key={sub.href}
@@ -361,9 +369,18 @@ export default function GNB() {
                             <div className="flex flex-col gap-4 pl-4 pt-3">
                               {serviceGroups.map((group) => (
                                 <div key={group.title} className="flex flex-col gap-2.5">
-                                  <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-blue-300/80">
-                                    {group.title}
-                                  </div>
+                                  <a
+                                    href={group.href}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setMobileOpen(false);
+                                      setMobileServiceOpen(false);
+                                      router.push(group.href);
+                                    }}
+                                    className="text-[10px] font-bold uppercase tracking-[0.12em] text-blue-300/80"
+                                  >
+                                    {group.title} 전체 →
+                                  </a>
                                   {group.items.map((sub) => (
                                     <a
                                       key={sub.href}
