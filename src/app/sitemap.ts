@@ -69,7 +69,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 정적 페이지: 마지막 코드 수정 기준 고정 날짜
   const GUIDE_UPDATED = new Date("2026-04-27"); // SEO 메타 "행사 대행" 키워드 + 내부 링크 배너 반영
-  const SERVICES_UPDATED = new Date("2026-04-27");
+  const SERVICES_UPDATED = new Date("2026-06-09"); // 디자인 그룹페이지·견적·메뉴 개편
   const COMPANY_UPDATED = new Date("2026-04-27");
   const POLICY_UPDATED = new Date("2026-03-10");
 
@@ -171,6 +171,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${siteUrl}/services/design/print`,
+      lastModified: SERVICES_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/services/design/digital`,
+      lastModified: SERVICES_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/services/design/space`,
+      lastModified: SERVICES_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/services/design/estimate`,
+      lastModified: SERVICES_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
       url: `${siteUrl}/company`,
       lastModified: COMPANY_UPDATED,
       changeFrequency: "monthly",
@@ -178,6 +202,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${siteUrl}/authors/kim-mikyung`,
+      lastModified: latestBlogDate ?? homepageDate,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${siteUrl}/authors/ahn-kwangsung`,
       lastModified: latestBlogDate ?? homepageDate,
       changeFrequency: "monthly",
       priority: 0.5,
