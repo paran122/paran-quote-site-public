@@ -14,12 +14,26 @@ const navItems: { label: string; anchor: string; isPage?: boolean }[] = [
   { label: "블로그", anchor: "/blog", isPage: true },
 ];
 
-const serviceSubItems = [
-  { href: "/services/corporate", label: "기업행사" },
-  { href: "/services/government", label: "공공기관" },
-  { href: "/services/conference", label: "컨퍼런스·포럼" },
-  { href: "/services/seminar", label: "세미나·워크숍" },
-  { href: "/services/design", label: "행사 디자인" },
+const serviceGroups: { title: string; items: { href: string; label: string; desc?: string }[] }[] = [
+  {
+    title: "행사대행",
+    items: [
+      { href: "/services/corporate", label: "기업행사", desc: "워크숍·세미나·비전선포식" },
+      { href: "/services/government", label: "공공기관", desc: "조달·수의계약 행사 대행" },
+      { href: "/services/conference", label: "컨퍼런스·포럼", desc: "대규모 학술·국제행사" },
+      { href: "/services/seminar", label: "세미나·워크숍", desc: "교육·연수 프로그램" },
+    ],
+  },
+  {
+    title: "디자인",
+    items: [
+      { href: "/services/design", label: "행사 디자인", desc: "행사 시안물 전체" },
+      { href: "/services/design/print", label: "인쇄물", desc: "포스터·리플렛·현수막·카탈로그" },
+      { href: "/services/design/digital", label: "디지털", desc: "카드뉴스·PPT" },
+      { href: "/services/design/space", label: "공간", desc: "전시부스·행사 패키지" },
+      { href: "/services/design/estimate", label: "디자인 견적", desc: "셀프 견적 계산기" },
+    ],
+  },
 ];
 
 export default function GNB() {
@@ -160,29 +174,19 @@ export default function GNB() {
                       </span>
                     </div>
                     <a
-                      href="https://parandesign.kr"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="/services/design"
                       className="flex items-center justify-between px-4 py-2.5 text-xs text-white/50 transition-colors hover:bg-white/5 hover:text-white/80"
                       role="menuitem"
-                      onClick={() => setSiteSwitcherOpen(false)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setSiteSwitcherOpen(false);
+                        router.push("/services/design");
+                      }}
                     >
                       <div className="flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full bg-emerald-400" />
                         디자인
                       </div>
-                      <svg
-                        className="h-3 w-3"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5zm7.25-.75a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V6.31l-5.47 5.47a.75.75 0 01-1.06-1.06l5.47-5.47H12.25a.75.75 0 01-.75-.75z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
                     </a>
                   </div>
                 </motion.div>
@@ -277,24 +281,39 @@ export default function GNB() {
             onMouseEnter={handleServiceEnter}
             onMouseLeave={handleServiceLeave}
           >
-            <div className="min-w-[140px] border-t border-white/5 bg-[#091041] py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
-              {serviceSubItems.map((sub) => (
-                <a
-                  key={sub.href}
-                  href={sub.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setServiceDropdown(false);
-                    router.push(sub.href);
-                  }}
-                  className={`block px-4 py-2 text-xs transition-colors ${
-                    pathname === sub.href
-                      ? "text-white bg-white/10"
-                      : "text-white/50 hover:text-white hover:bg-white/5"
-                  }`}
+            <div className="flex gap-0 border-t border-white/5 bg-[#091041] shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+              {serviceGroups.map((group, gi) => (
+                <div
+                  key={group.title}
+                  className={`min-w-[240px] py-4 px-3 ${gi === 0 ? "border-r border-white/5" : ""}`}
                 >
-                  {sub.label}
-                </a>
+                  <div className="px-3 pb-2 mb-1 text-[10px] font-bold uppercase tracking-[0.12em] text-blue-300/80">
+                    {group.title}
+                  </div>
+                  {group.items.map((sub) => (
+                    <a
+                      key={sub.href}
+                      href={sub.href}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setServiceDropdown(false);
+                        router.push(sub.href);
+                      }}
+                      className={`block rounded-lg px-3 py-2 transition-colors ${
+                        pathname === sub.href
+                          ? "bg-white/10"
+                          : "hover:bg-white/5"
+                      }`}
+                    >
+                      <span className={`block text-xs font-medium ${pathname === sub.href ? "text-white" : "text-white/80"}`}>
+                        {sub.label}
+                      </span>
+                      {sub.desc && (
+                        <span className="mt-0.5 block text-[11px] text-white/35">{sub.desc}</span>
+                      )}
+                    </a>
+                  ))}
+                </div>
               ))}
             </div>
           </motion.div>
@@ -339,25 +358,32 @@ export default function GNB() {
                             transition={{ duration: 0.2 }}
                             className="overflow-hidden"
                           >
-                            <div className="flex flex-col gap-3 pl-4 pt-3">
-                              {serviceSubItems.map((sub) => (
-                                <a
-                                  key={sub.href}
-                                  href={sub.href}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    setMobileOpen(false);
-                                    setMobileServiceOpen(false);
-                                    router.push(sub.href);
-                                  }}
-                                  className={`text-sm transition-colors ${
-                                    pathname === sub.href
-                                      ? "text-white"
-                                      : "text-white/40 hover:text-white"
-                                  }`}
-                                >
-                                  {sub.label}
-                                </a>
+                            <div className="flex flex-col gap-4 pl-4 pt-3">
+                              {serviceGroups.map((group) => (
+                                <div key={group.title} className="flex flex-col gap-2.5">
+                                  <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-blue-300/80">
+                                    {group.title}
+                                  </div>
+                                  {group.items.map((sub) => (
+                                    <a
+                                      key={sub.href}
+                                      href={sub.href}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        setMobileOpen(false);
+                                        setMobileServiceOpen(false);
+                                        router.push(sub.href);
+                                      }}
+                                      className={`text-sm transition-colors ${
+                                        pathname === sub.href
+                                          ? "text-white"
+                                          : "text-white/40 hover:text-white"
+                                      }`}
+                                    >
+                                      {sub.label}
+                                    </a>
+                                  ))}
+                                </div>
                               ))}
                             </div>
                           </motion.div>

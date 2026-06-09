@@ -7,6 +7,10 @@ import {
   Presentation,
   Cube,
   Package,
+  PenNib,
+  UsersThree,
+  Buildings,
+  Lightning,
 } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 
@@ -195,4 +199,56 @@ export const DESIGN_GROUPS: Record<DesignGroup["key"], DesignGroup> = {
       "전시부스·포토존·행사 디자인 통합 패키지 전문. 3D 시뮬레이션부터 시공·설치까지 원스톱. 공공기관 수의계약 가능, 수정 3회 포함. 무료 견적.",
     keywords: ["전시부스디자인", "포토존디자인", "행사디자인패키지", "부스시공", "공공기관디자인"],
   },
+};
+
+/* ── 디자인 페이지 공통 섹션 (전 그룹 공유) ── */
+
+export interface SolutionCard {
+  icon: PhosphorIcon;
+  kicker: string;
+  title: string;
+  desc: string;
+}
+
+export interface ComparisonRow {
+  label: string;
+  general: string;
+  ours: string;
+}
+
+export interface StatItem {
+  num: string;
+  label: string;
+}
+
+export const DESIGN_COMMON = {
+  painPoints: [
+    { num: "01", title: "맥락 설명이 번거롭다", desc: "디자인 업체에 행사 목적·대상·분위기를 매번 처음부터 설명해야 합니다." },
+    { num: "02", title: "기획 의도와 따로 논다", desc: "막상 받은 시안이 기획서의 방향과 어긋나 처음부터 다시 잡는 경우가 많습니다." },
+    { num: "03", title: "수정마다 추가 비용", desc: "한두 번 고치는데도 건당 비용이 붙어 예산이 계속 늘어납니다." },
+    { num: "04", title: "제작물 톤이 제각각", desc: "포스터·현수막·자료집을 다른 곳에 맡기면 행사 전체의 톤이 흐트러집니다." },
+    { num: "05", title: "공공기관 요건을 모른다", desc: "과업지시서 규격, 수의계약·정산 서류를 업체가 챙기지 못해 담당자가 떠안습니다." },
+  ] as { num: string; title: string; desc: string }[],
+
+  solutionCards: [
+    { icon: PenNib, kicker: "ONE TEAM", title: "기획과 디자인이 한 팀", desc: "행사 컨셉이 확정되면 바로 디자인에 들어갑니다. 별도 브리핑이 필요 없고, 기획 변경이 실시간으로 시안에 반영됩니다." },
+    { icon: UsersThree, kicker: "IN-HOUSE", title: "자체 디자인팀 보유", desc: "외주가 아닌 내부 디자인팀이 작업합니다. 커뮤니케이션 비용이 0이고, 수정은 1영업일 이내로 빠릅니다." },
+    { icon: Buildings, kicker: "PUBLIC SECTOR", title: "공공기관 250+ 경험", desc: "과업지시서 규격, 수의계약·조달 요건을 이미 압니다. 세금계산서·산출내역서 등 서류 일체를 발급합니다." },
+    { icon: Lightning, kicker: "ONE-STOP", title: "인쇄·제작까지 원스톱", desc: "디자인 파일 납품은 물론 인쇄물 제작과 행사장 배송까지 한 번에 처리해 담당자의 업무 부담을 줄입니다." },
+  ] as SolutionCard[],
+
+  comparisonRows: [
+    { label: "행사 맥락 이해", general: "매번 처음부터 설명", ours: "기획팀이 직접 진행" },
+    { label: "수정 비용", general: "건당 추가 청구", ours: "기본 3회 무료 포함" },
+    { label: "제작물 톤 통일", general: "업체마다 제각각", ours: "행사 전체 톤 통일" },
+    { label: "수정 반영 속도", general: "수일 소요", ours: "1영업일 이내" },
+    { label: "공공기관 서류", general: "별도 요청 필요", ours: "세금계산서·산출내역서 발급" },
+  ] as ComparisonRow[],
+
+  stats: [
+    { num: "250+", label: "누적 프로젝트" },
+    { num: "자체", label: "디자인팀 보유" },
+    { num: "3회", label: "수정 기본 포함" },
+    { num: "1영업일", label: "수정 반영" },
+  ] as StatItem[],
 };
