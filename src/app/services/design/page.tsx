@@ -185,7 +185,7 @@ export default async function DesignPage() {
           <div className="grid sm:grid-cols-3 gap-4 md:gap-5">
             {[
               { href: "/services/design/print", label: "인쇄물", desc: "포스터·리플렛·현수막·카탈로그" },
-              { href: "/services/design/digital", label: "디지털", desc: "카드뉴스·PPT 발표자료" },
+              { href: "/services/design/digital", label: "콘텐츠", desc: "카드뉴스·PPT 발표자료" },
               { href: "/services/design/space", label: "공간", desc: "전시부스·행사 패키지" },
             ].map((g) => (
               <Link

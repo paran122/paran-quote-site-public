@@ -29,7 +29,7 @@ const serviceGroups: { title: string; items: { href: string; label: string; desc
     items: [
       { href: "/services/design", label: "행사 디자인", desc: "행사 시안물 전체" },
       { href: "/services/design/print", label: "인쇄물", desc: "포스터·리플렛·현수막·카탈로그" },
-      { href: "/services/design/digital", label: "디지털", desc: "카드뉴스·PPT" },
+      { href: "/services/design/digital", label: "콘텐츠", desc: "카드뉴스·PPT" },
       { href: "/services/design/space", label: "공간", desc: "전시부스·행사 패키지" },
       { href: "/services/design/estimate", label: "디자인 견적", desc: "셀프 견적 계산기" },
     ],
