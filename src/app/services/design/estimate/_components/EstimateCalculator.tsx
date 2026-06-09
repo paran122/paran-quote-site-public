@@ -186,6 +186,8 @@ export default function EstimateCalculator() {
                   <button
                     type="button"
                     onClick={() => setOpen(isOpen ? null : p.key)}
+                    aria-expanded={isOpen}
+                    aria-label={`${p.name} 옵션 ${isOpen ? "접기" : "펼치기"}`}
                     className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left"
                   >
                     <div>
@@ -228,6 +230,7 @@ export default function EstimateCalculator() {
                               <div className="flex items-center gap-3">
                                 <button
                                   type="button"
+                                  aria-label={`${f.label} 줄이기`}
                                   onClick={() => setField(p.key, f.id, Math.max(f.min ?? 1, vals[p.key][f.id] - (f.step ?? 1)))}
                                   className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 font-bold hover:bg-slate-200"
                                 >
@@ -238,6 +241,7 @@ export default function EstimateCalculator() {
                                 </span>
                                 <button
                                   type="button"
+                                  aria-label={`${f.label} 늘리기`}
                                   onClick={() => setField(p.key, f.id, Math.min(f.max ?? 99, vals[p.key][f.id] + (f.step ?? 1)))}
                                   className="w-9 h-9 rounded-lg bg-slate-100 text-slate-600 font-bold hover:bg-slate-200"
                                 >

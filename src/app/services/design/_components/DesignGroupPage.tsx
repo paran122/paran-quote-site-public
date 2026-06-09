@@ -168,19 +168,21 @@ export default function DesignGroupPage({ group }: { group: DesignGroup }) {
         <div className="mx-auto max-w-[920px]">
           <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-blue-600 mb-3">COMPARISON</p>
           <h2 className="text-xl md:text-3xl font-bold text-[#0d1a4e] mb-10">일반 업체와 비교해 보세요</h2>
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_60px_-30px_rgba(13,26,110,0.2)]">
-            <div className="grid grid-cols-[1.1fr_1fr_1fr] bg-[#091041] text-white text-xs md:text-sm font-bold">
-              <div className="px-4 md:px-6 py-4">항목</div>
-              <div className="px-4 md:px-6 py-4 text-slate-300">일반 업체</div>
-              <div className="px-4 md:px-6 py-4 text-blue-300 bg-blue-600/15">파란컴퍼니</div>
-            </div>
-            {DESIGN_COMMON.comparisonRows.map((row, i) => (
-              <div key={row.label} className={`grid grid-cols-[1.1fr_1fr_1fr] text-xs md:text-sm border-t border-slate-100 ${i % 2 ? "bg-slate-50/50" : "bg-white"}`}>
-                <div className="px-4 md:px-6 py-4 font-bold text-[#0d1a4e]">{row.label}</div>
-                <div className="px-4 md:px-6 py-4 text-slate-400 flex items-start gap-1.5"><X size={15} weight="bold" className="mt-0.5 shrink-0 text-slate-300" /> {row.general}</div>
-                <div className="px-4 md:px-6 py-4 font-semibold text-[#0d1a4e] bg-blue-50/40 border-l border-blue-100 flex items-start gap-1.5"><Check size={15} weight="bold" className="mt-0.5 shrink-0 text-blue-600" /> {row.ours}</div>
+          <div className="-mx-5 overflow-x-auto px-5 md:mx-0 md:px-0">
+            <div className="min-w-[480px] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_60px_-30px_rgba(13,26,110,0.2)]">
+              <div className="grid grid-cols-[1.1fr_1fr_1fr] bg-[#091041] text-white text-xs md:text-sm font-bold">
+                <div className="px-4 md:px-6 py-4">항목</div>
+                <div className="px-4 md:px-6 py-4 text-slate-300">일반 업체</div>
+                <div className="px-4 md:px-6 py-4 text-blue-300 bg-blue-600/15">파란컴퍼니</div>
               </div>
-            ))}
+              {DESIGN_COMMON.comparisonRows.map((row, i) => (
+                <div key={row.label} className={`grid grid-cols-[1.1fr_1fr_1fr] text-xs md:text-sm border-t border-slate-100 ${i % 2 ? "bg-slate-50/50" : "bg-white"}`}>
+                  <div className="px-4 md:px-6 py-4 font-bold text-[#0d1a4e]">{row.label}</div>
+                  <div className="px-4 md:px-6 py-4 text-slate-400 flex items-start gap-1.5"><X size={15} weight="bold" className="mt-0.5 shrink-0 text-slate-300" /> {row.general}</div>
+                  <div className="px-4 md:px-6 py-4 font-semibold text-[#0d1a4e] bg-blue-50/40 border-l border-blue-100 flex items-start gap-1.5"><Check size={15} weight="bold" className="mt-0.5 shrink-0 text-blue-600" /> {row.ours}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
