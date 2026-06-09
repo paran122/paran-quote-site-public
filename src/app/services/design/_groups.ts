@@ -201,7 +201,7 @@ export const DESIGN_GROUPS: Record<DesignGroup["key"], DesignGroup> = {
   },
 };
 
-/* ── 디자인 페이지 공통 섹션 (전 그룹 공유) ── */
+/* ── 디자인 페이지 공통 섹션 (parandesign 원본 카피 그대로 이관) ── */
 
 export interface SolutionCard {
   icon: PhosphorIcon;
@@ -209,46 +209,133 @@ export interface SolutionCard {
   title: string;
   desc: string;
 }
-
 export interface ComparisonRow {
   label: string;
   general: string;
   ours: string;
 }
-
 export interface StatItem {
   num: string;
   label: string;
 }
+export interface Testimonial {
+  quote: string;
+  name: string;
+  role: string;
+}
+export interface ProcessStep {
+  badge: string;
+  title: string;
+  desc: string;
+}
+export interface GalleryImage {
+  src: string;
+  alt: string;
+}
 
 export const DESIGN_COMMON = {
+  // parandesign 원본 PAIN POINTS 5종
   painPoints: [
-    { num: "01", title: "맥락 설명이 번거롭다", desc: "디자인 업체에 행사 목적·대상·분위기를 매번 처음부터 설명해야 합니다." },
-    { num: "02", title: "기획 의도와 따로 논다", desc: "막상 받은 시안이 기획서의 방향과 어긋나 처음부터 다시 잡는 경우가 많습니다." },
-    { num: "03", title: "수정마다 추가 비용", desc: "한두 번 고치는데도 건당 비용이 붙어 예산이 계속 늘어납니다." },
-    { num: "04", title: "제작물 톤이 제각각", desc: "포스터·현수막·자료집을 다른 곳에 맡기면 행사 전체의 톤이 흐트러집니다." },
-    { num: "05", title: "공공기관 요건을 모른다", desc: "과업지시서 규격, 수의계약·정산 서류를 업체가 챙기지 못해 담당자가 떠안습니다." },
+    { num: "01", title: "뭘 써야 할지 모르겠어요", desc: "업체에서는 텍스트를 작성해 달라는데, 뭘 써야 할지 몰라 시간만 보내고 있습니다." },
+    { num: "02", title: "제작이 급한데 업체를 못 찾겠어요", desc: "일정은 다가오는데 디자인 업체에 문의하면 일주일 이상 걸린다고 합니다. 시안 3~5일 납품이 가능한 곳이 필요하죠." },
+    { num: "03", title: "공공기관 톤을 이해 못 하는 업체가 많아요", desc: "관공서 특유의 격식과 가독성 기준을 모르는 업체에 맡기면 수정만 반복됩니다. 공공기관 경험이 풍부한 업체가 필요합니다." },
+    { num: "04", title: "결과물이 기대와 다를까 불안해요", desc: "레퍼런스를 보내도 톤이 안 맞고, 수정을 거듭해도 원하는 방향이 안 나옵니다. 시안 단계에서 1~2안을 비교할 수 있어야 합니다." },
+    { num: "05", title: "견적이 불투명하고 추가 비용이 걱정돼요", desc: "처음 안내받은 금액과 최종 청구액이 다른 경험, 한두 번이 아닙니다. 수정 3회 포함, 원본 제공까지 명확한 견적이 필요합니다." },
   ] as { num: string; title: string; desc: string }[],
 
+  // parandesign 원본 솔루션 ("다른 이유") + 공공기관 카드
   solutionCards: [
-    { icon: PenNib, kicker: "ONE TEAM", title: "기획과 디자인이 한 팀", desc: "행사 컨셉이 확정되면 바로 디자인에 들어갑니다. 별도 브리핑이 필요 없고, 기획 변경이 실시간으로 시안에 반영됩니다." },
-    { icon: UsersThree, kicker: "IN-HOUSE", title: "자체 디자인팀 보유", desc: "외주가 아닌 내부 디자인팀이 작업합니다. 커뮤니케이션 비용이 0이고, 수정은 1영업일 이내로 빠릅니다." },
-    { icon: Buildings, kicker: "PUBLIC SECTOR", title: "공공기관 250+ 경험", desc: "과업지시서 규격, 수의계약·조달 요건을 이미 압니다. 세금계산서·산출내역서 등 서류 일체를 발급합니다." },
-    { icon: Lightning, kicker: "ONE-STOP", title: "인쇄·제작까지 원스톱", desc: "디자인 파일 납품은 물론 인쇄물 제작과 행사장 배송까지 한 번에 처리해 담당자의 업무 부담을 줄입니다." },
+    { icon: PenNib, kicker: "COPYWRITING", title: "텍스트 기획부터", desc: "주제만 알려주시면 카피라이터가 핵심 문구를 기획합니다. 행사 목적과 타겟에 맞는 카피라이팅으로 메시지 전달력을 높여드립니다." },
+    { icon: UsersThree, kicker: "ONE-STOP", title: "기획→디자인→인쇄 원스톱", desc: "기획·디자인·시안·수정·인쇄 연계까지 한 팀이 처음부터 끝까지 책임집니다. 커뮤니케이션 비용이 줄어듭니다." },
+    { icon: Lightning, kicker: "FAST DELIVERY", title: "3~5일 빠른 납기", desc: "의뢰 후 3~5일 내 첫 시안을 받아보실 수 있습니다. 급한 일정도 별도 협의로 대응 가능합니다." },
+    { icon: Buildings, kicker: "PUBLIC SECTOR", title: "공공기관 250+ 경험", desc: "관공서 격식과 가독성 기준을 압니다. 과업지시서·수의계약 요건을 충족하고 세금계산서·산출내역서 등 서류 일체를 발급합니다." },
   ] as SolutionCard[],
 
+  // parandesign 원본 비교표 6행
   comparisonRows: [
-    { label: "행사 맥락 이해", general: "매번 처음부터 설명", ours: "기획팀이 직접 진행" },
-    { label: "수정 비용", general: "건당 추가 청구", ours: "기본 3회 무료 포함" },
-    { label: "제작물 톤 통일", general: "업체마다 제각각", ours: "행사 전체 톤 통일" },
-    { label: "수정 반영 속도", general: "수일 소요", ours: "1영업일 이내" },
-    { label: "공공기관 서류", general: "별도 요청 필요", ours: "세금계산서·산출내역서 발급" },
+    { label: "텍스트(카피)", general: "담당자 직접 준비", ours: "카피라이터가 기획" },
+    { label: "작업 범위", general: "디자인만", ours: "기획 → 디자인 → 인쇄" },
+    { label: "공공기관 경험", general: "부족", ours: "250+ 프로젝트 완료" },
+    { label: "시안 납품", general: "7~10일", ours: "3~5일" },
+    { label: "수정", general: "1~2회 / 추가비용", ours: "3회 포함" },
+    { label: "납품 파일", general: "JPG/PDF만", ours: "AI+PSD+PDF 원본 전체" },
   ] as ComparisonRow[],
 
+  // parandesign 원본 실적
   stats: [
-    { num: "250+", label: "누적 프로젝트" },
-    { num: "자체", label: "디자인팀 보유" },
+    { num: "250+", label: "프로젝트 완료" },
+    { num: "90%", label: "재계약률" },
+    { num: "8년+", label: "공공기관 전문" },
     { num: "3회", label: "수정 기본 포함" },
-    { num: "1영업일", label: "수정 반영" },
   ] as StatItem[],
+
+  clients: ["경기도교육청", "한국예술인복지재단", "대한민국 해군", "서울시", "국립중앙박물관", "한국관광공사", "자동차부품산업진흥재단", "경기도교육연수원"],
+
+  // parandesign 원본 후기 (익명 대표 사례)
+  testimonials: [
+    { quote: "주제만 던졌는데 카피까지 잡아주시니 우리 쪽은 검토만 하면 되더라고요.", name: "K교육청 교육과 과장", role: "교육 행사 포스터 3건 의뢰" },
+    { quote: "급하게 맡겼는데 3일 만에 시안이 왔고, 수정 한 번에 바로 확정됐어요. 일정 맞춰줘서 감사했습니다.", name: "○○시청 주무관", role: "시 행사 홍보물 의뢰" },
+    { quote: "공공기관 특유의 격식을 정확히 이해하고 있어서, 설명 없이도 톤이 딱 맞게 나왔습니다.", name: "○○재단 담당자", role: "홍보물 의뢰" },
+  ] as Testimonial[],
+
+  // parandesign 원본 프로세스 (D+0 ~ D+7)
+  process: [
+    { badge: "D+0", title: "의뢰접수", desc: "문의 확인, 요구사항 정리" },
+    { badge: "D+1", title: "기획", desc: "카피라이팅, 컨셉 방향 제안" },
+    { badge: "D+3~5", title: "시안", desc: "첫 시안 납품, 피드백 수렴" },
+    { badge: "D+5~6", title: "수정", desc: "최대 3회 수정 반영" },
+    { badge: "D+7", title: "납품", desc: "원본 파일 전달, 인쇄 연계" },
+  ] as ProcessStep[],
+
+  // parandesign 원본 보장 뱃지
+  guarantees: [
+    { title: "수정 3회 보장", desc: "추가 비용 없이 3회 수정" },
+    { title: "원본 100% 제공", desc: "AI+PSD+PDF 모든 원본" },
+    { title: "만족 보장", desc: "90% 재의뢰율이 증명" },
+  ] as { title: string; desc: string }[],
+};
+
+/* ── 그룹별 작업 사례 이미지 (parandesign /assets/images 이관본) ── */
+
+const IMG = (cat: string, sub: string, file: string, alt: string): GalleryImage => ({
+  src: `/assets/images/${cat}/${sub}/${file}`,
+  alt,
+});
+
+export const DESIGN_HERO_IMAGE: Record<DesignGroup["key"], string> = {
+  print: "/assets/images/poster/landing/poster-2026-goyang.webp",
+  digital: "/assets/images/ppt/landing/ppt-navy.webp",
+  space: "/assets/images/booth/landing/booth-experience-2025-kls.webp",
+};
+
+export const DESIGN_GALLERY: Record<DesignGroup["key"], GalleryImage[]> = {
+  print: [
+    IMG("poster", "portfolio", "poster-2025-artist-rights1.webp", "포스터 디자인 - 예술인 권리보호 캠페인"),
+    IMG("poster", "portfolio", "01_poster-2025-gyeonggi-parent-edu1.webp", "포스터 디자인 - 찾아가는 경기학부모교육"),
+    IMG("poster", "portfolio", "poster-2025-goyang-sports-conference.webp", "포스터 디자인 - 고양 학교체육 컨퍼런스"),
+    IMG("leaflet", "portfolio", "leaflet-2025-kls.webp", "리플렛 디자인 - KLS 국제학술대회"),
+    IMG("leaflet", "portfolio", "leaflet-2025-cultural-arts-club.webp", "리플렛 디자인 - 문화예술동아리"),
+    IMG("banner", "portfolio", "banner-2025-kls.webp", "현수막 디자인 - KLS 국제학술대회"),
+    IMG("banner", "portfolio", "x-banner-2025-artist-rights-edu.webp", "X배너 디자인 - 예술인 권리교육"),
+    IMG("catalog", "portfolio", "catalog-forum-proceedings.webp", "자료집 디자인 - 포럼 프로시딩"),
+    IMG("catalog", "portfolio", "catalog-kls-site-manual.webp", "자료집 디자인 - KLS 운영 매뉴얼"),
+  ],
+  digital: [
+    IMG("card-news", "portfolio", "cardnews-2025-artist-rights-edu.webp", "카드뉴스 디자인 - 예술인 권리교육"),
+    IMG("card-news", "portfolio", "cardnews-2025-cultural-arts-club.webp", "카드뉴스 디자인 - 문화예술동아리"),
+    IMG("card-news", "portfolio", "cardnews-jcs-founding-2025-jcs-sns.webp", "카드뉴스 디자인 - 창립기념 SNS"),
+    IMG("card-news", "portfolio", "cardnews-liberation-80th-2025-jcs.webp", "카드뉴스 디자인 - 광복 80주년"),
+    IMG("ppt", "portfolio", "ppt-community-capacity.webp", "PPT 디자인 - 지역역량강화 발표자료"),
+    IMG("ppt", "portfolio", "ppt-outreach.webp", "PPT 디자인 - 찾아가는 사업 보고"),
+    IMG("ppt", "portfolio", "ppt-auto-parts.webp", "PPT 디자인 - 자동차부품 산업"),
+    IMG("ppt", "portfolio", "ppt-navy.webp", "PPT 디자인 - 해군 발표자료"),
+  ],
+  space: [
+    IMG("booth", "portfolio", "01_booth-experience-2025-kls.webp", "전시부스 디자인 - KLS 체험부스"),
+    IMG("booth", "portfolio", "booth-large-2025-kls.webp", "대형 전시부스 디자인 - KLS"),
+    IMG("booth", "portfolio", "booth-2025-goyang-sports-conference.webp", "전시부스 디자인 - 고양 학교체육 컨퍼런스"),
+    IMG("booth", "portfolio", "01_photozone-2025-goyang.webp", "포토존 디자인 - 고양"),
+    IMG("booth", "portfolio", "photozone-2026-intl-cooperation-forum.webp", "포토존 디자인 - 중앙아시아 교육협력포럼"),
+    IMG("booth", "portfolio", "photozone-cultural-arts-club.webp", "포토존 디자인 - 문화예술동아리"),
+  ],
 };
