@@ -34,7 +34,7 @@ const steps: Array<{
     isStrength: true,
     strengthMsg: "자체 디자인팀이 행사 컨셉에 맞는 시안물을 통일된 톤으로 빠르게 제작합니다.",
     clickLabel: true,
-    externalLink: "https://parandesign.kr",
+    externalLink: "/services/design",
   },
   {
     num: "04",

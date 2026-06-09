@@ -134,7 +134,7 @@ export default function AuthorPage() {
                 <li>· 공공기관 수의계약·조달 입찰 참여 자격</li>
                 <li>· 누적 <strong className="text-slate-700">250+ 프로젝트</strong></li>
                 <li>· 경기도 수원시 팔달구 효원로 278, 6층 603호</li>
-                <li>· 패밀리 사이트: <a href="https://parandesign.kr" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">parandesign.kr</a> (디자인)</li>
+                <li>· 디자인 서비스: <a href="/services/design" className="text-primary hover:underline">행사 디자인</a> (인쇄물·콘텐츠·공간)</li>
               </ul>
             </div>
           </section>
