@@ -99,15 +99,15 @@ export default function CertBadges({ variant = "dark" }: { variant?: "dark" | "l
 
   return (
     <>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-nowrap gap-1.5 sm:flex-wrap sm:gap-2">
         {CERTS.map((c) => (
           <button
             key={c.key}
             onClick={() => setOpenCert(c)}
             title={`${c.name} 원본 보기`}
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[12px] font-medium backdrop-blur-sm transition-all ${chip}`}
+            className={`inline-flex shrink items-center gap-1 whitespace-nowrap rounded-full border px-2 py-1 text-[11px] font-medium backdrop-blur-sm transition-all sm:gap-1.5 sm:px-3.5 sm:py-1.5 sm:text-[12px] ${chip}`}
           >
-            <BadgeCheck size={14} className={icon} />
+            <BadgeCheck className={`h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5 ${icon}`} />
             {c.name}
           </button>
         ))}

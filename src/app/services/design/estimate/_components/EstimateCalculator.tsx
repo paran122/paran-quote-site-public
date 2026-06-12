@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   PRODUCTS,
-  REFERRAL_OPTIONS,
   SET_DISCOUNT_MIN_ITEMS,
   SET_DISCOUNT_RATE,
   type ProductDef,
@@ -13,48 +11,18 @@ import {
 
 const won = (n: number) => `${Math.round(n).toLocaleString("ko-KR")}원`;
 
-function optionSummary(product: ProductDef, vals: Record<string, number>): string {
-  return product.fields
-    .filter((f) => f.kind === "chips")
-    .map((f) => {
-      const choice = f.choices?.find((c) => c.value === vals[f.id]);
-      return choice ? `${f.label} ${choice.label}` : null;
-    })
-    .filter(Boolean)
-    .concat(
-      product.fields
-        .filter((f) => f.kind === "stepper")
-        .map((f) => `${f.label} ${vals[f.id]}${f.unit ?? ""}`)
-    )
-    .join(" · ");
-}
-
 export default function EstimateCalculator() {
-  const searchParams = useSearchParams();
-
   const [vals, setVals] = useState<Record<string, Record<string, number>>>(() =>
     Object.fromEntries(PRODUCTS.map((p) => [p.key, { ...p.initial }]))
   );
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [open, setOpen] = useState<string | null>(null);
 
-  // ?expand=poster 프리필
+  // ?expand=poster 프리필 (useSearchParams는 CSR 베일아웃을 일으키므로 직접 파싱)
   useEffect(() => {
-    const expand = searchParams.get("expand");
+    const expand = new URLSearchParams(window.location.search).get("expand");
     if (expand && PRODUCTS.some((p) => p.key === expand)) setOpen(expand);
-  }, [searchParams]);
-
-  const [form, setForm] = useState({
-    organization: "",
-    contactName: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-  const [referrals, setReferrals] = useState<Set<string>>(new Set());
-  const [referralEtc, setReferralEtc] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
+  }, []);
 
   const setField = (productKey: string, fieldId: string, value: number) =>
     setVals((prev) => ({ ...prev, [productKey]: { ...prev[productKey], [fieldId]: value } }));
@@ -77,94 +45,6 @@ export default function EstimateCalculator() {
       else next.add(key);
       return next;
     });
-
-  const toggleReferral = (r: string) =>
-    setReferrals((prev) => {
-      const next = new Set(prev);
-      if (next.has(r)) next.delete(r);
-      else next.add(r);
-      return next;
-    });
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (selected.size === 0) {
-      setErrorMsg("견적에 포함할 디자인 항목을 1개 이상 선택해주세요.");
-      return;
-    }
-    setStatus("sending");
-    setErrorMsg("");
-
-    const picked = PRODUCTS.filter((p) => selected.has(p.key));
-    const cartItems = picked.map((p) => ({
-      name: `${p.name} 디자인`,
-      price: priceOf(p),
-      quantity: 1,
-      category: "디자인",
-      type: p.key,
-      options: { summary: optionSummary(p, vals[p.key]) },
-    }));
-
-    const refList = Array.from(referrals);
-    if (referralEtc.trim()) refList.push(`기타: ${referralEtc.trim()}`);
-
-    const now = new Date();
-    const ymd = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
-    const quoteNumber = `DQ${ymd}-${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}${String(now.getSeconds()).padStart(2, "0")}`;
-
-    const memoParts = [];
-    if (form.message.trim()) memoParts.push(form.message.trim());
-    if (refList.length) memoParts.push(`유입경로: ${refList.join(", ")}`);
-
-    const payload = {
-      quote_number: quoteNumber,
-      contact_name: form.contactName,
-      organization: form.organization,
-      phone: form.phone,
-      email: form.email,
-      event_name: "디자인 견적 문의",
-      event_date: ymd,
-      event_type: "디자인",
-      memo: memoParts.join("\n"),
-      cart_items: cartItems,
-      total_amount: total,
-      discount_amount: discount,
-    };
-
-    try {
-      const res = await fetch("/api/quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "전송에 실패했습니다.");
-      }
-      setStatus("done");
-    } catch (err) {
-      setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "전송에 실패했습니다.");
-    }
-  }
-
-  if (status === "done") {
-    return (
-      <div className="mx-auto max-w-[640px] px-5 py-24 text-center">
-        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-        </div>
-        <h2 className="text-2xl font-bold mb-3">견적 문의가 접수되었습니다</h2>
-        <p className="text-slate-600 leading-relaxed mb-8">
-          입력하신 연락처로 1영업일 이내에 상세 견적과 함께 연락드리겠습니다.<br />
-          예상 견적 합계는 <strong className="text-blue-600">{won(total)}</strong> 입니다. (VAT 포함, 수정 3회 기준)
-        </p>
-        <Link href="/services/design" className="inline-block px-6 py-3 rounded-xl bg-blue-600 text-white font-medium text-sm hover:bg-blue-700 transition-colors">
-          디자인 서비스로 돌아가기
-        </Link>
-      </div>
-    );
-  }
 
   return (
     <div className="mx-auto max-w-[1000px] px-5 md:px-8 py-12 md:py-16">
@@ -303,83 +183,19 @@ export default function EstimateCalculator() {
             <p className="text-[11px] text-slate-400 mt-2">VAT 포함 · 수정 3회 기준 · 실제 견적은 협의 후 확정</p>
           </div>
 
-          {/* 문의 폼 */}
-          <form onSubmit={handleSubmit} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm mt-4 space-y-3">
-            <h3 className="font-bold mb-1">견적 문의</h3>
-            <input
-              required
-              value={form.organization}
-              onChange={(e) => setForm({ ...form, organization: e.target.value })}
-              placeholder="기관/기업명 *"
-              className="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:border-blue-400 focus:outline-none"
-            />
-            <input
-              required
-              value={form.contactName}
-              onChange={(e) => setForm({ ...form, contactName: e.target.value })}
-              placeholder="담당자명 *"
-              className="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:border-blue-400 focus:outline-none"
-            />
-            <input
-              required
-              type="email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              placeholder="메일주소 *"
-              className="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:border-blue-400 focus:outline-none"
-            />
-            <input
-              required
-              type="tel"
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              placeholder="연락처 *"
-              className="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:border-blue-400 focus:outline-none"
-            />
-            <textarea
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-              placeholder="주요 요청 사항"
-              rows={3}
-              className="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:border-blue-400 focus:outline-none resize-none"
-            />
-
-            <div>
-              <p className="text-xs text-slate-500 mb-2">어떻게 알게 되셨나요? (복수 선택)</p>
-              <div className="flex flex-wrap gap-1.5">
-                {REFERRAL_OPTIONS.map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => toggleReferral(r)}
-                    className={`px-2.5 py-1 rounded-md text-xs transition-colors ${referrals.has(r) ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}`}
-                  >
-                    {r}
-                  </button>
-                ))}
-              </div>
-              {referrals.has("기타") && (
-                <input
-                  value={referralEtc}
-                  onChange={(e) => setReferralEtc(e.target.value)}
-                  maxLength={80}
-                  placeholder="어떤 경로로 알게 되셨는지 적어주세요"
-                  className="mt-2 w-full px-3 py-2 rounded-lg border border-slate-200 text-xs focus:border-blue-400 focus:outline-none"
-                />
-              )}
-            </div>
-
-            {errorMsg && <p className="text-xs text-red-500">{errorMsg}</p>}
-
-            <button
-              type="submit"
-              disabled={status === "sending"}
-              className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition-colors disabled:opacity-60"
+          {/* 문의 안내 — 문의 창구는 메인 문의 폼 하나로 통일 */}
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm mt-4">
+            <h3 className="font-bold mb-1.5">이 구성으로 진행하고 싶다면</h3>
+            <p className="text-[13px] text-slate-500 leading-relaxed mb-4">
+              문의를 남겨주시면 선택하신 구성을 바탕으로 1영업일 내 상세 견적서를 보내드립니다.
+            </p>
+            <Link
+              href="/?scrollTo=contact"
+              className="block w-full py-3 rounded-xl bg-blue-600 text-center text-white font-bold text-sm hover:bg-blue-700 transition-colors"
             >
-              {status === "sending" ? "전송 중…" : "견적 문의 보내기"}
-            </button>
-            <p className="text-[11px] text-slate-400 text-center">제출 시 1영업일 내 상세 견적을 안내드립니다.</p>
-          </form>
+              견적 문의하기 →
+            </Link>
+          </div>
         </aside>
       </div>
     </div>

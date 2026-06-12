@@ -348,16 +348,21 @@ export default function ServicesPage() {
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 max-w-[800px] mx-auto">
             {[
               "경기도교육청", "교육부", "해군본부", "합동참모본부", "국방부",
-              "과학기술정보통신부", "수원시", "고양시", "남원시",
-              "자동차부품산업진흥재단", "한국문화예술교육진흥원",
-              "한국에너지정보문화재단", "한국예술인복지재단",
-              "한국산업인력공단", "농업정책보험금융원",
+              "과학기술|정보통신부", "수원시", "고양시", "남원시",
+              "자동차부품산업|진흥재단", "한국문화예술|교육진흥원",
+              "한국에너지|정보문화재단", "한국예술인|복지재단",
+              "한국산업|인력공단", "농업정책|보험금융원",
             ].map((name) => (
               <span
                 key={name}
-                className="rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-center text-xs font-medium text-slate-700"
+                className="rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-center text-xs font-medium text-slate-700 break-keep"
               >
-                {name}
+                {name.split("|").map((part, i, arr) => (
+                  <span key={i}>
+                    {part}
+                    {i < arr.length - 1 && <wbr />}
+                  </span>
+                ))}
               </span>
             ))}
           </div>

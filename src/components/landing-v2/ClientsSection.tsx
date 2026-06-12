@@ -204,7 +204,7 @@ export default function Clients() {
           <div className="mb-1 text-center font-[var(--font-inter)] text-xs font-extrabold tracking-[0.25em] text-blue-500/80 md:text-base">CLIENTS</div>
           <div className="mx-auto mb-2 h-[2px] w-8 rounded-full bg-blue-400 md:mb-4 md:w-10" />
           <h2 className="mb-2 text-center text-xl font-bold text-gray-900 md:mb-4 md:text-5xl">주요 고객사</h2>
-          <p className="mx-auto mb-5 max-w-lg text-center text-xs text-gray-400 md:mb-14 md:text-base">공공기관·재단과 함께 신뢰를 쌓아갑니다</p>
+          <p className="mx-auto mb-5 max-w-lg text-center text-xs text-gray-400 md:mb-14 md:text-base">공공기관·기업과 함께 신뢰를 쌓아갑니다</p>
         </BlurFade>
         <div className="overflow-hidden rounded-xl md:rounded-2xl">
           <div className="relative bg-[#f8f9fb] py-3 md:py-6">

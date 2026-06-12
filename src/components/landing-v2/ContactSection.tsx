@@ -219,10 +219,10 @@ export default function Contact() {
           }}
         />
         <BlurFade delay={0.1}>
-          <div className="mb-0.5 font-[var(--font-inter)] text-[9px] font-extrabold tracking-[0.25em] text-white/60 md:mb-1 md:text-base">CONTACT</div>
+          <div className="mb-1 font-[var(--font-inter)] text-[11px] font-extrabold tracking-[0.25em] text-white/60 md:text-base">CONTACT</div>
           <div className="mx-auto mb-1 h-[1.5px] w-6 rounded-full bg-white/40 md:mb-4 md:h-[2px] md:w-10" />
-          <h2 className="text-lg font-bold text-white md:text-5xl">문의하기</h2>
-          <p className="mx-auto mt-1 text-[9px] leading-relaxed text-blue-100/80 md:mt-4 md:max-w-md md:text-sm">
+          <h2 className="text-2xl font-bold text-white md:text-5xl">문의하기</h2>
+          <p className="mx-auto mt-2 max-w-[300px] text-[12px] leading-relaxed text-blue-100/80 md:mt-4 md:max-w-md md:text-sm">
             무엇이든 문의하세요. 행사 기획부터 운영까지, 파란컴퍼니와 함께 시작하세요.
           </p>
         </BlurFade>
@@ -234,38 +234,38 @@ export default function Contact() {
           <BlurFade delay={0.2}>
             <div className="overflow-hidden rounded-lg bg-white shadow-2xl shadow-blue-900/10 md:rounded-2xl">
               {/* Contact Info Cards */}
-              <div className="grid grid-cols-2 gap-1 p-2 md:grid-cols-2 md:gap-4 md:p-6 xl:grid-cols-3">
-                <div className="flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50/60 px-2 py-1.5 md:items-start md:gap-4 md:rounded-xl md:px-5 md:py-4">
-                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-blue-500/10 md:h-10 md:w-10 md:rounded-lg">
-                    <Phone className="h-2.5 w-2.5 text-blue-500 md:h-[18px] md:w-[18px]" />
+              <div className="grid grid-flow-dense grid-cols-2 gap-2 p-3 md:gap-4 md:p-6 xl:grid-cols-3">
+                <div className="flex items-center gap-2.5 rounded-lg border border-gray-100 bg-gray-50/60 px-3 py-2.5 md:items-start md:gap-4 md:rounded-xl md:px-5 md:py-4">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-blue-500/10 md:h-10 md:w-10 md:rounded-lg">
+                    <Phone className="h-3.5 w-3.5 text-blue-500 md:h-[18px] md:w-[18px]" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[9px] font-bold text-gray-800 md:text-sm">02-6342-2800</div>
-                    <div className="text-[8px] text-gray-400 md:text-[11px]">평일 9:00~18:00</div>
+                    <div className="text-[12px] font-bold text-gray-800 md:text-sm">02-6342-2800</div>
+                    <div className="text-[10px] text-gray-400 md:text-[11px]">평일 9:00~18:00</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50/60 px-2 py-1.5 md:items-start md:gap-3 md:rounded-xl md:px-4 md:py-4">
-                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-blue-500/10 md:h-10 md:w-10 md:rounded-lg">
-                    <Mail className="h-2.5 w-2.5 text-blue-500 md:h-[18px] md:w-[18px]" />
+                <div className="col-span-2 flex items-center gap-2.5 rounded-lg border border-gray-100 bg-gray-50/60 px-3 py-2.5 md:col-span-1 md:items-start md:gap-3 md:rounded-xl md:px-4 md:py-4">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-blue-500/10 md:h-10 md:w-10 md:rounded-lg">
+                    <Mail className="h-3.5 w-3.5 text-blue-500 md:h-[18px] md:w-[18px]" />
                   </div>
                   <div className="min-w-0 md:self-center">
-                    <div className="whitespace-nowrap text-[9px] font-bold leading-snug text-gray-800 md:text-[clamp(11px,0.95vw,13px)]">info@parancompany.co.kr</div>
+                    <div className="whitespace-nowrap text-[12px] font-bold leading-snug text-gray-800 md:text-[clamp(11px,0.95vw,13px)]">info@parancompany.co.kr</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50/60 px-2 py-1.5 md:items-start md:gap-4 md:rounded-xl md:px-5 md:py-4">
-                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-blue-500/10 md:h-10 md:w-10 md:rounded-lg">
-                    <Printer className="h-2.5 w-2.5 text-blue-500 md:h-[18px] md:w-[18px]" />
+                <div className="flex items-center gap-2.5 rounded-lg border border-gray-100 bg-gray-50/60 px-3 py-2.5 md:items-start md:gap-4 md:rounded-xl md:px-5 md:py-4">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-blue-500/10 md:h-10 md:w-10 md:rounded-lg">
+                    <Printer className="h-3.5 w-3.5 text-blue-500 md:h-[18px] md:w-[18px]" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[9px] font-bold text-gray-800 md:text-sm">0504-482-1305</div>
+                    <div className="text-[12px] font-bold text-gray-800 md:text-sm">0504-482-1305</div>
                   </div>
                 </div>
-                <div className="col-span-2 flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50/60 px-2 py-1.5 md:items-start md:gap-4 md:rounded-xl md:px-5 md:py-4">
-                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-blue-500/10 md:h-10 md:w-10 md:rounded-lg">
-                    <MapPin className="h-2.5 w-2.5 text-blue-500 md:h-[18px] md:w-[18px]" />
+                <div className="col-span-2 flex items-center gap-2.5 rounded-lg border border-gray-100 bg-gray-50/60 px-3 py-2.5 md:items-start md:gap-4 md:rounded-xl md:px-5 md:py-4">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-blue-500/10 md:h-10 md:w-10 md:rounded-lg">
+                    <MapPin className="h-3.5 w-3.5 text-blue-500 md:h-[18px] md:w-[18px]" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[9px] font-bold text-gray-800 md:text-sm">경기도 수원시 팔달구 효원로 278, 6층 603호</div>
+                    <div className="text-[12px] font-bold text-gray-800 md:text-sm">경기도 수원시 팔달구 효원로 278, 6층 603호</div>
                   </div>
                 </div>
               </div>
@@ -274,18 +274,18 @@ export default function Contact() {
               <div className="mx-2 border-t border-gray-100 md:mx-6" />
 
               {/* Form */}
-              <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="px-2.5 py-2.5 md:px-10 md:py-8">
+              <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="px-4 py-5 md:px-10 md:py-8">
                 {/* 회신 약속 배지 */}
-                <div className="mb-2.5 flex items-center gap-1.5 rounded-md border border-blue-100 bg-blue-50/60 px-2 py-1.5 md:mb-8 md:gap-2 md:rounded-xl md:px-4 md:py-3">
-                  <Check className="h-3 w-3 shrink-0 text-blue-500 md:h-4 md:w-4" strokeWidth={3} />
-                  <span className="text-[9px] font-semibold text-blue-700 md:text-[13px]">보내주시면 1영업일 내 담당자가 직접 회신합니다</span>
+                <div className="mb-5 flex items-center gap-2 rounded-lg border border-blue-100 bg-blue-50/60 px-3 py-2.5 md:mb-8 md:rounded-xl md:px-4 md:py-3">
+                  <Check className="h-4 w-4 shrink-0 text-blue-500" strokeWidth={3} />
+                  <span className="text-[12px] font-semibold text-blue-700 md:text-[13px]">보내주시면 1영업일 내 담당자가 직접 회신합니다</span>
                 </div>
 
                 {/* 1. 서비스 선택 */}
-                <div className="mb-2 md:mb-8">
-                  <div className="mb-1 flex items-center gap-1 md:mb-4 md:gap-2">
-                    <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-600 text-[8px] font-extrabold text-white md:h-5 md:w-5 md:text-[11px]">1</span>
-                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">어떤 서비스가 필요하세요?</h3>
+                <div className="mb-6 md:mb-8">
+                  <div className="mb-2.5 flex items-center gap-1.5 md:mb-4 md:gap-2">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-extrabold text-white md:text-[11px]">1</span>
+                    <h3 className="text-[14px] font-bold text-gray-900 md:text-base">어떤 서비스가 필요하세요?</h3>
                   </div>
                   <div className="flex flex-wrap gap-1 md:gap-2">
                     {SERVICE_OPTIONS.map((opt) => {
@@ -295,13 +295,13 @@ export default function Contact() {
                           key={opt}
                           type="button"
                           onClick={() => setServiceSel(selected ? "" : opt)}
-                          className={`flex items-center gap-1 rounded-full border px-2 py-1 text-[9px] font-medium transition-colors md:gap-1.5 md:px-3.5 md:py-2 md:text-xs ${
+                          className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-colors md:gap-1.5 md:px-3.5 md:py-2 md:text-xs ${
                             selected
                               ? "border-blue-500 bg-blue-50 text-blue-600"
                               : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700"
                           }`}
                         >
-                          {selected && <Check className="h-2.5 w-2.5 md:h-3 md:w-3" strokeWidth={3} />}
+                          {selected && <Check className="h-3 w-3" strokeWidth={3} />}
                           {opt}
                         </button>
                       );
@@ -310,10 +310,10 @@ export default function Contact() {
                 </div>
 
                 {/* 2. 시기 선택 */}
-                <div className="mb-2 md:mb-8">
-                  <div className="mb-1 flex items-center gap-1 md:mb-4 md:gap-2">
-                    <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-600 text-[8px] font-extrabold text-white md:h-5 md:w-5 md:text-[11px]">2</span>
-                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">행사는 언제쯤인가요?</h3>
+                <div className="mb-6 md:mb-8">
+                  <div className="mb-2.5 flex items-center gap-1.5 md:mb-4 md:gap-2">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-extrabold text-white md:text-[11px]">2</span>
+                    <h3 className="text-[14px] font-bold text-gray-900 md:text-base">행사는 언제쯤인가요?</h3>
                   </div>
                   <div className="flex flex-wrap items-center gap-1 md:gap-2">
                     {TIMING_OPTIONS.map((opt) => {
@@ -323,13 +323,13 @@ export default function Contact() {
                           <button
                             type="button"
                             onClick={() => setTimingSel(selected ? "" : opt)}
-                            className={`flex items-center gap-1 rounded-full border px-2 py-1 text-[9px] font-medium transition-colors md:gap-1.5 md:px-3.5 md:py-2 md:text-xs ${
+                            className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-colors md:gap-1.5 md:px-3.5 md:py-2 md:text-xs ${
                               selected
                                 ? "border-blue-500 bg-blue-50 text-blue-600"
                                 : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700"
                             }`}
                           >
-                            {selected && <Check className="h-2.5 w-2.5 md:h-3 md:w-3" strokeWidth={3} />}
+                            {selected && <Check className="h-3 w-3" strokeWidth={3} />}
                             {opt}
                           </button>
                           {opt === TIMING_DATED && timingSel === TIMING_DATED && (
@@ -338,7 +338,7 @@ export default function Contact() {
                               autoFocus
                               value={eventDate}
                               onChange={(e) => setEventDate(e.target.value)}
-                              className="rounded-full border border-blue-400 bg-blue-50/50 px-2 py-1 text-[9px] font-medium text-blue-700 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-100 md:px-3 md:py-1.5 md:text-xs"
+                              className="rounded-full border border-blue-400 bg-blue-50/50 px-3 py-1.5 text-[12px] font-medium text-blue-700 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-100 md:text-xs"
                             />
                           )}
                         </div>
@@ -348,27 +348,27 @@ export default function Contact() {
                 </div>
 
                 {/* 3. 연락받을 곳 */}
-                <div className="mb-2 md:mb-8">
-                  <div className="mb-1 flex items-center gap-1 md:mb-4 md:gap-2">
-                    <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-600 text-[8px] font-extrabold text-white md:h-5 md:w-5 md:text-[11px]">3</span>
-                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">연락받을 곳</h3>
+                <div className="mb-6 md:mb-8">
+                  <div className="mb-2.5 flex items-center gap-1.5 md:mb-4 md:gap-2">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-extrabold text-white md:text-[11px]">3</span>
+                    <h3 className="text-[14px] font-bold text-gray-900 md:text-base">연락받을 곳</h3>
                   </div>
-                  <div className="space-y-1.5 md:space-y-5">
-                    <div className="grid grid-cols-2 gap-1.5 md:gap-5">
+                  <div className="space-y-3 md:space-y-5">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-5">
                       <div>
-                        <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">이름 <span className="text-red-400">*</span></label>
+                        <label className="mb-1 block text-[12px] font-semibold text-gray-500 md:mb-2 md:text-xs">이름 <span className="text-red-400">*</span></label>
                         <input
                           type="text"
                           placeholder="홍길동"
                           value={form.contactName}
                           onChange={(e) => updateField("contactName", e.target.value)}
                           onBlur={() => handleBlur("contactName")}
-                          className={`w-full rounded border bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.contactName && getFieldError(form, "contactName") ? "border-red-300" : "border-gray-200"}`}
+                          className={`w-full rounded-lg border bg-white px-3 py-2.5 text-[14px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.contactName && getFieldError(form, "contactName") ? "border-red-300" : "border-gray-200"}`}
                         />
-                        {touched.contactName && getFieldError(form, "contactName") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "contactName")}</p>}
+                        {touched.contactName && getFieldError(form, "contactName") && <p className="mt-1 text-[11px] text-red-400 md:text-xs">{getFieldError(form, "contactName")}</p>}
                       </div>
                       <div>
-                        <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">연락처 <span className="text-red-400">*</span></label>
+                        <label className="mb-1 block text-[12px] font-semibold text-gray-500 md:mb-2 md:text-xs">연락처 <span className="text-red-400">*</span></label>
                         <input
                           type="tel"
                           inputMode="numeric"
@@ -377,32 +377,32 @@ export default function Contact() {
                           value={form.phone}
                           onChange={(e) => updateField("phone", formatPhoneNumber(e.target.value))}
                           onBlur={() => handleBlur("phone")}
-                          className={`w-full rounded border bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.phone && getFieldError(form, "phone") ? "border-red-300" : "border-gray-200"}`}
+                          className={`w-full rounded-lg border bg-white px-3 py-2.5 text-[14px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.phone && getFieldError(form, "phone") ? "border-red-300" : "border-gray-200"}`}
                         />
-                        {touched.phone && getFieldError(form, "phone") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "phone")}</p>}
+                        {touched.phone && getFieldError(form, "phone") && <p className="mt-1 text-[11px] text-red-400 md:text-xs">{getFieldError(form, "phone")}</p>}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-1.5 md:gap-5">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-5">
                       <div>
-                        <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">이메일 <span className="text-red-400">*</span></label>
+                        <label className="mb-1 block text-[12px] font-semibold text-gray-500 md:mb-2 md:text-xs">이메일 <span className="text-red-400">*</span></label>
                         <input
                           type="email"
                           placeholder="example@email.com"
                           value={form.email}
                           onChange={(e) => updateField("email", e.target.value)}
                           onBlur={() => handleBlur("email")}
-                          className={`w-full rounded border bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.email && getFieldError(form, "email") ? "border-red-300" : "border-gray-200"}`}
+                          className={`w-full rounded-lg border bg-white px-3 py-2.5 text-[14px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm ${touched.email && getFieldError(form, "email") ? "border-red-300" : "border-gray-200"}`}
                         />
-                        {touched.email && getFieldError(form, "email") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "email")}</p>}
+                        {touched.email && getFieldError(form, "email") && <p className="mt-1 text-[11px] text-red-400 md:text-xs">{getFieldError(form, "email")}</p>}
                       </div>
                       <div>
-                        <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">소속(회사/기관) <span className="font-normal text-gray-400">— 선택</span></label>
+                        <label className="mb-1 block text-[12px] font-semibold text-gray-500 md:mb-2 md:text-xs">소속(회사/기관) <span className="font-normal text-gray-400">— 선택</span></label>
                         <input
                           type="text"
                           placeholder="파란컴퍼니"
                           value={form.organization}
                           onChange={(e) => updateField("organization", e.target.value)}
-                          className="w-full rounded border border-gray-200 bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm"
+                          className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-[14px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm"
                         />
                       </div>
                     </div>
@@ -410,26 +410,26 @@ export default function Contact() {
                 </div>
 
                 {/* 4. 남기실 말씀 */}
-                <div className="mb-2 md:mb-8">
-                  <div className="mb-1 flex items-center gap-1 md:mb-4 md:gap-2">
-                    <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-600 text-[8px] font-extrabold text-white md:h-5 md:w-5 md:text-[11px]">4</span>
-                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">남기실 말씀</h3>
-                    <span className="text-[8px] text-gray-400 md:text-[11px]">선택사항</span>
+                <div className="mb-6 md:mb-8">
+                  <div className="mb-2.5 flex items-center gap-1.5 md:mb-4 md:gap-2">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-extrabold text-white md:text-[11px]">4</span>
+                    <h3 className="text-[14px] font-bold text-gray-900 md:text-base">남기실 말씀</h3>
+                    <span className="text-[10px] text-gray-400 md:text-[11px]">선택사항</span>
                   </div>
                   <textarea
                     rows={3}
                     placeholder={MESSAGE_PLACEHOLDERS[serviceSel] ?? DEFAULT_PLACEHOLDER}
                     value={form.message}
                     onChange={(e) => updateField("message", e.target.value)}
-                    className="w-full resize-none rounded border border-gray-200 bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm"
+                    className="w-full resize-none rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-[14px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm"
                   />
                 </div>
 
                 {/* 유입경로 */}
-                <div className="mb-2 md:mb-8">
-                  <div className="mb-1 flex items-center gap-1 md:mb-4 md:gap-2">
-                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">유입경로</h3>
-                    <span className="text-[8px] text-gray-400 md:text-[11px]">중복 선택 가능</span>
+                <div className="mb-6 md:mb-8">
+                  <div className="mb-2.5 flex items-center gap-1.5 md:mb-4 md:gap-2">
+                    <h3 className="text-[14px] font-bold text-gray-900 md:text-base">유입경로</h3>
+                    <span className="text-[10px] text-gray-400 md:text-[11px]">중복 선택 가능</span>
                   </div>
                   <div className="flex flex-wrap gap-1 md:gap-2">
                     {REFERRAL_SOURCES.map((src) => {
@@ -439,13 +439,13 @@ export default function Contact() {
                           key={src}
                           type="button"
                           onClick={() => toggleReferral(src)}
-                          className={`flex items-center gap-1 rounded-full border px-2 py-1 text-[9px] font-medium transition-colors md:gap-1.5 md:px-3.5 md:py-2 md:text-xs ${
+                          className={`flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-medium transition-colors md:gap-1.5 md:px-3.5 md:py-2 md:text-xs ${
                             selected
                               ? "border-blue-500 bg-blue-50 text-blue-600"
                               : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700"
                           }`}
                         >
-                          {selected && <Check className="h-2.5 w-2.5 md:h-3 md:w-3" strokeWidth={3} />}
+                          {selected && <Check className="h-3 w-3" strokeWidth={3} />}
                           {src}
                         </button>
                       );
@@ -458,16 +458,16 @@ export default function Contact() {
                       value={referralOther}
                       onChange={(e) => setReferralOther(e.target.value)}
                       maxLength={80}
-                      className="mt-1.5 w-full rounded border border-gray-200 bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:mt-2.5 md:rounded-lg md:px-4 md:py-2.5 md:text-sm"
+                      className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-[14px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:mt-2.5 md:rounded-lg md:px-4 md:py-2.5 md:text-sm"
                     />
                   )}
                 </div>
 
                 {/* 파일 첨부 */}
-                <div className="mb-2 md:mb-8">
+                <div className="mb-6 md:mb-8">
                   <div className="flex items-center gap-1 md:gap-2">
-                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">파일 첨부</h3>
-                    <span className="text-[8px] text-gray-400 md:text-[11px]">선택사항 (최대 {MAX_FILES}개, 10MB 이하)</span>
+                    <h3 className="text-[14px] font-bold text-gray-900 md:text-base">파일 첨부</h3>
+                    <span className="text-[10px] text-gray-400 md:text-[11px]">선택사항 (최대 {MAX_FILES}개, 10MB 이하)</span>
                   </div>
                   <div className="mt-1 md:mt-3">
                     <input
@@ -482,9 +482,9 @@ export default function Contact() {
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={files.length >= MAX_FILES}
-                      className="flex items-center gap-1 rounded border border-dashed border-gray-300 px-2 py-1.5 text-[9px] text-gray-500 transition-colors hover:border-blue-400 hover:text-blue-500 disabled:opacity-40 md:gap-2 md:rounded-lg md:px-4 md:py-2.5 md:text-xs"
+                      className="flex items-center gap-2 rounded-lg border border-dashed border-gray-300 px-3 py-2.5 text-[12px] text-gray-500 transition-colors hover:border-blue-400 hover:text-blue-500 disabled:opacity-40 md:px-4 md:text-xs"
                     >
-                      <Paperclip className="h-2.5 w-2.5 md:h-3.5 md:w-3.5" />
+                      <Paperclip className="h-3.5 w-3.5" />
                       파일 선택 (이미지, PDF, 문서)
                     </button>
                     {files.length > 0 && (
@@ -492,21 +492,21 @@ export default function Contact() {
                         {files.map((file, idx) => (
                           <div
                             key={`${file.name}-${idx}`}
-                            className="flex items-center gap-1.5 rounded border border-gray-100 bg-gray-50/60 px-2 py-1 md:gap-2 md:rounded-lg md:px-3 md:py-2"
+                            className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50/60 px-3 py-2"
                           >
                             {isImageType(file.type) ? (
-                              <ImageIcon className="h-2.5 w-2.5 shrink-0 text-blue-400 md:h-3.5 md:w-3.5" />
+                              <ImageIcon className="h-3.5 w-3.5 shrink-0 text-blue-400" />
                             ) : (
-                              <FileText className="h-2.5 w-2.5 shrink-0 text-gray-400 md:h-3.5 md:w-3.5" />
+                              <FileText className="h-3.5 w-3.5 shrink-0 text-gray-400" />
                             )}
-                            <span className="min-w-0 flex-1 truncate text-[9px] text-gray-700 md:text-xs">{file.name}</span>
-                            <span className="shrink-0 text-[8px] text-gray-400 md:text-[11px]">{formatFileSize(file.size)}</span>
+                            <span className="min-w-0 flex-1 truncate text-[12px] text-gray-700 md:text-xs">{file.name}</span>
+                            <span className="shrink-0 text-[10px] text-gray-400 md:text-[11px]">{formatFileSize(file.size)}</span>
                             <button
                               type="button"
                               onClick={() => removeFile(idx)}
                               className="shrink-0 rounded-full p-0.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
                             >
-                              <X className="h-2.5 w-2.5 md:h-3 md:w-3" />
+                              <X className="h-3 w-3" />
                             </button>
                           </div>
                         ))}
@@ -516,7 +516,7 @@ export default function Contact() {
                 </div>
 
                 {/* 개인정보 동의 */}
-                <div className="mb-2 flex cursor-pointer items-start gap-2 md:mb-6 md:items-center md:gap-2.5" onClick={() => setPrivacyAgreed(!privacyAgreed)}>
+                <div className="mb-5 flex cursor-pointer items-start gap-2 md:mb-6 md:items-center md:gap-2.5" onClick={() => setPrivacyAgreed(!privacyAgreed)}>
                   <div className="mt-[3px] md:mt-0">
                     <AnimatedCheckbox
                       checked={privacyAgreed}
@@ -525,7 +525,7 @@ export default function Contact() {
                       className="md:h-4 md:w-4"
                     />
                   </div>
-                  <span className="text-[9px] leading-relaxed text-gray-500 md:text-xs">
+                  <span className="text-[11px] leading-relaxed text-gray-500 md:text-xs">
                     <Link href="/privacy" target="_blank" className="font-semibold text-blue-600 underline underline-offset-2">개인정보 수집·이용</Link>에 동의합니다. (이름, 연락처, 이메일을 문의 응대 목적으로 수집하며, 목적 달성 후 즉시 파기합니다.)
                   </span>
                 </div>
@@ -535,7 +535,7 @@ export default function Contact() {
                   whileTap={{ scale: submitting ? 1 : 0.99 }}
                   type="submit"
                   disabled={submitting}
-                  className="flex w-full items-center justify-center gap-2 rounded-md bg-gradient-to-r from-blue-600 to-indigo-600 py-2 text-[11px] font-bold text-white shadow-lg shadow-blue-500/25 disabled:opacity-60 md:rounded-xl md:py-4 md:text-sm"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-3.5 text-[14px] font-bold text-white shadow-lg shadow-blue-500/25 disabled:opacity-60 md:py-4 md:text-sm"
                 >
                   {(submitting || uploading) && <Loader2 className="h-3.5 w-3.5 animate-spin md:h-4 md:w-4" />}
                   {uploading ? "파일 업로드 중..." : submitting ? "처리 중..." : "문의 보내기"}
