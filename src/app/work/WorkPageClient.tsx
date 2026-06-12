@@ -8,33 +8,72 @@ import { motion, AnimatePresence } from "framer-motion";
 import ContactModal from "@/components/ui/ContactModal";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { PulsatingButton } from "@/components/ui/pulsating-button";
-import { GRADIENT_MAP } from "@/lib/portfolioData";
-import { DESIGN_WORKS, type DesignWork } from "@/lib/designWorks";
+import { GRADIENT_MAP, EVENT_WORK_GROUPS, eventGroupOf } from "@/lib/portfolioData";
+import { DESIGN_WORKS, DESIGN_WORK_GROUPS, designGroupOf, type DesignWork } from "@/lib/designWorks";
 import type { Portfolio, PortfolioMedia } from "@/types";
 
-/** tags[0] 기반 카테고리 컬러맵 */
+/** tags[0] 기반 카테고리 컬러맵 (구 태그 + 2026-06 재편 그룹명) */
 const categoryStyle: Record<string, string> = {
   포럼: "bg-purple-100 text-purple-700",
   세미나: "bg-emerald-100 text-emerald-700",
   행사운영: "bg-blue-100 text-blue-700",
   교육: "bg-amber-100 text-amber-700",
   콘텐츠: "bg-orange-100 text-orange-700",
+  "컨퍼런스·세미나": "bg-emerald-100 text-emerald-700",
+  "교육·워크숍": "bg-amber-100 text-amber-700",
+  "전시·홍보부스": "bg-purple-100 text-purple-700",
 };
 
 /** 뷰 모드 */
 type ViewMode = "design" | "event";
 
-/** 디자인별 카테고리 정의 */
-const DESIGN_CATEGORIES = [
-  { key: "전체", label: "전체" },
-  { key: "전시부스", label: "전시부스" },
-  { key: "포스터", label: "포스터" },
-  { key: "리플렛", label: "리플렛" },
-  { key: "카탈로그", label: "카탈로그" },
-  { key: "배너·현수막", label: "배너/현수막" },
-  { key: "PPT", label: "PPT" },
-  { key: "카드뉴스", label: "카드뉴스" },
-] as const;
+/** 디자인별 필터 = 서비스 3그룹(인쇄물/디지털/공간) 롤업. designWorks.ts에서 정의. */
+const DESIGN_CATEGORIES = DESIGN_WORK_GROUPS;
+
+/** 통합 사이드바용 그룹 목록 (전체 제외 — 전체는 행사 전체 1개만 노출) */
+const EVENT_GROUP_ITEMS = EVENT_WORK_GROUPS.filter((g) => g.key !== "전체");
+const DESIGN_GROUP_ITEMS = DESIGN_WORK_GROUPS.filter((g) => g.key !== "전체");
+
+/** 통합 사이드바 항목 — accent: 행사=blue, 디자인=violet. 트리 레일 위에 얹힘. */
+function SidebarItem({ label, count, isActive, onClick, accent = "blue" }: {
+  label: string;
+  count: number;
+  isActive: boolean;
+  onClick: () => void;
+  accent?: "blue" | "violet";
+}) {
+  const activeText = accent === "violet" ? "text-violet-700" : "text-blue-700";
+  const activeBg = accent === "violet" ? "bg-violet-50/80" : "bg-blue-50/80";
+  const activeRail = accent === "violet" ? "before:bg-violet-500" : "before:bg-blue-500";
+  return (
+    <button
+      onClick={onClick}
+      className={`relative w-full flex items-center justify-between rounded-md px-2.5 py-[7px] text-[13px] transition-colors
+        before:absolute before:-left-[13px] before:top-1/2 before:h-4 before:w-[2px] before:-translate-y-1/2 before:rounded-full before:transition-opacity ${
+        isActive
+          ? `${activeBg} ${activeText} font-semibold before:opacity-100 ${activeRail}`
+          : "text-slate-500 hover:text-slate-900 hover:bg-slate-100/60 before:opacity-0"
+      }`}
+    >
+      <span className="truncate">{label}</span>
+      <span className={`ml-2 text-[11px] tabular-nums ${isActive ? activeText : "text-slate-300"}`}>
+        {count}
+      </span>
+    </button>
+  );
+}
+
+/** 섹션: 헤더 + 트리 레일 그룹 */
+function SidebarGroup({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="mt-5">
+      <p className="px-1.5 text-[12px] font-semibold text-slate-800">{label}</p>
+      <div className="mt-1.5 ml-2 flex flex-col gap-px border-l border-slate-200 pl-3">
+        {children}
+      </div>
+    </div>
+  );
+}
 
 /** 디자인별 전체 보기 정렬: 첫 4개 고정 + 나머지 랜덤 */
 const PINNED_IDS = ["b03", "b08", "b01", "b04"];
@@ -213,12 +252,22 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
 
     if (view === "design") {
       setViewMode("design");
-      if (design && DESIGN_CATEGORIES.some((c) => c.key === design)) {
-        setDesignFilter(design);
+      if (design) {
+        // 신규 그룹키(인쇄물/디지털/공간) 직접 매칭, 구 카테고리값(포스터 등)은 그룹으로 변환 — 기존 링크·색인 호환
+        const grp = DESIGN_CATEGORIES.some((c) => c.key === design)
+          ? design
+          : designGroupOf(design);
+        if (grp) setDesignFilter(grp);
       }
     } else if (view === "event") {
       setViewMode("event");
-      if (category) setCategoryFilter(category);
+      if (category) {
+        // 신규 그룹키 직접 매칭, 구 태그값(포럼/세미나 등)은 그룹으로 변환 — 기존 링크·색인 호환
+        const grp = EVENT_WORK_GROUPS.some((c) => c.key === category)
+          ? category
+          : eventGroupOf(category);
+        if (grp) setCategoryFilter(grp);
+      }
     }
   }, []);
 
@@ -235,7 +284,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
   const sortedDesignWorks = useMemo(() => {
     let list: DesignWork[];
     if (designFilter !== "전체") {
-      list = DESIGN_WORKS.filter((d) => d.category === designFilter);
+      list = DESIGN_WORKS.filter((d) => designGroupOf(d.category) === designFilter);
     } else {
       const pinned = PINNED_IDS.map((id) => DESIGN_WORKS.find((d) => d.id === id)!).filter(Boolean);
       const rest = shuffleReady ? shuffledRest : DESIGN_WORKS.filter((d) => !PINNED_IDS.includes(d.id));
@@ -254,23 +303,9 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
 
   const visiblePortfolios = useMemo(() => portfolios.filter((p) => p.isVisible), [portfolios]);
 
-  /** tags[0] 기반 카테고리 목록 + 개수 */
-  const categoriesWithCount = useMemo(() => {
-    const countMap: Record<string, number> = {};
-    visiblePortfolios.forEach((p) => {
-      const cat = p.tags[0];
-      if (cat) countMap[cat] = (countMap[cat] ?? 0) + 1;
-    });
-    return Object.entries(countMap).map(([name, count]) => ({ name, count }));
-  }, [visiblePortfolios]);
-
-  const CATEGORIES = useMemo(() => {
-    return ["전체", ...categoriesWithCount.map((c) => c.name)];
-  }, [categoriesWithCount]);
-
   const getCategoryCount = (cat: string) => {
     if (cat === "전체") return visiblePortfolios.length;
-    return categoriesWithCount.find((c) => c.name === cat)?.count ?? 0;
+    return visiblePortfolios.filter((p) => eventGroupOf(p.tags[0], p.slug) === cat).length;
   };
 
   /** 필터링 */
@@ -278,7 +313,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
     let list = visiblePortfolios;
 
     if (categoryFilter !== "전체") {
-      list = list.filter((p) => p.tags[0] === categoryFilter);
+      list = list.filter((p) => eventGroupOf(p.tags[0], p.slug) === categoryFilter);
     }
     if (search.trim()) {
       const q = search.trim().toLowerCase();
@@ -292,8 +327,6 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
 
     return list;
   }, [visiblePortfolios, categoryFilter, search]);
-
-  const totalCount = visiblePortfolios.length;
 
   return (
     <div className="pt-[56px] min-h-screen bg-slate-50">
@@ -313,7 +346,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
           <div className="flex justify-center gap-10 mt-8">
             <div className="text-center">
               <p className="font-num text-2xl font-bold text-slate-900">
-                {totalCount}+
+                250+
               </p>
               <p className="text-[12px] text-slate-400 mt-1">프로젝트</p>
             </div>
@@ -332,100 +365,46 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
       {/* 메인 레이아웃: 사이드바 + 콘텐츠 */}
       <div className="max-w-content mx-auto px-6 py-6">
         <div className="flex gap-6">
-          {/* 사이드바 (desktop) */}
+          {/* 사이드바 (desktop) — 행사 3그룹 + 디자인 3그룹 통합 (탭 없음) */}
           <aside className="hidden lg:block w-[220px] shrink-0 self-start sticky top-[104px] max-h-[calc(100vh-120px)] overflow-y-auto scrollbar-hide">
             <div>
-              {/* 뷰 모드 전환 탭 */}
-              <div className="flex rounded-lg bg-slate-100 p-1 mb-5">
-                <button
-                  onClick={() => { setViewMode("design"); setDesignFilter("전체"); }}
-                  className={`flex-1 rounded-md py-2 text-[12px] font-semibold transition-all ${
-                    viewMode === "design"
-                      ? "bg-white text-slate-900 shadow-sm"
-                      : "text-slate-500 hover:text-slate-700"
-                  }`}
-                >
-                  디자인별
-                </button>
+              <nav className="flex flex-col">
                 <button
                   onClick={() => { setViewMode("event"); setCategoryFilter("전체"); }}
-                  className={`flex-1 rounded-md py-2 text-[12px] font-semibold transition-all ${
-                    viewMode === "event"
-                      ? "bg-white text-slate-900 shadow-sm"
-                      : "text-slate-500 hover:text-slate-700"
+                  className={`flex w-full items-center justify-between rounded-md px-1.5 py-1.5 text-[12px] font-semibold text-slate-800 transition-colors ${
+                    viewMode === "event" && categoryFilter === "전체"
+                      ? "bg-blue-50/80 text-blue-700"
+                      : "hover:bg-slate-100/70"
                   }`}
                 >
-                  행사별
+                  <span>전체</span>
                 </button>
-              </div>
 
-              {viewMode === "design" ? (
-                <>
-                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3 px-3">
-                    디자인 유형
-                  </p>
-                  <nav className="flex flex-col gap-0.5">
-                    {DESIGN_CATEGORIES.map(({ key, label }) => {
-                      const isActive = designFilter === key;
-                      const count = key === "전체"
-                        ? DESIGN_WORKS.length
-                        : DESIGN_WORKS.filter((d) => d.category === key).length;
-                      return (
-                        <button
-                          key={key}
-                          onClick={() => setDesignFilter(key)}
-                          className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] transition-all ${
-                            isActive
-                              ? "border-l-2 border-blue-500 bg-blue-50 text-slate-900 font-semibold"
-                              : "border-l-2 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                          }`}
-                        >
-                          <span>{label}</span>
-                          <span className={`text-[11px] px-1.5 py-0.5 rounded-full font-medium ${
-                            isActive
-                              ? "bg-blue-100 text-blue-600"
-                              : "bg-slate-100 text-slate-500"
-                          }`}>
-                            {count}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </nav>
-                </>
-              ) : (
-                <>
-                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3 px-3">
-                    행사 유형
-                  </p>
-                  <nav className="flex flex-col gap-0.5">
-                    {CATEGORIES.map((cat) => {
-                      const isActive = categoryFilter === cat;
-                      const count = getCategoryCount(cat);
-                      return (
-                        <button
-                          key={cat}
-                          onClick={() => setCategoryFilter(cat)}
-                          className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] transition-all ${
-                            isActive
-                              ? "border-l-2 border-blue-500 bg-blue-50 text-slate-900 font-semibold"
-                              : "border-l-2 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                          }`}
-                        >
-                          <span>{cat}</span>
-                          <span className={`text-[11px] px-1.5 py-0.5 rounded-full font-medium ${
-                            isActive
-                              ? "bg-blue-100 text-blue-600"
-                              : "bg-slate-100 text-slate-500"
-                          }`}>
-                            {count}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </nav>
-                </>
-              )}
+                <SidebarGroup label="행사 대행">
+                  {EVENT_GROUP_ITEMS.map(({ key, label }) => (
+                    <SidebarItem
+                      key={key}
+                      label={label}
+                      count={getCategoryCount(key)}
+                      isActive={viewMode === "event" && categoryFilter === key}
+                      onClick={() => { setViewMode("event"); setCategoryFilter(key); }}
+                    />
+                  ))}
+                </SidebarGroup>
+
+                <SidebarGroup label="디자인">
+                  {DESIGN_GROUP_ITEMS.map(({ key, label }) => (
+                    <SidebarItem
+                      key={key}
+                      label={label}
+                      count={DESIGN_WORKS.filter((d) => designGroupOf(d.category) === key).length}
+                      isActive={viewMode === "design" && designFilter === key}
+                      onClick={() => { setViewMode("design"); setDesignFilter(key); }}
+                      accent="violet"
+                    />
+                  ))}
+                </SidebarGroup>
+              </nav>
 
               {/* CTA — 카테고리 하단 */}
               <div className="relative mt-8 overflow-hidden rounded-[14px] border border-slate-200/60 bg-white/40 backdrop-blur-xl">
@@ -452,64 +431,46 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
 
           {/* 콘텐츠 영역 */}
           <div className="flex-1 min-w-0">
-            {/* 모바일 뷰 전환 + 카테고리 pill (lg:hidden) */}
+            {/* 모바일 통합 pill — 전체 + 행사 3 + 디자인 3 (lg:hidden) */}
             <div className="lg:hidden mb-4 -mx-6 px-6">
-              {/* 모바일 뷰 전환 */}
-              <div className="flex rounded-lg bg-slate-100 p-1 mb-3">
-                <button
-                  onClick={() => { setViewMode("design"); setDesignFilter("전체"); }}
-                  className={`flex-1 rounded-md py-2 text-[12px] font-semibold transition-all ${
-                    viewMode === "design"
-                      ? "bg-white text-slate-900 shadow-sm"
-                      : "text-slate-500"
-                  }`}
-                >
-                  디자인별
-                </button>
-                <button
-                  onClick={() => { setViewMode("event"); setCategoryFilter("전체"); }}
-                  className={`flex-1 rounded-md py-2 text-[12px] font-semibold transition-all ${
-                    viewMode === "event"
-                      ? "bg-white text-slate-900 shadow-sm"
-                      : "text-slate-500"
-                  }`}
-                >
-                  행사별
-                </button>
-              </div>
-              {/* 모바일 카테고리 pill */}
               <div className="overflow-x-auto scrollbar-hide">
                 <div className="flex gap-2 pb-1">
-                  {viewMode === "design"
-                    ? DESIGN_CATEGORIES.map(({ key, label }) => (
-                        <button
-                          key={key}
-                          onClick={() => setDesignFilter(key)}
-                          className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors ${
-                            designFilter === key
-                              ? "bg-slate-900 text-white"
-                              : "bg-slate-100 text-slate-500 hover:bg-slate-200"
-                          }`}
-                        >
-                          {label}
-                        </button>
-                      ))
-                    : CATEGORIES.map((cat) => (
-                        <button
-                          key={cat}
-                          onClick={() => setCategoryFilter(cat)}
-                          className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors ${
-                            categoryFilter === cat
-                              ? cat === "전체"
-                                ? "bg-slate-900 text-white"
-                                : categoryStyle[cat] ?? "bg-slate-900 text-white"
-                              : "bg-slate-100 text-slate-500 hover:bg-slate-200"
-                          }`}
-                        >
-                          {cat}
-                        </button>
-                      ))
-                  }
+                  <button
+                    onClick={() => { setViewMode("event"); setCategoryFilter("전체"); }}
+                    className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors ${
+                      viewMode === "event" && categoryFilter === "전체"
+                        ? "bg-slate-900 text-white"
+                        : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                    }`}
+                  >
+                    전체
+                  </button>
+                  {EVENT_GROUP_ITEMS.map(({ key, label }) => (
+                    <button
+                      key={key}
+                      onClick={() => { setViewMode("event"); setCategoryFilter(key); }}
+                      className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors ${
+                        viewMode === "event" && categoryFilter === key
+                          ? "bg-slate-900 text-white"
+                          : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                  {DESIGN_GROUP_ITEMS.map(({ key, label }) => (
+                    <button
+                      key={key}
+                      onClick={() => { setViewMode("design"); setDesignFilter(key); }}
+                      className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors ${
+                        viewMode === "design" && designFilter === key
+                          ? "bg-blue-600 text-white"
+                          : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -536,7 +497,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
               <>
                 {designFilter !== "전체" && (
                   <h2 className="text-lg font-bold text-slate-900 mb-4">
-                    {designFilter} 디자인
+                    {DESIGN_WORK_GROUPS.find((g) => g.key === designFilter)?.label ?? designFilter} 디자인
                     <span className="ml-2 text-[13px] font-normal text-slate-400">
                       {sortedDesignWorks.length}건
                     </span>

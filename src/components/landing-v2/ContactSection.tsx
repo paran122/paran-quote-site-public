@@ -33,6 +33,20 @@ function isImageType(type: string): boolean {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_REGEX = /^[\d\-]{9,15}$/;
 
+/* 서비스·시기 퀵셀렉트 (클릭만으로 문의 절반 완성) */
+const SERVICE_OPTIONS = ["컨퍼런스·세미나", "교육·워크숍", "전시·홍보부스", "현수막·포스터", "PPT·카드뉴스·편집디자인", "전시부스·포토존", "아직 미정이에요"];
+const TIMING_DATED = "날짜가 정해졌어요";
+const TIMING_OPTIONS = [TIMING_DATED, "1개월 이내", "3개월 이내", "올해 안", "미정"];
+const MESSAGE_PLACEHOLDERS: Record<string, string> = {
+  "컨퍼런스·세미나": "예: 11월 중순 200명 규모 학술대회 견적이 궁금합니다.",
+  "교육·워크숍": "예: 직원 80명 1박 2일 워크숍을 준비하고 있습니다.",
+  "전시·홍보부스": "예: 박람회 부스(3×3m) 디자인부터 운영까지 견적이 궁금합니다.",
+  "현수막·포스터": "예: 행사 포스터 1종과 현수막 2종 시안이 필요합니다.",
+  "PPT·카드뉴스·편집디자인": "예: 발표용 PPT 20장 디자인을 맡기고 싶습니다.",
+  "전시부스·포토존": "예: 행사장 포토존 디자인·제작이 필요합니다.",
+};
+const DEFAULT_PLACEHOLDER = "행사명, 예상 인원수, 참고 사항 등 자유롭게 적어주세요.";
+
 interface ContactForm {
   contactName: string;
   organization: string;
@@ -67,6 +81,9 @@ export default function Contact() {
   const [uploading, setUploading] = useState(false);
   const [referralSources, setReferralSources] = useState<string[]>([]);
   const [referralOther, setReferralOther] = useState("");
+  const [serviceSel, setServiceSel] = useState("");
+  const [timingSel, setTimingSel] = useState("");
+  const [eventDate, setEventDate] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const updateField = (key: keyof ContactForm, value: string) => {
@@ -146,6 +163,18 @@ export default function Contact() {
         attachments = await uploadFiles();
       }
 
+      // 퀵셀렉트 값을 memo 상단에 합성 (백엔드 변경 없이 전달)
+      const metaLines: string[] = [];
+      if (serviceSel) metaLines.push(`관심 서비스: ${serviceSel}`);
+      if (timingSel) {
+        metaLines.push(
+          timingSel === TIMING_DATED && eventDate
+            ? `행사 시기: ${eventDate} (확정)`
+            : `행사 시기: ${timingSel}`
+        );
+      }
+      const messageWithMeta = [metaLines.join("\n"), form.message].filter(Boolean).join("\n");
+
       const { submitQuoteViaApi } = await import("@/lib/queries");
       await submitQuoteViaApi({
         quote_number: quoteNumber,
@@ -153,21 +182,24 @@ export default function Contact() {
         organization: form.organization.trim() || "문의",
         phone: form.phone,
         email: form.email,
-        event_name: "문의",
-        event_date: new Date().toISOString().slice(0, 10),
-        event_type: "문의",
-        memo: prependReferralToMemo(referralSources, form.message, referralOther),
+        event_name: serviceSel ? `${serviceSel} 문의` : "문의",
+        event_date: (timingSel === TIMING_DATED && eventDate) || new Date().toISOString().slice(0, 10),
+        event_type: serviceSel || "문의",
+        memo: prependReferralToMemo(referralSources, messageWithMeta, referralOther),
         cart_items: [],
         total_amount: 0,
         attachments,
       });
-      showToast("문의가 접수되었습니다");
+      showToast("문의가 접수되었습니다. 1영업일 내 연락드리겠습니다");
       setForm(INITIAL_FORM);
       setTouched({});
       setPrivacyAgreed(false);
       setFiles([]);
       setReferralSources([]);
       setReferralOther("");
+      setServiceSel("");
+      setTimingSel("");
+      setEventDate("");
     } catch {
       showToast("오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
@@ -202,7 +234,7 @@ export default function Contact() {
           <BlurFade delay={0.2}>
             <div className="overflow-hidden rounded-lg bg-white shadow-2xl shadow-blue-900/10 md:rounded-2xl">
               {/* Contact Info Cards */}
-              <div className="grid grid-cols-2 gap-1 p-2 md:grid-cols-2 md:gap-4 md:p-6 lg:grid-cols-3">
+              <div className="grid grid-cols-2 gap-1 p-2 md:grid-cols-2 md:gap-4 md:p-6 xl:grid-cols-3">
                 <div className="flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50/60 px-2 py-1.5 md:items-start md:gap-4 md:rounded-xl md:px-5 md:py-4">
                   <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-blue-500/10 md:h-10 md:w-10 md:rounded-lg">
                     <Phone className="h-2.5 w-2.5 text-blue-500 md:h-[18px] md:w-[18px]" />
@@ -212,12 +244,12 @@ export default function Contact() {
                     <div className="text-[8px] text-gray-400 md:text-[11px]">평일 9:00~18:00</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50/60 px-2 py-1.5 md:items-start md:gap-4 md:rounded-xl md:px-5 md:py-4">
+                <div className="flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50/60 px-2 py-1.5 md:items-start md:gap-3 md:rounded-xl md:px-4 md:py-4">
                   <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-blue-500/10 md:h-10 md:w-10 md:rounded-lg">
                     <Mail className="h-2.5 w-2.5 text-blue-500 md:h-[18px] md:w-[18px]" />
                   </div>
-                  <div className="min-w-0">
-                    <div className="break-all text-[9px] font-bold leading-snug text-gray-800 md:text-sm">info@parancompany.co.kr</div>
+                  <div className="min-w-0 md:self-center">
+                    <div className="whitespace-nowrap text-[9px] font-bold leading-snug text-gray-800 md:text-[clamp(11px,0.95vw,13px)]">info@parancompany.co.kr</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5 rounded-md border border-gray-100 bg-gray-50/60 px-2 py-1.5 md:items-start md:gap-4 md:rounded-xl md:px-5 md:py-4">
@@ -243,9 +275,84 @@ export default function Contact() {
 
               {/* Form */}
               <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="px-2.5 py-2.5 md:px-10 md:py-8">
-                {/* 담당자 정보 */}
+                {/* 회신 약속 배지 */}
+                <div className="mb-2.5 flex items-center gap-1.5 rounded-md border border-blue-100 bg-blue-50/60 px-2 py-1.5 md:mb-8 md:gap-2 md:rounded-xl md:px-4 md:py-3">
+                  <Check className="h-3 w-3 shrink-0 text-blue-500 md:h-4 md:w-4" strokeWidth={3} />
+                  <span className="text-[9px] font-semibold text-blue-700 md:text-[13px]">보내주시면 1영업일 내 담당자가 직접 회신합니다</span>
+                </div>
+
+                {/* 1. 서비스 선택 */}
                 <div className="mb-2 md:mb-8">
-                  <h3 className="mb-1 text-[10px] font-bold text-gray-900 md:mb-4 md:text-base">담당자 정보</h3>
+                  <div className="mb-1 flex items-center gap-1 md:mb-4 md:gap-2">
+                    <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-600 text-[8px] font-extrabold text-white md:h-5 md:w-5 md:text-[11px]">1</span>
+                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">어떤 서비스가 필요하세요?</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-1 md:gap-2">
+                    {SERVICE_OPTIONS.map((opt) => {
+                      const selected = serviceSel === opt;
+                      return (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => setServiceSel(selected ? "" : opt)}
+                          className={`flex items-center gap-1 rounded-full border px-2 py-1 text-[9px] font-medium transition-colors md:gap-1.5 md:px-3.5 md:py-2 md:text-xs ${
+                            selected
+                              ? "border-blue-500 bg-blue-50 text-blue-600"
+                              : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                          }`}
+                        >
+                          {selected && <Check className="h-2.5 w-2.5 md:h-3 md:w-3" strokeWidth={3} />}
+                          {opt}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 2. 시기 선택 */}
+                <div className="mb-2 md:mb-8">
+                  <div className="mb-1 flex items-center gap-1 md:mb-4 md:gap-2">
+                    <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-600 text-[8px] font-extrabold text-white md:h-5 md:w-5 md:text-[11px]">2</span>
+                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">행사는 언제쯤인가요?</h3>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1 md:gap-2">
+                    {TIMING_OPTIONS.map((opt) => {
+                      const selected = timingSel === opt;
+                      return (
+                        <div key={opt} className="flex items-center gap-1 md:gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setTimingSel(selected ? "" : opt)}
+                            className={`flex items-center gap-1 rounded-full border px-2 py-1 text-[9px] font-medium transition-colors md:gap-1.5 md:px-3.5 md:py-2 md:text-xs ${
+                              selected
+                                ? "border-blue-500 bg-blue-50 text-blue-600"
+                                : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                            }`}
+                          >
+                            {selected && <Check className="h-2.5 w-2.5 md:h-3 md:w-3" strokeWidth={3} />}
+                            {opt}
+                          </button>
+                          {opt === TIMING_DATED && timingSel === TIMING_DATED && (
+                            <input
+                              type="date"
+                              autoFocus
+                              value={eventDate}
+                              onChange={(e) => setEventDate(e.target.value)}
+                              className="rounded-full border border-blue-400 bg-blue-50/50 px-2 py-1 text-[9px] font-medium text-blue-700 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-100 md:px-3 md:py-1.5 md:text-xs"
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 3. 연락받을 곳 */}
+                <div className="mb-2 md:mb-8">
+                  <div className="mb-1 flex items-center gap-1 md:mb-4 md:gap-2">
+                    <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-600 text-[8px] font-extrabold text-white md:h-5 md:w-5 md:text-[11px]">3</span>
+                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">연락받을 곳</h3>
+                  </div>
                   <div className="space-y-1.5 md:space-y-5">
                     <div className="grid grid-cols-2 gap-1.5 md:gap-5">
                       <div>
@@ -261,18 +368,6 @@ export default function Contact() {
                         {touched.contactName && getFieldError(form, "contactName") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "contactName")}</p>}
                       </div>
                       <div>
-                        <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">소속(회사/기관)</label>
-                        <input
-                          type="text"
-                          placeholder="파란컴퍼니"
-                          value={form.organization}
-                          onChange={(e) => updateField("organization", e.target.value)}
-                          className="w-full rounded border border-gray-200 bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm"
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-1.5 md:gap-5">
-                      <div>
                         <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">연락처 <span className="text-red-400">*</span></label>
                         <input
                           type="tel"
@@ -286,6 +381,8 @@ export default function Contact() {
                         />
                         {touched.phone && getFieldError(form, "phone") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "phone")}</p>}
                       </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1.5 md:gap-5">
                       <div>
                         <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">이메일 <span className="text-red-400">*</span></label>
                         <input
@@ -298,8 +395,34 @@ export default function Contact() {
                         />
                         {touched.email && getFieldError(form, "email") && <p className="mt-0.5 text-[9px] text-red-400 md:text-xs">{getFieldError(form, "email")}</p>}
                       </div>
+                      <div>
+                        <label className="mb-0.5 block text-[9px] font-semibold text-gray-500 md:mb-2 md:text-xs">소속(회사/기관) <span className="font-normal text-gray-400">— 선택</span></label>
+                        <input
+                          type="text"
+                          placeholder="파란컴퍼니"
+                          value={form.organization}
+                          onChange={(e) => updateField("organization", e.target.value)}
+                          className="w-full rounded border border-gray-200 bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm"
+                        />
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                {/* 4. 남기실 말씀 */}
+                <div className="mb-2 md:mb-8">
+                  <div className="mb-1 flex items-center gap-1 md:mb-4 md:gap-2">
+                    <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-600 text-[8px] font-extrabold text-white md:h-5 md:w-5 md:text-[11px]">4</span>
+                    <h3 className="text-[10px] font-bold text-gray-900 md:text-base">남기실 말씀</h3>
+                    <span className="text-[8px] text-gray-400 md:text-[11px]">선택사항</span>
+                  </div>
+                  <textarea
+                    rows={3}
+                    placeholder={MESSAGE_PLACEHOLDERS[serviceSel] ?? DEFAULT_PLACEHOLDER}
+                    value={form.message}
+                    onChange={(e) => updateField("message", e.target.value)}
+                    className="w-full resize-none rounded border border-gray-200 bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm"
+                  />
                 </div>
 
                 {/* 유입경로 */}
@@ -338,18 +461,6 @@ export default function Contact() {
                       className="mt-1.5 w-full rounded border border-gray-200 bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:mt-2.5 md:rounded-lg md:px-4 md:py-2.5 md:text-sm"
                     />
                   )}
-                </div>
-
-                {/* 문의 내용 */}
-                <div className="mb-2 md:mb-8">
-                  <h3 className="mb-1 text-[10px] font-bold text-gray-900 md:mb-4 md:text-base">문의 내용</h3>
-                  <textarea
-                    rows={3}
-                    placeholder="행사명, 예상 인원수, 참고 사항 등 자유롭게 적어주세요."
-                    value={form.message}
-                    onChange={(e) => updateField("message", e.target.value)}
-                    className="w-full resize-none rounded border border-gray-200 bg-white px-2 py-1.5 text-[10px] text-gray-900 placeholder-gray-300 outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100 md:rounded-lg md:px-4 md:py-3 md:text-sm"
-                  />
                 </div>
 
                 {/* 파일 첨부 */}

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { PulsatingButton } from "@/components/ui/pulsating-button";
 import { BlurFade } from "@/components/ui/blur-fade";
+import CertBadges from "@/components/common/CertBadges";
 import { TitleGlitchReveal } from "./HeroTitleAnimations";
 
 export default function HeroParticle() {
@@ -22,7 +23,7 @@ export default function HeroParticle() {
           <BlurFade delay={0.3}>
             <div className="mb-8 text-sm leading-relaxed text-white/40 md:text-base md:leading-relaxed">
               <span className="block tracking-[0.2em]">파란컴퍼니 | 행사 전문 에이전시</span>
-              <span className="block tracking-[0.15em] sm:tracking-normal sm:text-justify sm:[text-align-last:justify]">기획 → 준비 → 운영 → 평가 → 후속관리</span>
+              <span className="block tracking-normal">기획 · 디자인 · 운영 · 결과보고 <span className="whitespace-nowrap">— 한 팀이 원스톱으로 처리</span></span>
             </div>
           </BlurFade>
 
@@ -71,6 +72,13 @@ export default function HeroParticle() {
                   <div className="mt-1 text-xs text-white/50">{stat.label}</div>
                 </div>
               ))}
+            </div>
+          </BlurFade>
+
+          {/* 공공 입찰·수의계약 적격 인증 (클릭 시 원본) */}
+          <BlurFade delay={0.6}>
+            <div className="mt-5">
+              <CertBadges variant="dark" />
             </div>
           </BlurFade>
         </div>

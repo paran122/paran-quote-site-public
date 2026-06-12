@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { PulsatingButton } from "@/components/ui/pulsating-button";
 
 interface Props {
   title: string;
   relatedServices: Array<{ href: string; label: string }>;
+  /** CTA 박스 배경 현장 사진 (다크 오버레이 적용) */
+  bgImage?: string;
 }
 
-export default function ServiceCTA({ title, relatedServices }: Props) {
+export default function ServiceCTA({ title, relatedServices, bgImage }: Props) {
   return (
     <section className="py-16 md:py-24 px-5 md:px-8">
       <div className="mx-auto max-w-[1200px]">
@@ -31,7 +34,14 @@ export default function ServiceCTA({ title, relatedServices }: Props) {
         </div>
 
         {/* CTA */}
-        <div className="text-center bg-[#091041] rounded-2xl p-8 md:p-12">
+        <div className="relative overflow-hidden text-center bg-[#091041] rounded-2xl p-8 md:p-12">
+          {bgImage && (
+            <>
+              <Image src={bgImage} alt="" fill className="object-cover" sizes="(max-width:1200px) 100vw, 1200px" unoptimized />
+              <div className="absolute inset-0 bg-[#091041]/85" />
+            </>
+          )}
+          <div className="relative">
           <h2 className="text-xl md:text-2xl font-bold mb-3 text-white">{title}</h2>
           <p className="text-slate-300 text-sm mb-8">
             행사 일정과 규모만 알려주시면, 1영업일 내에 맞춤 견적서를
@@ -57,6 +67,7 @@ export default function ServiceCTA({ title, relatedServices }: Props) {
             >
               02-6342-2800
             </a>
+          </div>
           </div>
         </div>
       </div>

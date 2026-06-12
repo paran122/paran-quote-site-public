@@ -6,9 +6,9 @@ const sections = [
   { id: "hero", label: "홈" },
   { id: "about", label: "소개" },
   { id: "portfolio", label: "포트폴리오" },
-  { id: "estimate", label: "견적안내" },
   { id: "process", label: "프로세스" },
   { id: "clients", label: "고객사" },
+  { id: "estimate", label: "견적안내" },
   { id: "blog", label: "블로그" },
   { id: "contact", label: "문의" },
 ];

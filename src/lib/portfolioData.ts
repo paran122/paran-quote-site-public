@@ -270,3 +270,47 @@ export const EVENT_TYPES = [
 ];
 
 export const YEARS = ["전체", "2026", "2025"];
+
+/**
+ * 행사 태그(tags[0]) → 서비스 3그룹 매핑.
+ * /work 행사별 필터를 서비스(컨퍼런스·세미나/교육·워크숍/전시·홍보부스)와 1:1 정렬.
+ * 카드의 세부 태그 배지(포럼/세미나 등)는 그대로 유지 — 그룹은 필터링·딥링크용.
+ * 미매핑 태그(콘텐츠 등)는 "전체"에만 노출.
+ */
+export type EventGroupKey = "컨퍼런스·세미나" | "교육·워크숍" | "전시·홍보부스";
+
+export const EVENT_TAG_GROUP: Record<string, EventGroupKey> = {
+  // DB가 이미 그룹명을 태그로 쓰는 경우 (2026-06 데이터 재편 이후) — 그대로 통과
+  "컨퍼런스·세미나": "컨퍼런스·세미나",
+  "교육·워크숍": "교육·워크숍",
+  "전시·홍보부스": "전시·홍보부스",
+  // 구 태그 → 그룹 (재편 전 데이터·딥링크 호환)
+  "포럼": "컨퍼런스·세미나",
+  "세미나": "컨퍼런스·세미나",
+  "컨퍼런스": "컨퍼런스·세미나",
+  "교육": "교육·워크숍",
+  "워크숍": "교육·워크숍",
+  "행사운영": "교육·워크숍", // 학부모교육·해군캠프·문화클럽 등 프로그램 운영
+  "전시": "전시·홍보부스",
+  "부스": "전시·홍보부스",
+};
+
+/** /work 행사별 필터 그룹 (전체 + 3그룹) */
+export const EVENT_WORK_GROUPS: { key: "전체" | EventGroupKey; label: string }[] = [
+  { key: "전체", label: "전체" },
+  { key: "컨퍼런스·세미나", label: "컨퍼런스·세미나" },
+  { key: "교육·워크숍", label: "교육·워크숍" },
+  { key: "전시·홍보부스", label: "전시·홍보부스" },
+];
+
+/** slug 단위 예외 (태그가 그룹을 못 가르는 경우 — DB 태그 수정 없이 코드에서 보정) */
+export const EVENT_SLUG_GROUP: Record<string, EventGroupKey> = {
+  "education-council-booth": "전시·홍보부스", // tags[0]=행사운영이지만 실체는 부스 설치
+};
+
+/** 그룹 키 판정 (slug 오버라이드 우선, 미매핑 시 null) */
+export function eventGroupOf(tag: string | undefined, slug?: string | null): EventGroupKey | null {
+  if (slug && EVENT_SLUG_GROUP[slug]) return EVENT_SLUG_GROUP[slug];
+  if (!tag) return null;
+  return EVENT_TAG_GROUP[tag] ?? null;
+}

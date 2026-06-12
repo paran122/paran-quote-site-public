@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { Mic, MessageSquare, PenTool, Check, Plus, Minus, X, ChevronDown, Loader2, Paperclip, FileText, Image as ImageIcon } from "lucide-react";
+import { Mic, GraduationCap, Store, PenTool, MonitorSmartphone, Boxes, Check, X, ChevronDown, Loader2, Paperclip, FileText, Image as ImageIcon, ArrowRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import Link from "next/link";
 import { showToast } from "@/components/ui/Toast";
 import { BorderBeam } from "@/components/ui/border-beam";
-import { ESTIMATE_EVENT_TYPES, formatPriceWon } from "@/lib/pricing";
+import { ESTIMATE_EVENT_TYPES, ESTIMATE_GROUPS, ESTIMATE_DESIGN_IDS, ESTIMATE_SCALES, ESTIMATE_INCLUDES, ESTIMATE_DETAIL, ESTIMATE_CHIPS, formatRangeText } from "@/lib/pricing";
 import { REFERRAL_SOURCES, REFERRAL_OTHER, buildReferralLine } from "@/lib/referralSources";
 import { formatPhoneNumber, KOREAN_PHONE_REGEX } from "@/lib/phoneFormat";
 
@@ -49,9 +50,12 @@ interface EventType {
 }
 
 const ICONS: Record<string, { icon: LucideIcon; bg: string; iconBg: string }> = {
-  seminar: { icon: Mic, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
-  forum: { icon: MessageSquare, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
-  editorial: { icon: PenTool, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
+  conference: { icon: Mic, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
+  education: { icon: GraduationCap, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
+  booth: { icon: Store, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
+  print: { icon: PenTool, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
+  digital: { icon: MonitorSmartphone, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
+  space: { icon: Boxes, bg: "bg-white border border-gray-200", iconBg: "bg-gray-100" },
 };
 
 const eventTypes: EventType[] = ESTIMATE_EVENT_TYPES.map((et) => ({
@@ -60,21 +64,6 @@ const eventTypes: EventType[] = ESTIMATE_EVENT_TYPES.map((et) => ({
   bg: ICONS[et.id]?.bg ?? "bg-gray-100/80",
   iconBg: ICONS[et.id]?.iconBg ?? "bg-gray-200/80",
 }));
-
-const formatPrice = formatPriceWon;
-
-interface CheckedState {
-  [itemName: string]: { checked: boolean; qty: number };
-}
-
-function getDefaultChecked(items: EstimateItem[]): CheckedState {
-  const state: CheckedState = {};
-  for (const item of items) {
-    const defaultQty = item.unit === "인" || item.unit === "인/일" ? 50 : 1;
-    state[item.name] = { checked: !!item.default, qty: defaultQty };
-  }
-  return state;
-}
 
 const PHONE_REGEX = KOREAN_PHONE_REGEX;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -123,27 +112,12 @@ function getFieldError(form: OrderForm, key: string): string | null {
 }
 
 export default function Estimate() {
-  const [selected, setSelected] = useState<string>("seminar");
-  const [checkedItems, setCheckedItems] = useState<CheckedState>(() =>
-    getDefaultChecked(eventTypes[0].items)
-  );
+  const [selected, setSelected] = useState<string>("conference");
+  /** 유형별 선택 규모 (기본 = 두 번째 밴드) */
+  const [scaleSel, setScaleSel] = useState<Record<string, string>>({});
   const [showOrder, setShowOrder] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const estimateCardRef = useRef<HTMLDivElement>(null);
-
-  // 견적내기 확장 시 카드 하단이 보이도록 스크롤
-  useEffect(() => {
-    if (expanded && estimateCardRef.current) {
-      const timer = setTimeout(() => {
-        const rect = estimateCardRef.current!.getBoundingClientRect();
-        const bottomGap = rect.bottom - window.innerHeight;
-        if (bottomGap > -60) {
-          window.scrollBy({ top: bottomGap + 60, behavior: "smooth" });
-        }
-      }, 350);
-      return () => clearTimeout(timer);
-    }
-  }, [expanded]);
 
   // Order form state
   const [form, setForm] = useState<OrderForm>(INITIAL_FORM);
@@ -231,18 +205,19 @@ export default function Estimate() {
       .slice(0, 10)
       .replace(/-/g, "")}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, "0")}`;
 
-    // Build cart items from checked estimate items
-    const cartItems = active.items
-      .filter((item) => checkedItems[item.name]?.checked)
-      .map((item) => ({
-        name: item.name,
-        price: item.price,
-        qty: checkedItems[item.name]?.qty ?? 1,
-        unit: item.unit,
-      }));
+    // 간편 견적: 유형 + 규모 + 예상 범위를 단일 항목으로 전달
+    const cartItems = [
+      {
+        name: scale ? `${active.name} · ${scale.label}` : active.name,
+        price: scale?.min ?? 0,
+        qty: 1,
+        unit: "식",
+      },
+    ];
 
     // Combine referral, position, budgetRange, memo into one memo field
     const memoParts: string[] = [];
+    if (rangeText) memoParts.push(`예상 견적 범위: ${rangeText}`);
     const referralLine = buildReferralLine(referralSources, referralOther);
     if (referralLine) memoParts.push(referralLine);
     if (form.position) memoParts.push(`직급/직책: ${form.position}`);
@@ -270,10 +245,10 @@ export default function Estimate() {
         event_type: active.name,
         memo: combinedMemo,
         cart_items: cartItems,
-        total_amount: total,
+        total_amount: scale?.min ?? 0,
         attachments,
       });
-      showToast("주문 요청이 완료되었습니다");
+      showToast("견적 요청이 완료되었습니다. 1영업일 내 연락드리겠습니다");
       setShowOrder(false);
       resetForm();
     } catch {
@@ -285,39 +260,16 @@ export default function Estimate() {
 
   const active = eventTypes.find((e) => e.id === selected)!;
 
-  useEffect(() => {
-    setCheckedItems(getDefaultChecked(active.items));
-    setExpanded(false);
-  }, [active]);
-
-  const toggleItem = (name: string) => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [name]: { ...prev[name], checked: !prev[name].checked },
-    }));
-  };
-
-  const changeQty = (name: string, delta: number) => {
-    setCheckedItems((prev) => {
-      const current = prev[name].qty;
-      // "인" 단위(커피·다과, 케이터링 등)는 10씩 증감
-      const item = active.items.find((i) => i.name === name);
-      const step = item?.unit === "인" || item?.unit === "인/일" ? 10 : 1;
-      const next = Math.max(step, current + delta * step);
-      return { ...prev, [name]: { ...prev[name], qty: next } };
-    });
-  };
-
-  const total = useMemo(() => {
-    let sum = 0;
-    for (const item of active.items) {
-      const state = checkedItems[item.name];
-      if (state?.checked) {
-        sum += item.price * state.qty;
-      }
-    }
-    return sum;
-  }, [active, checkedItems]);
+  /** 행사형: 규모 밴드 + 예상 범위. 디자인형: 가격칩. */
+  const isDesign = ESTIMATE_DESIGN_IDS.includes(active.id);
+  const scales = ESTIMATE_SCALES[active.id];
+  const scale = useMemo(() => {
+    if (!scales) return null;
+    const id = scaleSel[active.id] ?? scales[1]?.id ?? scales[0].id;
+    return scales.find((s) => s.id === id) ?? scales[0];
+  }, [scales, scaleSel, active.id]);
+  const rangeText = scale ? formatRangeText(scale) : "";
+  const chips = ESTIMATE_CHIPS[active.id];
 
   return (
     <section id="estimate" className="relative overflow-hidden bg-gradient-to-br from-gray-100 to-slate-200 px-4 py-10 md:px-12 md:py-24 lg:px-20">
@@ -331,35 +283,81 @@ export default function Estimate() {
           <p className="mb-6 text-xs text-gray-500 md:mb-14 md:text-base">행사 유형에 따른 예상 견적을 확인하세요</p>
         </BlurFade>
 
-        <div className="grid items-end gap-4 lg:grid-cols-2 lg:gap-6">
-          {/* Left: Event Type Selector */}
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-1 lg:gap-3 lg:self-end">
-            {eventTypes.map((event, i) => (
-              <BlurFade key={event.id} delay={0.15 + i * 0.05}>
-                <button
-                  onClick={() => setSelected(event.id)}
-                  className={`flex h-14 w-full items-center gap-1.5 rounded-lg ${event.bg} px-2.5 text-left transition-all lg:h-auto lg:gap-4 lg:rounded-xl lg:px-5 lg:py-4 ${
-                    selected === event.id
-                      ? "shadow-md ring-2 ring-blue-300"
-                      : "hover:shadow-md"
-                  }`}
-                >
-                  <span className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md lg:h-10 lg:w-10 lg:rounded-lg ${event.iconBg}`}>
-                    <event.icon className="h-3 w-3 text-gray-700 lg:h-5 lg:w-5" strokeWidth={1.5} />
-                  </span>
-                  <div className="min-w-0">
-                    <div className={`text-[11px] font-bold leading-tight lg:text-sm ${selected === event.id ? "text-blue-600" : "text-gray-800"}`}>
+        <div className="grid gap-4 lg:grid-cols-2 lg:items-stretch lg:gap-6">
+          {/* Left: Event Type Selector — 서비스 6종 (행사 3 + 디자인 3) */}
+          {/* 모바일 = 가로 스크롤 필터 칩 (/work 모바일과 동일 패턴), 데스크탑 = 세로 카드 리스트 */}
+          <div className="min-w-0 lg:hidden">
+            <div className="-mx-4 overflow-x-auto px-4 scrollbar-hide">
+              <div className="flex gap-2 pb-1">
+                {ESTIMATE_GROUPS.flatMap((group) =>
+                  group.ids
+                    .map((id) => eventTypes.find((e) => e.id === id))
+                    .filter((e): e is EventType => !!e)
+                ).map((event) => {
+                  const isActive = selected === event.id;
+                  const isDesignChip = ESTIMATE_DESIGN_IDS.includes(event.id);
+                  return (
+                    <button
+                      key={event.id}
+                      onClick={() => setSelected(event.id)}
+                      className={`flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-[12px] font-medium whitespace-nowrap transition-colors ${
+                        isActive
+                          ? isDesignChip
+                            ? "bg-indigo-600 text-white"
+                            : "bg-blue-600 text-white"
+                          : "border border-gray-200 bg-white text-gray-500"
+                      }`}
+                    >
+                      <event.icon className="h-3.5 w-3.5" strokeWidth={1.5} />
                       {event.name}
-                    </div>
-                    <div className="truncate text-[9px] leading-tight text-gray-400 lg:text-xs">{event.desc}</div>
-                  </div>
-                </button>
-              </BlurFade>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="hidden flex-col gap-3 lg:flex">
+            {ESTIMATE_GROUPS.map((group, gi) => (
+              <div key={group.label} className={`flex flex-1 flex-col ${gi === 0 ? "relative" : ""}`}>
+                <BlurFade delay={0.12 + gi * 0.1} className={gi === 0 ? "absolute -top-6 left-0" : ""}>
+                  <p className="mb-1.5 px-1 text-xs font-semibold tracking-wider text-gray-400">
+                    {group.label}
+                  </p>
+                </BlurFade>
+                <div className="grid flex-1 auto-rows-fr grid-cols-1 gap-2.5">
+                  {group.ids
+                    .map((id) => eventTypes.find((e) => e.id === id))
+                    .filter((e): e is EventType => !!e)
+                    .map((event, i) => (
+                      <BlurFade key={event.id} delay={0.15 + gi * 0.1 + i * 0.04} className="flex">
+                        <button
+                          onClick={() => setSelected(event.id)}
+                          className={`flex w-full items-center gap-4 rounded-xl ${event.bg} px-5 py-3.5 text-left transition-all ${
+                            selected === event.id
+                              ? "shadow-md ring-2 ring-blue-300"
+                              : "hover:shadow-md"
+                          }`}
+                        >
+                          <span className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${event.iconBg}`}>
+                            <event.icon className="h-[18px] w-[18px] text-gray-700" strokeWidth={1.5} />
+                          </span>
+                          <div className="min-w-0">
+                            <div className={`text-sm font-bold leading-tight ${selected === event.id ? "text-blue-600" : "text-gray-800"}`}>
+                              {event.name}
+                            </div>
+                            <div className="truncate text-xs leading-tight text-gray-400">{event.desc}</div>
+                          </div>
+                        </button>
+                      </BlurFade>
+                    ))}
+                </div>
+              </div>
             ))}
           </div>
 
           {/* Right: Estimate Detail */}
-          <div ref={estimateCardRef} className="flex">
+          <div ref={estimateCardRef} className="flex min-w-0 lg:min-h-[705px] xl:min-h-[597px] min-[1440px]:min-h-[581px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active.id}
@@ -370,7 +368,7 @@ export default function Estimate() {
                 className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg"
               >
                 {/* Header - Blue Gradient */}
-                <div className="bg-gradient-to-r from-[#1d4ed8] to-[#3b82f6] px-4 py-4 md:px-8 md:py-6">
+                <div className="bg-gradient-to-r from-[#1d4ed8] to-[#3b82f6] px-4 py-3.5 md:px-8 md:py-4">
                   <div className="flex items-center gap-2.5 md:gap-4">
                     <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 md:h-11 md:w-11 md:rounded-xl">
                       <active.icon className="h-4 w-4 text-white md:h-5 md:w-5" strokeWidth={1.5} />
@@ -383,131 +381,168 @@ export default function Estimate() {
                 </div>
 
                 {/* Accordion + Items */}
-                <div className="flex-1 px-4 py-4 md:px-8 md:py-5">
-                  <div className="mb-3 text-[10px] font-semibold uppercase tracking-wider text-blue-500 md:mb-4 md:text-xs">견적을 확인하세요</div>
+                <div className="flex-1 px-4 py-4 md:px-8 md:py-4">
+                  {!isDesign && scales && scale ? (
+                    <>
+                      {/* 규모 선택 */}
+                      <div className="mb-3 text-[10px] font-semibold uppercase tracking-wider text-blue-500 md:text-xs">
+                        {active.id === "booth" ? "부스 규모를 선택하세요" : "예상 인원을 선택하세요"}
+                      </div>
+                      <div className="-mx-4 overflow-x-auto px-4 scrollbar-hide md:mx-0 md:px-0 md:overflow-visible">
+                        <div className="flex gap-2 pb-1 md:grid md:grid-cols-4 md:pb-0">
+                          {scales.map((s) => (
+                            <button
+                              key={s.id}
+                              onClick={() => setScaleSel((prev) => ({ ...prev, [active.id]: s.id }))}
+                              className={`shrink-0 whitespace-nowrap rounded-full border px-3.5 py-2 text-[12px] font-semibold transition-all md:whitespace-normal md:leading-tight md:rounded-xl md:px-1.5 md:py-2.5 md:text-[13px] ${
+                                scale.id === s.id
+                                  ? "border-blue-500 bg-blue-50 text-blue-700 shadow-sm"
+                                  : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                              }`}
+                            >
+                              {s.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
 
-                  {/* Accordion Toggle */}
-                  <button
-                    onClick={() => setExpanded(!expanded)}
-                    className="flex w-full items-center justify-between rounded-xl bg-gray-50 px-4 py-3.5 transition-colors hover:bg-gray-100"
-                  >
-                    <span className="text-sm font-bold text-gray-700">견적내기</span>
-                    <motion.span
-                      animate={{ rotate: expanded ? 180 : 0 }}
-                      transition={{ duration: 0.25 }}
-                    >
-                      <ChevronDown className="h-5 w-5 text-gray-400" />
-                    </motion.span>
-                  </button>
+                      {/* 예상 범위 */}
+                      <div className="mt-3 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 px-5 py-4 text-center md:py-4">
+                        <div className="text-[11px] font-semibold text-blue-100 md:text-xs">예상 견적 범위</div>
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={scale.id}
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -6 }}
+                            transition={{ duration: 0.18 }}
+                            className="mt-1 text-xl font-extrabold text-white md:text-3xl"
+                          >
+                            {rangeText}
+                          </motion.div>
+                        </AnimatePresence>
+                        <div className="mt-2 text-[11px] text-blue-100/75 md:text-xs">
+                          대행 용역비 기준(대관료·식음 등 실비 별도)
+                        </div>
+                      </div>
 
-                  {/* Expandable Items */}
-                  <AnimatePresence>
-                    {expanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25 }}
-                        className="overflow-hidden"
+                      {/* 포함/제외 상세 (접이식) */}
+                      <button
+                        onClick={() => setShowDetail((v) => !v)}
+                        className="mt-2.5 flex w-full items-center justify-between rounded-lg border border-blue-200 bg-blue-50/60 px-3.5 py-2.5 text-[12px] font-semibold text-blue-700 transition-colors hover:border-blue-300 hover:bg-blue-50 md:text-[13px]"
                       >
-                        <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-700 md:text-xs">
-                          아래 금액은 참고용 기본 단가이며, 실제 비용은 행사 규모·조건에 따라 달라집니다. 정확한 견적은 상담을 통해 안내드립니다.
-                        </p>
-                        <div className="space-y-2 pt-3">
-                          {active.items.map((item) => {
-                            const state = checkedItems[item.name];
-                            const isChecked = state?.checked ?? false;
-                            const qty = state?.qty ?? 1;
-                            return (
-                              <div
-                                key={item.name}
-                                className={`flex items-center justify-between rounded-lg px-3 py-2.5 transition-colors ${
-                                  isChecked ? "bg-blue-50/60" : "bg-gray-50/30"
-                                }`}
-                              >
-                                <button
-                                  onClick={() => toggleItem(item.name)}
-                                  className="flex items-center gap-2.5 text-left"
-                                >
-                                  <span
-                                    className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded ${
-                                      isChecked
-                                        ? "bg-blue-500 text-white"
-                                        : "border border-gray-300 bg-white"
-                                    }`}
-                                  >
-                                    {isChecked && <Check className="h-3.5 w-3.5" strokeWidth={2.5} />}
-                                  </span>
-                                  <span className={`text-sm ${isChecked ? "font-medium text-gray-800" : "text-gray-500"}`}>
-                                    {item.name}
-                                  </span>
-                                </button>
-
-                                <div className="flex items-center gap-3">
-                                  {isChecked && (
-                                    <div className="flex items-center gap-1.5">
-                                      <button
-                                        onClick={() => changeQty(item.name, -1)}
-                                        className="flex h-6 w-6 items-center justify-center rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
-                                      >
-                                        <Minus className="h-3 w-3" />
-                                      </button>
-                                      <span className="w-6 text-center text-sm font-medium text-gray-700">
-                                        {qty}
-                                      </span>
-                                      <button
-                                        onClick={() => changeQty(item.name, 1)}
-                                        className="flex h-6 w-6 items-center justify-center rounded bg-gray-200 text-gray-600 hover:bg-gray-300"
-                                      >
-                                        <Plus className="h-3 w-3" />
-                                      </button>
-                                      <span className="ml-0.5 text-xs text-gray-400">{item.unit}</span>
-                                    </div>
-                                  )}
-                                  <span className={`min-w-[5rem] text-right text-sm font-semibold ${isChecked ? "text-blue-600" : "text-gray-400"}`}>
-                                    {isChecked
-                                      ? formatPrice(item.price * qty)
-                                      : formatPrice(item.price)
-                                    }
-                                  </span>
-                                </div>
+                        <span>무엇이 포함되고, 무엇이 별도인가요?</span>
+                        <span className="flex items-center gap-1 shrink-0">
+                          <span className="text-[11px] font-medium text-blue-500">{showDetail ? "접기" : "펼쳐보기"}</span>
+                          <motion.span animate={{ rotate: showDetail ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                            <ChevronDown className="h-4 w-4 text-blue-500" />
+                          </motion.span>
+                        </span>
+                      </button>
+                      <AnimatePresence>
+                        {showDetail && ESTIMATE_DETAIL[active.id] && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.22 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="mt-2 grid gap-3 rounded-xl border border-gray-100 bg-gray-50/60 p-3.5 sm:grid-cols-2 md:p-4">
+                              <div>
+                                <p className="mb-2 text-[11px] font-bold text-blue-600">견적에 포함</p>
+                                <ul className="space-y-1.5">
+                                  {ESTIMATE_DETAIL[active.id].included.map((t) => (
+                                    <li key={t} className="flex items-start gap-1.5 text-[11px] leading-snug text-gray-600 md:text-[12px]">
+                                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-500" strokeWidth={2.5} />
+                                      {t}
+                                    </li>
+                                  ))}
+                                </ul>
                               </div>
-                            );
-                          })}
-                        </div>
+                              <div>
+                                <p className="mb-2 text-[11px] font-bold text-gray-400">별도 · 실비 · 옵션</p>
+                                <ul className="space-y-1.5">
+                                  {ESTIMATE_DETAIL[active.id].excluded.map((t) => (
+                                    <li key={t} className="flex items-start gap-1.5 text-[11px] leading-snug text-gray-500 md:text-[12px]">
+                                      <X className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-300" strokeWidth={2.5} />
+                                      {t}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
 
-                        {/* Total */}
-                        <div className="mt-4 flex items-center justify-between rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 px-5 py-4">
-                          <span className="text-sm font-semibold text-blue-100">총 예상 견적</span>
-                          <span className="text-xl font-bold text-white">
-                            {formatPrice(total)}~
-                          </span>
-                        </div>
+                      <p className="mt-2.5 rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-700 md:text-xs">
+                        실제 견적의 약 80%가 위 범위 안에서 결정됩니다. 프로그램 구성·장비 사양에 따라 달라지며,
+                        행사 정보를 알려주시면 1영업일 내 항목별 상세 견적서를 보내드립니다.
+                      </p>
 
-                        {/* Order Button */}
-                        <motion.button
-                          whileHover={{ scale: 1.01 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => setShowOrder(true)}
-                          className="relative mt-3 w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 py-3.5 text-base font-bold text-white shadow-sm transition-shadow hover:shadow-md"
-                        >
-                          견적내기
-                          <BorderBeam size={120} duration={8} colorFrom="#93c5fd" colorTo="#a5b4fc" borderWidth={1.5} />
-                        </motion.button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                      {/* 견적 요청 */}
+                      <motion.button
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setShowOrder(true)}
+                        className="relative mt-2.5 w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 py-3 text-sm font-bold text-white shadow-sm transition-shadow hover:shadow-md md:text-base"
+                      >
+                        이 조건으로 상세 견적 요청하기
+                        <BorderBeam size={120} duration={8} colorFrom="#93c5fd" colorTo="#a5b4fc" borderWidth={1.5} />
+                      </motion.button>
+                    </>
+                  ) : (
+                    <>
+                      {/* 디자인: 품목 가격칩 */}
+                      <div className="mb-3 text-[10px] font-semibold uppercase tracking-wider text-blue-500 md:text-xs">
+                        품목별 기준 단가
+                      </div>
+                      <div className="space-y-2">
+                        {(chips ?? []).map((c) => (
+                          <div key={c.name} className="flex items-center justify-between rounded-xl bg-gray-50 px-4 py-3">
+                            <span className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                              <Check className="h-4 w-4 text-blue-500" strokeWidth={2.5} />
+                              {c.name}
+                            </span>
+                            <span className="text-sm font-bold text-blue-600">{c.text}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-700 md:text-xs">
+                        수정 3회 포함 기준이며, 수량·규격에 따라 조정됩니다. 품목·수량별 정확한 금액은 디자인
+                        견적 계산기에서 바로 확인할 수 있습니다.
+                      </p>
+                    </>
+                  )}
                 </div>
 
                 {/* CTA */}
-                <div className="border-t border-gray-100 bg-gray-50/50 px-4 py-3 md:px-8 md:py-4">
-                  <div className="flex items-center justify-between">
+                <div className="border-t border-gray-100 bg-gray-50/50 px-4 py-3 md:px-8 md:py-3">
+                  {isDesign ? (
+                    <Link
+                      href="/services/design/estimate"
+                      className="mb-2.5 inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:underline md:text-[13px]"
+                    >
+                      디자인 정밀 견적 계산기에서 품목별로 계산하기
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/guide/pricing"
+                      className="mb-2.5 inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:underline md:text-[13px]"
+                    >
+                      항목별 자세한 단가표 보기
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  )}
+                  <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-[10px] text-gray-400 md:text-xs">정확한 견적은 상담을 통해 안내드립니다</p>
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
-                      className="relative overflow-hidden rounded-md bg-gradient-to-r from-blue-500 to-indigo-500 px-4 py-2 text-xs font-semibold text-white shadow-md transition-shadow hover:shadow-lg md:rounded-lg md:px-6 md:py-2.5 md:text-sm"
+                      className="relative w-full overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 px-4 py-2.5 text-xs font-semibold text-white shadow-md transition-shadow hover:shadow-lg sm:w-auto md:px-6 md:text-sm"
                     >
                       상담 요청하기
                       <BorderBeam size={80} duration={6} colorFrom="#93c5fd" colorTo="#a5b4fc" borderWidth={1} />
@@ -549,8 +584,8 @@ export default function Estimate() {
                 />
                 <div className="relative flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-white md:text-xl">주문 요청</h3>
-                    <p className="mt-1 text-xs text-blue-100/80 md:text-sm">선택하신 견적으로 주문을 요청합니다</p>
+                    <h3 className="text-lg font-bold text-white md:text-xl">상세 견적 요청</h3>
+                    <p className="mt-1 text-xs text-blue-100/80 md:text-sm">선택하신 조건으로 상세 견적서를 요청합니다</p>
                   </div>
                   <button
                     onClick={() => setShowOrder(false)}
@@ -571,22 +606,21 @@ export default function Estimate() {
                     </span>
                     <span className="text-xs font-bold text-blue-600">{active.name}</span>
                   </div>
-                  <div className="grid grid-cols-1 gap-x-6 gap-y-1.5 md:grid-cols-2">
-                    {active.items
-                      .filter((item) => checkedItems[item.name]?.checked)
-                      .map((item) => {
-                        const qty = checkedItems[item.name]?.qty ?? 1;
-                        return (
-                          <div key={item.name} className="flex items-center justify-between text-sm">
-                            <span className="text-gray-500">{item.name} x {qty}{item.unit}</span>
-                            <span className="font-medium text-gray-700">{formatPrice(item.price * qty)}</span>
-                          </div>
-                        );
-                      })}
+                  <div className="space-y-1.5">
+                    {scale && (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-500">규모</span>
+                        <span className="font-medium text-gray-700">{scale.label}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500">포함 범위</span>
+                      <span className="max-w-[70%] text-right font-medium text-gray-700">{ESTIMATE_INCLUDES[active.id] ?? active.desc}</span>
+                    </div>
                   </div>
                   <div className="mt-3 flex items-center justify-between border-t border-blue-200/60 pt-3">
-                    <span className="text-sm font-bold text-gray-800">총 예상 견적</span>
-                    <span className="text-xl font-extrabold text-blue-600">{formatPrice(total)}~</span>
+                    <span className="text-sm font-bold text-gray-800">예상 견적 범위</span>
+                    <span className="text-xl font-extrabold text-blue-600">{rangeText}</span>
                   </div>
                 </div>
 
@@ -792,7 +826,7 @@ export default function Estimate() {
                       className="flex shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 px-8 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition-shadow hover:shadow-xl hover:shadow-blue-500/30 disabled:opacity-60 md:px-10 md:py-3.5"
                     >
                       {(submitting || uploading) && <Loader2 className="h-4 w-4 animate-spin" />}
-                      {uploading ? "파일 업로드 중..." : submitting ? "처리 중..." : "주문 요청하기"}
+                      {uploading ? "파일 업로드 중..." : submitting ? "처리 중..." : "견적 요청하기"}
                     </motion.button>
                   </div>
                 </form>

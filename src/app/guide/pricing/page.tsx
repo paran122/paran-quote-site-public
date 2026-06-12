@@ -4,7 +4,7 @@ import PricingClient from "./PricingClient";
 const SITE_URL = "https://parancompany.co.kr";
 
 export const metadata: Metadata = {
-  title: "행사 대행 비용·견적 안내 | 파란컴퍼니",
+  title: "행사 대행 비용·견적 안내",
   description:
     "행사 대행 비용이 궁금하신가요? 세미나·컨퍼런스·포럼 등 항목별 가격과 규모별 예산 가이드를 확인하세요. 소규모 800만 원부터, 투명한 견적을 안내드립니다.",
   alternates: { canonical: `${SITE_URL}/guide/pricing` },

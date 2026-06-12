@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Phone, MessageCircle, ArrowRight, ChevronLeft } from "lucide-react";
+import { useState } from "react";
+import { Plus, Phone, MessageCircle, ArrowRight, CalendarCheck, Calculator, ClipboardList, Trophy, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { BlurFade } from "@/components/ui/blur-fade";
 
@@ -23,7 +22,7 @@ interface FAQCategory {
   id: string;
   label: string;
   desc: string;
-  illustSrc: string;
+  icon: LucideIcon;
   items: FAQItem[];
 }
 
@@ -32,7 +31,7 @@ const categories: FAQCategory[] = [
     id: "service",
     label: "서비스",
     desc: "행사 종류, 규모, 서비스 범위",
-    illustSrc: "/faq-icons/service.png",
+    icon: CalendarCheck,
     items: [
       {
         question: "파란컴퍼니는 어떤 회사인가요?",
@@ -80,7 +79,7 @@ const categories: FAQCategory[] = [
     id: "cost",
     label: "비용·견적",
     desc: "가격, 견적 방법, 예산 조율",
-    illustSrc: "/faq-icons/cost.png",
+    icon: Calculator,
     items: [
       {
         question: "세미나 대행 비용은 얼마인가요?",
@@ -102,7 +101,7 @@ const categories: FAQCategory[] = [
         question: "예산이 제한적인데 조율 가능한가요?",
         answer: (
           <>
-            네, 충분히 가능합니다. 예산 범위를 알려주시면 그 안에서 최대 효과를 낼 수 있도록 우선순위에 따른 서비스 구성을 제안드립니다. 핵심은 참석자가 직접 보고 느끼는 항목에 예산을 집중하고, 후선 업무는 비용을 절감하는 전략입니다.
+            네, 충분히 가능합니다. 견적서를 <strong className="text-slate-900">항목별 엑셀 파일</strong>로 드리기 때문에, 필요한 항목만 선택해 과업을 맡기시면 그 부분만 대행할 수 있습니다. 예산 범위를 알려주시면 우선순위에 맞는 구성도 함께 제안드립니다.
           </>
         ),
       },
@@ -120,13 +119,13 @@ const categories: FAQCategory[] = [
     id: "process",
     label: "진행절차",
     desc: "준비 기간, 진행 순서, 인력 구성",
-    illustSrc: "/faq-icons/process.png",
+    icon: ClipboardList,
     items: [
       {
         question: "행사 준비 기간은 최소 얼마나 필요한가요?",
         answer: (
           <>
-            소규모 세미나(50명 이하)는 최소 <strong className="text-slate-900">2~3주</strong>, 중대규모 컨퍼런스·포럼(100명 이상)은 최소 <strong className="text-slate-900">4~6주</strong> 전에 의뢰해 주시는 것이 좋습니다. 급하게 진행해야 하는 경우에도 최소 1주 이상이면 핵심 서비스 중심으로 대응 가능합니다.
+            소규모 세미나(50명 이하)는 최소 <strong className="text-slate-900">2~3주</strong>, 100명 이상 컨퍼런스·포럼은 최소 <strong className="text-slate-900">6~8주</strong>, 300명 이상 대규모 행사는 최소 <strong className="text-slate-900">10~12주</strong> 전에 의뢰해 주시는 것이 좋습니다. 급하게 진행해야 하는 경우에도 최소 1주 이상이면 핵심 서비스 중심으로 대응 가능합니다.
           </>
         ),
       },
@@ -160,7 +159,7 @@ const categories: FAQCategory[] = [
     id: "company",
     label: "실적·규모",
     desc: "회사 소개, 고객사, 수행 실적",
-    illustSrc: "/faq-icons/company.png",
+    icon: Trophy,
     items: [
       {
         question: "공공기관 행사 경험이 있나요?",
@@ -219,30 +218,19 @@ const totalQuestions = categories.reduce((sum, c) => sum + c.items.length, 0);
 export { categories };
 
 export default function FAQClient() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  const activeCategory = selectedCategory
-    ? categories.find((c) => c.id === selectedCategory)
-    : null;
 
   const toggleItem = (question: string) => {
     setOpenItems((prev) => {
-      if (prev.has(question)) return new Set<string>();
-      return new Set([question]);
+      const next = new Set(prev);
+      if (next.has(question)) next.delete(question);
+      else next.add(question);
+      return next;
     });
   };
 
-  const selectCategory = (id: string) => {
-    setSelectedCategory(id);
-    setOpenItems(new Set());
-    // 스크롤 없이 제자리
-  };
-
-  const goBack = () => {
-    setSelectedCategory(null);
-    setOpenItems(new Set());
+  const scrollToCategory = (id: string) => {
+    document.getElementById(`faq-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -264,141 +252,79 @@ export default function FAQClient() {
         </BlurFade>
       </section>
 
-      {/* 카테고리 카드 or 질문 목록 */}
+      {/* 카테고리 바로가기 칩 */}
       <BlurFade delay={0.15}>
-        <section className="mx-auto max-w-5xl px-4 pb-20 md:px-6" ref={contentRef}>
-          <AnimatePresence mode="wait">
-            {!selectedCategory ? (
-              /* ── 카테고리 카드 그리드 ── */
-              <motion.div
-                key="cards"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.3 }}
-                className="grid grid-cols-1 gap-6 sm:grid-cols-2"
-              >
-                {categories.map((cat, i) => (
-                  <motion.button
-                    key={cat.id}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.08, duration: 0.35 }}
-                    whileHover={{ y: -6 }}
-                    onClick={() => selectCategory(cat.id)}
-                    className="group flex flex-col items-center rounded-2xl border border-slate-200/80 bg-white p-6 text-center shadow-sm transition-all hover:border-blue-200 hover:shadow-lg"
-                  >
-                    <div className="mb-4 flex h-24 w-24 items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
-                      <img src={cat.illustSrc} alt={cat.label} className="h-full w-full object-contain" />
-                    </div>
-                    <h2 className="text-lg font-bold text-slate-900">{cat.label}</h2>
-                    <p className="mt-1.5 text-sm text-slate-500">{cat.desc}</p>
-                    <p className="mt-2 text-xs text-slate-400">{cat.items.length}개의 질문</p>
-                    <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-blue-600">
-                      보기 <ArrowRight size={14} />
-                    </span>
-                  </motion.button>
-                ))}
-              </motion.div>
-            ) : activeCategory ? (
-              /* ── 선택된 카테고리 질문 목록 ── */
-              <motion.div
-                key="questions"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* 뒤로가기 + 카테고리 제목 */}
-                <div className="mb-6 flex items-center gap-3">
-                  <button
-                    onClick={goBack}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900"
-                  >
-                    <ChevronLeft size={18} />
-                  </button>
-                  <div className="flex items-center gap-3">
-                    <img src={activeCategory.illustSrc} alt="" className="h-10 w-10 object-contain" />
-                    <div>
-                      <h2 className="text-lg font-bold text-slate-900">{activeCategory.label}</h2>
-                      <p className="text-xs text-slate-400">{activeCategory.desc}</p>
-                    </div>
-                  </div>
-                </div>
+        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-2 px-4 pb-10 md:px-6">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => scrollToCategory(cat.id)}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-blue-300 hover:text-blue-600"
+            >
+              <cat.icon size={15} strokeWidth={1.8} className="text-blue-600" />
+              {cat.label}
+              <span className="text-xs text-slate-400">({cat.items.length})</span>
+            </button>
+          ))}
+        </div>
+      </BlurFade>
 
-                {/* 아코디언 */}
-                <div className="space-y-3">
-                  {activeCategory.items.map((item, idx) => {
-                    const isOpen = openItems.has(item.question);
-                    return (
-                      <motion.div
-                        key={item.question}
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.25, delay: idx * 0.05 }}
-                        className="rounded-xl border border-slate-200/80 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition-all duration-200 hover:border-slate-300 hover:shadow-md"
+      {/* 전체 질문 목록 — 카테고리별 섹션 */}
+      <BlurFade delay={0.2}>
+        <section className="mx-auto max-w-3xl px-4 pb-20 md:px-6">
+          {categories.map((cat) => (
+            <div key={cat.id} id={`faq-${cat.id}`} className="mb-14 scroll-mt-24 last:mb-0">
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                  <cat.icon size={20} strokeWidth={1.8} />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">{cat.label}</h2>
+                  <p className="text-xs text-slate-400">{cat.desc}</p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {cat.items.map((item) => {
+                  const isOpen = openItems.has(item.question);
+                  return (
+                    <div
+                      key={item.question}
+                      className="rounded-xl border border-slate-200/80 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition-all duration-200 hover:border-slate-300 hover:shadow-md"
+                    >
+                      <button
+                        onClick={() => toggleItem(item.question)}
+                        aria-expanded={isOpen}
+                        className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left md:px-6"
                       >
-                        <button
-                          onClick={() => toggleItem(item.question)}
-                          className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left md:px-6"
+                        <span className="text-[15px] font-medium text-slate-900 md:text-base">
+                          {item.question}
+                        </span>
+                        <span
+                          className={`shrink-0 text-blue-600 transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}
                         >
-                          <span className="text-[15px] font-medium text-slate-900 md:text-base">
-                            {item.question}
-                          </span>
-                          <motion.span
-                            animate={{ rotate: isOpen ? 45 : 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="shrink-0 text-blue-600"
-                          >
-                            <Plus size={18} />
-                          </motion.span>
-                        </button>
-                        <AnimatePresence initial={false}>
-                          {isOpen && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.25, ease: "easeInOut" }}
-                              className="overflow-hidden"
-                            >
-                              <div className="border-t border-slate-100 px-5 pb-5 pt-4 md:px-6">
-                                <div className="border-l-2 border-blue-500/40 pl-4">
-                                  <p className="text-[14px] leading-relaxed text-slate-700">
-                                    {item.answer}
-                                  </p>
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                {/* 다른 카테고리 */}
-                <div className="mt-10 border-t border-slate-200 pt-8">
-                  <p className="mb-4 text-sm font-medium text-slate-500">다른 카테고리</p>
-                  <div className="flex flex-wrap gap-2">
-                    {categories
-                      .filter((c) => c.id !== selectedCategory)
-                      .map((c) => (
-                        <button
-                          key={c.id}
-                          onClick={() => selectCategory(c.id)}
-                          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition-all hover:border-blue-200 hover:text-blue-600"
-                        >
-                          <img src={c.illustSrc} alt="" className="h-5 w-5 object-contain" />
-                          {c.label}
-                          <span className="text-xs text-slate-400">({c.items.length})</span>
-                        </button>
-                      ))}
-                  </div>
-                </div>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
+                          <Plus size={18} />
+                        </span>
+                      </button>
+                      <div
+                        className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+                      >
+                        <div className="overflow-hidden">
+                          <div className="border-t border-slate-100 px-5 pb-5 pt-4 md:px-6">
+                            <div className="border-l-2 border-blue-500/40 pl-4">
+                              <p className="text-[14px] leading-relaxed text-slate-700">
+                                {item.answer}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </section>
       </BlurFade>
 

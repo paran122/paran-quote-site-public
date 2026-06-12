@@ -20,6 +20,13 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // 서비스 라우트 재편 (2026-06): 발주처축 → 행사 형식축 3그룹
+      { source: "/services/seminar", destination: "/services/education", permanent: true },
+      { source: "/services/corporate", destination: "/services/booth", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

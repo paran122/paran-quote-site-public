@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import TrustBadges from "./_components/TrustBadges";
-import { Buildings, Bank, Microphone, Chalkboard, PaintBrush, CurrencyKrw } from "@phosphor-icons/react/dist/ssr";
-import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import { CurrencyKrw } from "@phosphor-icons/react/dist/ssr";
 
 const SITE_URL = "https://parancompany.co.kr";
 
@@ -72,23 +72,7 @@ const serviceJsonLd = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "기업행사 기획·대행",
-          url: `${SITE_URL}/services/corporate`,
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "공공기관 행사 대행",
-          url: `${SITE_URL}/services/government`,
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "컨퍼런스·포럼 기획",
+          name: "컨퍼런스·세미나 대행",
           url: `${SITE_URL}/services/conference`,
         },
       },
@@ -96,8 +80,16 @@ const serviceJsonLd = {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "세미나·워크숍 기획",
-          url: `${SITE_URL}/services/seminar`,
+          name: "교육·워크숍 대행",
+          url: `${SITE_URL}/services/education`,
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "전시·홍보부스 대행",
+          url: `${SITE_URL}/services/booth`,
         },
       },
       {
@@ -112,47 +104,52 @@ const serviceJsonLd = {
   },
 };
 
-const services: Array<{
+interface ServiceCard {
   href: string;
-  icon: PhosphorIcon;
+  image: string;
   title: string;
   desc: string;
-  cta: string;
-}> = [
-  {
-    href: "/services/corporate",
-    icon: Buildings,
-    title: "기업행사 기획·대행",
-    desc: "세미나, 워크숍, 시무식, 송년회, 창립기념행사, 팀빌딩 등 기업 행사를 기획부터 운영까지 책임집니다.",
-    cta: "기업행사 대행 자세히 보기 →",
-  },
-  {
-    href: "/services/government",
-    icon: Bank,
-    title: "공공기관 행사 대행",
-    desc: "정부·지자체·공기업 행사를 조달 규정에 맞춰 기획·운영합니다. 여성기업 인증 보유.",
-    cta: "공공기관 행사 대행 자세히 보기 →",
-  },
+}
+
+const eventServices: ServiceCard[] = [
   {
     href: "/services/conference",
-    icon: Microphone,
-    title: "컨퍼런스·포럼·학술대회",
-    desc: "컨퍼런스, 포럼, 학술대회, 심포지엄을 하이브리드 운영까지 지원합니다.",
-    cta: "컨퍼런스·포럼 대행 자세히 보기 →",
+    image: "/assets/images/services/hero-conference-auto-seminar.webp",
+    title: "컨퍼런스·세미나",
+    desc: "컨퍼런스·포럼·학술대회·심포지엄 — 연사 섭외부터 하이브리드 중계까지 원스톱 대행.",
   },
   {
-    href: "/services/seminar",
-    icon: Chalkboard,
-    title: "세미나·워크숍 기획",
-    desc: "전문 세미나와 참여형 워크숍을 기획하고, 연사·사회자 섭외부터 운영까지 대행합니다.",
-    cta: "세미나·워크숍 대행 자세히 보기 →",
+    href: "/services/education",
+    image: "/assets/images/services/hero-education-community.webp",
+    title: "교육·워크숍",
+    desc: "임직원 연수·역량강화 워크숍·청소년 캠프 — 커리큘럼 설계부터 현장 운영까지.",
   },
   {
-    href: "/services/design",
-    icon: PaintBrush,
-    title: "행사 디자인·시안물",
-    desc: "포스터, 현수막, 리플렛, 자료집, 명찰 등 행사에 필요한 모든 시안물을 디자인합니다.",
-    cta: "행사 디자인 자세히 보기 →",
+    href: "/services/booth",
+    image: "/assets/images/services/hero-booth-nhis.webp",
+    title: "전시·홍보부스",
+    desc: "박람회 전시부스·체험부스·포토존 — 디자인부터 시공·현장 운영까지.",
+  },
+];
+
+const designServices: ServiceCard[] = [
+  {
+    href: "/services/design/print",
+    image: "/assets/images/poster/landing/poster-2026-goyang.webp",
+    title: "현수막·포스터",
+    desc: "현수막·포스터·리플렛·카탈로그 — 카피라이팅부터 인쇄용 파일까지. 시안 3~5일.",
+  },
+  {
+    href: "/services/design/digital",
+    image: "/assets/images/ppt/landing/ppt-community-energy.webp",
+    title: "PPT·카드뉴스·편집디자인",
+    desc: "발표용 PPT·SNS 카드뉴스·자료집 편집디자인 — 장당 5만원~, 시안 2~3일.",
+  },
+  {
+    href: "/services/design/space",
+    image: "/assets/images/booth/landing/photozone-2026-international-forum.webp",
+    title: "전시부스·포토존",
+    desc: "전시부스·포토존 디자인·시공 — 3D 시뮬레이션 제공, 행사 디자인 통합 패키지.",
   },
 ];
 
@@ -206,53 +203,105 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* 서비스 카드 그리드 */}
-      <section className="pb-16 md:pb-24 px-5 md:px-8">
+      {/* 행사 대행 서비스 — 사진 카드 */}
+      <section className="pb-12 md:pb-16 px-5 md:px-8">
         <div className="mx-auto max-w-[1200px]">
-          <h2 className="text-xl md:text-2xl font-bold mb-8 text-center">
-            서비스 분야
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((svc) => (
+          <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-blue-600 mb-2">EVENT SERVICE</p>
+          <h2 className="text-xl md:text-2xl font-bold mb-6">행사 대행</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {eventServices.map((svc) => (
               <Link
                 key={svc.href}
                 href={svc.href}
-                className="group block p-5 md:p-6 rounded-xl border border-slate-200/80 bg-white shadow-sm hover:border-blue-200 hover:shadow-lg transition-all"
+                className="group block overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm hover:border-blue-200 hover:shadow-xl transition-all"
               >
-                <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <svc.icon size={28} weight="fill" color="#2563EB" />
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                  <Image
+                    src={svc.image}
+                    alt={`${svc.title} 대행 — 파란컴퍼니 수행 현장`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+                  />
                 </div>
-                <h3 className="text-lg font-bold mb-1 group-hover:text-blue-600 transition-colors">
-                  {svc.title}
-                </h3>
-                <p className="text-slate-500 text-sm leading-relaxed mb-3">
-                  {svc.desc}
-                </p>
-                <span className="text-xs text-blue-500 font-medium">
-                  {svc.cta}
-                </span>
+                <div className="p-5">
+                  <h3 className="text-lg font-bold group-hover:text-blue-600 transition-colors">
+                    {svc.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm leading-relaxed mt-1.5">
+                    {svc.desc}
+                  </p>
+                  <span className="mt-3 inline-block text-[13px] font-medium text-blue-600">
+                    자세히 보기 →
+                  </span>
+                </div>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
 
-            {/* 비용·견적 카드 — 기존 /guide/pricing 연결 */}
-            <Link
-              href="/guide/pricing"
-              className="group block p-5 md:p-6 rounded-xl border border-slate-200/80 bg-white shadow-sm hover:border-blue-200 hover:shadow-lg transition-all"
-            >
-              <div className="w-[58px] h-[58px] rounded-[17px] bg-blue-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <CurrencyKrw size={28} weight="fill" color="#2563EB" />
-              </div>
-              <h3 className="text-lg font-bold mb-1 group-hover:text-blue-600 transition-colors">
-                비용·견적 안내
-              </h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-3">
-                행사 규모·유형별 비용 구조와 견적 프로세스를 안내합니다.
-              </p>
-              <span className="text-xs text-blue-500 font-medium">
-                비용 가이드 보기 →
-              </span>
+      {/* 행사 디자인 서비스 — 사진 카드 */}
+      <section className="pb-12 md:pb-16 px-5 md:px-8">
+        <div className="mx-auto max-w-[1200px]">
+          <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-blue-600 mb-2">DESIGN SERVICE</p>
+          <div className="flex items-end justify-between mb-6 gap-4">
+            <h2 className="text-xl md:text-2xl font-bold">행사 디자인</h2>
+            <Link href="/services/design" className="shrink-0 text-sm text-blue-600 font-medium hover:underline">
+              디자인 서비스 전체 보기 →
             </Link>
           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {designServices.map((svc) => (
+              <Link
+                key={svc.href}
+                href={svc.href}
+                className="group block overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm hover:border-blue-200 hover:shadow-xl transition-all"
+              >
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                  <Image
+                    src={svc.image}
+                    alt={`${svc.title} 디자인 — 파란컴퍼니 작업물`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+                  />
+                </div>
+                <div className="p-5">
+                  <h3 className="text-lg font-bold group-hover:text-blue-600 transition-colors">
+                    {svc.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm leading-relaxed mt-1.5">
+                    {svc.desc}
+                  </p>
+                  <span className="mt-3 inline-block text-[13px] font-medium text-blue-600">
+                    자세히 보기 →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 비용·견적 배너 */}
+      <section className="pb-16 md:pb-24 px-5 md:px-8">
+        <div className="mx-auto max-w-[1200px]">
+          <Link
+            href="/guide/pricing"
+            className="group flex items-center justify-between gap-4 rounded-2xl border border-blue-100 bg-blue-50/60 px-6 py-5 hover:bg-blue-50 hover:border-blue-200 transition-all"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-blue-100 bg-white text-blue-600">
+                <CurrencyKrw size={22} weight="fill" />
+              </div>
+              <div>
+                <p className="font-bold text-[15px] text-slate-900">비용·견적 안내</p>
+                <p className="text-[13px] text-slate-500 mt-0.5">행사 규모·유형별 비용 구조와 견적 프로세스</p>
+              </div>
+            </div>
+            <span className="shrink-0 text-sm font-medium text-blue-600">비용 가이드 →</span>
+          </Link>
         </div>
       </section>
 
