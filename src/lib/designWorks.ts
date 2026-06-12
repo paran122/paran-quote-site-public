@@ -102,3 +102,33 @@ export const DESIGN_WORKS: DesignWork[] = _RAW.map((d) => ({
   ...d,
   year: SLUG_YEAR[d.slug] ?? 2025,
 }));
+
+/**
+ * 디자인 작업 카테고리(7종) → 서비스 3그룹 매핑.
+ * /work 디자인별 필터를 서비스(인쇄물/디지털/공간)와 1:1 정렬.
+ * 카드의 세부 category(포스터/리플렛 등)는 그대로 유지 — 그룹은 필터링·딥링크용.
+ */
+export type DesignGroupKey = "인쇄물" | "디지털" | "공간";
+
+export const DESIGN_CATEGORY_GROUP: Record<string, DesignGroupKey> = {
+  "포스터": "인쇄물",
+  "리플렛": "인쇄물",
+  "카탈로그": "인쇄물",
+  "배너·현수막": "인쇄물",
+  "PPT": "디지털",
+  "카드뉴스": "디지털",
+  "전시부스": "공간",
+};
+
+/** /work 디자인별 필터 그룹 (전체 + 3그룹). label = 사이트 공통 구체 명사쌍. */
+export const DESIGN_WORK_GROUPS: { key: "전체" | DesignGroupKey; label: string }[] = [
+  { key: "전체", label: "전체" },
+  { key: "인쇄물", label: "현수막·포스터" },
+  { key: "디지털", label: "PPT·카드뉴스·편집디자인" },
+  { key: "공간", label: "전시부스·포토존" },
+];
+
+/** 그룹 키 판정 (미매핑 시 null) */
+export function designGroupOf(category: string): DesignGroupKey | null {
+  return DESIGN_CATEGORY_GROUP[category] ?? null;
+}

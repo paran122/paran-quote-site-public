@@ -13,6 +13,11 @@ import {
   ChevronDown,
   ArrowRight,
   ArrowDown,
+  Lightbulb,
+  UsersRound,
+  Clapperboard,
+  BadgeCheck,
+  type LucideIcon,
 } from "lucide-react";
 import type { BlogPost } from "@/types";
 import ContactModal from "@/components/ui/ContactModal";
@@ -895,129 +900,29 @@ const clientNamesOnly = [
   "충청남도교육청",
 ];
 
-function LogoGlobe() {
-  const angleRef = useRef({ x: -15, y: 0 });
-  const dragRef = useRef({ active: false, startX: 0, startY: 0, startAngleX: 0, startAngleY: 0 });
-  const autoRotateRef = useRef(true);
-  const rafRef = useRef<number>(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isVisibleRef = useRef(true);
-  const [positions, setPositions] = useState<{ x: number; y: number; z: number; scale: number; opacity: number }[]>([]);
-
-  const radius = 280;
-  const total = clientLogos.length;
-
-  const computePositions = useCallback(() => {
-    const ax = (angleRef.current.x * Math.PI) / 180;
-    const ay = (angleRef.current.y * Math.PI) / 180;
-    const cosAx = Math.cos(ax), sinAx = Math.sin(ax);
-    const cosAy = Math.cos(ay), sinAy = Math.sin(ay);
-
-    const pts = [];
-    for (let i = 0; i < total; i++) {
-      const phi = Math.acos(1 - (2 * (i + 0.5)) / total);
-      const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-      const x0 = radius * Math.sin(phi) * Math.cos(theta);
-      const y0 = radius * Math.sin(phi) * Math.sin(theta);
-      const z0 = radius * Math.cos(phi);
-
-      const y1 = y0 * cosAx - z0 * sinAx;
-      const z1 = y0 * sinAx + z0 * cosAx;
-      const x2 = x0 * cosAy + z1 * sinAy;
-      const z2 = -x0 * sinAy + z1 * cosAy;
-
-      const rawScale = (z2 + radius * 1.5) / (radius * 2.5);
-      const scale = Math.max(0.6, rawScale);
-      const opacity = Math.max(0.35, Math.min(1, (z2 + radius) / (radius * 1.5)));
-      pts.push({ x: x2, y: y1, z: z2, scale, opacity });
-    }
-    setPositions(pts);
-  }, [total]);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (el) {
-      const observer = new IntersectionObserver(
-        ([entry]) => { isVisibleRef.current = entry.isIntersecting; },
-        { threshold: 0.1 }
-      );
-      observer.observe(el);
-      return () => observer.disconnect();
-    }
-  }, []);
-
-  useEffect(() => {
-    function animate() {
-      if (isVisibleRef.current) {
-        if (autoRotateRef.current) {
-          angleRef.current.y += 0.25;
-        }
-        computePositions();
-      }
-      rafRef.current = requestAnimationFrame(animate);
-    }
-    rafRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [computePositions]);
-
-  const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    dragRef.current = {
-      active: true,
-      startX: e.clientX,
-      startY: e.clientY,
-      startAngleX: angleRef.current.x,
-      startAngleY: angleRef.current.y,
-    };
-    autoRotateRef.current = false;
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
-  }, []);
-
-  const handlePointerMove = useCallback((e: React.PointerEvent) => {
-    if (!dragRef.current.active) return;
-    const dx = e.clientX - dragRef.current.startX;
-    const dy = e.clientY - dragRef.current.startY;
-    angleRef.current.y = dragRef.current.startAngleY + dx * 0.4;
-    angleRef.current.x = dragRef.current.startAngleX + dy * 0.4;
-  }, []);
-
-  const handlePointerUp = useCallback(() => {
-    dragRef.current.active = false;
-    autoRotateRef.current = true;
-  }, []);
-
+function LogoWall() {
   return (
-    <div
-      ref={containerRef}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={handlePointerUp}
-      className="relative flex aspect-square w-full max-w-[600px] cursor-grab items-center justify-center overflow-hidden select-none active:cursor-grabbing"
-    >
-      {clientLogos.map((client, i) => {
-        const pos = positions[i];
-        if (!pos) return null;
-        return (
-          <div
-            key={client.name}
-            className="absolute flex h-36 w-36 items-center justify-center transition-none md:h-44 md:w-44"
-            style={{
-              transform: `translate3d(${pos.x}px, ${pos.y}px, 0) scale(${pos.scale})`,
-              opacity: pos.opacity,
-              zIndex: Math.round(pos.z + radius),
-            }}
-            title={client.name}
-          >
+    <div className="grid w-full max-w-[520px] grid-cols-2 gap-3 sm:gap-4">
+      {clientLogos.map((client) => (
+        <div
+          key={client.name}
+          className="flex h-28 flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 transition-colors hover:border-blue-200 md:h-32"
+        >
+          <div className="flex h-12 items-center justify-center md:h-14">
             <Image
               src={client.logo}
               alt={client.name}
-              width={144}
-              height={144}
-              className="h-full w-full object-contain drop-shadow-sm"
+              width={180}
+              height={56}
+              className="max-h-10 w-auto max-w-full object-contain md:max-h-12"
             />
           </div>
-        );
-      })}
+          <span className="text-[11px] font-medium text-slate-500">{client.name}</span>
+        </div>
+      ))}
+      <div className="flex h-28 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 text-sm font-medium text-slate-400 md:h-32">
+        외 50+ 기관
+      </div>
     </div>
   );
 }
@@ -1033,7 +938,7 @@ function ClientsSection() {
           transition={{ duration: 0.6 }}
           className="flex justify-center"
         >
-          <LogoGlobe />
+          <LogoWall />
         </motion.div>
 
         <motion.div
@@ -1062,6 +967,20 @@ function ClientsSection() {
               </span>
             ))}
           </div>
+          <div className="mt-7 flex flex-wrap gap-2">
+            {["여성기업 인증", "직접생산확인증명(행사대행)", "소상공인 확인"].map((b) => (
+              <span
+                key={b}
+                className="inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700"
+              >
+                <BadgeCheck size={14} />
+                {b}
+              </span>
+            ))}
+          </div>
+          <p className="mt-2.5 text-xs text-slate-400">
+            여성기업 5,000만 원 이하 수의계약 · 나라장터 입찰 가능
+          </p>
         </motion.div>
       </div>
     </Section>
@@ -1073,7 +992,7 @@ function ClientsSection() {
    ═══════════════════════════════════════════════════════════════ */
 
 interface TeamCard {
-  icon: string;
+  icon: LucideIcon;
   label: string;
   enLabel: string;
   description: string;
@@ -1081,27 +1000,68 @@ interface TeamCard {
 
 const teamCards: TeamCard[] = [
   {
-    icon: "/icons/team-planning.png",
+    icon: Lightbulb,
     label: "기획팀",
     enLabel: "PLANNING TEAM",
-    description:
-      "클라이언트의 목표와 예산을 분석하고, 행사 컨셉 설계부터 프로그램 구성, 제안서 작성까지 전략적으로 기획합니다. 참가자 경험을 극대화하는 프로그램을 설계합니다.",
+    description: "행사 컨셉 설계·프로그램 구성·제안서 작성 — 목표와 예산에 맞춘 전략 기획.",
   },
   {
-    icon: "/icons/team-operations.png",
+    icon: UsersRound,
     label: "운영팀",
     enLabel: "OPERATIONS TEAM",
-    description:
-      "현장 운영 총괄, 참가자 동선 관리, 연사·VIP 의전, 협력업체 조율까지 행사 당일의 모든 실행을 책임집니다. 안전 관리와 돌발 상황 대응도 전담합니다.",
+    description: "현장 총괄·참가자 동선·연사 의전·안전 관리 — 행사 당일 실행 전담.",
   },
   {
-    icon: "/icons/team-contents.png",
+    icon: Clapperboard,
     label: "콘텐츠팀",
     enLabel: "CONTENTS TEAM",
-    description:
-      "공간 디자인(로비 연출, 조형물, 키비주얼, 사이니지)과 홍보 영상, SNS 콘텐츠 등 행사의 시각적 경험을 설계하고 제작합니다.",
+    description: "공간 연출·키비주얼·홍보 영상·SNS 콘텐츠 — 행사의 시각적 경험 제작.",
   },
 ];
+
+const TEAM_PHOTOS = [
+  "/assets/images/company/team-exhibit-install.webp",
+  "/assets/images/company/team-kls-backdrop.webp",
+  "/assets/images/company/team-booth-partition.webp",
+  "/assets/images/company/team-backwall-install.webp",
+  "/assets/images/company/team-stage-rehearsal.webp",
+  "/assets/images/company/team-registration-desk.webp",
+];
+
+function TeamPhotoSlideshow() {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setIdx((i) => (i + 1) % TEAM_PHOTOS.length), 3500);
+    return () => clearInterval(t);
+  }, []);
+
+  return (
+    <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 md:aspect-[16/7]">
+      {TEAM_PHOTOS.map((src, i) => (
+        <Image
+          key={src}
+          src={src}
+          alt="파란컴퍼니 팀의 행사 준비 현장"
+          fill
+          className={`object-cover transition-opacity duration-700 ${i === idx ? "opacity-100" : "opacity-0"}`}
+          sizes="(max-width:768px) 100vw, 1200px"
+          priority={i === 0}
+        />
+      ))}
+      <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5">
+        {TEAM_PHOTOS.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIdx(i)}
+            className={`h-1.5 rounded-full transition-all ${i === idx ? "w-5 bg-white" : "w-1.5 bg-white/60 hover:bg-white/80"}`}
+            aria-label={`${i + 1}번째 사진`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function TeamSection() {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -1129,8 +1089,13 @@ function TeamSection() {
           전문 조직
         </motion.h2>
 
+        {/* 현장 사진 슬라이드 — 실제 준비 모습 */}
+        <motion.div variants={fadeUp} custom={2}>
+          <TeamPhotoSlideshow />
+        </motion.div>
+
         {/* Desktop: 3-column grid */}
-        <div className="mt-12 hidden gap-6 md:grid md:grid-cols-3">
+        <div className="mt-10 hidden gap-6 md:grid md:grid-cols-3">
           {teamCards.map((card, i) => (
             <motion.div
               key={card.enLabel}
@@ -1138,14 +1103,8 @@ function TeamSection() {
               custom={i + 2}
               className="group rounded-2xl border border-slate-200 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-lg"
             >
-              <div className="inline-flex h-20 w-20 items-center justify-center">
-                <Image
-                  src={card.icon}
-                  alt={card.label}
-                  width={64}
-                  height={64}
-                  className="h-16 w-16"
-                />
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                <card.icon size={30} strokeWidth={1.6} />
               </div>
               <h3 className="mt-5 text-lg font-bold text-slate-900">
                 {card.label}
@@ -1172,15 +1131,14 @@ function TeamSection() {
               className="overflow-hidden rounded-2xl border border-slate-200 p-5"
             >
               <div className="flex items-start gap-4">
-                <div className="inline-flex h-14 w-14 shrink-0 items-center justify-center">
-                  <Image
-                    src={teamCards[activeIdx].icon}
-                    alt={teamCards[activeIdx].label}
-                    width={56}
-                    height={56}
-                    className="h-12 w-12"
-                  />
-                </div>
+                {(() => {
+                  const ActiveIcon = teamCards[activeIdx].icon;
+                  return (
+                    <div className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                      <ActiveIcon size={26} strokeWidth={1.6} />
+                    </div>
+                  );
+                })()}
                 <div>
                   <h3 className="text-base font-bold text-slate-900">
                     {teamCards[activeIdx].label}

@@ -16,14 +16,6 @@ import type { LucideIcon } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { GUIDE_MENUS } from "./GuideClient";
 
-const GUIDE_ILLUSTS: Record<string, string> = {
-  "/guide/checklist": "/guide-icons/checklist-3.png",
-  "/guide/process": "/guide-icons/process.png",
-  "/guide/pricing": "/guide-icons/pricing.png",
-  "/guide/venue": "/guide-icons/venue.png",
-  "/guide/scale": "/guide-icons/scale.png",
-};
-
 const GUIDE_ICONS: Record<string, LucideIcon> = {
   "/guide/checklist": ClipboardCheck,
   "/guide/process": ListOrdered,
@@ -37,7 +29,7 @@ const GUIDE_ICONS: Record<string, LucideIcon> = {
 /* ────────────────────────────────────────────
  *  D: 센터 아이콘 — 아이콘 가운데 크게, 텍스트 아래
  * ──────────────────────────────────────────── */
-function CardD({ href, label, desc, illustSrc }: { href: string; label: string; desc: string; illustSrc?: string }) {
+function CardD({ href, label, desc }: { href: string; label: string; desc: string }) {
   const Icon = GUIDE_ICONS[href];
   return (
     <motion.div whileHover={{ y: -6 }} transition={{ type: "spring", stiffness: 300, damping: 15 }}>
@@ -45,14 +37,10 @@ function CardD({ href, label, desc, illustSrc }: { href: string; label: string; 
         href={href}
         className="group flex h-48 flex-col items-center rounded-xl border border-slate-200/80 bg-white p-3 text-center shadow-sm transition-all hover:border-blue-200 hover:shadow-lg sm:h-80 sm:rounded-2xl sm:p-6"
       >
-        {illustSrc ? (
-          <div className="mb-2 flex h-16 w-16 items-center justify-center overflow-hidden transition-transform group-hover:scale-105 sm:mb-4 sm:h-28 sm:w-28">
-            <img src={illustSrc} alt={label} className="h-full w-full object-contain" />
-          </div>
-        ) : Icon ? (
-          <div className="mb-2 flex h-16 w-16 items-center justify-center text-slate-300 sm:mb-4 sm:h-28 sm:w-28">
-            <Icon size={36} strokeWidth={1.2} className="sm:hidden" />
-            <Icon size={56} strokeWidth={1.2} className="hidden sm:block" />
+        {Icon ? (
+          <div className="mb-2 mt-1 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition-transform group-hover:scale-105 sm:mb-4 sm:mt-6 sm:h-20 sm:w-20 sm:rounded-2xl">
+            <Icon size={24} strokeWidth={1.6} className="sm:hidden" />
+            <Icon size={36} strokeWidth={1.6} className="hidden sm:block" />
           </div>
         ) : null}
         <h2 className="text-[13px] font-bold text-slate-900 sm:text-lg">{label}</h2>
@@ -89,7 +77,6 @@ export default function GuideIndexClient() {
         <section className="mx-auto max-w-5xl px-4 pb-20 md:px-6">
           <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
             {GUIDE_MENUS.map((menu, i) => {
-              const illustSrc = GUIDE_ILLUSTS[menu.href];
               return (
                 <motion.div
                   key={menu.href}
@@ -97,7 +84,7 @@ export default function GuideIndexClient() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.08, duration: 0.35 }}
                 >
-                  <CardD href={menu.href} label={menu.label} desc={menu.desc} illustSrc={illustSrc} />
+                  <CardD href={menu.href} label={menu.label} desc={menu.desc} />
                 </motion.div>
               );
             })}

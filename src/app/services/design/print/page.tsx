@@ -6,7 +6,7 @@ const SITE_URL = "https://parancompany.co.kr";
 const group = DESIGN_GROUPS.print;
 
 export const metadata: Metadata = {
-  title: `${group.metaTitle} | 파란컴퍼니`,
+  title: `${group.metaTitle}`,
   description: group.metaDescription,
   keywords: group.keywords,
   alternates: { canonical: `${SITE_URL}/services/design/print` },

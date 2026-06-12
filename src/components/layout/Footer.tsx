@@ -62,6 +62,7 @@ export default function Footer() {
               <p>사업자등록번호 291-86-02802</p>
               <p>경기도 수원시 팔달구 효원로 278, 6층 603호</p>
               <p>운영시간 : 평일 09:00 ~ 18:00</p>
+              <p className="pt-1 text-white/50">여성기업 · 소상공인 · 직접생산확인(행사대행) 인증 보유</p>
             </div>
           </div>
 
@@ -82,10 +83,9 @@ export default function Footer() {
             <div>
               <Link href="/services" className="mb-3 block text-xs font-semibold uppercase tracking-wider text-blue-400 transition-colors hover:text-blue-300">서비스</Link>
               <div className="space-y-2 text-xs text-white/40">
-                <Link href="/services/corporate" className="block transition-colors hover:text-white">기업행사 대행</Link>
-                <Link href="/services/government" className="block transition-colors hover:text-white">공공기관 행사</Link>
-                <Link href="/services/conference" className="block transition-colors hover:text-white">컨퍼런스·포럼</Link>
-                <Link href="/services/seminar" className="block transition-colors hover:text-white">세미나·워크숍</Link>
+                <Link href="/services/conference" className="block transition-colors hover:text-white">컨퍼런스·세미나</Link>
+                <Link href="/services/education" className="block transition-colors hover:text-white">교육·워크숍</Link>
+                <Link href="/services/booth" className="block transition-colors hover:text-white">전시·홍보부스</Link>
                 <Link href="/services/design" className="block transition-colors hover:text-white">행사 디자인</Link>
               </div>
             </div>

@@ -68,9 +68,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const homepageDate = latestContent[0] ?? new Date("2026-03-30");
 
   // 정적 페이지: 마지막 코드 수정 기준 고정 날짜
-  const GUIDE_UPDATED = new Date("2026-04-27"); // SEO 메타 "행사 대행" 키워드 + 내부 링크 배너 반영
-  const SERVICES_UPDATED = new Date("2026-06-09"); // 디자인 그룹페이지·견적·메뉴 개편
-  const COMPANY_UPDATED = new Date("2026-04-27");
+  const GUIDE_UPDATED = new Date("2026-06-12"); // FAQ 단일 페이지 재구성 + 교육·워크숍 견적 밴드 조정
+  const SERVICES_UPDATED = new Date("2026-06-12"); // 서비스 허브 사진 카드 재설계 + 편집디자인 서비스명 개편 + 교육 가격 조정
+  const COMPANY_UPDATED = new Date("2026-06-12"); // 로고 월·전문조직 현장 슬라이드·인증 뱃지 추가
   const POLICY_UPDATED = new Date("2026-03-10");
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -147,19 +147,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/services/corporate`,
-      lastModified: SERVICES_UPDATED,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
       url: `${siteUrl}/services/conference`,
       lastModified: SERVICES_UPDATED,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/services/seminar`,
+      url: `${siteUrl}/services/education`,
+      lastModified: SERVICES_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/services/booth`,
       lastModified: SERVICES_UPDATED,
       changeFrequency: "monthly",
       priority: 0.8,

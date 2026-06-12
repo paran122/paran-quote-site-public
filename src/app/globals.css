@@ -44,6 +44,9 @@ body {
 body {
   color: var(--color-fg);
   background: var(--color-bg);
+  /* 한국어 단어 단위 줄바꿈 — 단어 중간 끊김 방지. 긴 영문·URL은 overflow-wrap으로 강제 줄바꿈 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 ::selection {

@@ -19,19 +19,18 @@ const serviceGroups: { title: string; href: string; items: { href: string; label
     title: "행사대행",
     href: "/services",
     items: [
-      { href: "/services/corporate", label: "기업행사", desc: "워크숍·세미나·비전선포식" },
-      { href: "/services/government", label: "공공기관", desc: "조달·수의계약 행사 대행" },
-      { href: "/services/conference", label: "컨퍼런스·포럼", desc: "대규모 학술·국제행사" },
-      { href: "/services/seminar", label: "세미나·워크숍", desc: "교육·연수 프로그램" },
+      { href: "/services/conference", label: "컨퍼런스·세미나", desc: "학술대회·포럼·심포지엄" },
+      { href: "/services/education", label: "교육·워크숍", desc: "연수·캠프·역량강화" },
+      { href: "/services/booth", label: "전시·홍보부스", desc: "부스 운영·체험부스·포토존" },
     ],
   },
   {
     title: "디자인",
     href: "/services/design",
     items: [
-      { href: "/services/design/print", label: "인쇄물", desc: "포스터·리플렛·현수막·카탈로그" },
-      { href: "/services/design/digital", label: "콘텐츠", desc: "카드뉴스·PPT 발표자료" },
-      { href: "/services/design/space", label: "공간", desc: "전시부스·행사 패키지" },
+      { href: "/services/design/print", label: "현수막·포스터", desc: "리플렛·배너·카탈로그" },
+      { href: "/services/design/digital", label: "PPT·카드뉴스·편집디자인", desc: "발표자료·SNS 콘텐츠·자료집" },
+      { href: "/services/design/space", label: "전시부스·포토존", desc: "박람회 부스·행사 패키지" },
     ],
   },
 ];
@@ -124,7 +123,7 @@ export default function GNB() {
                   <a
                     href={item.anchor}
                     onClick={(e) => handleNavClick(e, item)}
-                    className={`text-xs font-medium transition-colors hover:text-white/80 ${
+                    className={`text-sm font-medium transition-colors hover:text-white/80 ${
                       isActive(item) ? "text-white" : "text-white/40"
                     }`}
                   >
@@ -138,7 +137,7 @@ export default function GNB() {
                 key={item.anchor}
                 href={item.anchor}
                 onClick={(e) => handleNavClick(e, item)}
-                className={`text-xs font-medium transition-colors hover:text-white/80 ${
+                className={`text-sm font-medium transition-colors hover:text-white/80 ${
                   isActive(item) ? "text-white" : "text-white/40"
                 }`}
               >
@@ -149,7 +148,7 @@ export default function GNB() {
           <a
             href="/?scrollTo=contact"
             onClick={(e) => handleNavClick(e, { label: "문의하기", anchor: "#contact" })}
-            className="rounded-lg bg-blue-600 px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-blue-500"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
           >
             문의하기
           </a>

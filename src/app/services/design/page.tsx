@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { fetchPortfolios, fetchAllPortfolioMedia } from "@/lib/queries";
 import { Flag, BookOpen, IdentificationBadge, DeviceMobile } from "@phosphor-icons/react/dist/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
@@ -11,7 +12,6 @@ import ServiceProcess from "../_components/ServiceProcess";
 import ServiceCTA from "../_components/ServiceCTA";
 import TrustBadges from "../_components/TrustBadges";
 import ServiceSNS from "../_components/ServiceSNS";
-import HeroSlideshow from "../_components/HeroSlideshow";
 import ServiceSubNav from "../_components/ServiceSubNav";
 import CardCarousel from "../_components/CardCarousel";
 import ImageSlideshow from "../_components/ImageSlideshow";
@@ -143,34 +143,38 @@ export default async function DesignPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
-      {/* Hero */}
-      <section className="relative bg-[#091041] pt-12 md:pt-16 pb-28 md:pb-40 overflow-hidden">
-        <HeroSlideshow
-          contain
-          images={[
-            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/booth-large.webp", alt: "전시부스 디자인 시안 - 교육감협의회 대형전시부스" },
-            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/standee-large.webp", alt: "행사 디자인 시안 - 교육감협의회 대형등신대" },
-            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/booth.webp", alt: "행사 시안물 제작 - 교육감협의회 부스 디자인" },
-            { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/table-standee.webp", alt: "행사 디자인 제작 - 교육감협의회 테이블 등신대" },
-          ]}
-        />
+      {/* Hero (2-col — 서비스 그룹 페이지와 동일 구조) */}
+      <section className="relative bg-[#091041] pt-28 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 opacity-60" style={{ background: "radial-gradient(55% 55% at 85% 15%, rgba(37,99,235,0.28) 0%, transparent 70%)" }} />
         <div className="relative z-10 mx-auto max-w-[1200px] px-5 md:px-8">
-          <nav aria-label="breadcrumb" className="hidden md:block text-[11px] text-white/40 mb-24">
+          <nav aria-label="breadcrumb" className="hidden md:block text-[11px] text-white/40 mb-8">
             <Link href="/" className="hover:text-white/70 transition-colors">홈</Link>
             <span className="mx-2 text-white/20">/</span>
             <Link href="/services" className="hover:text-white/70 transition-colors">서비스</Link>
             <span className="mx-2 text-white/20">/</span>
             <span className="text-white/60">행사 디자인·시안물</span>
           </nav>
-          <div className="text-center max-w-3xl mx-auto pt-16 md:pt-0">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6">
-              행사 디자인·시안물 제작
-            </h1>
-            <p className="text-base md:text-lg text-slate-300 leading-relaxed mb-10">
-              포스터, 현수막, 리플렛, 자료집, 명찰 등
-              행사에 필요한 모든 시안물을 자체 디자인팀이 제작합니다.
-            </p>
-            <TrustBadges variant="dark" />
+          <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-12 items-center">
+            <div>
+              <p className="mb-4 text-[12px] font-bold uppercase tracking-[0.14em] text-blue-300">행사 디자인</p>
+              <h1 className="whitespace-nowrap text-[clamp(20px,5.5vw,36px)] lg:text-[clamp(28px,3vw,42px)] font-bold tracking-tight text-white mb-5 leading-[1.35] md:leading-[1.3]">
+                행사 디자인·시안물 제작
+              </h1>
+              <p className="text-base md:text-lg text-slate-300 leading-relaxed mb-7">
+                포스터, 현수막, 리플렛, 자료집, 명찰 등
+                행사에 필요한 모든 시안물을 자체 디자인팀이 제작합니다.
+              </p>
+              <div className="mb-8">
+                <TrustBadges variant="dark" />
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link href="/services/design/estimate" className="text-center px-6 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition-colors">디자인 견적 바로 계산 →</Link>
+                <Link href="/work?view=design" className="text-center px-6 py-3.5 rounded-xl border border-white/20 text-white font-medium text-sm hover:bg-white/10 transition-colors">작업 사례 보기 →</Link>
+              </div>
+            </div>
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.6)]">
+              <Image src="/assets/images/catalog/landing/catalog-2026-forum-handbook.webp" alt="행사 디자인 시안물 - 중앙아시아 교육협력포럼 자료집" fill className="object-cover" sizes="(max-width:1024px) 100vw, 45vw" priority />
+            </div>
           </div>
         </div>
       </section>
@@ -184,9 +188,9 @@ export default async function DesignPage() {
           <p className="text-slate-500 text-sm mb-8">필요한 분야를 선택하면 상세 항목과 견적을 확인할 수 있습니다.</p>
           <div className="grid sm:grid-cols-3 gap-4 md:gap-5">
             {[
-              { href: "/services/design/print", label: "인쇄물", desc: "포스터·리플렛·현수막·카탈로그" },
-              { href: "/services/design/digital", label: "콘텐츠", desc: "카드뉴스·PPT 발표자료" },
-              { href: "/services/design/space", label: "공간", desc: "전시부스·행사 패키지" },
+              { href: "/services/design/print", label: "현수막·포스터", desc: "포스터·리플렛·현수막·카탈로그 인쇄물" },
+              { href: "/services/design/digital", label: "PPT·카드뉴스·편집디자인", desc: "PPT 발표자료·SNS 카드뉴스·자료집" },
+              { href: "/services/design/space", label: "전시부스·포토존", desc: "전시부스·포토존·행사 패키지" },
             ].map((g) => (
               <Link
                 key={g.href}
@@ -262,9 +266,9 @@ export default async function DesignPage() {
           <div className="my-10 rounded-2xl overflow-hidden shadow-md">
             <ImageSlideshow
               images={[
+                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/goyang-conference/leaflet.webp", alt: "리플렛 디자인 - 고양 학교체육 성장 컨퍼런스", caption: "리플렛 | 고양 학교체육 성장 컨퍼런스" },
                 { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/parent-education/leaflet.webp", alt: "리플렛 디자인 - 찾아가는 경기학부모교육", caption: "리플렛 | 찾아가는 경기학부모교육" },
                 { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/booth-large.webp", alt: "전시부스 디자인 - 교육감협의회 대형전시부스", caption: "전시부스 | 교육감협의회 부스 설치" },
-                { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/goyang-conference/leaflet.webp", alt: "리플렛 디자인 - 고양 학교체육 성장 컨퍼런스", caption: "리플렛 | 고양 학교체육 성장 컨퍼런스" },
                 { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/goyang-conference/booth-large.webp", alt: "전시부스 디자인 - 고양 학교체육 컨퍼런스", caption: "전시부스 | 고양 학교체육 성장 컨퍼런스" },
                 { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/international-forum/leaflet.webp", alt: "리플렛 디자인 - 중앙아시아 교육협력포럼", caption: "리플렛 | 중앙아시아 교육협력포럼" },
                 { src: "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/qs-portfolio/education-council-booth/booth.webp", alt: "전시부스 디자인 - 교육감협의회 부스", caption: "전시부스 | 교육감협의회 부스 설치" },
@@ -432,9 +436,9 @@ export default async function DesignPage() {
       <ServiceCTA
         title="행사 디자인, 기획부터 함께하는 전문 팀에 맡기세요"
         relatedServices={[
-          { href: "/services/government", label: "공공기관 행사 대행" },
-          { href: "/services/corporate", label: "기업행사 기획·대행" },
-          { href: "/services/conference", label: "컨퍼런스·포럼 기획" },
+          { href: "/services/conference", label: "컨퍼런스·세미나 기획" },
+          { href: "/services/education", label: "교육·워크숍 기획" },
+          { href: "/services/booth", label: "전시·홍보부스 운영" },
           { href: "/guide/pricing", label: "비용·견적 안내" },
         ]}
       />

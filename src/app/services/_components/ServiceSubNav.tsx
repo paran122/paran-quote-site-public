@@ -5,12 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const items = [
-  { href: "/services/corporate", label: "기업행사" },
-  { href: "/services/government", label: "공공기관" },
-  { href: "/services/conference", label: "컨퍼런스·포럼" },
-  { href: "/services/seminar", label: "세미나·워크숍" },
-  { href: "/services/design", label: "행사 디자인" },
-  { href: "/services/design/estimate", label: "디자인 견적" },
+  { href: "/services/conference", label: "컨퍼런스·세미나" },
+  { href: "/services/education", label: "교육·워크숍" },
+  { href: "/services/booth", label: "전시·홍보부스" },
+  { href: "/services/design/print", label: "현수막·포스터" },
+  { href: "/services/design/digital", label: "PPT·카드뉴스·편집디자인" },
+  { href: "/services/design/space", label: "전시부스·포토존" },
 ];
 
 export default function ServiceSubNav() {
