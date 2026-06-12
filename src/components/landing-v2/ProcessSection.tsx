@@ -31,6 +31,12 @@ export default function Process() {
           90% { opacity: 1; }
           100% { left: 85%; opacity: 0; }
         }
+        @keyframes glow-trail-m2 {
+          0% { left: 22%; opacity: 0; }
+          5% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { left: 65%; opacity: 0; }
+        }
       `}</style>
       <div className="pointer-events-none absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, rgba(59,130,246,0.08), transparent 60%)" }} />
 
@@ -116,12 +122,12 @@ export default function Process() {
         <div className="space-y-4 lg:hidden">
           {[steps.slice(0, 3), steps.slice(3)].map((row, rowIdx) => (
             <div key={rowIdx} className={`relative grid gap-2 ${row.length === 3 ? "grid-cols-3" : "grid-cols-2 mx-auto max-w-[67%]"}`}>
-              {/* 프로그레스 바 */}
-              <div className="pointer-events-none absolute left-[15%] right-[15%] top-[14px] z-0 h-1 rounded-full bg-white/5" />
+              {/* 프로그레스 바 — 행 점 위치(3개: 15~85%, 2개: 25~75%)에 맞춤 */}
+              <div className={`pointer-events-none absolute top-[14px] z-0 h-1 rounded-full bg-white/5 ${row.length === 3 ? "left-[15%] right-[15%]" : "left-[25%] right-[25%]"}`} />
               <motion.div
-                className="pointer-events-none absolute left-[15%] top-[14px] z-0 h-1 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"
+                className={`pointer-events-none absolute top-[14px] z-0 h-1 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 ${row.length === 3 ? "left-[15%]" : "left-[25%]"}`}
                 initial={{ width: 0 }}
-                whileInView={{ width: "70%" }}
+                whileInView={{ width: row.length === 3 ? "70%" : "50%" }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 + rowIdx * 0.5, duration: 1, ease: "easeOut" }}
                 style={{ boxShadow: "0 0 8px rgba(59,130,246,0.4)" }}
@@ -130,7 +136,7 @@ export default function Process() {
                 className="pointer-events-none absolute top-[10px] z-[1] h-3 w-10 rounded-full"
                 style={{
                   background: "radial-gradient(ellipse, rgba(59,130,246,0.9), rgba(139,92,246,0.4) 40%, transparent 70%)",
-                  animation: "glow-trail-m 3s ease-in-out infinite",
+                  animation: `${row.length === 3 ? "glow-trail-m" : "glow-trail-m2"} 3s ease-in-out infinite`,
                   animationDelay: `${rowIdx * 1.5}s`,
                   filter: "blur(4px)",
                 }}

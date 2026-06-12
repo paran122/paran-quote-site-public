@@ -56,10 +56,10 @@ export default function BlogSection() {
     <section id="blog" className="relative overflow-hidden bg-[#f8f9fb] px-4 py-10 md:px-12 md:py-24 lg:px-20">
       <div className="relative mx-auto max-w-6xl">
         <BlurFade delay={0.1}>
-          <div className="mb-1 text-center font-[var(--font-inter)] text-xs font-extrabold tracking-[0.25em] text-blue-500/80 md:text-base">
+          <div className="mb-1 hidden text-center font-[var(--font-inter)] text-xs font-extrabold tracking-[0.25em] text-blue-500/80 md:block md:text-base">
             BLOG
           </div>
-          <div className="mx-auto mb-2 h-[2px] w-8 rounded-full bg-blue-400 md:mb-4 md:w-10" />
+          <div className="mx-auto mb-2 hidden h-[2px] w-8 rounded-full bg-blue-400 md:mb-4 md:block md:w-10" />
           <h2 className="mb-2 text-center text-xl font-bold text-gray-900 md:mb-4 md:text-5xl">
             블로그
           </h2>
