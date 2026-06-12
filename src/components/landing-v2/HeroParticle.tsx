@@ -66,10 +66,10 @@ export default function HeroParticle() {
               ].map((stat) => (
                 <div
                   key={stat.key}
-                  className={`flex items-baseline gap-1.5 rounded-xl bg-gradient-to-br ${stat.gradient} px-3 py-2.5 backdrop-blur-lg sm:block sm:px-4 sm:py-4`}
+                  className={`rounded-xl bg-gradient-to-br ${stat.gradient} px-4 py-4 backdrop-blur-lg`}
                 >
-                  <div className="text-lg font-bold text-white sm:text-xl">{stat.value}</div>
-                  <div className="whitespace-nowrap text-[11px] text-white/50 sm:mt-1 sm:text-xs">{stat.label}</div>
+                  <div className="text-xl font-bold text-white">{stat.value}</div>
+                  <div className="mt-1 text-xs text-white/50">{stat.label}</div>
                 </div>
               ))}
             </div>

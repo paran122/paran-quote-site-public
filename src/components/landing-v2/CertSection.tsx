@@ -77,7 +77,7 @@ export default function CertSection() {
                       <span className="w-full p-2.5 text-center text-[10px] font-semibold text-white">원본 보기</span>
                     </div>
                   </div>
-                  <p className="mt-2.5 hidden text-[12px] font-semibold leading-snug text-white md:block">{c.name}</p>
+                  <p className="mt-2 text-[10.5px] font-semibold leading-snug text-white md:mt-2.5 md:text-[12px]">{c.name}</p>
                   <p className="mt-0.5 hidden text-[10px] leading-snug text-slate-400 md:block">{c.sub}</p>
                 </button>
               ))}
