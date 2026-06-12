@@ -72,10 +72,10 @@ export default function EventGroupPage({ service }: { service: EventService }) {
               <p className="mb-4 text-[12px] font-bold uppercase tracking-[0.14em] text-blue-300">{service.label}</p>
               <h1 className="whitespace-nowrap text-[clamp(20px,5.5vw,36px)] lg:text-[clamp(28px,3vw,42px)] font-bold tracking-tight text-white mb-5 leading-[1.35] md:leading-[1.3]">{service.h1}</h1>
               <p className="text-base md:text-lg text-slate-300 leading-relaxed mb-7">{service.intro}</p>
-              <div className="mb-8 flex flex-wrap gap-2.5">
+              <div className="mb-8 flex flex-nowrap gap-1.5 sm:flex-wrap sm:gap-2.5">
                 {service.badges.map((b) => (
-                  <span key={b} className="inline-flex items-center gap-1.5 rounded-full border border-blue-400/30 bg-blue-400/10 px-3.5 py-1.5 text-xs font-medium text-blue-200">
-                    <Check size={14} weight="bold" /> {b}
+                  <span key={b} className="inline-flex shrink items-center gap-1 whitespace-nowrap rounded-full border border-blue-400/30 bg-blue-400/10 px-2 py-1 text-[10.5px] font-medium text-blue-200 sm:gap-1.5 sm:px-3.5 sm:py-1.5 sm:text-xs">
+                    <Check size={12} weight="bold" className="shrink-0" /> {b}
                   </span>
                 ))}
               </div>
@@ -205,21 +205,19 @@ export default function EventGroupPage({ service }: { service: EventService }) {
         <div className="mx-auto max-w-[920px]">
           <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-blue-600 mb-3">COMPARISON</p>
           <h2 className="text-xl md:text-3xl font-bold text-[#0d1a4e] mb-10">일반 대행사와 비교해 보세요</h2>
-          <div className="-mx-5 overflow-x-auto px-5 md:mx-0 md:px-0">
-            <div className="min-w-[480px] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_60px_-30px_rgba(13,26,110,0.2)]">
-              <div className="grid grid-cols-[1.1fr_1fr_1fr] bg-[#091041] text-white text-xs md:text-sm font-bold">
-                <div className="px-4 md:px-6 py-4">항목</div>
-                <div className="px-4 md:px-6 py-4 text-slate-300">일반 대행사</div>
-                <div className="px-4 md:px-6 py-4 text-blue-300 bg-blue-600/15">파란컴퍼니</div>
-              </div>
-              {EVENT_COMMON.comparisonRows.map((row, i) => (
-                <div key={row.label} className={`grid grid-cols-[1.1fr_1fr_1fr] text-xs md:text-sm border-t border-slate-100 ${i % 2 ? "bg-slate-50/50" : "bg-white"}`}>
-                  <div className="px-4 md:px-6 py-4 font-bold text-[#0d1a4e]">{row.label}</div>
-                  <div className="px-4 md:px-6 py-4 text-slate-400 flex items-start gap-1.5"><X size={15} weight="bold" className="mt-0.5 shrink-0 text-slate-300" /> {row.general}</div>
-                  <div className="px-4 md:px-6 py-4 font-semibold text-[#0d1a4e] bg-blue-50/40 border-l border-blue-100 flex items-start gap-1.5"><Check size={15} weight="bold" className="mt-0.5 shrink-0 text-blue-600" /> {row.ours}</div>
-                </div>
-              ))}
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_60px_-30px_rgba(13,26,110,0.2)]">
+            <div className="grid grid-cols-[0.8fr_1fr_1.1fr] md:grid-cols-[1.1fr_1fr_1fr] bg-[#091041] text-white text-[11px] md:text-sm font-bold">
+              <div className="px-2.5 py-3 md:px-6 md:py-4">항목</div>
+              <div className="px-2.5 py-3 md:px-6 md:py-4 text-slate-300">일반 대행사</div>
+              <div className="px-2.5 py-3 md:px-6 md:py-4 text-blue-300 bg-blue-600/15">파란컴퍼니</div>
             </div>
+            {EVENT_COMMON.comparisonRows.map((row, i) => (
+              <div key={row.label} className={`grid grid-cols-[0.8fr_1fr_1.1fr] md:grid-cols-[1.1fr_1fr_1fr] text-[11px] md:text-sm border-t border-slate-100 ${i % 2 ? "bg-slate-50/50" : "bg-white"}`}>
+                <div className="px-2.5 py-3 md:px-6 md:py-4 font-bold text-[#0d1a4e] break-keep">{row.label}</div>
+                <div className="px-2.5 py-3 md:px-6 md:py-4 text-slate-400 flex items-start gap-1 md:gap-1.5 break-keep"><X size={12} weight="bold" className="mt-0.5 shrink-0 text-slate-300 md:hidden" /><X size={15} weight="bold" className="mt-0.5 hidden shrink-0 text-slate-300 md:block" /> {row.general}</div>
+                <div className="px-2.5 py-3 md:px-6 md:py-4 font-semibold text-[#0d1a4e] bg-blue-50/40 border-l border-blue-100 flex items-start gap-1 md:gap-1.5 break-keep"><Check size={12} weight="bold" className="mt-0.5 shrink-0 text-blue-600 md:hidden" /><Check size={15} weight="bold" className="mt-0.5 hidden shrink-0 text-blue-600 md:block" /> {row.ours}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

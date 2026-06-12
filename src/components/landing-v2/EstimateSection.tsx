@@ -3,9 +3,8 @@
 import { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { Mic, GraduationCap, Store, PenTool, MonitorSmartphone, Boxes, Check, X, ChevronDown, Loader2, Paperclip, FileText, Image as ImageIcon, ArrowRight } from "lucide-react";
+import { Mic, GraduationCap, Store, PenTool, MonitorSmartphone, Boxes, Check, X, ChevronDown, Loader2, Paperclip, FileText, Image as ImageIcon } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import Link from "next/link";
 import { showToast } from "@/components/ui/Toast";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { ESTIMATE_EVENT_TYPES, ESTIMATE_GROUPS, ESTIMATE_DESIGN_IDS, ESTIMATE_SCALES, ESTIMATE_INCLUDES, ESTIMATE_DETAIL, ESTIMATE_CHIPS, formatRangeText } from "@/lib/pricing";
@@ -357,7 +356,7 @@ export default function Estimate() {
           </div>
 
           {/* Right: Estimate Detail */}
-          <div ref={estimateCardRef} className="flex min-w-0 lg:min-h-[705px] xl:min-h-[597px] min-[1440px]:min-h-[581px]">
+          <div ref={estimateCardRef} className="flex min-w-0 lg:min-h-[590px] xl:min-h-[500px] min-[1440px]:min-h-[468px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active.id}
@@ -517,38 +516,6 @@ export default function Estimate() {
                   )}
                 </div>
 
-                {/* CTA */}
-                <div className="border-t border-gray-100 bg-gray-50/50 px-4 py-3 md:px-8 md:py-3">
-                  {isDesign ? (
-                    <Link
-                      href="/services/design/estimate"
-                      className="mb-2.5 inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:underline md:text-[13px]"
-                    >
-                      디자인 정밀 견적 계산기에서 품목별로 계산하기
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                  ) : (
-                    <Link
-                      href="/guide/pricing"
-                      className="mb-2.5 inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:underline md:text-[13px]"
-                    >
-                      항목별 자세한 단가표 보기
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                  )}
-                  <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-[10px] text-gray-400 md:text-xs">정확한 견적은 상담을 통해 안내드립니다</p>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
-                      className="relative w-full overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 to-indigo-500 px-4 py-2.5 text-xs font-semibold text-white shadow-md transition-shadow hover:shadow-lg sm:w-auto md:px-6 md:text-sm"
-                    >
-                      상담 요청하기
-                      <BorderBeam size={80} duration={6} colorFrom="#93c5fd" colorTo="#a5b4fc" borderWidth={1} />
-                    </motion.button>
-                  </div>
-                </div>
               </motion.div>
             </AnimatePresence>
           </div>

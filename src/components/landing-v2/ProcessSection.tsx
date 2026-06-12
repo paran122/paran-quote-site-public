@@ -176,9 +176,8 @@ export default function Process() {
                             animationDelay: `${globalIdx * -1}s`,
                           }}
                         />
-                        <div className="relative px-1.5 py-2 text-center">
-                          <h3 className="mb-0.5 text-[9px] font-bold leading-tight text-blue-300">{step.title}</h3>
-                          <p className="whitespace-pre-line text-[7px] leading-[1.4] text-gray-400">{step.desc}</p>
+                        <div className="relative flex min-h-[44px] items-center justify-center px-1.5 py-2.5 text-center">
+                          <h3 className="text-[11px] font-bold leading-snug text-blue-300">{step.title}</h3>
                         </div>
                       </div>
                     </div>

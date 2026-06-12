@@ -88,7 +88,7 @@ export default function CertSection() {
                 </button>
               ))}
             </div>
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-6 hidden flex-wrap gap-2 md:flex">
               {CERTS.map((c) => (
                 <a
                   key={c.key}
@@ -102,7 +102,7 @@ export default function CertSection() {
                 </a>
               ))}
             </div>
-            <p className="mt-3 text-[11px] text-slate-500">
+            <p className="mt-3 hidden text-[11px] text-slate-500 md:block">
               PDF 원본 — 기안·계약 검토 자료로 바로 사용하실 수 있습니다.
             </p>
           </motion.div>
