@@ -71,7 +71,7 @@ export default function BlogCardStack({ posts, interval = 5000 }: CardStackProps
 
   return (
     <div
-      className="relative w-full aspect-[3/4.2] sm:aspect-[3/3.8]"
+      className="relative w-full aspect-[3/3.3] sm:aspect-[3/3.8]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >

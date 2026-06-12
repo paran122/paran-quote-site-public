@@ -37,13 +37,7 @@ export default function CertSection() {
               <br />
               입찰 없이 수의계약으로 진행하세요
             </h2>
-            <p className="mb-8 text-sm leading-relaxed text-slate-300/80 md:text-[15px]">
-              파란컴퍼니는 여성기업으로 행사 예산{" "}
-              <strong className="font-semibold text-white">5천만 원까지</strong> 수의계약 체결이
-              가능합니다. 검토용 산출내역서부터 비교견적까지, 행정작업에 필요한 서류를 한 번에
-              준비해 드립니다.
-            </p>
-            <ul className="flex flex-col gap-3.5">
+            <ul className="mt-2 flex flex-col gap-3.5">
               {CHECKS.map((c) => (
                 <li key={c.strong} className="flex items-start gap-3 text-sm text-slate-200">
                   <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-blue-400" />

@@ -80,8 +80,7 @@ export default function EventGroupPage({ service }: { service: EventService }) {
                 ))}
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Link href={service.workHref} className="text-center px-6 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition-colors">수행 사례 보기 →</Link>
-                <Link href="/guide/pricing" className="text-center px-6 py-3.5 rounded-xl border border-white/20 text-white font-medium text-sm hover:bg-white/10 transition-colors">비용·견적 안내 →</Link>
+                <Link href="/guide/pricing" className="text-center px-6 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition-colors">비용·견적 안내 →</Link>
               </div>
             </div>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.6)]">
@@ -167,8 +166,8 @@ export default function EventGroupPage({ service }: { service: EventService }) {
           <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-blue-300 mb-3">YOUR CONCERNS</p>
           <h2 className="text-xl md:text-3xl font-bold text-white mb-10">담당자의 고민, 이렇게 해결합니다</h2>
           <div className="grid gap-3 md:gap-4">
-            {EVENT_COMMON.painSolutions.map((ps) => (
-              <div key={ps.pain} className="grid md:grid-cols-[1fr_auto_1.2fr] items-center gap-2 md:gap-5 p-5 md:px-7 md:py-5 rounded-2xl border border-white/10 bg-white/[0.04]">
+            {EVENT_COMMON.painSolutions.map((ps, i) => (
+              <div key={ps.pain} className={`${i >= 3 ? "hidden md:grid" : "grid"} md:grid-cols-[1fr_auto_1.2fr] items-center gap-2 md:gap-5 p-5 md:px-7 md:py-5 rounded-2xl border border-white/10 bg-white/[0.04]`}>
                 <p className="text-sm font-medium text-slate-300/70 leading-snug">&ldquo;{ps.pain}&rdquo;</p>
                 <ArrowRight size={16} weight="bold" className="hidden md:block text-blue-400/60" />
                 <p className="text-sm md:text-[15px] font-semibold text-white leading-[1.65]">{ps.answer}</p>
@@ -183,16 +182,16 @@ export default function EventGroupPage({ service }: { service: EventService }) {
         <div className="mx-auto max-w-[1000px]">
           <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-blue-600 mb-3">LINEUP</p>
           <h2 className="text-xl md:text-3xl font-bold text-[#0d1a4e] mb-10">이런 행사를 대행합니다</h2>
-          <div className="grid sm:grid-cols-2 gap-4 md:gap-5">
+          <div className="grid sm:grid-cols-2 gap-3 md:gap-5">
             {service.lineup.map((item) => (
-              <div key={item.name} className="p-6 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-[46px] h-[46px] shrink-0 rounded-[14px] bg-blue-50 flex items-center justify-center">
-                    <item.icon size={24} weight="fill" color="#2563EB" />
+              <div key={item.name} className="p-4 md:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 md:gap-4 mb-2 md:mb-3">
+                  <div className="w-9 h-9 md:w-[46px] md:h-[46px] shrink-0 rounded-xl md:rounded-[14px] bg-blue-50 flex items-center justify-center">
+                    <item.icon size={20} weight="fill" color="#2563EB" />
                   </div>
-                  <h3 className="font-bold text-base md:text-lg text-[#0d1a4e]">{item.name}</h3>
+                  <h3 className="font-bold text-[15px] md:text-lg text-[#0d1a4e]">{item.name}</h3>
                 </div>
-                <p className="text-slate-600 text-sm leading-[1.7] mb-2">{item.desc}</p>
+                <p className="text-slate-600 text-[13px] md:text-sm leading-[1.65] mb-1.5 md:mb-2">{item.desc}</p>
                 <p className="text-xs text-slate-400">{item.examples}</p>
               </div>
             ))}
@@ -273,12 +272,12 @@ export default function EventGroupPage({ service }: { service: EventService }) {
         <div className="mx-auto max-w-[1100px]">
           <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-blue-600 mb-3">CLIENT VOICE</p>
           <h2 className="text-xl md:text-3xl font-bold text-[#0d1a4e] mb-10">담당자분들의 이야기</h2>
-          <div className="grid md:grid-cols-3 gap-4 md:gap-5">
+          <div className="grid md:grid-cols-3 gap-3 md:gap-5">
             {EVENT_COMMON.testimonials.map((t) => (
-              <div key={t.name} className="flex flex-col gap-4 p-6 md:p-7 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
-                <Quotes size={28} weight="fill" className="text-blue-500/40" />
-                <blockquote className="flex-1 text-[15px] font-medium leading-[1.7] text-[#0d1a4e]">{t.quote}</blockquote>
-                <div className="border-t border-slate-100 pt-4">
+              <div key={t.name} className="flex flex-col gap-2.5 md:gap-4 p-4 md:p-7 rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+                <Quotes size={22} weight="fill" className="text-blue-500/40" />
+                <blockquote className="flex-1 text-[14px] md:text-[15px] font-medium leading-[1.65] md:leading-[1.7] text-[#0d1a4e]">{t.quote}</blockquote>
+                <div className="border-t border-slate-100 pt-2.5 md:pt-4">
                   <div className="text-sm font-bold text-[#0d1a4e]">{t.name}</div>
                   <div className="text-xs text-slate-400 mt-0.5">{t.role}</div>
                 </div>

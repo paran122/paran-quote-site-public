@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import {
   PRODUCTS,
   SET_DISCOUNT_MIN_ITEMS,
@@ -183,19 +182,6 @@ export default function EstimateCalculator() {
             <p className="text-[11px] text-slate-400 mt-2">VAT 포함 · 수정 3회 기준 · 실제 견적은 협의 후 확정</p>
           </div>
 
-          {/* 문의 안내 — 문의 창구는 메인 문의 폼 하나로 통일 */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm mt-4">
-            <h3 className="font-bold mb-1.5">이 구성으로 진행하고 싶다면</h3>
-            <p className="text-[13px] text-slate-500 leading-relaxed mb-4">
-              문의를 남겨주시면 선택하신 구성을 바탕으로 1영업일 내 상세 견적서를 보내드립니다.
-            </p>
-            <Link
-              href="/?scrollTo=contact"
-              className="block w-full py-3 rounded-xl bg-blue-600 text-center text-white font-bold text-sm hover:bg-blue-700 transition-colors"
-            >
-              견적 문의하기 →
-            </Link>
-          </div>
         </aside>
       </div>
     </div>

@@ -17,8 +17,8 @@ export interface PriceEntry {
 
 /** 기획·운영 */
 export const PLANNING_PRICES: PriceEntry[] = [
-  { name: "기획 (세미나·컨퍼런스)", price: 200, unit: "식", note: "기획안, 운영 매뉴얼, 타임테이블, 예산안 포함" },
-  { name: "기획 (포럼)", price: 200, unit: "식", note: "패널 토론 구성, 동시통역 연계 포함" },
+  { name: "기획 (세미나·컨퍼런스)", price: 100, unit: "식", note: "기획안, 운영 매뉴얼, 타임테이블, 예산안 포함" },
+  { name: "기획 (포럼)", price: 100, unit: "식", note: "패널 토론 구성, 동시통역 연계 포함" },
   { name: "PM(총괄)", price: 30, unit: "인/일", note: "실거래 기준 (조달청 연구원급 373,144원/일 적용 가능)" },
   { name: "현장 스텝", price: 20, unit: "인/일", note: "실거래 기준 (조달청 연구보조원급 249,434원/일 적용 가능)" },
   { name: "행사계획서·시나리오", price: 50, unit: "건", note: "행사계획서 및 진행 시나리오 작성" },

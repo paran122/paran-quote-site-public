@@ -155,10 +155,10 @@ export default function Footer() {
                   alt="파란컴퍼니"
                   width={120}
                   height={53}
-                  className="h-5 w-auto"
+                  className="h-6 w-auto"
                 />
               </div>
-              <div className="space-y-0.5 text-[8px] leading-relaxed text-white/40">
+              <div className="space-y-1 text-[11px] leading-relaxed text-white/40">
                 <p>파란컴퍼니 주식회사 | 대표 김미경 | 사업자등록번호 291-86-02802</p>
                 <p>경기도 수원시 팔달구 효원로 278, 6층 603호</p>
                 <p>
@@ -169,20 +169,20 @@ export default function Footer() {
             </div>
             <div className="flex flex-col items-center gap-3 pt-1 text-white/40">
               <a href="https://blog.naver.com/paran-company" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">
-                <NaverBlogIcon className="h-3.5 w-3.5" />
+                <NaverBlogIcon className="h-4 w-4" />
               </a>
               <a href="https://www.instagram.com/parancompany" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">
-                <InstagramIcon className="h-3.5 w-3.5" />
+                <InstagramIcon className="h-4 w-4" />
               </a>
               <a href="https://www.youtube.com/@parancompany" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">
-                <YouTubeIcon className="h-3.5 w-3.5" />
+                <YouTubeIcon className="h-4 w-4" />
               </a>
             </div>
           </div>
 
           {/* 하단: 바로가기 + 개인정보/이용약관 */}
-          <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
-            <div className="flex items-center gap-3 text-[8px] text-white/40">
+          <div className="mt-4 flex flex-col gap-2.5 border-t border-white/10 pt-3">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-white/40">
               <Link href="/company" className="transition-colors hover:text-white">회사소개</Link>
               <Link href="/services" className="transition-colors hover:text-white">서비스</Link>
               <Link href="/work" className="transition-colors hover:text-white">포트폴리오</Link>
@@ -190,7 +190,7 @@ export default function Footer() {
               <Link href="/faq" className="transition-colors hover:text-white">FAQ</Link>
               <Link href="/guide" className="transition-colors hover:text-white">가이드</Link>
             </div>
-            <div className="flex items-center gap-2 text-[8px] text-white/30">
+            <div className="flex items-center gap-2 text-[11px] text-white/30">
               <Link href="/privacy" className="transition-colors hover:text-white/50">개인정보처리방침</Link>
               <span className="text-white/10">|</span>
               <Link href="/terms" className="transition-colors hover:text-white/50">이용약관</Link>
@@ -198,7 +198,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-4 flex flex-col items-center gap-1.5 border-t border-white/10 pt-3 text-[7px] text-white/20 md:mt-8 md:flex-row md:justify-between md:pt-5 md:text-xs">
+        <div className="mt-4 flex flex-col items-center gap-1.5 border-t border-white/10 pt-3 text-[10px] text-white/20 md:mt-8 md:flex-row md:justify-between md:pt-5 md:text-xs">
           <div className="hidden items-center gap-2 md:flex md:gap-3">
             <Link href="/privacy" className="transition-colors hover:text-white/50">개인정보처리방침</Link>
             <span className="text-white/10">|</span>
