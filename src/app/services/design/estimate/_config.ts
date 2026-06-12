@@ -139,7 +139,7 @@ export const PRODUCTS: ProductDef[] = [
       },
     ],
     initial: { pages: 8, cover: 0 },
-    price: (s) => s.pages * 44000 + s.cover,
+    price: (s) => s.pages * 75000 + s.cover,
   },
   {
     key: "banner",

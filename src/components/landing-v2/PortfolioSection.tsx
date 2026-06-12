@@ -1031,12 +1031,12 @@ export default function Portfolio() {
 
         {/* Filter tabs */}
         <BlurFade delay={0.2}>
-          <div className="mb-4 flex flex-wrap justify-center gap-1 md:mb-10 md:justify-start md:gap-2">
+          <div className="mb-5 flex flex-wrap justify-center gap-1.5 md:mb-10 md:justify-start md:gap-2">
             {["전체", ...categories].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className={`rounded-full px-2.5 py-1 text-[10px] font-medium transition-all md:px-4 md:py-2 md:text-sm ${
+                className={`rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-all md:px-4 md:py-2 md:text-sm ${
                   active === cat
                     ? "bg-blue-600 text-white shadow-md shadow-blue-200"
                     : "bg-sky-100 text-sky-600 hover:bg-sky-200"

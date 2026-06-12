@@ -220,7 +220,7 @@ export default function Clients() {
               </div>
             </div>
           </div>
-          <div className="relative bg-[#eef3ff] py-3 md:py-5">
+          <div className="relative hidden bg-[#eef3ff] py-3 md:block md:py-5">
             <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 bg-gradient-to-r from-[#eef3ff] to-transparent md:w-24" />
             <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 bg-gradient-to-l from-[#eef3ff] to-transparent md:w-24" />
             <div className="overflow-hidden">
