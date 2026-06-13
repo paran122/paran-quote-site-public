@@ -6,6 +6,24 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import CertBadges from "@/components/common/CertBadges";
 import { TitleGlitchReveal } from "./HeroTitleAnimations";
 
+const HeroVideo = () => (
+  <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-2xl shadow-blue-900/30 backdrop-blur-sm">
+    <div className="relative aspect-video w-full bg-black/60">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        poster="/hero-poster.jpg"
+        className="absolute inset-0 h-full w-full object-cover"
+      >
+        <source src="/hero-video.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+);
+
 export default function HeroParticle() {
 
   return (
@@ -24,6 +42,13 @@ export default function HeroParticle() {
             <div className="mb-8 text-sm leading-relaxed text-white/40 md:text-base md:leading-relaxed">
               <span className="block tracking-[0.2em]">파란컴퍼니 | 행사 전문 에이전시</span>
               <span className="block tracking-normal">기획 · 디자인 · 운영 · 결과보고 <span className="whitespace-nowrap">— 한 팀이 원스톱으로 처리</span></span>
+            </div>
+          </BlurFade>
+
+          {/* Mobile: 영상 (서브카피 바로 아래) */}
+          <BlurFade delay={0.35}>
+            <div className="mb-8 lg:hidden">
+              <HeroVideo />
             </div>
           </BlurFade>
 
@@ -83,8 +108,8 @@ export default function HeroParticle() {
           </BlurFade>
         </div>
 
-        {/* Right: Video */}
-        <BlurFade delay={0.3}>
+        {/* Right: Video (PC만) */}
+        <BlurFade delay={0.3} className="hidden lg:block">
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -93,24 +118,7 @@ export default function HeroParticle() {
           >
             {/* Glow behind video */}
             <div className="absolute -inset-4 rounded-3xl bg-blue-500/10 blur-2xl" />
-
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-2xl shadow-blue-900/30 backdrop-blur-sm">
-
-              {/* Self-hosted video */}
-              <div className="relative aspect-video w-full bg-black/60">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  poster="/hero-poster.jpg"
-                  className="absolute inset-0 h-full w-full object-cover"
-                >
-                  <source src="/hero-video.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </div>
+            <HeroVideo />
           </motion.div>
         </BlurFade>
       </div>
