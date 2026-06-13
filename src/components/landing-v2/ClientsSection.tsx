@@ -197,6 +197,12 @@ export default function Clients() {
       <style>{`
         @keyframes cl { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes cr { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        .marquee-l { animation: cl 14s linear infinite; }
+        .marquee-r { animation: cr 18s linear infinite; }
+        @media (min-width: 768px) {
+          .marquee-l { animation-duration: 26s; }
+          .marquee-r { animation-duration: 35s; }
+        }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
       `}</style>
       <div className="relative mx-auto max-w-6xl">
@@ -211,7 +217,7 @@ export default function Clients() {
             <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 bg-gradient-to-r from-[#f8f9fb] to-transparent md:w-24" />
             <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 bg-gradient-to-l from-[#f8f9fb] to-transparent md:w-24" />
             <div className="overflow-hidden">
-              <div className="flex items-center" style={{ animation: "cl 26s linear infinite", ...animState }}>
+              <div className="marquee-l flex items-center" style={animState}>
                 {repeated.map((c, i) => (
                   <div key={i} className="flex flex-shrink-0 items-center justify-center px-5 md:px-10">
                     <Image src={c.logo} alt={c.name} width={128} height={40} className="h-6 w-20 object-contain md:h-10 md:w-32" />
@@ -224,7 +230,7 @@ export default function Clients() {
             <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 bg-gradient-to-r from-[#eef3ff] to-transparent md:w-24" />
             <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 bg-gradient-to-l from-[#eef3ff] to-transparent md:w-24" />
             <div className="overflow-hidden">
-              <div className="flex items-center" style={{ animation: "cr 35s linear infinite", ...animState }}>
+              <div className="marquee-r flex items-center" style={animState}>
                 {[...reviews, ...reviews].map((r, i) => (
                   <div key={i} className="flex-shrink-0 px-4 md:px-6" style={{ width: "260px" }}>
                     <p className="line-clamp-2 text-[11px] leading-snug text-blue-900/70 md:text-[13px]">

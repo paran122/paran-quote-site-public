@@ -112,7 +112,7 @@ function getFieldError(form: OrderForm, key: string): string | null {
 
 export default function Estimate() {
   const [selected, setSelected] = useState<string>("conference");
-  /** 유형별 선택 규모 (기본 = 두 번째 밴드) */
+  /** 유형별 선택 규모 (기본 = 첫 밴드 = 최소 인원) */
   const [scaleSel, setScaleSel] = useState<Record<string, string>>({});
   const [showOrder, setShowOrder] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -264,7 +264,7 @@ export default function Estimate() {
   const scales = ESTIMATE_SCALES[active.id];
   const scale = useMemo(() => {
     if (!scales) return null;
-    const id = scaleSel[active.id] ?? scales[1]?.id ?? scales[0].id;
+    const id = scaleSel[active.id] ?? scales[0].id;
     return scales.find((s) => s.id === id) ?? scales[0];
   }, [scales, scaleSel, active.id]);
   const rangeText = scale ? formatRangeText(scale) : "";
