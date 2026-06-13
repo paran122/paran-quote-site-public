@@ -3,7 +3,7 @@
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useEffect, useState, useCallback } from "react";
 
-const words = ["세미나", "컨퍼런스", "포럼", "축제", "교육"];
+const words = ["세미나", "컨퍼런스", "포럼", "워크숍", "학술대회"];
 const suffix = "를 성공으로 이끕니다";
 
 function useFlipWord(duration = 2500) {
