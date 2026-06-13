@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,12 +16,22 @@ const items = [
 export default function ServiceSubNav() {
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
+  const activeRef = useRef<HTMLAnchorElement>(null);
+  const scrolledRef = useRef(false);
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 500);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // 처음 노출될 때 현재 페이지 칩을 보이게 가로 스크롤
+  useEffect(() => {
+    if (visible && !scrolledRef.current && activeRef.current) {
+      scrolledRef.current = true;
+      activeRef.current.scrollIntoView({ inline: "center", block: "nearest" });
+    }
+  }, [visible]);
 
   return (
     <nav
@@ -39,6 +49,7 @@ export default function ServiceSubNav() {
               <Link
                 key={item.href}
                 href={item.href}
+                ref={isActive ? activeRef : undefined}
                 className={`shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                   isActive
                     ? "border-blue-200 bg-blue-50 text-blue-600"
