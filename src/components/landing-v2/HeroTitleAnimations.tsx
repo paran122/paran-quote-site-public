@@ -88,7 +88,7 @@ export function TitleGlitchReveal() {
   }, []);
 
   return (
-    <h1 className="relative mb-4 text-4xl font-bold leading-tight text-white md:text-5xl md:leading-tight lg:text-6xl lg:leading-tight">
+    <h1 className="relative mb-2 text-4xl font-bold leading-tight text-white md:mb-4 md:text-5xl md:leading-tight lg:text-6xl lg:leading-tight">
       <span className="font-mono font-light text-sky-400">{"{"}</span>{" "}
       <AnimatePresence mode="wait">
         <motion.span

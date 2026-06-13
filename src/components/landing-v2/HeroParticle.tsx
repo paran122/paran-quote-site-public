@@ -27,10 +27,10 @@ const HeroVideo = () => (
 export default function HeroParticle() {
 
   return (
-    <section id="hero" className="relative flex min-h-screen items-center overflow-hidden bg-[#070720]">
+    <section id="hero" className="relative flex items-center overflow-hidden bg-[#070720] lg:min-h-screen">
 
       {/* Content: Left text + Right video */}
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-6 pt-24 pb-16 md:px-12 lg:grid-cols-2 lg:gap-16 lg:pt-0 lg:pb-0">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-8 px-6 pt-14 pb-10 md:gap-12 md:px-12 md:pt-24 md:pb-16 lg:grid-cols-2 lg:gap-16 lg:pt-0 lg:pb-0">
         {/* Left: Text */}
         <div>
           <div>
@@ -39,7 +39,7 @@ export default function HeroParticle() {
 
           <div className="sm:w-fit">
           <BlurFade delay={0.3}>
-            <div className="mb-8 text-sm leading-relaxed text-white/40 md:text-base md:leading-relaxed">
+            <div className="mb-5 text-sm leading-relaxed text-white/40 md:mb-8 md:text-base md:leading-relaxed">
               <span className="block tracking-[0.2em]">파란컴퍼니 | 행사 전문 에이전시</span>
               <span className="block tracking-normal">기획 · 디자인 · 운영 · 결과보고 <span className="whitespace-nowrap">— 한 팀이 원스톱으로 처리</span></span>
             </div>
@@ -47,16 +47,16 @@ export default function HeroParticle() {
 
           {/* Mobile: 영상 (서브카피 바로 아래) */}
           <BlurFade delay={0.35}>
-            <div className="mb-8 lg:hidden">
+            <div className="mb-5 lg:hidden">
               <HeroVideo />
             </div>
           </BlurFade>
 
           <BlurFade delay={0.4}>
-            <div className="mb-10 flex flex-col gap-4 sm:flex-row">
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row md:mb-10 md:gap-4">
               <PulsatingButton
                 pulseColor="#2563eb"
-                className="bg-blue-600 px-8 py-4 text-base font-semibold"
+                className="bg-blue-600 px-8 py-3.5 text-base font-semibold md:py-4"
                 onClick={() => document.querySelector("#estimate")?.scrollIntoView({ behavior: "smooth" })}
               >
                 무료 견적 보기
@@ -65,7 +65,7 @@ export default function HeroParticle() {
                 whileHover={{ scale: 1.05, borderColor: "rgba(59,130,246,0.5)" }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => document.querySelector("#portfolio")?.scrollIntoView({ behavior: "smooth" })}
-                className="relative overflow-hidden rounded-lg border border-white/30 bg-white/10 px-8 py-4 text-sm font-semibold text-white/80 backdrop-blur-sm transition-colors hover:bg-white/20 hover:text-white"
+                className="relative overflow-hidden rounded-lg border border-white/30 bg-white/10 px-8 py-3.5 text-sm font-semibold text-white/80 backdrop-blur-sm transition-colors hover:bg-white/20 hover:text-white md:py-4"
               >
                 <span className="relative z-10">포트폴리오</span>
                 <div
@@ -82,7 +82,7 @@ export default function HeroParticle() {
 
           {/* Stats row */}
           <BlurFade delay={0.5}>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:gap-4">
               {[
                 { key: "projects", value: "250+", label: "수행 프로젝트", gradient: "from-blue-400/20 to-cyan-400/20" },
                 { key: "renewal", value: "90%", label: "재계약률", gradient: "from-violet-400/20 to-blue-400/20" },
@@ -91,10 +91,10 @@ export default function HeroParticle() {
               ].map((stat) => (
                 <div
                   key={stat.key}
-                  className={`rounded-xl bg-gradient-to-br ${stat.gradient} px-4 py-4 backdrop-blur-lg`}
+                  className={`rounded-xl bg-gradient-to-br ${stat.gradient} px-4 py-3 backdrop-blur-lg md:py-4`}
                 >
                   <div className="text-xl font-bold text-white">{stat.value}</div>
-                  <div className="mt-1 text-xs text-white/50">{stat.label}</div>
+                  <div className="mt-0.5 text-xs text-white/50 md:mt-1">{stat.label}</div>
                 </div>
               ))}
             </div>
