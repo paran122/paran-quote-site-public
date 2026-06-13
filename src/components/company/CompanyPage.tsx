@@ -957,7 +957,7 @@ function ClientsSection() {
             공공기관, 재단, 지자체 등 다양한 분야의 기관과 함께 250건 이상의
             행사를 성공적으로 수행했습니다.
           </p>
-          <div className="mt-6 grid grid-cols-3 gap-3">
+          <div className="mt-6 hidden grid-cols-3 gap-3 md:grid">
             {[...clientLogos, ...clientNamesOnly.map((n) => ({ name: n, logo: "" }))].map((c) => (
               <span
                 key={c.name}
@@ -967,13 +967,13 @@ function ClientsSection() {
               </span>
             ))}
           </div>
-          <div className="mt-7 flex flex-wrap gap-2">
+          <div className="mt-6 flex flex-nowrap gap-1.5 md:mt-7 md:flex-wrap md:gap-2">
             {["여성기업 인증", "직접생산확인증명(행사대행)", "소상공인 확인"].map((b) => (
               <span
                 key={b}
-                className="inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700"
+                className="inline-flex shrink items-center gap-1 whitespace-nowrap rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[11px] font-medium text-blue-700 md:gap-1.5 md:px-3 md:py-1.5 md:text-xs"
               >
-                <BadgeCheck size={14} />
+                <BadgeCheck className="h-3 w-3 shrink-0 md:h-3.5 md:w-3.5" />
                 {b}
               </span>
             ))}
