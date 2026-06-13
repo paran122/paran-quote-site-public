@@ -59,7 +59,7 @@ export default function HeroParticle() {
                 className="bg-blue-600 px-8 py-4 text-base font-semibold"
                 onClick={() => document.querySelector("#estimate")?.scrollIntoView({ behavior: "smooth" })}
               >
-                프로젝트 시작하기
+                무료 견적 보기
               </PulsatingButton>
               <motion.button
                 whileHover={{ scale: 1.05, borderColor: "rgba(59,130,246,0.5)" }}
