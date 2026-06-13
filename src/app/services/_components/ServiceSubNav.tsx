@@ -32,17 +32,17 @@ export default function ServiceSubNav() {
       }`}
     >
       <div className="mx-auto max-w-[1200px] px-5 md:px-8">
-        <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide -mx-1 py-1">
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-3">
           {items.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`shrink-0 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                className={`shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? "text-blue-600 bg-blue-50"
-                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                    ? "border-blue-200 bg-blue-50 text-blue-600"
+                    : "border-slate-200 bg-white text-slate-500 hover:border-blue-200 hover:text-slate-900"
                 }`}
               >
                 {item.label}
