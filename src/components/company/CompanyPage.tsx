@@ -947,13 +947,13 @@ function ClientsSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15 }}
         >
-          <span className="text-xs font-semibold tracking-widest text-blue-500">
+          <span className="hidden text-xs font-semibold tracking-widest text-blue-500 md:block">
             PARTNERS
           </span>
-          <h2 className="mt-3 text-3xl font-bold text-slate-900 md:text-4xl">
+          <h2 className="mt-3 hidden text-3xl font-bold text-slate-900 md:block md:text-4xl">
             함께한 고객사
           </h2>
-          <p className="mt-4 leading-relaxed text-slate-600">
+          <p className="mt-4 hidden leading-relaxed text-slate-600 md:block">
             공공기관, 재단, 지자체 등 다양한 분야의 기관과 함께 250건 이상의
             행사를 성공적으로 수행했습니다.
           </p>
