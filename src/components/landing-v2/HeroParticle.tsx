@@ -30,7 +30,7 @@ export default function HeroParticle() {
     <section id="hero" className="relative flex items-center overflow-hidden bg-[#070720] lg:min-h-screen">
 
       {/* Content: Left text + Right video */}
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-8 px-6 pt-14 pb-10 md:gap-12 md:px-12 md:pt-24 md:pb-16 lg:grid-cols-2 lg:gap-16 lg:pt-0 lg:pb-0">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-8 px-6 pt-24 pb-10 md:gap-12 md:px-12 md:pb-16 lg:grid-cols-2 lg:gap-16 lg:pt-0 lg:pb-0">
         {/* Left: Text */}
         <div>
           <div>
@@ -65,7 +65,7 @@ export default function HeroParticle() {
                 whileHover={{ scale: 1.05, borderColor: "rgba(59,130,246,0.5)" }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => document.querySelector("#portfolio")?.scrollIntoView({ behavior: "smooth" })}
-                className="relative overflow-hidden rounded-lg border border-white/30 bg-white/10 px-8 py-3.5 text-sm font-semibold text-white/80 backdrop-blur-sm transition-colors hover:bg-white/20 hover:text-white md:py-4"
+                className="relative hidden overflow-hidden rounded-lg border border-white/30 bg-white/10 px-8 py-3.5 text-sm font-semibold text-white/80 backdrop-blur-sm transition-colors hover:bg-white/20 hover:text-white sm:block md:py-4"
               >
                 <span className="relative z-10">포트폴리오</span>
                 <div
