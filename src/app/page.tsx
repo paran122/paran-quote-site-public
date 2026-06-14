@@ -17,6 +17,14 @@ export const metadata: Metadata = {
     description:
       "행사 대행 전문 업체 파란컴퍼니. 공공기관·기업 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지 원스톱 대행 서비스. 250+ 프로젝트 수행 실적.",
     url: siteUrl,
+    images: [
+      {
+        url: "https://parancompany.co.kr/og-image.png?v=2",
+        width: 1200,
+        height: 630,
+        alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
+      },
+    ],
   },
 };
 

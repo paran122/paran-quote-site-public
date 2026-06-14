@@ -13,6 +13,14 @@ export const metadata: Metadata = {
     description: "행사에 적합한 장소를 선택하는 방법과 체크포인트.",
     type: "article",
     url: `${SITE_URL}/guide/venue`,
+    images: [
+      {
+        url: "https://parancompany.co.kr/og-image.png?v=2",
+        width: 1200,
+        height: 630,
+        alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
+      },
+    ],
   },
 };
 

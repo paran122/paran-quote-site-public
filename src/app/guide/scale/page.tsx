@@ -13,6 +13,14 @@ export const metadata: Metadata = {
     description: "30명~500명, 규모에 따라 달라지는 행사 준비사항 안내.",
     type: "article",
     url: `${SITE_URL}/guide/scale`,
+    images: [
+      {
+        url: "https://parancompany.co.kr/og-image.png?v=2",
+        width: 1200,
+        height: 630,
+        alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
+      },
+    ],
   },
 };
 

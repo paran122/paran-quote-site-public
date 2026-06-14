@@ -12,6 +12,14 @@ export const metadata: Metadata = {
     description: "디자인 경력 20년 · 250+ 공공기관 디자인 프로젝트 총괄. 편집디자인·인쇄물 전문가.",
     type: "profile",
     url: `${SITE_URL}/authors/ahn-kwangsung`,
+    images: [
+      {
+        url: "https://parancompany.co.kr/og-image.png?v=2",
+        width: 1200,
+        height: 630,
+        alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
+      },
+    ],
   },
 };
 

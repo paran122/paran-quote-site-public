@@ -14,6 +14,14 @@ export const metadata: Metadata = {
       "세미나·컨퍼런스·포럼 항목별 가격과 규모별 예산 가이드. 소규모 800만 원부터, 투명한 견적 안내.",
     type: "article",
     url: `${SITE_URL}/guide/pricing`,
+    images: [
+      {
+        url: "https://parancompany.co.kr/og-image.png?v=2",
+        width: 1200,
+        height: 630,
+        alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
+      },
+    ],
   },
 };
 
