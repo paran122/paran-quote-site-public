@@ -69,7 +69,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 정적 페이지: 마지막 코드 수정 기준 고정 날짜
   const GUIDE_UPDATED = new Date("2026-06-14"); // og:image 메타 보강 (FAQ·가이드 공유 썸네일)
-  const SERVICES_UPDATED = new Date("2026-06-12"); // 서비스 허브 사진 카드 재설계 + 편집디자인 서비스명 개편 + 교육 가격 조정
+  const SERVICES_UPDATED = new Date("2026-06-14"); // 컨퍼런스 대행 업체 키워드 강화 + og:image 보강
   const COMPANY_UPDATED = new Date("2026-06-14"); // og:image 메타 보강 (회사소개 공유 썸네일)
   const POLICY_UPDATED = new Date("2026-03-10");
 
