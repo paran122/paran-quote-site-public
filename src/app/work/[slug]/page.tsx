@@ -156,6 +156,31 @@ export default async function WorkDetailPage({ params }: Props) {
     uploadDate: portfolio.eventDate || new Date().toISOString(),
   }));
 
+  // FAQ JSON-LD: 본문 마크다운에서 **Q. ...** / A. ... 패턴 자동 추출
+  const faqItems: { question: string; answer: string }[] = [];
+  if (portfolio.content) {
+    const faqRegex =
+      /\*\*\s*Q\.\s*(.+?)\s*\*\*\s*\n+\s*A\.\s*([\s\S]+?)(?=\n\s*\n|\n\s*\*\*\s*Q\.|\n#{1,3}\s|$)/g;
+    let faqMatch: RegExpExecArray | null;
+    while ((faqMatch = faqRegex.exec(portfolio.content)) !== null) {
+      const q = faqMatch[1].replace(/\*\*/g, "").trim();
+      const a = faqMatch[2].replace(/\*\*/g, "").replace(/\s+/g, " ").trim();
+      if (q && a) faqItems.push({ question: q, answer: a });
+    }
+  }
+  const faqLd =
+    faqItems.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqItems.map((it) => ({
+            "@type": "Question",
+            name: it.question,
+            acceptedAnswer: { "@type": "Answer", text: it.answer },
+          })),
+        }
+      : null;
+
   return (
     <>
       <script
@@ -173,6 +198,12 @@ export default async function WorkDetailPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(vLd) }}
         />
       ))}
+      {faqLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        />
+      )}
       <WorkDetailClient
         portfolio={portfolio}
         media={media}
