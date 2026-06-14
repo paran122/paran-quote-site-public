@@ -362,3 +362,20 @@ body {
 .prose-blog hr {
   @apply border-slate-200 my-8;
 }
+.prose-blog table {
+  @apply w-full my-6 text-sm border-collapse;
+}
+.prose-blog th, .prose-blog td {
+  @apply border border-slate-200 px-3 py-2 text-left align-top text-slate-600;
+}
+.prose-blog th {
+  @apply bg-slate-50 font-semibold text-slate-700;
+}
+.prose-blog strong { @apply font-semibold text-slate-800; }
+/* 본문 내 2단 이미지 행 (md-img-row): prose-blog img의 w-full 덮어쓰기 */
+.prose-blog .md-img-row { @apply my-4; }
+.prose-blog .md-img-row img {
+  width: auto;
+  max-width: calc(50% - 6px);
+  @apply my-0;
+}

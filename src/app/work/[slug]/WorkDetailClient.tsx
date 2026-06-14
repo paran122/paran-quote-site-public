@@ -7,6 +7,8 @@ import { ChevronLeft, ChevronRight, MapPin, Home, Building2, Calendar, Tag, User
 import ContactModal from "@/components/ui/ContactModal";
 import { GRADIENT_MAP } from "@/lib/portfolioData";
 import type { Portfolio, PortfolioMedia } from "@/types";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 /** 제작물 → 아이콘 매핑 */
 const DELIVERABLE_ICON: Record<string, React.ElementType> = {
@@ -126,6 +128,16 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
   const [selectedSession, setSelectedSession] = useState<number | null>(null);
   const [photoExpanded, setPhotoExpanded] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
+
+  // 상세 본문: 마크다운 → HTML (SSR 포함) + 클라이언트 sanitize
+  const contentHtml = useMemo(() => {
+    if (!portfolio.content) return "";
+    return marked.parse(portfolio.content, { async: false, breaks: true }) as string;
+  }, [portfolio.content]);
+  const [safeContent, setSafeContent] = useState(contentHtml);
+  useEffect(() => {
+    setSafeContent(DOMPurify.sanitize(contentHtml));
+  }, [contentHtml]);
 
   const category = portfolio.tags[0] ?? "";
 
@@ -472,24 +484,12 @@ export default function WorkDetailClient({ portfolio, media, relatedEvents = [],
           </div>
         )}
 
-        {/* 상세 본문 (content) */}
+        {/* 상세 본문 (content) — 마크다운 렌더 */}
         {portfolio.content && (
-          <div className="mb-8">
-            {portfolio.content.split(/\n## /).map((section, idx) => {
-              if (idx === 0 && !section.trim()) return null;
-              const cleaned = idx === 0 ? section.replace(/^## /, "") : section;
-              const lines = cleaned.split("\n");
-              const heading = lines[0]?.trim();
-              const body = lines.slice(1).join("\n").trim();
-              if (!heading) return null;
-              return (
-                <div key={idx} className="mb-6">
-                  <h3 className="text-[16px] font-semibold text-slate-800 mb-2">{heading}</h3>
-                  <p className="text-[16px] leading-[1.8] text-slate-600">{body}</p>
-                </div>
-              );
-            })}
-          </div>
+          <div
+            className="prose-blog work-content mb-8"
+            dangerouslySetInnerHTML={{ __html: safeContent }}
+          />
         )}
 
         {/* 현장사진 그리드 */}
