@@ -325,7 +325,14 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
       );
     }
 
-    return list;
+    // 최신 등록순 (createdAt 내림차순, 없으면 연도 내림차순)
+    return [...list].sort((a, b) => {
+      const da = a.createdAt ?? "";
+      const db = b.createdAt ?? "";
+      if (da && db && da !== db) return db.localeCompare(da);
+      if (da !== db) return da ? -1 : 1;
+      return (b.year ?? 0) - (a.year ?? 0);
+    });
   }, [visiblePortfolios, categoryFilter, search]);
 
   return (
