@@ -190,6 +190,23 @@ export default function Contact() {
         total_amount: 0,
         attachments,
       });
+      // GA4 리드 전환 이벤트 (gtag + GTM dataLayer 양쪽 발사)
+      if (typeof window !== "undefined") {
+        const w = window as unknown as {
+          gtag?: (...args: unknown[]) => void;
+          dataLayer?: Record<string, unknown>[];
+        };
+        w.gtag?.("event", "generate_lead", {
+          currency: "KRW",
+          value: 0,
+          method: "contact_form",
+          service: serviceSel || "문의",
+        });
+        w.dataLayer?.push({
+          event: "generate_lead",
+          lead_service: serviceSel || "문의",
+        });
+      }
       showToast("문의가 접수되었습니다. 1영업일 내 연락드리겠습니다");
       setForm(INITIAL_FORM);
       setTouched({});
