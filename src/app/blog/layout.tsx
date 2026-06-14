@@ -14,6 +14,14 @@ export const metadata: Metadata = {
     description: BLOG_DESCRIPTION,
     type: "website",
     url: "https://parancompany.co.kr/blog",
+    images: [
+      {
+        url: "https://parancompany.co.kr/og-image.png?v=2",
+        width: 1200,
+        height: 630,
+        alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
+      },
+    ],
   },
   twitter: {
     card: "summary",

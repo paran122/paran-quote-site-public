@@ -13,6 +13,14 @@ export const metadata: Metadata = {
     description: "상담부터 결과보고까지 7단계 행사 대행 절차 안내.",
     type: "article",
     url: `${SITE_URL}/guide/process`,
+    images: [
+      {
+        url: "https://parancompany.co.kr/og-image.png?v=2",
+        width: 1200,
+        height: 630,
+        alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
+      },
+    ],
   },
 };
 

@@ -14,6 +14,14 @@ export const metadata: Metadata = {
       "행사 준비부터 마무리까지, 기획에 필요한 실무 가이드 모음.",
     type: "website",
     url: `${SITE_URL}/guide`,
+    images: [
+      {
+        url: "https://parancompany.co.kr/og-image.png?v=2",
+        width: 1200,
+        height: 630,
+        alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
+      },
+    ],
   },
 };
 

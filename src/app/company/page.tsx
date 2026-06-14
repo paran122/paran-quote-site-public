@@ -18,6 +18,14 @@ export const metadata: Metadata = {
     description:
       "2015년 설립, 250+ 프로젝트 수행. 공공기관·기업 행사 기획·디자인·운영 전문 에이전시.",
     url: `${siteUrl}/company`,
+    images: [
+      {
+        url: "https://parancompany.co.kr/og-image.png?v=2",
+        width: 1200,
+        height: 630,
+        alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
+      },
+    ],
   },
 };
 
