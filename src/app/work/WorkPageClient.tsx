@@ -1,40 +1,46 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, Camera, X } from "lucide-react";
+import { Search, Camera } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ContactModal from "@/components/ui/ContactModal";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { PulsatingButton } from "@/components/ui/pulsating-button";
 import { GRADIENT_MAP, EVENT_WORK_GROUPS, eventGroupOf } from "@/lib/portfolioData";
-import { DESIGN_WORKS, DESIGN_WORK_GROUPS, designGroupOf, type DesignWork } from "@/lib/designWorks";
+import { DESIGN_WORK_GROUPS, designGroupOf } from "@/lib/designWorks";
 import type { Portfolio, PortfolioMedia } from "@/types";
 
-/** tags[0] 기반 카테고리 컬러맵 (구 태그 + 2026-06 재편 그룹명) */
+/** 카테고리(=event_type 6분류) 컬러맵 */
 const categoryStyle: Record<string, string> = {
+  // 행사 대행 3종
+  "컨퍼런스·세미나": "bg-emerald-100 text-emerald-700",
+  "교육·워크숍": "bg-amber-100 text-amber-700",
+  "전시·홍보부스": "bg-purple-100 text-purple-700",
+  // 디자인 3종
+  "현수막·포스터": "bg-rose-100 text-rose-700",
+  "PPT·카드뉴스·편집디자인": "bg-blue-100 text-blue-700",
+  "전시부스·포토존": "bg-violet-100 text-violet-700",
+  // 구 태그 호환
   포럼: "bg-purple-100 text-purple-700",
   세미나: "bg-emerald-100 text-emerald-700",
   행사운영: "bg-blue-100 text-blue-700",
   교육: "bg-amber-100 text-amber-700",
-  콘텐츠: "bg-orange-100 text-orange-700",
-  "컨퍼런스·세미나": "bg-emerald-100 text-emerald-700",
-  "교육·워크숍": "bg-amber-100 text-amber-700",
-  "전시·홍보부스": "bg-purple-100 text-purple-700",
 };
 
-/** 뷰 모드 */
-type ViewMode = "design" | "event";
+/** 통합 사이드바용 그룹 항목 (전체 제외). value = event_type 값으로 필터 */
+const EVENT_CATS = EVENT_WORK_GROUPS.filter((g) => g.key !== "전체").map((g) => ({
+  value: g.key as string,
+  label: g.label,
+}));
+/** 디자인 그룹: key=인쇄물/디지털/공간, label=현수막·포스터 등(=event_type). value=label */
+const DESIGN_CATS = DESIGN_WORK_GROUPS.filter((g) => g.key !== "전체").map((g) => ({
+  value: g.label, // event_type 값과 동일
+  label: g.label,
+}));
 
-/** 디자인별 필터 = 서비스 3그룹(인쇄물/디지털/공간) 롤업. designWorks.ts에서 정의. */
-const DESIGN_CATEGORIES = DESIGN_WORK_GROUPS;
-
-/** 통합 사이드바용 그룹 목록 (전체 제외 — 전체는 행사 전체 1개만 노출) */
-const EVENT_GROUP_ITEMS = EVENT_WORK_GROUPS.filter((g) => g.key !== "전체");
-const DESIGN_GROUP_ITEMS = DESIGN_WORK_GROUPS.filter((g) => g.key !== "전체");
-
-/** 통합 사이드바 항목 — accent: 행사=blue, 디자인=violet. 트리 레일 위에 얹힘. */
+/** 통합 사이드바 항목 — accent: 행사=blue, 디자인=violet */
 function SidebarItem({ label, count, isActive, onClick, accent = "blue" }: {
   label: string;
   count: number;
@@ -75,71 +81,6 @@ function SidebarGroup({ label, children }: { label: string; children: React.Reac
   );
 }
 
-/** 디자인별 전체 보기 정렬: 첫 4개 고정 + 나머지 랜덤 */
-const PINNED_IDS = ["b03", "b08", "b01", "b04"];
-
-function shuffleArray<T>(arr: T[]): T[] {
-  const shuffled = [...arr];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
-
-/** 라이트박스 모달 */
-function DesignLightbox({ work, onClose }: { work: DesignWork; onClose: () => void }) {
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    document.addEventListener("keydown", handleKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = "";
-    };
-  }, [onClose]);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-      onClick={onClose}
-    >
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 z-50 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition-colors"
-      >
-        <X size={24} />
-      </button>
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="relative max-w-[90vw] max-h-[85vh]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Image
-          src={work.image}
-          alt={`${work.title} — ${work.event}`}
-          width={1400}
-          height={1050}
-          className="rounded-lg object-contain max-h-[85vh] w-auto"
-          unoptimized
-        />
-        <div className="absolute bottom-0 left-0 right-0 rounded-b-lg bg-gradient-to-t from-black/70 to-transparent px-5 py-4">
-          <p className="text-[14px] font-bold text-white">{work.title}</p>
-          <p className="text-[12px] text-white/70">{work.event}</p>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-/** CTA rotating 행사 유형 */
 interface WorkPageClientProps {
   portfolios: Portfolio[];
   portfolioMedia: PortfolioMedia[];
@@ -235,85 +176,42 @@ function CardPhotoRotator({ photos, gradientType }: {
 }
 
 export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageClientProps) {
-  const [viewMode, setViewMode] = useState<ViewMode>("event");
+  // categoryFilter = "전체" 또는 event_type 6값 중 하나
   const [categoryFilter, setCategoryFilter] = useState("전체");
-  const [designFilter, setDesignFilter] = useState("전체");
   const [search, setSearch] = useState("");
   const [contactOpen, setContactOpen] = useState(false);
-  const [lightboxWork, setLightboxWork] = useState<DesignWork | null>(null);
-  const closeLightbox = useCallback(() => setLightboxWork(null), []);
 
-  /** URL 쿼리 파라미터로 초기 필터 설정 (블로그 CTA 등에서 deep-link) */
+  /** URL 쿼리 파라미터로 초기 필터 (블로그 CTA 등 deep-link, 구 링크 호환) */
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const view = params.get("view");
-    const design = params.get("design");
     const category = params.get("category");
+    const design = params.get("design");
 
-    if (view === "design") {
-      setViewMode("design");
-      if (design) {
-        // 신규 그룹키(인쇄물/디지털/공간) 직접 매칭, 구 카테고리값(포스터 등)은 그룹으로 변환 — 기존 링크·색인 호환
-        const grp = DESIGN_CATEGORIES.some((c) => c.key === design)
-          ? design
-          : designGroupOf(design);
-        if (grp) setDesignFilter(grp);
-      }
-    } else if (view === "event") {
-      setViewMode("event");
-      if (category) {
-        // 신규 그룹키 직접 매칭, 구 태그값(포럼/세미나 등)은 그룹으로 변환 — 기존 링크·색인 호환
-        const grp = EVENT_WORK_GROUPS.some((c) => c.key === category)
-          ? category
-          : eventGroupOf(category);
-        if (grp) setCategoryFilter(grp);
-      }
+    if (category) {
+      // event_type 값 직매칭, 구 태그값(포럼/세미나 등)은 그룹으로 변환
+      const v = EVENT_WORK_GROUPS.some((g) => g.key === category) ? category : eventGroupOf(category);
+      if (v) setCategoryFilter(v);
+    } else if (design) {
+      // 구 디자인 그룹키(인쇄물/디지털/공간) 또는 카테고리 → event_type 라벨로 변환
+      const grpKey = DESIGN_WORK_GROUPS.some((g) => g.key === design) ? design : designGroupOf(design);
+      const label = DESIGN_WORK_GROUPS.find((g) => g.key === grpKey)?.label;
+      if (label) setCategoryFilter(label);
     }
   }, []);
-
-  /** 디자인 작업물 정렬: 고정 4개 + 나머지 랜덤 (클라이언트에서만 셔플) */
-  const [shuffledRest, setShuffledRest] = useState<DesignWork[]>([]);
-  const [shuffleReady, setShuffleReady] = useState(false);
-
-  useEffect(() => {
-    const rest = DESIGN_WORKS.filter((d) => !PINNED_IDS.includes(d.id));
-    setShuffledRest(shuffleArray(rest));
-    setShuffleReady(true);
-  }, []);
-
-  const sortedDesignWorks = useMemo(() => {
-    let list: DesignWork[];
-    if (designFilter !== "전체") {
-      list = DESIGN_WORKS.filter((d) => designGroupOf(d.category) === designFilter);
-    } else {
-      const pinned = PINNED_IDS.map((id) => DESIGN_WORKS.find((d) => d.id === id)!).filter(Boolean);
-      const rest = shuffleReady ? shuffledRest : DESIGN_WORKS.filter((d) => !PINNED_IDS.includes(d.id));
-      list = [...pinned, ...rest];
-    }
-    if (search.trim()) {
-      const q = search.trim().toLowerCase();
-      list = list.filter((d) =>
-        d.title.toLowerCase().includes(q) ||
-        d.event.toLowerCase().includes(q) ||
-        d.category.toLowerCase().includes(q)
-      );
-    }
-    return list;
-  }, [designFilter, shuffledRest, shuffleReady, search]);
 
   const visiblePortfolios = useMemo(() => portfolios.filter((p) => p.isVisible), [portfolios]);
 
-  const getCategoryCount = (cat: string) => {
-    if (cat === "전체") return visiblePortfolios.length;
-    return visiblePortfolios.filter((p) => eventGroupOf(p.tags[0], p.slug) === cat).length;
-  };
+  const getCategoryCount = (cat: string) =>
+    cat === "전체"
+      ? visiblePortfolios.length
+      : visiblePortfolios.filter((p) => p.eventType === cat).length;
 
-  /** 필터링 */
+  /** 필터링 — event_type 6분류 기준 단일 그리드, 최신 등록순 */
   const filtered = useMemo(() => {
     let list = visiblePortfolios;
 
     if (categoryFilter !== "전체") {
-      list = list.filter((p) => eventGroupOf(p.tags[0], p.slug) === categoryFilter);
+      list = list.filter((p) => p.eventType === categoryFilter);
     }
     if (search.trim()) {
       const q = search.trim().toLowerCase();
@@ -321,6 +219,7 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
         (p) =>
           p.title.toLowerCase().includes(q) ||
           p.venue.toLowerCase().includes(q) ||
+          (p.client ?? "").toLowerCase().includes(q) ||
           p.tags.some((t) => t.toLowerCase().includes(q))
       );
     }
@@ -341,20 +240,16 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
       <section className="py-16 text-center">
         <BlurFade>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
-            {viewMode === "design" ? "행사 디자인 포트폴리오" : "행사 대행 포트폴리오"}
+            포트폴리오
           </h1>
           <p className="text-slate-500 text-[13px] mt-2">
-            {viewMode === "design"
-              ? "전시부스, 포스터, 리플렛 등 행사 디자인 작업물을 소개합니다"
-              : "파란컴퍼니와 함께한 행사 사례를 소개합니다"}
+            파란컴퍼니와 함께한 행사 기획·운영과 디자인 사례를 소개합니다
           </p>
         </BlurFade>
         <BlurFade delay={0.1}>
           <div className="flex justify-center gap-10 mt-8">
             <div className="text-center">
-              <p className="font-num text-2xl font-bold text-slate-900">
-                250+
-              </p>
+              <p className="font-num text-2xl font-bold text-slate-900">250+</p>
               <p className="text-[12px] text-slate-400 mt-1">프로젝트</p>
             </div>
             <div className="text-center">
@@ -372,48 +267,51 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
       {/* 메인 레이아웃: 사이드바 + 콘텐츠 */}
       <div className="max-w-content mx-auto px-6 py-6">
         <div className="flex gap-6">
-          {/* 사이드바 (desktop) — 행사 3그룹 + 디자인 3그룹 통합 (탭 없음) */}
+          {/* 사이드바 (desktop) — 행사 3그룹 + 디자인 3그룹 통합 */}
           <aside className="hidden lg:block w-[220px] shrink-0 self-start sticky top-[104px] max-h-[calc(100vh-120px)] overflow-y-auto scrollbar-hide">
             <div>
               <nav className="flex flex-col">
                 <button
-                  onClick={() => { setViewMode("event"); setCategoryFilter("전체"); }}
+                  onClick={() => setCategoryFilter("전체")}
                   className={`flex w-full items-center justify-between rounded-md px-1.5 py-1.5 text-[12px] font-semibold text-slate-800 transition-colors ${
-                    viewMode === "event" && categoryFilter === "전체"
+                    categoryFilter === "전체"
                       ? "bg-blue-50/80 text-blue-700"
                       : "hover:bg-slate-100/70"
                   }`}
                 >
                   <span>전체</span>
+                  <span className="ml-2 text-[11px] tabular-nums text-slate-300">
+                    {getCategoryCount("전체")}
+                  </span>
                 </button>
 
                 <SidebarGroup label="행사 대행">
-                  {EVENT_GROUP_ITEMS.map(({ key, label }) => (
+                  {EVENT_CATS.map(({ value, label }) => (
                     <SidebarItem
-                      key={key}
+                      key={value}
                       label={label}
-                      count={getCategoryCount(key)}
-                      isActive={viewMode === "event" && categoryFilter === key}
-                      onClick={() => { setViewMode("event"); setCategoryFilter(key); }}
+                      count={getCategoryCount(value)}
+                      isActive={categoryFilter === value}
+                      onClick={() => setCategoryFilter(value)}
                     />
                   ))}
                 </SidebarGroup>
 
                 <SidebarGroup label="디자인">
-                  {DESIGN_GROUP_ITEMS.map(({ key, label }) => (
+                  {DESIGN_CATS.map(({ value, label }) => (
                     <SidebarItem
-                      key={key}
+                      key={value}
                       label={label}
-                      count={DESIGN_WORKS.filter((d) => designGroupOf(d.category) === key).length}
-                      isActive={viewMode === "design" && designFilter === key}
-                      onClick={() => { setViewMode("design"); setDesignFilter(key); }}
+                      count={getCategoryCount(value)}
+                      isActive={categoryFilter === value}
+                      onClick={() => setCategoryFilter(value)}
                       accent="violet"
                     />
                   ))}
                 </SidebarGroup>
               </nav>
 
-              {/* CTA — 카테고리 하단 */}
+              {/* CTA */}
               <div className="relative mt-8 overflow-hidden rounded-[14px] border border-slate-200/60 bg-white/40 backdrop-blur-xl">
                 <div className="pointer-events-none absolute -top-10 -right-10 h-28 w-28 rounded-full bg-blue-400/20 blur-2xl" />
                 <div className="pointer-events-none absolute -bottom-8 -left-8 h-24 w-24 rounded-full bg-indigo-400/15 blur-2xl" />
@@ -443,21 +341,21 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
               <div className="overflow-x-auto scrollbar-hide">
                 <div className="flex gap-2 pb-1">
                   <button
-                    onClick={() => { setViewMode("event"); setCategoryFilter("전체"); }}
+                    onClick={() => setCategoryFilter("전체")}
                     className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors ${
-                      viewMode === "event" && categoryFilter === "전체"
+                      categoryFilter === "전체"
                         ? "bg-slate-900 text-white"
                         : "bg-slate-100 text-slate-500 hover:bg-slate-200"
                     }`}
                   >
                     전체
                   </button>
-                  {EVENT_GROUP_ITEMS.map(({ key, label }) => (
+                  {EVENT_CATS.map(({ value, label }) => (
                     <button
-                      key={key}
-                      onClick={() => { setViewMode("event"); setCategoryFilter(key); }}
+                      key={value}
+                      onClick={() => setCategoryFilter(value)}
                       className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors ${
-                        viewMode === "event" && categoryFilter === key
+                        categoryFilter === value
                           ? "bg-slate-900 text-white"
                           : "bg-slate-100 text-slate-500 hover:bg-slate-200"
                       }`}
@@ -465,12 +363,12 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
                       {label}
                     </button>
                   ))}
-                  {DESIGN_GROUP_ITEMS.map(({ key, label }) => (
+                  {DESIGN_CATS.map(({ value, label }) => (
                     <button
-                      key={key}
-                      onClick={() => { setViewMode("design"); setDesignFilter(key); }}
+                      key={value}
+                      onClick={() => setCategoryFilter(value)}
                       className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors ${
-                        viewMode === "design" && designFilter === key
+                        categoryFilter === value
                           ? "bg-blue-600 text-white"
                           : "bg-slate-100 text-slate-500 hover:bg-slate-200"
                       }`}
@@ -499,170 +397,104 @@ export default function WorkPageClient({ portfolios, portfolioMedia }: WorkPageC
               </div>
             </div>
 
-            {viewMode === "design" ? (
-              /* ── 디자인별 뷰 ── */
-              <>
-                {designFilter !== "전체" && (
-                  <h2 className="text-lg font-bold text-slate-900 mb-4">
-                    {DESIGN_WORK_GROUPS.find((g) => g.key === designFilter)?.label ?? designFilter} 디자인
-                    <span className="ml-2 text-[13px] font-normal text-slate-400">
-                      {sortedDesignWorks.length}건
-                    </span>
-                  </h2>
-                )}
-                {sortedDesignWorks.length === 0 ? (
-                  <div className="text-center py-20 text-slate-400">
-                    <p className="text-lg">작업물이 없습니다</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-2 gap-3 sm:gap-6">
-                    {sortedDesignWorks.map((work, idx) => (
-                      <BlurFade key={work.id} delay={idx < 6 ? 0.03 * idx : 0}>
-                        <button
-                          onClick={() => setLightboxWork(work)}
-                          className="group relative block w-full text-left rounded-[10px] overflow-hidden bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200"
-                        >
-                          <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
-                            <Image
-                              src={work.image}
-                              alt={`${work.title} — ${work.event}`}
-                              fill
-                              className="object-cover transition-transform duration-500 group-hover:scale-105"
-                              sizes="(max-width: 640px) calc(50vw - 12px), calc(50vw - 140px)"
-                              unoptimized
-                              {...(idx < 4 ? { priority: true } : { loading: "lazy" as const })}
-                            />
+            {/* 카드 그리드 (행사+디자인 통합) */}
+            {filtered.length === 0 ? (
+              <div className="text-center py-20 text-slate-400">
+                <p className="text-lg">검색 결과가 없습니다</p>
+                <p className="text-[13px] mt-1">다른 조건으로 검색해보세요</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-3 sm:gap-6">
+                {filtered.map((pf, idx) => {
+                  const cat = pf.eventType ?? pf.tags[0] ?? "";
+                  const pfMedia = portfolioMedia.filter((m) => m.portfolioId === pf.id);
+                  const photos = pfMedia
+                    .filter((m) => m.type === "photo")
+                    .map((m) => ({ src: m.url, label: m.label }));
+                  const galleryImages = pfMedia
+                    .filter((m) => m.type === "gallery")
+                    .map((m) => ({ src: m.url, label: m.label }));
+                  const cardPhotos = photos.length > 0
+                    ? photos
+                    : galleryImages.length > 0
+                      ? galleryImages
+                      : pf.imageUrl
+                        ? [{ src: pf.imageUrl, label: pf.title }]
+                        : [];
 
-                            {/* 호버 오버레이 */}
-                            <div className="absolute inset-0 z-10 bg-blue-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-center p-4">
-                              <span className="rounded-full border border-white/40 px-3 py-1 text-[10px] font-medium text-white mb-2">
-                                {work.category}
-                              </span>
-                              <p className="text-[15px] font-bold text-white leading-snug">{work.title}</p>
-                              <p className="text-[12px] text-white/60 mt-1">{work.event}</p>
-                              <div className="mt-3 rounded-full bg-white/20 px-3 py-1 text-[10px] text-white">
-                                클릭하여 확대
-                              </div>
+                  return (
+                    <BlurFade key={pf.id} delay={idx < 6 ? 0.04 * idx : 0}>
+                      <Link
+                        href={`/work/${pf.slug || pf.id}`}
+                        className="group flex h-full flex-col rounded-[10px] overflow-hidden bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200"
+                      >
+                        {/* 썸네일 */}
+                        <div className="relative aspect-[16/10] overflow-hidden">
+                          <CardPhotoRotator
+                            photos={cardPhotos}
+                            gradientType={pf.gradientType}
+                          />
+
+                          {/* 호버 오버레이 */}
+                          <div className="absolute inset-0 z-10 bg-blue-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-center p-4">
+                            <span className="rounded-full border border-white/40 px-3 py-1 text-[10px] font-medium text-white mb-2">
+                              {cat}
+                            </span>
+                            <p className="text-[15px] font-bold text-white leading-snug">{pf.title}</p>
+                            <p className="text-[12px] text-white/60 mt-1">{pf.venue}</p>
+                            <div className="mt-3 rounded-full bg-white/20 px-3 py-1 text-[10px] text-white">
+                              자세히 보기
                             </div>
                           </div>
+                        </div>
 
-                          <span className="sr-only">
-                            {work.category} — {work.title} — {work.event}
-                          </span>
-                        </button>
-                      </BlurFade>
-                    ))}
-                  </div>
-                )}
-              </>
-            ) : (
-              /* ── 행사별 뷰 ── */
-              <>
-                {/* 카드 그리드 */}
-                {filtered.length === 0 ? (
-                  <div className="text-center py-20 text-slate-400">
-                    <p className="text-lg">검색 결과가 없습니다</p>
-                    <p className="text-[13px] mt-1">다른 조건으로 검색해보세요</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-2 gap-3 sm:gap-6">
-                    {filtered.map((pf, idx) => {
-                      const cat = pf.tags[0] ?? "";
-                      const pfMedia = portfolioMedia.filter((m) => m.portfolioId === pf.id);
-                      const photos = pfMedia
-                        .filter((m) => m.type === "photo")
-                        .map((m) => ({ src: m.url, label: m.label }));
-                      const galleryImages = pfMedia
-                        .filter((m) => m.type === "gallery")
-                        .map((m) => ({ src: m.url, label: m.label }));
-                      const cardPhotos = photos.length > 0
-                        ? photos
-                        : galleryImages.length > 0
-                          ? galleryImages
-                          : pf.imageUrl
-                            ? [{ src: pf.imageUrl, label: pf.title }]
-                            : [];
-
-                      return (
-                        <BlurFade key={pf.id} delay={idx < 6 ? 0.04 * idx : 0}>
-                          <Link
-                            href={`/work/${pf.slug || pf.id}`}
-                            className="group flex h-full flex-col rounded-[10px] overflow-hidden bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200"
-                          >
-                            {/* 썸네일 */}
-                            <div className="relative aspect-[16/10] overflow-hidden">
-                              <CardPhotoRotator
-                                photos={cardPhotos}
-                                gradientType={pf.gradientType}
-                              />
-
-                              {/* 호버 오버레이 — 디자인별과 동일 스타일 */}
-                              <div className="absolute inset-0 z-10 bg-blue-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-center p-4">
-                                <span className="rounded-full border border-white/40 px-3 py-1 text-[10px] font-medium text-white mb-2">
-                                  {cat}
+                        {/* 카드 정보 */}
+                        <div className="flex flex-1 flex-col p-3 sm:p-4">
+                          <div className="flex items-center gap-1.5 mb-1 sm:gap-2 sm:mb-1.5">
+                            {cat && (
+                              <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium sm:px-2.5 sm:text-[10px] ${categoryStyle[cat] ?? "bg-slate-100 text-slate-600"}`}>
+                                {cat}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="min-h-[2.25rem] text-[12px] font-semibold text-slate-900 leading-snug line-clamp-2 sm:text-[13px]">
+                            {pf.title}
+                          </h3>
+                          {pf.description && (
+                            <p className="mt-1 hidden text-[12px] text-slate-500 leading-relaxed sm:mt-1.5 sm:line-clamp-2">
+                              {pf.description}
+                            </p>
+                          )}
+                          <div className="mt-auto pt-2 sm:pt-3">
+                            <div className="flex h-[1.25rem] flex-wrap gap-1 overflow-hidden sm:hidden">
+                              {pf.tags.slice(1, 3).map((tag) => (
+                                <span key={tag} className="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-[4px]">
+                                  #{tag}
                                 </span>
-                                <p className="text-[15px] font-bold text-white leading-snug">{pf.title}</p>
-                                <p className="text-[12px] text-white/60 mt-1">{pf.venue}</p>
-                                <div className="mt-3 rounded-full bg-white/20 px-3 py-1 text-[10px] text-white">
-                                  자세히 보기
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* 카드 정보 */}
-                            <div className="flex flex-1 flex-col p-3 sm:p-4">
-                              <div className="flex items-center gap-1.5 mb-1 sm:gap-2 sm:mb-1.5">
-                                {cat && (
-                                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium sm:px-2.5 sm:text-[10px] ${categoryStyle[cat] ?? "bg-slate-100 text-slate-600"}`}>
-                                    {cat}
-                                  </span>
-                                )}
-                              </div>
-                              <h3 className="min-h-[2.25rem] text-[12px] font-semibold text-slate-900 leading-snug line-clamp-2 sm:text-[13px]">
-                                {pf.title}
-                              </h3>
-                              {pf.description && (
-                                <p className="mt-1 hidden text-[12px] text-slate-500 leading-relaxed sm:mt-1.5 sm:line-clamp-2">
-                                  {pf.description}
-                                </p>
+                              ))}
+                              {pf.tags.length > 3 && (
+                                <span className="text-[9px] text-slate-400">+{pf.tags.length - 3}</span>
                               )}
-                              <div className="mt-auto pt-2 sm:pt-3">
-                                <div className="flex h-[1.25rem] flex-wrap gap-1 overflow-hidden sm:hidden">
-                                  {pf.tags.slice(1, 3).map((tag) => (
-                                    <span key={tag} className="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-[4px]">
-                                      #{tag}
-                                    </span>
-                                  ))}
-                                  {pf.tags.length > 3 && (
-                                    <span className="text-[9px] text-slate-400">+{pf.tags.length - 3}</span>
-                                  )}
-                                </div>
-                                <div className="hidden flex-wrap gap-1.5 sm:flex">
-                                  {pf.tags.slice(1).map((tag) => (
-                                    <span key={tag} className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-[4px]">
-                                      #{tag}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
                             </div>
-                          </Link>
-                        </BlurFade>
-                      );
-                    })}
-                  </div>
-                )}
-              </>
+                            <div className="hidden flex-wrap gap-1.5 sm:flex">
+                              {pf.tags.slice(1).map((tag) => (
+                                <span key={tag} className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-[4px]">
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    </BlurFade>
+                  );
+                })}
+              </div>
             )}
-
           </div>
         </div>
-
       </div>
 
-      <AnimatePresence>
-        {lightboxWork && <DesignLightbox work={lightboxWork} onClose={closeLightbox} />}
-      </AnimatePresence>
       <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
     </div>
   );
