@@ -190,17 +190,18 @@ export default function LecturerDetailClient({
           </section>
         )}
 
-        {/* 저서 / 대표 콘텐츠 */}
+        {/* 강의 이력 (books 컬럼 재활용) */}
         {books.length > 0 && (
           <section className="mb-8">
-            <h2 className="mb-3 text-[15px] font-semibold text-slate-800">저서 · 대표 콘텐츠</h2>
-            <div className="flex flex-wrap gap-1.5">
+            <h2 className="mb-3 text-[15px] font-semibold text-slate-800">강의 이력</h2>
+            <ul className="space-y-2.5">
               {books.map((b, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[13px] text-slate-600">
-                  <BookOpen size={13} className="text-slate-400" />{b}
-                </span>
+                <li key={i} className="flex gap-2.5 text-[14px] text-slate-600">
+                  <span className="mt-0.5 shrink-0 text-slate-400"><BookOpen size={15} /></span>
+                  <span>{b}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
         )}
 
