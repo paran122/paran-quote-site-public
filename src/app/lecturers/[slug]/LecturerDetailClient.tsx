@@ -18,20 +18,6 @@ import {
 import type { Lecturer } from "@/types";
 import { catBadge, catLabel } from "@/lib/lecturerMeta";
 
-type Pic = { idx: number; url: string; caption?: string | null; kind?: string | null };
-
-const KIND_LABEL: Record<string, string> = {
-  profile: "프로필",
-  lecture_scene: "강연 사진",
-  book_cover: "도서",
-  press: "보도",
-  file: "사진",
-};
-const KIND_ORDER = ["profile", "lecture_scene", "book_cover", "press", "file"];
-function kindLabel(k?: string | null): string {
-  return (k && KIND_LABEL[k]) || "사진";
-}
-
 export default function LecturerDetailClient({
   lecturer: l,
   faq = [],
@@ -45,13 +31,6 @@ export default function LecturerDetailClient({
   const career = l.career ?? [];
   const books = l.books ?? [];
   const topics = (l.lectureTitle ?? "").split(",").map((t) => t.trim()).filter(Boolean);
-
-  // 사진을 종류(프로필·강연·도서…)별로 그룹 (flat index 유지 — 라이트박스)
-  const pics: Pic[] = gallery.map((img, idx) => ({ idx, url: img.url, caption: img.caption, kind: img.kind }));
-  const photoGroups = KIND_ORDER.map((k) => ({
-    kind: k,
-    items: pics.filter((p) => (p.kind || "file") === k),
-  })).filter((g) => g.items.length > 0);
 
   // 라이트박스
   const [lbIdx, setLbIdx] = useState<number | null>(null);
@@ -129,15 +108,11 @@ export default function LecturerDetailClient({
           </div>
         </div>
 
-        {/* 강의 주제 */}
+        {/* 강의 주제 — 문장 형태 */}
         {topics.length > 0 && (
           <section className="mb-5 rounded-[12px] border border-slate-200 bg-white p-5 shadow-subtle sm:p-6">
             <h2 className="mb-3 text-[15px] font-semibold text-slate-800">강의 주제</h2>
-            <div className="flex flex-wrap gap-1.5">
-              {topics.map((t, i) => (
-                <span key={i} className="rounded-full bg-primary-50 px-3 py-1.5 text-[13px] font-medium text-primary-700">{t}</span>
-              ))}
-            </div>
+            <p className="text-[15px] leading-[1.7] text-slate-600">{topics.join(", ")}</p>
           </section>
         )}
 
@@ -146,32 +121,6 @@ export default function LecturerDetailClient({
           <section className="mb-5 rounded-[12px] border border-slate-200 bg-white p-5 shadow-subtle sm:p-6">
             <h2 className="mb-3 text-[15px] font-semibold text-slate-800">강의 소개</h2>
             <p className="whitespace-pre-line text-[16px] leading-[1.8] text-slate-600">{l.bio}</p>
-          </section>
-        )}
-
-        {/* 강의 사진 */}
-        {photoGroups.length > 0 && (
-          <section className="mb-5 rounded-[12px] border border-slate-200 bg-white p-5 shadow-subtle sm:p-6">
-            <h2 className="mb-4 text-[15px] font-semibold text-slate-800">
-              강의 사진<span className="ml-1.5 text-[13px] font-normal text-slate-400">({gallery.length}장)</span>
-            </h2>
-            <div className="space-y-4">
-              {photoGroups.map((g) => (
-                <div key={g.kind}>
-                  <p className="mb-1.5 text-[12px] font-medium text-slate-500">
-                    {kindLabel(g.kind)}<span className="ml-1.5 text-[11px] text-slate-300">{g.items.length}</span>
-                  </p>
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-                    {g.items.map((p) => (
-                      <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="cursor-zoom-in">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={p.url} alt={p.caption ?? l.name} className="aspect-[4/3] w-full rounded-[8px] object-cover" loading="lazy" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
           </section>
         )}
 
