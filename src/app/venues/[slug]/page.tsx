@@ -129,7 +129,7 @@ export default async function VenueDetailPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(placeLd) }} />
       {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <VenueDetailClient venue={v} related={related} />
+      <VenueDetailClient venue={v} related={related} faq={faq} />
     </>
   );
 }
