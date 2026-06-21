@@ -1,5 +1,5 @@
 import { supabase, supabaseAdmin } from "./supabase";
-import { Portfolio, EventPhoto, EventReview, PortfolioMedia, BlogPost, Venue } from "@/types";
+import { Portfolio, EventPhoto, EventReview, PortfolioMedia, BlogPost, Venue, Lecturer } from "@/types";
 
 /** Supabase 클라이언트를 반환하거나, 미연결 시 에러를 throw (catalogStore catch에서 처리) */
 function requireClient() {
@@ -50,6 +50,33 @@ export async function fetchVenueBySlug(slug: string): Promise<Venue | null> {
     throw error;
   }
   return mapRow<Venue>(data);
+}
+
+// ── 강사 (공개 미러) ──
+export async function fetchLecturers(): Promise<Lecturer[]> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("public_lecturers")
+    .select("*")
+    .eq("is_visible", true)
+    .order("published_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map((r) => mapRow<Lecturer>(r));
+}
+
+export async function fetchLecturerBySlug(slug: string): Promise<Lecturer | null> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("public_lecturers")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_visible", true)
+    .single();
+  if (error) {
+    if (error.code === "PGRST116") return null;
+    throw error;
+  }
+  return mapRow<Lecturer>(data);
 }
 
 // ── 포트폴리오 ──

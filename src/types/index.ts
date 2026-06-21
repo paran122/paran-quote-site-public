@@ -109,6 +109,32 @@ export interface VenueContact {
   email?: string | null;
 }
 
+// 강사 (공개, paran_quote_site.public_lecturers 미러)
+export interface LecturerImage {
+  url: string;
+  kind?: string | null;      // profile | lecture_scene | book_cover | press | file
+  caption?: string | null;
+}
+
+export interface Lecturer {
+  id: string;
+  sourcePartnerId: string;
+  slug: string;
+  name: string;
+  category?: string | null;       // 분야 (심리·상담, AI·미래 …)
+  lectureTitle?: string | null;   // 추천 강의 주제
+  bio?: string | null;            // 소개문
+  career: string[];               // 약력
+  books: string[];                // 강의 이력 / 저서
+  images: LecturerImage[];
+  coverUrl?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  isVisible: boolean;
+  publishedAt?: string;
+  updatedAt?: string;
+}
+
 export interface Venue {
   id: string;
   sourceVenueId: string;

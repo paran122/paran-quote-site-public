@@ -84,6 +84,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // 무시
   }
 
+  const lecturerPages: MetadataRoute.Sitemap = [];
+  try {
+    if (supabase) {
+      const { data: lecturers } = await supabase
+        .from("public_lecturers")
+        .select("slug, updated_at")
+        .eq("is_visible", true)
+        .order("updated_at", { ascending: false });
+      if (lecturers?.length) {
+        for (const lec of lecturers) {
+          lecturerPages.push({
+            url: `${siteUrl}/lecturers/${lec.slug}`,
+            lastModified: lec.updated_at ? new Date(lec.updated_at) : new Date(),
+            changeFrequency: "monthly",
+            priority: 0.7,
+          });
+        }
+      }
+    }
+  } catch {
+    // 무시
+  }
+
   // 홈페이지: 가장 최근 콘텐츠 업데이트 기준
   const latestContent = [latestBlogDate, latestPortfolioDate]
     .filter((d): d is Date => d !== null)
@@ -118,6 +141,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${siteUrl}/venues`,
       lastModified: venuePages[0]?.lastModified ?? homepageDate,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/lecturers`,
+      lastModified: lecturerPages[0]?.lastModified ?? homepageDate,
       changeFrequency: "weekly",
       priority: 0.7,
     },
@@ -255,5 +284,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [...staticPages, ...venuePages, ...blogPages, ...portfolioPages];
+  return [...staticPages, ...venuePages, ...lecturerPages, ...blogPages, ...portfolioPages];
 }
