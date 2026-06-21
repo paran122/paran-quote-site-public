@@ -1,5 +1,5 @@
 import { supabase, supabaseAdmin } from "./supabase";
-import { Portfolio, EventPhoto, EventReview, PortfolioMedia, BlogPost } from "@/types";
+import { Portfolio, EventPhoto, EventReview, PortfolioMedia, BlogPost, Venue } from "@/types";
 
 /** Supabase 클라이언트를 반환하거나, 미연결 시 에러를 throw (catalogStore catch에서 처리) */
 function requireClient() {
@@ -23,6 +23,33 @@ function mapRow<T>(row: Record<string, unknown>): T {
     result[camelKey] = row[key];
   }
   return result as T;
+}
+
+// ── 행사장 (공개 미러) ──
+export async function fetchVenues(): Promise<Venue[]> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("public_venues")
+    .select("*")
+    .eq("is_visible", true)
+    .order("published_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map((r) => mapRow<Venue>(r));
+}
+
+export async function fetchVenueBySlug(slug: string): Promise<Venue | null> {
+  const db = requireClient();
+  const { data, error } = await db
+    .from("public_venues")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_visible", true)
+    .single();
+  if (error) {
+    if (error.code === "PGRST116") return null;
+    throw error;
+  }
+  return mapRow<Venue>(data);
 }
 
 // ── 포트폴리오 ──
