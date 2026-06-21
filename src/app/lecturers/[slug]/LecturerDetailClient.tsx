@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import {
   Home,
-  BadgeCheck,
   UserRound,
   Tag,
   Presentation,
@@ -69,9 +68,6 @@ export default function LecturerDetailClient({
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium ${badge}`}>{catLabel(l.category)}</span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-medium text-teal-600">
-              <BadgeCheck size={12} />협업 검증 강사
-            </span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{l.name}</h1>
         </div>
@@ -104,7 +100,7 @@ export default function LecturerDetailClient({
             <Fact icon={<Tag size={15} />} label="분야" value={catLabel(l.category)} />
             <Fact icon={<Presentation size={15} />} label="추천 강의" value={l.lectureTitle ?? "—"} />
             <Fact icon={<UserRound size={15} />} label="약력" value={career.length ? `${career.length}건` : "—"} />
-            <Fact icon={<BookOpen size={15} />} label="저서·콘텐츠" value={books.length ? `${books.length}건` : "—"} />
+            <Fact icon={<BookOpen size={15} />} label="강의 이력" value={books.length ? `${books.length}건` : "—"} />
           </div>
         </div>
 
@@ -188,7 +184,7 @@ export default function LecturerDetailClient({
         >
           <div>
             <p className="text-[15px] font-semibold text-slate-800">다른 분야 강사도 찾고 계신가요?</p>
-            <p className="mt-1 text-[13px] text-slate-500">파란이 검증한 분야별 강사 풀을 둘러보세요</p>
+            <p className="mt-1 text-[13px] text-slate-500">분야별 강사 정보를 둘러보세요</p>
           </div>
           <span className="flex shrink-0 items-center gap-1 text-[14px] font-medium text-blue-600 transition-transform group-hover:translate-x-0.5">
             강사 목록<ArrowRight className="h-4 w-4" />

@@ -25,10 +25,6 @@ function VenueCard({ v }: { v: Venue }) {
         <span className={`absolute left-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold ${badge}`}>
           {typeLabel(v.venueType)}
         </span>
-        <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[10px] font-semibold text-teal-600">
-          <BadgeCheck className="h-3 w-3" />
-          답사
-        </span>
       </div>
       <div className="p-4">
         <h3 className="font-display text-[15px] font-bold text-slate-900">{v.name}</h3>
@@ -145,14 +141,14 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
             <span>/</span>
             <span className="text-slate-600">행사장 추천</span>
           </nav>
-          <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-primary">VENUE DATABASE</p>
+          <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-primary">행사장 정보</p>
           <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h1 className="font-display text-2xl font-bold tracking-tight text-slate-900 md:text-4xl">
-                파란이 직접 답사·검증한 행사장
+                행사장 정보
               </h1>
               <p className="mt-2 max-w-2xl text-sm text-slate-500">
-                행사 대행 현장에서 쌓은 행사장 데이터. 지역·인원·행사 유형으로 후보를 좁히고, 문의 주시면 최적의 장소를 추천드립니다.
+                지역·인원·유형별 행사장 정보입니다. 문의 주시면 안내해 드립니다.
               </p>
             </div>
             <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 md:w-72">
@@ -168,10 +164,10 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
           <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm">
             <div>
               <span className="font-display text-xl font-bold tabular-nums text-slate-900">{venues.length}</span>{" "}
-              <span className="text-slate-500">답사 행사장</span>
+              <span className="text-slate-500">등록 행사장</span>
             </div>
             <div className="flex items-center gap-1.5 text-slate-500">
-              <BadgeCheck className="h-4 w-4 text-teal-500" />전 시설 현장 검증
+              <BadgeCheck className="h-4 w-4 text-teal-500" />지역·유형별 안내
             </div>
           </div>
         </div>
@@ -216,8 +212,8 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
         <div className="mx-auto max-w-content px-5 py-12 md:px-8">
           <div className="flex flex-col items-center justify-between gap-5 rounded-2xl bg-[#091041] px-8 py-9 text-center md:flex-row md:text-left">
             <div>
-              <h3 className="font-display text-xl font-bold text-white md:text-2xl">조건에 맞는 행사장, 파란이 매칭해드립니다</h3>
-              <p className="mt-1.5 text-sm text-white/60">인원·예산·일정만 알려주시면 답사 데이터에서 최적 후보를 골라드립니다.</p>
+              <h3 className="font-display text-xl font-bold text-white md:text-2xl">행사장 문의</h3>
+              <p className="mt-1.5 text-sm text-white/60">인원·일정을 알려주시면 안내해 드립니다.</p>
             </div>
             <Link
               href="/#contact"

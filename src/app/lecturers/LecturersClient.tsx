@@ -25,10 +25,6 @@ function LecturerCard({ l }: { l: Lecturer }) {
         <span className={`absolute left-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold ${badge}`}>
           {catLabel(l.category)}
         </span>
-        <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[10px] font-semibold text-teal-600">
-          <BadgeCheck className="h-3 w-3" />
-          협업
-        </span>
       </div>
       <div className="p-4">
         <h3 className="font-display text-[15px] font-bold text-slate-900">{l.name}</h3>
@@ -42,7 +38,7 @@ function LecturerCard({ l }: { l: Lecturer }) {
             {l.books?.length ? (
               <span className="flex items-center gap-1">
                 <BookOpen className="h-3.5 w-3.5 text-slate-300" />
-                저서 {l.books.length}
+                이력 {l.books.length}
               </span>
             ) : null}
             <span className="ml-auto line-clamp-1 truncate text-slate-400">{l.career?.[0] ?? ""}</span>
@@ -132,14 +128,14 @@ export default function LecturersClient({ lecturers }: { lecturers: Lecturer[] }
             <span>/</span>
             <span className="text-slate-600">강사 섭외</span>
           </nav>
-          <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-primary">LECTURER POOL</p>
+          <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-primary">강사 정보</p>
           <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h1 className="font-display text-2xl font-bold tracking-tight text-slate-900 md:text-4xl">
-                파란이 협업·검증한 강사 풀
+                강사 정보
               </h1>
               <p className="mt-2 max-w-2xl text-sm text-slate-500">
-                교육·행사 현장에서 직접 검증한 강사 데이터. 분야별로 강사를 찾아 강의 주제·약력을 확인하고, 섭외·일정 조율까지 파란컴퍼니가 대행합니다.
+                분야별 강사 정보입니다. 강의 주제·약력을 확인하고 문의해 주세요.
               </p>
             </div>
             <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 md:w-72">
@@ -155,10 +151,10 @@ export default function LecturersClient({ lecturers }: { lecturers: Lecturer[] }
           <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm">
             <div>
               <span className="font-display text-xl font-bold tabular-nums text-slate-900">{lecturers.length}</span>{" "}
-              <span className="text-slate-500">검증 강사</span>
+              <span className="text-slate-500">등록 강사</span>
             </div>
             <div className="flex items-center gap-1.5 text-slate-500">
-              <BadgeCheck className="h-4 w-4 text-teal-500" />전 강사 협업 검증
+              <BadgeCheck className="h-4 w-4 text-teal-500" />분야별 강사 안내
             </div>
           </div>
         </div>
@@ -218,8 +214,8 @@ export default function LecturersClient({ lecturers }: { lecturers: Lecturer[] }
         <div className="mx-auto max-w-content px-5 py-12 md:px-8">
           <div className="flex flex-col items-center justify-between gap-5 rounded-2xl bg-[#091041] px-8 py-9 text-center md:flex-row md:text-left">
             <div>
-              <h3 className="font-display text-xl font-bold text-white md:text-2xl">강사 섭외, 파란이 매칭해드립니다</h3>
-              <p className="mt-1.5 text-sm text-white/60">주제·예산·일정만 알려주시면 검증된 강사 풀에서 최적 후보를 골라 섭외·조율까지 대행합니다.</p>
+              <h3 className="font-display text-xl font-bold text-white md:text-2xl">강사 섭외 문의</h3>
+              <p className="mt-1.5 text-sm text-white/60">원하는 주제·일정을 알려주시면 안내해 드립니다.</p>
             </div>
             <Link
               href="/#contact"

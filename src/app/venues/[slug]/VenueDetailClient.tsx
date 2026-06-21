@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   Home,
   MapPin,
-  BadgeCheck,
   Building2,
   Users,
   Camera,
@@ -122,9 +121,6 @@ export default function VenueDetailClient({
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium ${badge}`}>{typeLabel(v.venueType)}</span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-medium text-teal-600">
-              <BadgeCheck size={12} />현장 답사 완료
-            </span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{v.name}</h1>
           {v.tagline && <p className="mt-2 text-[14px] text-slate-500">{v.tagline}</p>}
@@ -366,7 +362,7 @@ export default function VenueDetailClient({
         {(v.strengths?.length ?? 0) > 0 && (
           <section className="mb-8">
             <h2 className="mb-3 text-[15px] font-semibold text-slate-800">
-              답사 코멘트<span className="ml-1.5 text-[12px] font-normal text-slate-400">파란 현장 답사 기반</span>
+              코멘트
             </h2>
             <ul className="space-y-2.5">
               {v.strengths!.map((s, i) => (
@@ -431,7 +427,7 @@ export default function VenueDetailClient({
                 </a>
               )}
             </div>
-            <p className="mt-2 text-[12px] text-slate-400">행사 진행은 파란컴퍼니가 답사·기획·운영까지 함께합니다.</p>
+            <p className="mt-2 text-[12px] text-slate-400">행사 진행은 파란컴퍼니가 함께합니다.</p>
           </section>
         )}
 
