@@ -44,6 +44,7 @@ export default function LecturerDetailClient({
   const cover = l.coverUrl ?? gallery[0]?.url ?? null;
   const career = l.career ?? [];
   const books = l.books ?? [];
+  const topics = (l.lectureTitle ?? "").split(",").map((t) => t.trim()).filter(Boolean);
 
   // 사진을 종류(프로필·강연·도서…)별로 그룹 (flat index 유지 — 라이트박스)
   const pics: Pic[] = gallery.map((img, idx) => ({ idx, url: img.url, caption: img.caption, kind: img.kind }));
@@ -94,7 +95,6 @@ export default function LecturerDetailClient({
             </span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{l.name}</h1>
-          {l.lectureTitle && <p className="mt-2 text-[15px] font-medium text-slate-600">{l.lectureTitle}</p>}
         </div>
 
         {/* 히어로 */}
@@ -128,6 +128,18 @@ export default function LecturerDetailClient({
             <Fact icon={<BookOpen size={15} />} label="저서·콘텐츠" value={books.length ? `${books.length}건` : "—"} />
           </div>
         </div>
+
+        {/* 강의 주제 */}
+        {topics.length > 0 && (
+          <section className="mb-8">
+            <h2 className="mb-3 text-[15px] font-semibold text-slate-800">강의 주제</h2>
+            <div className="flex flex-wrap gap-1.5">
+              {topics.map((t, i) => (
+                <span key={i} className="rounded-full bg-primary-50 px-3 py-1.5 text-[13px] font-medium text-primary-700">{t}</span>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 강의 소개 */}
         {l.bio && (
