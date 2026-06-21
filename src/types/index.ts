@@ -81,3 +81,47 @@ export interface BlogPost {
   createdAt: string;
   updatedAt: string;
 }
+
+// 행사장 (공개, paran_quote_site.public_venues 미러)
+export interface VenueHall {
+  name: string;
+  floor?: string | null;
+  capacity_modes?: Record<string, number> | null;
+  max_capacity?: number | null;
+  summary?: string | null;
+  facilities?: string[] | null;
+  event_fit?: string[] | null;
+}
+
+export interface VenueImage {
+  url: string;
+  category?: string | null;
+  caption?: string | null;
+  hall?: string | null;
+}
+
+export interface Venue {
+  id: string;
+  sourceVenueId: string;
+  slug: string;
+  name: string;
+  venueType?: string;
+  region?: string;
+  addressApprox?: string;
+  maxCapacity?: number;
+  hallCount?: number;
+  tagline?: string;
+  overview?: string;
+  strengths?: string[];
+  halls: VenueHall[];
+  facilities: string[];
+  eventFit: string[];
+  images: VenueImage[];
+  coverUrl?: string;
+  relatedPortfolioSlugs?: string[];
+  metaTitle?: string;
+  metaDescription?: string;
+  isVisible: boolean;
+  publishedAt?: string;
+  updatedAt?: string;
+}
