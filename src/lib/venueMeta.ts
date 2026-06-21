@@ -44,6 +44,26 @@ export function facilityLabel(f: string): string {
   return FACILITY_LABEL[f] || f;
 }
 
+// 사진 카테고리 (인트라넷 photo_category와 동일)
+export const PHOTO_CAT_LABEL: Record<string, string> = {
+  exterior: "외관",
+  front: "정면",
+  side: "측면",
+  back: "후면",
+  lobby: "로비",
+  stage: "무대",
+  waiting: "대기실",
+  setup: "셋업 사례",
+  loading: "로딩·반입",
+  etc: "기타",
+};
+
+export const PHOTO_CAT_ORDER = ["exterior", "front", "side", "back", "lobby", "stage", "waiting", "setup", "loading", "etc"];
+
+export function photoCatLabel(c?: string | null): string {
+  return (c && PHOTO_CAT_LABEL[c]) || "기타";
+}
+
 export const CAP_BUCKETS = ["~100명", "100~300명", "300~500명", "500명+"];
 
 export function capBucket(n?: number): string | null {
