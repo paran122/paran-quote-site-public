@@ -10,8 +10,19 @@ const navItems: { label: string; anchor: string; isPage?: boolean }[] = [
   { label: "회사소개", anchor: "/company", isPage: true },
   { label: "서비스", anchor: "/services", isPage: true },
   { label: "포트폴리오", anchor: "/work", isPage: true },
+  { label: "가이드", anchor: "/guide", isPage: true },
   { label: "FAQ", anchor: "/faq", isPage: true },
   { label: "블로그", anchor: "/blog", isPage: true },
+];
+
+// 가이드 드롭다운 — 행사장 추천을 최상단 강조, 기존 가이드 페이지들 동반 노출
+const guideItems: { href: string; label: string; desc?: string; highlight?: boolean }[] = [
+  { href: "/venues", label: "행사장 추천", desc: "직접 답사한 행사장 찾기", highlight: true },
+  { href: "/guide/venue", label: "행사장 선택법", desc: "장소 고르는 기준" },
+  { href: "/guide/scale", label: "규모별 가이드", desc: "인원별 행사 준비" },
+  { href: "/guide/pricing", label: "비용 가이드", desc: "예산·견적 안내" },
+  { href: "/guide/checklist", label: "준비 체크리스트", desc: "행사 준비 항목" },
+  { href: "/guide/process", label: "진행 절차", desc: "기획부터 종료까지" },
 ];
 
 const serviceGroups: { title: string; href: string; items: { href: string; label: string; desc?: string }[] }[] = [
@@ -39,8 +50,12 @@ export default function GNB() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [serviceDropdown, setServiceDropdown] = useState(false);
   const [mobileServiceOpen, setMobileServiceOpen] = useState(false);
+  const [guideDropdown, setGuideDropdown] = useState(false);
+  const [mobileGuideOpen, setMobileGuideOpen] = useState(false);
   const dropdownTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const guideTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const serviceRef = useRef<HTMLDivElement>(null);
+  const guideRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -66,6 +81,15 @@ export default function GNB() {
 
   const handleServiceLeave = () => {
     dropdownTimeout.current = setTimeout(() => setServiceDropdown(false), 150);
+  };
+
+  const handleGuideEnter = () => {
+    if (guideTimeout.current) clearTimeout(guideTimeout.current);
+    setGuideDropdown(true);
+  };
+
+  const handleGuideLeave = () => {
+    guideTimeout.current = setTimeout(() => setGuideDropdown(false), 150);
   };
 
   const isActive = (item: typeof navItems[number]) =>
@@ -137,6 +161,27 @@ export default function GNB() {
                     onClick={(e) => handleNavClick(e, item)}
                     className={`text-sm font-medium transition-colors hover:text-white/80 ${
                       isActive(item) ? "text-white" : "text-white/40"
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                </div>
+              );
+            }
+            if (item.anchor === "/guide") {
+              return (
+                <div
+                  key={item.anchor}
+                  ref={guideRef}
+                  className="flex items-center"
+                  onMouseEnter={handleGuideEnter}
+                  onMouseLeave={handleGuideLeave}
+                >
+                  <a
+                    href={item.anchor}
+                    onClick={(e) => handleNavClick(e, item)}
+                    className={`text-sm font-medium transition-colors hover:text-white/80 ${
+                      isActive(item) || pathname.startsWith("/venues") ? "text-white" : "text-white/40"
                     }`}
                   >
                     {item.label}
@@ -253,6 +298,59 @@ export default function GNB() {
         )}
       </AnimatePresence>
 
+      {/* Desktop Guide Dropdown */}
+      <AnimatePresence>
+        {guideDropdown && (
+          <motion.div
+            initial={{ opacity: 0, scaleY: 0 }}
+            animate={{ opacity: 1, scaleY: 1 }}
+            exit={{ opacity: 0, scaleY: 0 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute top-[calc(100%-1px)] origin-top hidden md:block"
+            style={{
+              left: guideRef.current
+                ? guideRef.current.getBoundingClientRect().left
+                : undefined,
+            }}
+            onMouseEnter={handleGuideEnter}
+            onMouseLeave={handleGuideLeave}
+          >
+            <div className="min-w-[280px] border-t border-white/5 bg-[#091041] py-3 px-3 shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+              {guideItems.map((sub) => (
+                <a
+                  key={sub.href}
+                  href={sub.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setGuideDropdown(false);
+                    router.push(sub.href);
+                  }}
+                  className={`block rounded-lg px-3 py-2 transition-colors ${
+                    pathname === sub.href || (sub.href === "/venues" && pathname.startsWith("/venues"))
+                      ? "bg-white/10"
+                      : "hover:bg-white/5"
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    <span className={`text-xs font-medium ${sub.highlight ? "text-teal-300" : "text-white/80"}`}>
+                      {sub.label}
+                    </span>
+                    {sub.highlight && (
+                      <span className="rounded-full bg-teal-400/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-teal-300">
+                        NEW
+                      </span>
+                    )}
+                  </span>
+                  {sub.desc && (
+                    <span className="mt-0.5 block text-[11px] text-white/35">{sub.desc}</span>
+                  )}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
@@ -326,6 +424,67 @@ export default function GNB() {
                                     </a>
                                   ))}
                                 </div>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
+                if (item.anchor === "/guide") {
+                  return (
+                    <div key={item.anchor}>
+                      <button
+                        onClick={() => setMobileGuideOpen(!mobileGuideOpen)}
+                        className={`flex w-full items-center justify-between text-sm transition-colors hover:text-white ${
+                          isActive(item) || pathname.startsWith("/venues") ? "text-white" : "text-white/50"
+                        }`}
+                      >
+                        {item.label}
+                        <motion.span
+                          animate={{ rotate: mobileGuideOpen ? 180 : 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-white/40"
+                        >
+                          ▾
+                        </motion.span>
+                      </button>
+                      <AnimatePresence>
+                        {mobileGuideOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="flex flex-col gap-3 pl-4 pt-3">
+                              {guideItems.map((sub) => (
+                                <a
+                                  key={sub.href}
+                                  href={sub.href}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setMobileOpen(false);
+                                    setMobileGuideOpen(false);
+                                    router.push(sub.href);
+                                  }}
+                                  className={`flex items-center gap-1.5 text-sm transition-colors ${
+                                    sub.highlight
+                                      ? "text-teal-300"
+                                      : pathname === sub.href
+                                        ? "text-white"
+                                        : "text-white/40 hover:text-white"
+                                  }`}
+                                >
+                                  {sub.label}
+                                  {sub.highlight && (
+                                    <span className="rounded-full bg-teal-400/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-teal-300">
+                                      NEW
+                                    </span>
+                                  )}
+                                </a>
                               ))}
                             </div>
                           </motion.div>

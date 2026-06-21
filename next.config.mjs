@@ -18,6 +18,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        // Cloudflare R2 (행사장 이미지 — 무료 egress)
+        protocol: "https",
+        hostname: "pub-85713526e67048ca8cd0fb733b2fe10e.r2.dev",
+      },
     ],
   },
   async redirects() {
