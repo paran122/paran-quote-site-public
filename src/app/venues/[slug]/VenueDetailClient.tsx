@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import {
   Home,
@@ -80,6 +80,7 @@ export default function VenueDetailClient({
 
   // 라이트박스
   const [lbIdx, setLbIdx] = useState<number | null>(null);
+  const touchX = useRef<number | null>(null);
   const close = useCallback(() => setLbIdx(null), []);
   const go = useCallback(
     (d: number) =>
@@ -467,7 +468,17 @@ export default function VenueDetailClient({
             <span className="text-[13px] font-medium tabular-nums">{lbIdx + 1} / {gallery.length}</span>
             <button type="button" onClick={close} className="rounded-full p-1 hover:bg-white/10" aria-label="닫기"><X className="h-6 w-6" /></button>
           </div>
-          <div className="flex flex-1 items-center justify-center px-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="flex flex-1 items-center justify-center px-2"
+            onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
+            onTouchEnd={(e) => {
+              if (touchX.current == null || gallery.length < 2) return;
+              const dx = e.changedTouches[0].clientX - touchX.current;
+              touchX.current = null;
+              if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+            }}
+          >
             {gallery.length > 1 && (
               <button type="button" onClick={() => go(-1)} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/40 hover:bg-black/60" aria-label="이전"><ChevronLeft className="h-5 w-5 text-white" /></button>
             )}
