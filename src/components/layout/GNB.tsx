@@ -18,6 +18,7 @@ const navItems: { label: string; anchor: string; isPage?: boolean }[] = [
 // 가이드 드롭다운 — 행사장 추천을 최상단 강조, 기존 가이드 페이지들 동반 노출
 const guideItems: { href: string; label: string; desc?: string; highlight?: boolean }[] = [
   { href: "/venues", label: "행사장 추천", desc: "직접 답사한 행사장 찾기", highlight: true },
+  { href: "/lecturers", label: "강사 섭외", desc: "검증한 강사 풀 찾기", highlight: true },
   { href: "/guide/venue", label: "행사장 선택법", desc: "장소 고르는 기준" },
   { href: "/guide/scale", label: "규모별 가이드", desc: "인원별 행사 준비" },
   { href: "/guide/pricing", label: "비용 가이드", desc: "예산·견적 안내" },
@@ -181,7 +182,7 @@ export default function GNB() {
                     href={item.anchor}
                     onClick={(e) => handleNavClick(e, item)}
                     className={`text-sm font-medium transition-colors hover:text-white/80 ${
-                      isActive(item) || pathname.startsWith("/venues") ? "text-white" : "text-white/40"
+                      isActive(item) || pathname.startsWith("/venues") || pathname.startsWith("/lecturers") ? "text-white" : "text-white/40"
                     }`}
                   >
                     {item.label}
@@ -326,7 +327,7 @@ export default function GNB() {
                     router.push(sub.href);
                   }}
                   className={`block rounded-lg px-3 py-2 transition-colors ${
-                    pathname === sub.href || (sub.href === "/venues" && pathname.startsWith("/venues"))
+                    pathname === sub.href || (sub.href === "/venues" && pathname.startsWith("/venues")) || (sub.href === "/lecturers" && pathname.startsWith("/lecturers"))
                       ? "bg-white/10"
                       : "hover:bg-white/5"
                   }`}
@@ -438,7 +439,7 @@ export default function GNB() {
                       <button
                         onClick={() => setMobileGuideOpen(!mobileGuideOpen)}
                         className={`flex w-full items-center justify-between text-sm transition-colors hover:text-white ${
-                          isActive(item) || pathname.startsWith("/venues") ? "text-white" : "text-white/50"
+                          isActive(item) || pathname.startsWith("/venues") || pathname.startsWith("/lecturers") ? "text-white" : "text-white/50"
                         }`}
                       >
                         {item.label}
