@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, MapPin, Users, LayoutGrid, BadgeCheck, Building2 } from "lucide-react";
 import type { Venue } from "@/types";
-import { VENUE_TYPE_LABEL, VENUE_TYPE_BADGE, CAP_BUCKETS, capBucket, typeLabel } from "@/lib/venueMeta";
+import { VENUE_TYPE_BADGE, CAP_BUCKETS, capBucket, typeLabel } from "@/lib/venueMeta";
 
 const ALL = "전체";
 
