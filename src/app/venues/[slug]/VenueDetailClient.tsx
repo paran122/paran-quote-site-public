@@ -24,9 +24,13 @@ import {
   VENUE_TYPE_BADGE,
   CAP_MODE_LABEL,
   CAP_MODE_ORDER,
+  PHOTO_CAT_ORDER,
+  photoCatLabel,
   typeLabel,
   facilityLabel,
 } from "@/lib/venueMeta";
+
+type Pic = { idx: number; url: string; caption?: string | null; category?: string | null };
 
 export default function VenueDetailClient({
   venue: v,
@@ -45,21 +49,24 @@ export default function VenueDetailClient({
   const mapUrl = v.addressApprox
     ? `https://map.kakao.com/?q=${encodeURIComponent(v.addressApprox)}`
     : null;
-  const PHOTO_PREVIEW = 8;
-  const [photoExpanded, setPhotoExpanded] = useState(false);
-
-  // 사진 홀별 그룹 (공통 먼저, 그다음 홀별) — flat index 유지(라이트박스용)
-  const photoGroups = (() => {
-    const map = new Map<string, { idx: number; url: string; caption?: string | null }[]>();
-    gallery.forEach((img, idx) => {
-      const key = img.hall ?? "__common";
-      if (!map.has(key)) map.set(key, []);
-      map.get(key)!.push({ idx, url: img.url, caption: img.caption });
-    });
-    const keys = Array.from(map.keys()).sort((a, b) => (a === "__common" ? -1 : b === "__common" ? 1 : 0));
-    return keys.map((k) => ({ label: k === "__common" ? "행사장 공통" : k, items: map.get(k)! }));
-  })();
-  const multiGroup = photoGroups.length > 1;
+  // 사진: 공통(venue) + 홀별(카테고리 포함). flat index 유지(라이트박스)
+  const commonPhotos: Pic[] = [];
+  const hallPhotoMap = new Map<string, Pic[]>();
+  gallery.forEach((img, idx) => {
+    const pic: Pic = { idx, url: img.url, caption: img.caption, category: img.category };
+    if (img.hall == null) commonPhotos.push(pic);
+    else {
+      if (!hallPhotoMap.has(img.hall)) hallPhotoMap.set(img.hall, []);
+      hallPhotoMap.get(img.hall)!.push(pic);
+    }
+  });
+  // 홀 사진을 카테고리(정면·무대·로비…) 순서로 그룹
+  const hallPhotoGroups = (hallName: string) => {
+    const hp = hallPhotoMap.get(hallName) ?? [];
+    return PHOTO_CAT_ORDER
+      .map((c) => ({ cat: c, items: hp.filter((p) => (p.category || "etc") === c) }))
+      .filter((g) => g.items.length > 0);
+  };
 
   // 대관료/가격 표시 여부
   const hasRental = halls.some((h) => h.rental_min != null || h.rental_max != null);
@@ -90,7 +97,7 @@ export default function VenueDetailClient({
   }, [lbIdx, close, go]);
 
   const hasHallDetail = halls.some(
-    (h) => h.summary || (h.facilities?.length ?? 0) > 0 || (h.event_fit?.length ?? 0) > 0
+    (h) => h.summary || (h.facilities?.length ?? 0) > 0 || (h.event_fit?.length ?? 0) > 0 || (hallPhotoMap.get(h.name)?.length ?? 0) > 0
   );
 
   return (
@@ -176,47 +183,20 @@ export default function VenueDetailClient({
           </section>
         )}
 
-        {/* 현장 사진 */}
-        {gallery.length > 0 && (
+        {/* 행사장 공통 사진 */}
+        {commonPhotos.length > 0 && (
           <section className="mb-8">
             <h2 className="mb-4 text-[15px] font-semibold text-slate-800">
-              현장 사진<span className="ml-1.5 text-[13px] font-normal text-slate-400">({gallery.length}장)</span>
+              행사장 공통 사진<span className="ml-1.5 text-[13px] font-normal text-slate-400">({commonPhotos.length}장)</span>
             </h2>
-            {multiGroup ? (
-              <div className="space-y-5">
-                {photoGroups.map((g) => (
-                  <div key={g.label}>
-                    <p className="mb-2 text-[13px] font-medium text-slate-500">
-                      {g.label}<span className="ml-1.5 text-[12px] text-slate-300">{g.items.length}장</span>
-                    </p>
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-                      {g.items.map((p) => (
-                        <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="cursor-zoom-in">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={p.url} alt={p.caption ?? v.name} className="aspect-square w-full rounded-[8px] object-cover" loading="lazy" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-                  {(photoExpanded ? gallery : gallery.slice(0, PHOTO_PREVIEW)).map((img, i) => (
-                    <button key={i} type="button" onClick={() => setLbIdx(i)} className="cursor-zoom-in">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img.url} alt={img.caption ?? `${v.name} 현장 사진 ${i + 1}`} className="aspect-square w-full rounded-[8px] object-cover" loading="lazy" />
-                    </button>
-                  ))}
-                </div>
-                {gallery.length > PHOTO_PREVIEW && (
-                  <button onClick={() => setPhotoExpanded(!photoExpanded)} className="mt-3 w-full rounded-lg bg-white py-2.5 text-[13px] text-slate-500 shadow-subtle transition-colors hover:text-slate-700">
-                    {photoExpanded ? "접기" : `+${gallery.length - PHOTO_PREVIEW}장 더보기`}
-                  </button>
-                )}
-              </>
-            )}
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              {commonPhotos.map((p) => (
+                <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="cursor-zoom-in">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={p.url} alt={p.caption ?? v.name} className="aspect-square w-full rounded-[8px] object-cover" loading="lazy" />
+                </button>
+              ))}
+            </div>
           </section>
         )}
 
@@ -303,6 +283,26 @@ export default function VenueDetailClient({
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {h.event_fit!.map((f) => (
                         <span key={f} className="rounded-full bg-primary-50 px-2.5 py-1 text-[12px] font-medium text-primary-700">{f}</span>
+                      ))}
+                    </div>
+                  )}
+                  {/* 홀별 사진 — 카테고리(정면·무대·로비…)별 */}
+                  {hallPhotoGroups(h.name).length > 0 && (
+                    <div className="mt-3 space-y-3 border-t border-slate-100 pt-3">
+                      {hallPhotoGroups(h.name).map((g) => (
+                        <div key={g.cat}>
+                          <p className="mb-1.5 text-[12px] font-medium text-slate-500">
+                            {photoCatLabel(g.cat)}<span className="ml-1.5 text-[11px] text-slate-300">{g.items.length}</span>
+                          </p>
+                          <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4">
+                            {g.items.map((p) => (
+                              <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="cursor-zoom-in">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={p.url} alt={p.caption ?? h.name} className="aspect-square w-full rounded-[6px] object-cover" loading="lazy" />
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                       ))}
                     </div>
                   )}
