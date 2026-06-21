@@ -49,7 +49,7 @@ function VenueCard({ v }: { v: Venue }) {
               <span className="tabular-nums">{v.hallCount}</span>홀
             </span>
           ) : null}
-          {v.eventFit?.[0] ? <span className="ml-auto truncate text-teal-600">{v.eventFit.slice(0, 2).join("·")}</span> : null}
+          {v.eventFit?.[0] ? <span className="ml-auto truncate text-slate-500">{v.eventFit.slice(0, 2).join("·")}</span> : null}
         </div>
       </div>
     </Link>
@@ -81,7 +81,7 @@ function FilterGroup({
               onClick={() => onPick(opt)}
               className={
                 on
-                  ? "relative flex items-center justify-between rounded-md bg-teal-50/80 px-2.5 py-[7px] text-left text-[13px] font-medium text-teal-700 before:absolute before:-left-[13px] before:h-4 before:w-[2px] before:rounded-full before:bg-teal-500"
+                  ? "relative flex items-center justify-between rounded-md bg-primary-50 px-2.5 py-[7px] text-left text-[13px] font-medium text-primary-700 before:absolute before:-left-[13px] before:h-4 before:w-[2px] before:rounded-full before:bg-primary"
                   : "flex items-center justify-between rounded-md px-2.5 py-[7px] text-left text-[13px] text-slate-500 hover:bg-slate-100/60"
               }
             >
@@ -145,7 +145,7 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
             <span>/</span>
             <span className="text-slate-600">행사장 추천</span>
           </nav>
-          <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-teal-500">VENUE DATABASE</p>
+          <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-primary">VENUE DATABASE</p>
           <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h1 className="font-display text-2xl font-bold tracking-tight text-slate-900 md:text-4xl">
