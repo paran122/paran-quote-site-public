@@ -91,6 +91,8 @@ export interface VenueHall {
   summary?: string | null;
   facilities?: string[] | null;
   event_fit?: string[] | null;
+  rental_min?: number | null;
+  rental_max?: number | null;
 }
 
 export interface VenueImage {
@@ -113,6 +115,9 @@ export interface Venue {
   tagline?: string;
   overview?: string;
   strengths?: string[];
+  roomPriceMin?: number;
+  roomPriceMax?: number;
+  mealPrices?: Record<string, number> | null;
   halls: VenueHall[];
   facilities: string[];
   eventFit: string[];
