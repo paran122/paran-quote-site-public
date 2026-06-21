@@ -76,6 +76,7 @@ export default function VenueDetailClient({
   const hasFacilityPrice = hasRoom || hasMeal;
   const contacts = (v.contacts ?? []).filter((c) => c.phone || c.email || c.name);
   const hasContact = contacts.length > 0 || !!v.homepage;
+  const [hallTab, setHallTab] = useState(0);
 
   // 라이트박스
   const [lbIdx, setLbIdx] = useState<number | null>(null);
@@ -260,57 +261,79 @@ export default function VenueDetailClient({
           </section>
         )}
 
-        {/* 홀 상세 */}
-        {hasHallDetail && (
-          <section className="mb-8">
-            <h2 className="mb-4 text-[15px] font-semibold text-slate-800">홀 상세 정보</h2>
-            <div className="space-y-3">
-              {halls.map((h, i) => (
-                <div key={i} className="rounded-[10px] bg-white p-4 shadow-subtle">
-                  <p className="text-[14px] font-semibold text-slate-800">
-                    {h.name}
-                    {h.max_capacity ? <span className="ml-2 text-[12px] font-normal text-slate-400">최대 {h.max_capacity.toLocaleString()}명</span> : null}
-                  </p>
-                  {h.summary && <p className="mt-1 text-[13px] text-slate-600">{h.summary}</p>}
-                  {(h.facilities?.length ?? 0) > 0 && (
-                    <div className="mt-2.5 flex flex-wrap gap-1.5">
-                      {h.facilities!.map((f) => (
-                        <span key={f} className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[12px] text-slate-600">{facilityLabel(f)}</span>
-                      ))}
-                    </div>
-                  )}
-                  {(h.event_fit?.length ?? 0) > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {h.event_fit!.map((f) => (
-                        <span key={f} className="rounded-full bg-primary-50 px-2.5 py-1 text-[12px] font-medium text-primary-700">{f}</span>
-                      ))}
-                    </div>
-                  )}
-                  {/* 홀별 사진 — 카테고리(정면·무대·로비…)별 */}
-                  {hallPhotoGroups(h.name).length > 0 && (
-                    <div className="mt-3 space-y-3 border-t border-slate-100 pt-3">
-                      {hallPhotoGroups(h.name).map((g) => (
-                        <div key={g.cat}>
-                          <p className="mb-1.5 text-[12px] font-medium text-slate-500">
-                            {photoCatLabel(g.cat)}<span className="ml-1.5 text-[11px] text-slate-300">{g.items.length}</span>
-                          </p>
-                          <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4">
-                            {g.items.map((p) => (
-                              <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="cursor-zoom-in">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={p.url} alt={p.caption ?? h.name} className="aspect-square w-full rounded-[6px] object-cover" loading="lazy" />
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+        {/* 홀 상세 — 인트라넷처럼 홀 탭 전환 */}
+        {hasHallDetail && halls.length > 0 && (() => {
+          const ti = halls[hallTab] ? hallTab : 0;
+          const h = halls[ti];
+          const photoGs = hallPhotoGroups(h.name);
+          return (
+            <section className="mb-8">
+              <h2 className="mb-4 text-[15px] font-semibold text-slate-800">홀 상세 정보</h2>
+              {halls.length > 1 && (
+                <div className="mb-4 flex flex-wrap gap-1.5">
+                  {halls.map((hx, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setHallTab(i)}
+                      className={
+                        ti === i
+                          ? "flex items-center gap-1.5 rounded-full bg-slate-900 px-3.5 py-1.5 text-[13px] font-medium text-white"
+                          : "flex items-center gap-1.5 rounded-full bg-slate-100 px-3.5 py-1.5 text-[13px] font-medium text-slate-500 hover:bg-slate-200"
+                      }
+                    >
+                      {hx.name}
+                      {hx.max_capacity ? <span className="tabular-nums opacity-70">{hx.max_capacity.toLocaleString()}석</span> : null}
+                    </button>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </section>
-        )}
+              )}
+              <div className="rounded-[10px] bg-white p-4 shadow-subtle">
+                <p className="text-[14px] font-semibold text-slate-800">
+                  {h.name}
+                  {h.max_capacity ? <span className="ml-2 text-[12px] font-normal text-slate-400">최대 {h.max_capacity.toLocaleString()}명</span> : null}
+                </p>
+                {h.summary && <p className="mt-1 text-[13px] text-slate-600">{h.summary}</p>}
+                {(h.facilities?.length ?? 0) > 0 && (
+                  <div className="mt-2.5 flex flex-wrap gap-1.5">
+                    {h.facilities!.map((f) => (
+                      <span key={f} className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[12px] text-slate-600">{facilityLabel(f)}</span>
+                    ))}
+                  </div>
+                )}
+                {(h.event_fit?.length ?? 0) > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {h.event_fit!.map((f) => (
+                      <span key={f} className="rounded-full bg-primary-50 px-2.5 py-1 text-[12px] font-medium text-primary-700">{f}</span>
+                    ))}
+                  </div>
+                )}
+                {/* 홀별 사진 — 카테고리(정면·무대·로비…)별 */}
+                {photoGs.length > 0 ? (
+                  <div className="mt-3 space-y-3 border-t border-slate-100 pt-3">
+                    {photoGs.map((g) => (
+                      <div key={g.cat}>
+                        <p className="mb-1.5 text-[12px] font-medium text-slate-500">
+                          {photoCatLabel(g.cat)}<span className="ml-1.5 text-[11px] text-slate-300">{g.items.length}</span>
+                        </p>
+                        <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4">
+                          {g.items.map((p) => (
+                            <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="cursor-zoom-in">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={p.url} alt={p.caption ?? h.name} className="aspect-square w-full rounded-[6px] object-cover" loading="lazy" />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-3 border-t border-slate-100 pt-3 text-[12px] text-slate-400">등록된 사진이 없습니다.</p>
+                )}
+              </div>
+            </section>
+          );
+        })()}
 
         {/* 보유 시설 */}
         {v.facilities?.length > 0 && (
