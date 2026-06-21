@@ -35,9 +35,11 @@ type Pic = { idx: number; url: string; caption?: string | null; category?: strin
 export default function VenueDetailClient({
   venue: v,
   related,
+  faq = [],
 }: {
   venue: Venue;
   related: Portfolio[];
+  faq?: { q: string; a: string }[];
 }) {
   const badge = VENUE_TYPE_BADGE[v.venueType ?? "etc"] ?? VENUE_TYPE_BADGE.etc;
   const gallery = v.images ?? [];
@@ -430,6 +432,21 @@ export default function VenueDetailClient({
               )}
             </div>
             <p className="mt-2 text-[12px] text-slate-400">행사 진행은 파란컴퍼니가 답사·기획·운영까지 함께합니다.</p>
+          </section>
+        )}
+
+        {/* 자주 묻는 질문 (화면 표시 + JSON-LD FAQPage와 동일) */}
+        {faq.length > 0 && (
+          <section className="mb-8">
+            <h2 className="mb-3 text-[15px] font-semibold text-slate-800">자주 묻는 질문</h2>
+            <div className="divide-y divide-slate-100 overflow-hidden rounded-[10px] border border-slate-200 bg-white">
+              {faq.map((f, i) => (
+                <div key={i} className="px-4 py-3.5">
+                  <p className="text-[14px] font-semibold text-slate-800">Q. {f.q}</p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600">{f.a}</p>
+                </div>
+              ))}
+            </div>
           </section>
         )}
 
