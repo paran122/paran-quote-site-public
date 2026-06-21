@@ -22,9 +22,11 @@ export const CAP_MODE_LABEL: Record<string, string> = {
   classroom: "교실식",
   reception: "리셉션",
   u_shape: "U자형",
+  floor1: "1층석",
+  floor2: "2층석",
 };
 
-export const CAP_MODE_ORDER = ["theater", "banquet", "classroom", "reception", "u_shape"];
+export const CAP_MODE_ORDER = ["theater", "banquet", "classroom", "reception", "u_shape", "floor1", "floor2"];
 
 // 홀 보유 시설 코드 → 한글
 export const FACILITY_LABEL: Record<string, string> = {
