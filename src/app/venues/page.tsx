@@ -4,9 +4,9 @@ import type { Venue } from "@/types";
 import VenuesClient from "./VenuesClient";
 
 export const metadata: Metadata = {
-  title: "답사 행사장 — 파란컴퍼니가 직접 검증한 행사장 | 파란컴퍼니",
+  title: "행사장 정보 | 파란컴퍼니",
   description:
-    "파란컴퍼니가 직접 답사·검증한 행사장 데이터베이스. 지역·수용 인원·행사 유형으로 후보를 찾고, 행사에 딱 맞는 장소를 추천받으세요.",
+    "지역·수용 인원·유형별 행사장 정보입니다. 문의 주시면 안내해 드립니다.",
   alternates: { canonical: "https://parancompany.co.kr/venues" },
 };
 
@@ -21,8 +21,8 @@ export default async function VenuesPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "파란컴퍼니 답사 행사장",
-    description: "파란컴퍼니가 직접 답사·검증한 행사장 목록입니다.",
+    name: "파란컴퍼니 행사장 정보",
+    description: "파란컴퍼니 행사장 정보 목록입니다.",
     url: "https://parancompany.co.kr/venues",
     mainEntity: {
       "@type": "ItemList",

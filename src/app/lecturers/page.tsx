@@ -4,9 +4,9 @@ import type { Lecturer } from "@/types";
 import LecturersClient from "./LecturersClient";
 
 export const metadata: Metadata = {
-  title: "강사 섭외 — 파란컴퍼니가 검증한 강사 풀 | 파란컴퍼니",
+  title: "강사 정보 | 파란컴퍼니",
   description:
-    "파란컴퍼니가 직접 협업·검증한 강사 데이터베이스. 분야별로 강사를 찾고 강의 주제·약력을 확인한 뒤, 섭외부터 일정 조율까지 대행받으세요.",
+    "분야별 강사 정보입니다. 강의 주제·약력을 확인하고 문의해 주세요.",
   alternates: { canonical: "https://parancompany.co.kr/lecturers" },
 };
 
@@ -21,8 +21,8 @@ export default async function LecturersPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "파란컴퍼니 강사 풀",
-    description: "파란컴퍼니가 협업·검증한 강사 목록입니다.",
+    name: "파란컴퍼니 강사 정보",
+    description: "파란컴퍼니 강사 정보 목록입니다.",
     url: "https://parancompany.co.kr/lecturers",
     mainEntity: {
       "@type": "ItemList",
