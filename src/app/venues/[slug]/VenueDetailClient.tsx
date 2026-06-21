@@ -3,14 +3,15 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
+  Home,
   MapPin,
   BadgeCheck,
-  MessageSquareText,
-  Link as LinkIcon,
   Building2,
+  Users,
   Camera,
-  Images,
-  ShieldCheck,
+  Tag,
+  ImageIcon,
+  ArrowRight,
   X,
   ChevronLeft,
   ChevronRight,
@@ -41,8 +42,10 @@ export default function VenueDetailClient({
   const mapUrl = v.addressApprox
     ? `https://map.kakao.com/?q=${encodeURIComponent(v.addressApprox)}`
     : null;
+  const PHOTO_PREVIEW = 8;
+  const [photoExpanded, setPhotoExpanded] = useState(false);
 
-  // ── 라이트박스 ──
+  // 라이트박스
   const [lbIdx, setLbIdx] = useState<number | null>(null);
   const close = useCallback(() => setLbIdx(null), []);
   const go = useCallback(
@@ -61,190 +64,140 @@ export default function VenueDetailClient({
     return () => document.removeEventListener("keydown", onKey);
   }, [lbIdx, close, go]);
 
-  const sectionH = (icon: React.ReactNode, title: string, badgeText?: string) => (
-    <h2 className="flex items-center gap-2 border-b border-slate-100 pb-2.5 font-display text-base font-bold text-slate-900">
-      <span className="text-teal-500">{icon}</span>
-      {title}
-      {badgeText && (
-        <span className="rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-semibold text-teal-600">
-          {badgeText}
-        </span>
-      )}
-    </h2>
+  const hasHallDetail = halls.some(
+    (h) => h.summary || (h.facilities?.length ?? 0) > 0 || (h.event_fit?.length ?? 0) > 0
   );
 
-  const card = "rounded-2xl border border-slate-200/80 bg-white p-5 shadow-subtle md:p-6";
-
   return (
-    <div className="bg-slate-50">
-      <div className="mx-auto max-w-[760px] px-4 py-6 md:px-5">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-xs text-slate-400">
-          <Link href="/" className="hover:text-slate-600">홈</Link>
+    <div className="pt-[56px] min-h-screen bg-slate-50">
+      <div className="mx-auto max-w-[960px] px-6 py-8">
+        {/* 브레드크럼 */}
+        <nav className="mb-6 flex items-center gap-1.5 text-[12px] text-slate-400">
+          <Link href="/" className="transition-colors hover:text-slate-600"><Home size={13} /></Link>
           <span>/</span>
-          <Link href="/guide" className="hover:text-slate-600">가이드</Link>
+          <Link href="/guide" className="transition-colors hover:text-slate-600">가이드</Link>
           <span>/</span>
-          <Link href="/venues" className="hover:text-slate-600">행사장 추천</Link>
+          <Link href="/venues" className="transition-colors hover:text-slate-600">행사장 추천</Link>
           <span>/</span>
-          <span className="text-slate-700">{v.name}</span>
+          <span className="text-slate-600">{v.name}</span>
         </nav>
 
-        {/* Hero */}
-        <div className="relative mt-4 overflow-hidden rounded-2xl">
-          <div className="flex aspect-[16/9] items-center justify-center bg-gradient-to-br from-teal-200 to-sky-300">
-            {cover ? (
-              <button
-                type="button"
-                onClick={() => gallery.length && setLbIdx(0)}
-                className="h-full w-full cursor-zoom-in"
-                aria-label="사진 크게 보기"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={cover} alt={v.name} className="h-full w-full object-cover" />
-              </button>
-            ) : (
-              <MapPin className="h-10 w-10 text-white/50" />
-            )}
+        {/* 헤더 */}
+        <div className="mb-6">
+          <div className="mb-2 flex items-center gap-2">
+            <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium ${badge}`}>{typeLabel(v.venueType)}</span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-medium text-teal-600">
+              <BadgeCheck size={12} />현장 답사 완료
+            </span>
           </div>
-          <span className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-teal-500/90 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
-            <BadgeCheck className="h-3.5 w-3.5" />현장 답사 완료
-          </span>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{v.name}</h1>
+          {v.tagline && <p className="mt-2 text-[14px] text-slate-500">{v.tagline}</p>}
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-slate-500">
+            <span className="flex items-center gap-1"><Users size={14} />최대 {v.maxCapacity ? v.maxCapacity.toLocaleString() : "—"}명</span>
+            <span className="flex items-center gap-1"><Building2 size={14} />홀 {v.hallCount ?? halls.length}개</span>
+            {v.region && <span className="flex items-center gap-1"><MapPin size={14} />{v.region}</span>}
+          </div>
+        </div>
+
+        {/* 히어로 */}
+        <div className="relative mb-6 aspect-[16/10] overflow-hidden rounded-[10px] bg-slate-100">
+          {cover ? (
+            <button type="button" onClick={() => gallery.length && setLbIdx(0)} className="h-full w-full cursor-zoom-in">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={cover} alt={v.name} className="h-full w-full object-cover" />
+            </button>
+          ) : (
+            <div className="flex h-full w-full items-center justify-center"><MapPin className="h-8 w-8 text-slate-300" /></div>
+          )}
           {gallery.length > 0 && (
             <button
               type="button"
               onClick={() => setLbIdx(0)}
-              className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-slate-900/65 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur"
+              className="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-black/50 px-3 py-1 text-[12px] font-medium text-white"
             >
-              <Camera className="h-3.5 w-3.5" />{gallery.length}
+              <Camera size={13} />{gallery.length}
             </button>
           )}
         </div>
 
-        {/* Title block */}
-        <div className="mt-4">
-          <span className={`inline-block rounded-full px-2.5 py-1 text-[11px] font-semibold ${badge}`}>
-            {typeLabel(v.venueType)}
-          </span>
-          <h1 className="mt-2 font-display text-2xl font-bold text-slate-900 md:text-3xl">{v.name}</h1>
-          {v.tagline && <p className="mt-1.5 text-sm text-slate-500">{v.tagline}</p>}
-          <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-500">
-            <span>수용 <b className="text-slate-700">{v.maxCapacity ? v.maxCapacity.toLocaleString() : "—"}</b>명</span>
-            <span className="text-slate-300">·</span>
-            <span>홀 <b className="text-slate-700">{v.hallCount ?? halls.length}</b></span>
-            {v.region && (<><span className="text-slate-300">·</span><span>{v.region}</span></>)}
-          </p>
-
-          {/* Facts */}
-          <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl border border-slate-200/80 bg-white p-4 shadow-subtle">
-            <div className="text-center">
-              <p className="font-display text-lg font-bold tabular-nums text-slate-900">{v.maxCapacity ? v.maxCapacity.toLocaleString() : "—"}</p>
-              <p className="text-[11px] text-slate-400">최대 수용</p>
-            </div>
-            <div className="border-x border-slate-100 text-center">
-              <p className="font-display text-lg font-bold tabular-nums text-slate-900">{v.hallCount ?? halls.length}</p>
-              <p className="text-[11px] text-slate-400">보유 홀</p>
-            </div>
-            <div className="text-center">
-              <p className="font-display text-lg font-bold tabular-nums text-slate-900">{gallery.length}</p>
-              <p className="text-[11px] text-slate-400">현장 사진</p>
-            </div>
+        {/* 한눈에 보기 */}
+        <div className="mb-8 rounded-[12px] bg-white p-5 shadow-subtle sm:p-6">
+          <h2 className="mb-4 text-[14px] font-semibold text-slate-800">한눈에 보기</h2>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <Fact icon={<Users size={15} />} label="최대 수용" value={v.maxCapacity ? `${v.maxCapacity.toLocaleString()}명` : "—"} />
+            <Fact icon={<Building2 size={15} />} label="보유 홀" value={`${v.hallCount ?? halls.length}개`} />
+            <Fact icon={<MapPin size={15} />} label="지역" value={v.region ?? "—"} />
+            <Fact icon={<Tag size={15} />} label="유형" value={typeLabel(v.venueType)} />
           </div>
-
-          {/* Address */}
           {v.addressApprox && (
             <a
               href={mapUrl ?? "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-4 py-3 text-sm text-slate-600 shadow-subtle hover:border-teal-300"
+              className="mt-4 flex items-center gap-2 border-t border-slate-100 pt-4 text-[13px] text-slate-600 transition-colors hover:text-primary"
             >
-              <MapPin className="h-4 w-4 shrink-0 text-teal-500" />
+              <MapPin size={14} className="shrink-0 text-slate-400" />
               <span className="flex-1">{v.addressApprox}</span>
-              <span className="text-xs font-semibold text-teal-600">지도 ›</span>
+              <span className="text-[12px] font-medium text-primary">카카오맵 ›</span>
             </a>
           )}
-
-          {/* 적합 행사 */}
-          {v.eventFit?.length > 0 && (
-            <div className="mt-3 flex flex-wrap items-center gap-1.5">
-              <span className="text-xs font-semibold text-teal-600">🎯 적합 행사</span>
-              {v.eventFit.map((f) => (
-                <span key={f} className="rounded-full border border-teal-200 bg-teal-50/60 px-2.5 py-1 text-[12px] font-medium text-teal-700">{f}</span>
-              ))}
-            </div>
-          )}
-
-          {/* CTA */}
-          <Link
-            href="/#contact"
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white hover:bg-blue-500"
-          >
-            <MessageSquareText className="h-4 w-4" />이 행사장으로 행사 문의
-          </Link>
-          <p className="mt-2 text-center text-[11px] text-slate-400">대관료·담당자 정보는 문의 시 안내드립니다</p>
         </div>
 
         {/* 시설 소개 */}
         {v.overview && (
-          <section className={`mt-3 ${card}`}>
-            {sectionH(<Building2 className="h-4 w-4" />, "시설 소개")}
-            <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-slate-600">{v.overview}</p>
+          <section className="mb-8">
+            <h2 className="mb-3 text-[15px] font-semibold text-slate-800">시설 소개</h2>
+            <p className="whitespace-pre-line text-[16px] leading-[1.8] text-slate-600">{v.overview}</p>
           </section>
         )}
 
         {/* 현장 사진 */}
         {gallery.length > 0 && (
-          <section className={`mt-3 ${card}`}>
-            {sectionH(<Images className="h-4 w-4" />, "현장 사진", `${gallery.length}`)}
-            <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4">
-              {gallery.map((img, i) => (
+          <section className="mb-8">
+            <h2 className="mb-4 text-[15px] font-semibold text-slate-800">
+              현장 사진<span className="ml-1.5 text-[13px] font-normal text-slate-400">({gallery.length}장)</span>
+            </h2>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              {(photoExpanded ? gallery : gallery.slice(0, PHOTO_PREVIEW)).map((img, i) => (
                 <button key={i} type="button" onClick={() => setLbIdx(i)} className="cursor-zoom-in">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={img.url}
-                    alt={img.caption ?? `${v.name} 현장 사진 ${i + 1}`}
-                    className="aspect-square w-full rounded-lg object-cover"
-                    loading="lazy"
-                  />
+                  <img src={img.url} alt={img.caption ?? `${v.name} 현장 사진 ${i + 1}`} className="aspect-square w-full rounded-[8px] object-cover" loading="lazy" />
                 </button>
               ))}
             </div>
+            {gallery.length > PHOTO_PREVIEW && (
+              <button onClick={() => setPhotoExpanded(!photoExpanded)} className="mt-3 w-full rounded-lg bg-white py-2.5 text-[13px] text-slate-500 shadow-subtle transition-colors hover:text-slate-700">
+                {photoExpanded ? "접기" : `+${gallery.length - PHOTO_PREVIEW}장 더보기`}
+              </button>
+            )}
           </section>
         )}
 
-        {/* ── 홀별 안내 divider ── */}
-        {halls.length > 0 && (
-          <div className="mt-6 mb-1 rounded-lg border-l-[3px] border-teal-500 bg-teal-50/60 px-4 py-2.5">
-            <span className="flex items-center gap-1.5 text-sm font-bold text-teal-700">
-              <Building2 className="h-4 w-4" />홀별 안내
-            </span>
-          </div>
-        )}
-
-        {/* 홀 안내 표 */}
+        {/* 홀 안내 (수용 표) */}
         {modes.length > 0 && (
-          <section className={`mt-2 ${card}`}>
-            {sectionH(<Building2 className="h-4 w-4" />, "홀 안내", `${halls.length}개`)}
-            <p className="mt-2 text-xs text-slate-400">홀별 수용 인원을 비교해 보세요.</p>
-            <div className="mt-3 overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="text-[12px] text-slate-500">
-                  <tr className="border-b border-slate-100">
-                    <th className="px-2 py-2 text-left font-semibold">홀</th>
+          <section className="mb-8">
+            <h2 className="mb-4 text-[15px] font-semibold text-slate-800">
+              홀 안내<span className="ml-1.5 text-[13px] font-normal text-slate-400">({halls.length}개)</span>
+            </h2>
+            <div className="overflow-x-auto rounded-[10px] border border-slate-200 bg-white">
+              <table className="w-full text-[13px]">
+                <thead className="border-b border-slate-100 bg-slate-50 text-[12px] text-slate-500">
+                  <tr>
+                    <th className="px-4 py-2.5 text-left font-medium">홀</th>
                     {modes.map((m) => (
-                      <th key={m} className="px-2 py-2 text-right font-semibold">{CAP_MODE_LABEL[m]}</th>
+                      <th key={m} className="px-3 py-2.5 text-right font-medium">{CAP_MODE_LABEL[m]}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-50">
                   {halls.map((h, i) => (
                     <tr key={i}>
-                      <td className="px-2 py-2.5 font-medium text-slate-700">
+                      <td className="px-4 py-2.5 font-medium text-slate-700">
                         {h.name}
                         {h.floor ? <span className="ml-1 text-[11px] text-slate-400">({h.floor})</span> : null}
                       </td>
                       {modes.map((m) => (
-                        <td key={m} className="px-2 py-2.5 text-right tabular-nums text-slate-600">
+                        <td key={m} className="px-3 py-2.5 text-right tabular-nums text-slate-600">
                           {h.capacity_modes?.[m] != null ? h.capacity_modes[m].toLocaleString() : "—"}
                         </td>
                       ))}
@@ -256,29 +209,29 @@ export default function VenueDetailClient({
           </section>
         )}
 
-        {/* 홀 상세 카드 */}
-        {halls.some((h) => h.summary || (h.facilities?.length ?? 0) > 0 || (h.event_fit?.length ?? 0) > 0) && (
-          <section className={`mt-3 ${card}`}>
-            {sectionH(<Building2 className="h-4 w-4" />, "홀 상세 정보")}
-            <div className="mt-3 space-y-3">
+        {/* 홀 상세 */}
+        {hasHallDetail && (
+          <section className="mb-8">
+            <h2 className="mb-4 text-[15px] font-semibold text-slate-800">홀 상세 정보</h2>
+            <div className="space-y-3">
               {halls.map((h, i) => (
-                <div key={i} className="rounded-xl border border-slate-100 bg-slate-50/60 p-4">
-                  <p className="font-display text-sm font-bold text-slate-800">
+                <div key={i} className="rounded-[10px] bg-white p-4 shadow-subtle">
+                  <p className="text-[14px] font-semibold text-slate-800">
                     {h.name}
-                    {h.max_capacity ? <span className="ml-2 text-xs font-medium text-slate-400">최대 {h.max_capacity.toLocaleString()}명</span> : null}
+                    {h.max_capacity ? <span className="ml-2 text-[12px] font-normal text-slate-400">최대 {h.max_capacity.toLocaleString()}명</span> : null}
                   </p>
                   {h.summary && <p className="mt-1 text-[13px] text-slate-600">{h.summary}</p>}
                   {(h.facilities?.length ?? 0) > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1.5">
+                    <div className="mt-2.5 flex flex-wrap gap-1.5">
                       {h.facilities!.map((f) => (
-                        <span key={f} className="rounded-full bg-blue-50 px-2.5 py-1 text-[12px] font-medium text-blue-600">{facilityLabel(f)}</span>
+                        <span key={f} className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[12px] text-slate-600">{facilityLabel(f)}</span>
                       ))}
                     </div>
                   )}
                   {(h.event_fit?.length ?? 0) > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {h.event_fit!.map((f) => (
-                        <span key={f} className="rounded-full border border-teal-200 bg-teal-50/50 px-2.5 py-1 text-[12px] font-medium text-teal-700">{f}</span>
+                        <span key={f} className="rounded-full bg-primary-50 px-2.5 py-1 text-[12px] font-medium text-primary-700">{f}</span>
                       ))}
                     </div>
                   )}
@@ -290,11 +243,23 @@ export default function VenueDetailClient({
 
         {/* 보유 시설 */}
         {v.facilities?.length > 0 && (
-          <section className={`mt-3 ${card}`}>
-            {sectionH(<Building2 className="h-4 w-4" />, "보유 시설")}
-            <div className="mt-3 flex flex-wrap gap-2">
+          <section className="mb-8">
+            <h2 className="mb-3 text-[15px] font-semibold text-slate-800">보유 시설</h2>
+            <div className="flex flex-wrap gap-1.5">
               {v.facilities.map((f) => (
-                <span key={f} className="rounded-full bg-blue-50 px-3 py-1.5 text-[13px] font-medium text-blue-600">{facilityLabel(f)}</span>
+                <span key={f} className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[12px] text-slate-600">{facilityLabel(f)}</span>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 이런 행사에 적합 */}
+        {v.eventFit?.length > 0 && (
+          <section className="mb-8">
+            <h2 className="mb-3 text-[15px] font-semibold text-slate-800">이런 행사에 적합</h2>
+            <div className="flex flex-wrap gap-1.5">
+              {v.eventFit.map((f) => (
+                <span key={f} className="rounded-full bg-primary-50 px-3 py-1.5 text-[13px] font-medium text-primary-700">{f}</span>
               ))}
             </div>
           </section>
@@ -302,12 +267,14 @@ export default function VenueDetailClient({
 
         {/* 답사 코멘트 */}
         {(v.strengths?.length ?? 0) > 0 && (
-          <section className={`mt-3 ${card}`}>
-            {sectionH(<ShieldCheck className="h-4 w-4" />, "답사 코멘트", "답사 기반")}
-            <ul className="mt-3 space-y-2">
+          <section className="mb-8">
+            <h2 className="mb-3 text-[15px] font-semibold text-slate-800">
+              답사 코멘트<span className="ml-1.5 text-[12px] font-normal text-slate-400">파란 현장 답사 기반</span>
+            </h2>
+            <ul className="space-y-2.5">
               {v.strengths!.map((s, i) => (
-                <li key={i} className="flex gap-2.5 text-sm text-slate-600">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-100 text-[11px] font-bold text-teal-700">{i + 1}</span>
+                <li key={i} className="flex gap-2.5 text-[14px] text-slate-600">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[11px] font-bold text-slate-500">{i + 1}</span>
                   <span>{s}</span>
                 </li>
               ))}
@@ -317,27 +284,23 @@ export default function VenueDetailClient({
 
         {/* 파란 진행 사례 */}
         {related.length > 0 && (
-          <section className="mt-3 rounded-2xl border border-blue-100 bg-blue-50/40 p-5 md:p-6">
-            <p className="flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-blue-500">
-              <LinkIcon className="h-3.5 w-3.5" />파란 진행 사례
-            </p>
-            <p className="mt-1.5 text-sm text-slate-600">파란컴퍼니가 이 행사장에서 직접 진행한 행사입니다.</p>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <section className="mb-8">
+            <h2 className="mb-1 text-[15px] font-semibold text-slate-800">파란 진행 사례</h2>
+            <p className="mb-4 text-[13px] text-slate-400">파란컴퍼니가 이 행사장에서 직접 진행한 행사입니다.</p>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               {related.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/work/${p.slug ?? p.id}`}
-                  className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 hover:border-blue-300"
-                >
-                  <div className="h-12 w-16 shrink-0 overflow-hidden rounded bg-gradient-to-br from-slate-100 to-slate-200">
+                <Link key={p.id} href={`/work/${p.slug ?? p.id}`} className="group block overflow-hidden rounded-xl border border-slate-100 bg-white transition-shadow hover:shadow-md">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
                     {p.imageUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={p.imageUrl} alt={p.title} className="h-full w-full object-cover" />
-                    ) : null}
+                      <img src={p.imageUrl} alt={p.title} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center"><ImageIcon className="h-6 w-6 text-slate-300" /></div>
+                    )}
                   </div>
-                  <div className="min-w-0">
-                    <p className="truncate text-[13px] font-semibold text-slate-800">{p.title}</p>
-                    <p className="text-[11px] text-slate-400">{[p.client, p.year].filter(Boolean).join(" · ")}</p>
+                  <div className="p-3">
+                    <p className="line-clamp-1 text-[14px] font-semibold leading-snug text-slate-800">{p.title}</p>
+                    <p className="mt-1 text-[11px] text-slate-400">{[p.client, p.year].filter(Boolean).join(" · ")}</p>
                   </div>
                 </Link>
               ))}
@@ -345,66 +308,75 @@ export default function VenueDetailClient({
           </section>
         )}
 
-        {/* Bottom CTA */}
-        <div className="mt-6 rounded-2xl bg-[#091041] p-6 text-center">
-          <p className="font-display text-lg font-bold text-white">이 행사장으로 행사를 준비하시나요?</p>
-          <p className="mt-1.5 text-sm text-white/60">파란컴퍼니가 답사부터 운영까지 함께합니다.</p>
-          <Link
-            href="/#contact"
-            className="mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-500"
-          >
-            <MessageSquareText className="h-4 w-4" />행사 문의하기
-          </Link>
+        {/* 하단 CTA */}
+        <div className="mt-2 flex flex-col items-start justify-between gap-3 border-t border-slate-200 py-8 sm:flex-row sm:items-center">
+          <div>
+            <p className="text-[15px] font-semibold text-slate-800">이 행사장으로 행사를 준비하시나요?</p>
+            <p className="mt-0.5 text-[13px] text-slate-400">대관료·담당자 정보는 문의 시 안내드립니다.</p>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <Link href="/venues" className="btn-ghost btn-md">목록으로</Link>
+            <Link href="/#contact" className="btn-primary btn-md">행사 문의하기</Link>
+          </div>
         </div>
+
+        {/* 내부 링크 배너 */}
+        <Link
+          href="/guide/venue"
+          className="group mb-4 flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50/50 px-6 py-5 transition-all hover:border-blue-200 hover:bg-blue-50"
+        >
+          <div>
+            <p className="text-[15px] font-semibold text-slate-800">행사장 고르는 기준이 궁금하신가요?</p>
+            <p className="mt-1 text-[13px] text-slate-500">인원·예산·동선으로 알아보는 장소 선택 가이드</p>
+          </div>
+          <span className="flex shrink-0 items-center gap-1 text-[14px] font-medium text-blue-600 transition-transform group-hover:translate-x-0.5">
+            가이드<ArrowRight className="h-4 w-4" />
+          </span>
+        </Link>
       </div>
 
       {/* 라이트박스 */}
       {lbIdx != null && gallery[lbIdx] && (
-        <div
-          className="fixed inset-0 z-[100] flex flex-col bg-slate-950/95"
-          onClick={close}
-        >
+        <div className="fixed inset-0 z-[100] flex flex-col bg-slate-950/95" onClick={close}>
           <div className="flex items-center justify-between px-4 py-3 text-white">
-            <span className="max-w-[60%] truncate text-sm font-semibold">{gallery[lbIdx].caption ?? v.name}</span>
-            <span className="text-sm font-semibold">{lbIdx + 1} / {gallery.length}</span>
-            <button type="button" onClick={close} className="rounded-full p-1 hover:bg-white/10" aria-label="닫기">
-              <X className="h-6 w-6" />
-            </button>
+            <span className="max-w-[55%] truncate text-[13px] font-medium">{gallery[lbIdx].caption ?? v.name}</span>
+            <span className="text-[13px] font-medium tabular-nums">{lbIdx + 1} / {gallery.length}</span>
+            <button type="button" onClick={close} className="rounded-full p-1 hover:bg-white/10" aria-label="닫기"><X className="h-6 w-6" /></button>
           </div>
           <div className="flex flex-1 items-center justify-center px-2" onClick={(e) => e.stopPropagation()}>
             {gallery.length > 1 && (
-              <button type="button" onClick={() => go(-1)} className="rounded-full p-2 text-white hover:bg-white/10" aria-label="이전">
-                <ChevronLeft className="h-8 w-8" />
-              </button>
+              <button type="button" onClick={() => go(-1)} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/40 hover:bg-black/60" aria-label="이전"><ChevronLeft className="h-5 w-5 text-white" /></button>
             )}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={gallery[lbIdx].url}
-              alt={gallery[lbIdx].caption ?? v.name}
-              className="max-h-[78vh] max-w-full rounded-lg object-contain"
-            />
+            <img src={gallery[lbIdx].url} alt={gallery[lbIdx].caption ?? v.name} className="mx-2 max-h-[78vh] max-w-full rounded-[8px] object-contain" />
             {gallery.length > 1 && (
-              <button type="button" onClick={() => go(1)} className="rounded-full p-2 text-white hover:bg-white/10" aria-label="다음">
-                <ChevronRight className="h-8 w-8" />
-              </button>
+              <button type="button" onClick={() => go(1)} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/40 hover:bg-black/60" aria-label="다음"><ChevronRight className="h-5 w-5 text-white" /></button>
             )}
           </div>
           {gallery.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto px-4 py-3" onClick={(e) => e.stopPropagation()}>
+            <div className="scrollbar-hide flex gap-1.5 overflow-x-auto px-4 py-3" onClick={(e) => e.stopPropagation()}>
               {gallery.map((img, i) => (
                 <button key={i} type="button" onClick={() => setLbIdx(i)} className="shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={img.url}
-                    alt=""
-                    className={`h-14 w-14 rounded-md object-cover transition-opacity ${i === lbIdx ? "ring-2 ring-white" : "opacity-50 hover:opacity-90"}`}
-                  />
+                  <img src={img.url} alt="" className={`h-12 w-16 rounded-[6px] object-cover transition-opacity ${i === lbIdx ? "ring-2 ring-white" : "opacity-50 hover:opacity-100"}`} />
                 </button>
               ))}
             </div>
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+function Fact({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return (
+    <div className="flex items-start gap-2.5">
+      <span className="mt-0.5 shrink-0 text-slate-400">{icon}</span>
+      <div>
+        <p className="text-[11px] font-medium text-slate-400">{label}</p>
+        <p className="text-[13px] text-slate-700">{value}</p>
+      </div>
     </div>
   );
 }
