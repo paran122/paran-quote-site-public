@@ -24,7 +24,7 @@ function buildFaq(l: Lecturer): { q: string; a: string }[] {
   }
   if (l.books?.length) {
     faq.push({
-      q: `${l.name} 강사의 저서·대표 콘텐츠는 무엇인가요?`,
+      q: `${l.name} 강사의 주요 강의 이력은 무엇인가요?`,
       a: `${l.books.join(", ")} 등이 있습니다.`,
     });
   }
@@ -69,9 +69,6 @@ export default async function LecturerDetailPage({ params }: Props) {
     ...(l.coverUrl ? { image: l.coverUrl } : {}),
     ...(l.images?.length ? { image: l.images.slice(0, 8).map((i) => i.url) } : {}),
     ...(l.category ? { knowsAbout: l.category } : {}),
-    ...(l.books?.length
-      ? { workExample: l.books.map((b) => ({ "@type": "Book", name: b })) }
-      : {}),
     worksFor: {
       "@type": "Organization",
       name: "파란컴퍼니",
