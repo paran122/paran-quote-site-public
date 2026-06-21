@@ -45,6 +45,26 @@ export default function VenueDetailClient({
   const PHOTO_PREVIEW = 8;
   const [photoExpanded, setPhotoExpanded] = useState(false);
 
+  // 사진 홀별 그룹 (공통 먼저, 그다음 홀별) — flat index 유지(라이트박스용)
+  const photoGroups = (() => {
+    const map = new Map<string, { idx: number; url: string; caption?: string | null }[]>();
+    gallery.forEach((img, idx) => {
+      const key = img.hall ?? "__common";
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push({ idx, url: img.url, caption: img.caption });
+    });
+    const keys = Array.from(map.keys()).sort((a, b) => (a === "__common" ? -1 : b === "__common" ? 1 : 0));
+    return keys.map((k) => ({ label: k === "__common" ? "행사장 공통" : k, items: map.get(k)! }));
+  })();
+  const multiGroup = photoGroups.length > 1;
+
+  // 대관료/가격 표시 여부
+  const hasRental = halls.some((h) => h.rental_min != null || h.rental_max != null);
+  const meal = v.mealPrices ?? {};
+  const hasRoom = v.roomPriceMin != null || v.roomPriceMax != null;
+  const hasMeal = ["breakfast", "lunch", "dinner"].some((k) => meal[`${k}_min`] != null || meal[`${k}_max`] != null);
+  const hasFacilityPrice = hasRoom || hasMeal;
+
   // 라이트박스
   const [lbIdx, setLbIdx] = useState<number | null>(null);
   const close = useCallback(() => setLbIdx(null), []);
@@ -157,18 +177,40 @@ export default function VenueDetailClient({
             <h2 className="mb-4 text-[15px] font-semibold text-slate-800">
               현장 사진<span className="ml-1.5 text-[13px] font-normal text-slate-400">({gallery.length}장)</span>
             </h2>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-              {(photoExpanded ? gallery : gallery.slice(0, PHOTO_PREVIEW)).map((img, i) => (
-                <button key={i} type="button" onClick={() => setLbIdx(i)} className="cursor-zoom-in">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img.url} alt={img.caption ?? `${v.name} 현장 사진 ${i + 1}`} className="aspect-square w-full rounded-[8px] object-cover" loading="lazy" />
-                </button>
-              ))}
-            </div>
-            {gallery.length > PHOTO_PREVIEW && (
-              <button onClick={() => setPhotoExpanded(!photoExpanded)} className="mt-3 w-full rounded-lg bg-white py-2.5 text-[13px] text-slate-500 shadow-subtle transition-colors hover:text-slate-700">
-                {photoExpanded ? "접기" : `+${gallery.length - PHOTO_PREVIEW}장 더보기`}
-              </button>
+            {multiGroup ? (
+              <div className="space-y-5">
+                {photoGroups.map((g) => (
+                  <div key={g.label}>
+                    <p className="mb-2 text-[13px] font-medium text-slate-500">
+                      {g.label}<span className="ml-1.5 text-[12px] text-slate-300">{g.items.length}장</span>
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+                      {g.items.map((p) => (
+                        <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="cursor-zoom-in">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={p.url} alt={p.caption ?? v.name} className="aspect-square w-full rounded-[8px] object-cover" loading="lazy" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+                  {(photoExpanded ? gallery : gallery.slice(0, PHOTO_PREVIEW)).map((img, i) => (
+                    <button key={i} type="button" onClick={() => setLbIdx(i)} className="cursor-zoom-in">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img.url} alt={img.caption ?? `${v.name} 현장 사진 ${i + 1}`} className="aspect-square w-full rounded-[8px] object-cover" loading="lazy" />
+                    </button>
+                  ))}
+                </div>
+                {gallery.length > PHOTO_PREVIEW && (
+                  <button onClick={() => setPhotoExpanded(!photoExpanded)} className="mt-3 w-full rounded-lg bg-white py-2.5 text-[13px] text-slate-500 shadow-subtle transition-colors hover:text-slate-700">
+                    {photoExpanded ? "접기" : `+${gallery.length - PHOTO_PREVIEW}장 더보기`}
+                  </button>
+                )}
+              </>
             )}
           </section>
         )}
@@ -187,6 +229,7 @@ export default function VenueDetailClient({
                     {modes.map((m) => (
                       <th key={m} className="px-3 py-2.5 text-right font-medium">{CAP_MODE_LABEL[m]}</th>
                     ))}
+                    {hasRental && <th className="px-3 py-2.5 text-right font-medium">대관료</th>}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-50">
@@ -201,10 +244,33 @@ export default function VenueDetailClient({
                           {h.capacity_modes?.[m] != null ? h.capacity_modes[m].toLocaleString() : "—"}
                         </td>
                       ))}
+                      {hasRental && (
+                        <td className="px-3 py-2.5 text-right tabular-nums text-slate-600">
+                          {h.rental_min != null || h.rental_max != null ? wonRange(h.rental_min, h.rental_max) : "문의"}
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+          </section>
+        )}
+
+        {/* 부대시설 가격 */}
+        {hasFacilityPrice && (
+          <section className="mb-8">
+            <h2 className="mb-1 text-[15px] font-semibold text-slate-800">부대시설 가격</h2>
+            <p className="mb-3 text-[13px] text-slate-400">객실·식사 등 부대 가격입니다. 대관료는 위 홀 안내를 참고하세요.</p>
+            <div className="divide-y divide-slate-50 overflow-hidden rounded-[10px] border border-slate-200 bg-white">
+              {hasRoom && <PriceRow label="객실 (2인 1실/박)" value={wonRange(v.roomPriceMin, v.roomPriceMax)} />}
+              {(["breakfast", "lunch", "dinner"] as const).map((k) => {
+                const mn = meal[`${k}_min`];
+                const mx = meal[`${k}_max`];
+                if (mn == null && mx == null) return null;
+                const lbl = { breakfast: "조식", lunch: "중식", dinner: "석식" }[k];
+                return <PriceRow key={k} label={`식사 ${lbl} / 인`} value={wonRange(mn, mx)} />;
+              })}
             </div>
           </section>
         )}
@@ -365,6 +431,23 @@ export default function VenueDetailClient({
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+function wonRange(min?: number | null, max?: number | null): string {
+  const f = (n: number) => Number(n).toLocaleString("ko-KR");
+  if (min != null && max != null) return min === max ? `${f(min)}원` : `${f(min)}~${f(max)}원`;
+  if (min != null) return `${f(min)}원~`;
+  if (max != null) return `~${f(max)}원`;
+  return "문의";
+}
+
+function PriceRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between px-4 py-3 text-[13px]">
+      <span className="text-slate-500">{label}</span>
+      <span className="font-medium tabular-nums text-slate-800">{value}</span>
     </div>
   );
 }
