@@ -119,7 +119,7 @@ export default function LecturerDetailClient({
         </div>
 
         {/* 한눈에 보기 */}
-        <div className="mb-8 rounded-[12px] bg-white p-5 shadow-subtle sm:p-6">
+        <div className="mb-5 rounded-[12px] border border-slate-200 bg-white p-5 shadow-subtle sm:p-6">
           <h2 className="mb-4 text-[14px] font-semibold text-slate-800">한눈에 보기</h2>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Fact icon={<Tag size={15} />} label="분야" value={catLabel(l.category)} />
@@ -131,7 +131,7 @@ export default function LecturerDetailClient({
 
         {/* 강의 주제 */}
         {topics.length > 0 && (
-          <section className="mb-8">
+          <section className="mb-5 rounded-[12px] border border-slate-200 bg-white p-5 shadow-subtle sm:p-6">
             <h2 className="mb-3 text-[15px] font-semibold text-slate-800">강의 주제</h2>
             <div className="flex flex-wrap gap-1.5">
               {topics.map((t, i) => (
@@ -143,7 +143,7 @@ export default function LecturerDetailClient({
 
         {/* 강의 소개 */}
         {l.bio && (
-          <section className="mb-8">
+          <section className="mb-5 rounded-[12px] border border-slate-200 bg-white p-5 shadow-subtle sm:p-6">
             <h2 className="mb-3 text-[15px] font-semibold text-slate-800">강의 소개</h2>
             <p className="whitespace-pre-line text-[16px] leading-[1.8] text-slate-600">{l.bio}</p>
           </section>
@@ -151,7 +151,7 @@ export default function LecturerDetailClient({
 
         {/* 강의 사진 */}
         {photoGroups.length > 0 && (
-          <section className="mb-8">
+          <section className="mb-5 rounded-[12px] border border-slate-200 bg-white p-5 shadow-subtle sm:p-6">
             <h2 className="mb-4 text-[15px] font-semibold text-slate-800">
               강의 사진<span className="ml-1.5 text-[13px] font-normal text-slate-400">({gallery.length}장)</span>
             </h2>
@@ -177,7 +177,7 @@ export default function LecturerDetailClient({
 
         {/* 주요 약력 */}
         {career.length > 0 && (
-          <section className="mb-8">
+          <section className="mb-5 rounded-[12px] border border-slate-200 bg-white p-5 shadow-subtle sm:p-6">
             <h2 className="mb-3 text-[15px] font-semibold text-slate-800">주요 약력</h2>
             <ul className="space-y-2.5">
               {career.map((s, i) => (
@@ -192,7 +192,7 @@ export default function LecturerDetailClient({
 
         {/* 강의 이력 (books 컬럼 재활용) */}
         {books.length > 0 && (
-          <section className="mb-8">
+          <section className="mb-5 rounded-[12px] border border-slate-200 bg-white p-5 shadow-subtle sm:p-6">
             <h2 className="mb-3 text-[15px] font-semibold text-slate-800">강의 이력</h2>
             <ul className="space-y-2.5">
               {books.map((b, i) => (
@@ -207,9 +207,9 @@ export default function LecturerDetailClient({
 
         {/* 자주 묻는 질문 (화면 표시 + JSON-LD FAQPage와 동일) */}
         {faq.length > 0 && (
-          <section className="mb-8">
+          <section className="mb-5 rounded-[12px] border border-slate-200 bg-white p-5 shadow-subtle sm:p-6">
             <h2 className="mb-3 text-[15px] font-semibold text-slate-800">자주 묻는 질문</h2>
-            <div className="divide-y divide-slate-100 overflow-hidden rounded-[10px] border border-slate-200 bg-white">
+            <div className="divide-y divide-slate-100 overflow-hidden rounded-[10px] border border-slate-200 bg-slate-50/40">
               {faq.map((f, i) => (
                 <div key={i} className="px-4 py-3.5">
                   <p className="text-[14px] font-semibold text-slate-800">Q. {f.q}</p>
