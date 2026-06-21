@@ -12,6 +12,9 @@ import {
   Tag,
   ImageIcon,
   ArrowRight,
+  Phone,
+  Mail,
+  Globe,
   X,
   ChevronLeft,
   ChevronRight,
@@ -64,6 +67,8 @@ export default function VenueDetailClient({
   const hasRoom = v.roomPriceMin != null || v.roomPriceMax != null;
   const hasMeal = ["breakfast", "lunch", "dinner"].some((k) => meal[`${k}_min`] != null || meal[`${k}_max`] != null);
   const hasFacilityPrice = hasRoom || hasMeal;
+  const contacts = (v.contacts ?? []).filter((c) => c.phone || c.email || c.name);
+  const hasContact = contacts.length > 0 || !!v.homepage;
 
   // 라이트박스
   const [lbIdx, setLbIdx] = useState<number | null>(null);
@@ -371,6 +376,36 @@ export default function VenueDetailClient({
                 </Link>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* 행사장 연락처 */}
+        {hasContact && (
+          <section className="mb-8">
+            <h2 className="mb-3 text-[15px] font-semibold text-slate-800">행사장 연락처</h2>
+            <div className="divide-y divide-slate-50 overflow-hidden rounded-[10px] border border-slate-200 bg-white">
+              {contacts.map((c, i) => (
+                <div key={i} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 text-[13px]">
+                  {(c.name || c.title) && (
+                    <span className="font-medium text-slate-700">
+                      {c.name}{c.title ? <span className="ml-1 text-[12px] font-normal text-slate-400">{c.title}</span> : null}
+                    </span>
+                  )}
+                  {c.phone && (
+                    <a href={`tel:${c.phone}`} className="flex items-center gap-1.5 text-slate-600 hover:text-primary"><Phone size={14} className="text-slate-400" />{c.phone}</a>
+                  )}
+                  {c.email && (
+                    <a href={`mailto:${c.email}`} className="flex items-center gap-1.5 text-slate-600 hover:text-primary"><Mail size={14} className="text-slate-400" />{c.email}</a>
+                  )}
+                </div>
+              ))}
+              {v.homepage && (
+                <a href={v.homepage} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-4 py-3 text-[13px] text-slate-600 hover:text-primary">
+                  <Globe size={14} className="text-slate-400" /><span className="truncate">{v.homepage}</span>
+                </a>
+              )}
+            </div>
+            <p className="mt-2 text-[12px] text-slate-400">행사 진행은 파란컴퍼니가 답사·기획·운영까지 함께합니다.</p>
           </section>
         )}
 

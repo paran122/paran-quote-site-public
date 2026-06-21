@@ -102,6 +102,13 @@ export interface VenueImage {
   hall?: string | null;
 }
 
+export interface VenueContact {
+  name?: string | null;
+  title?: string | null;
+  phone?: string | null;
+  email?: string | null;
+}
+
 export interface Venue {
   id: string;
   sourceVenueId: string;
@@ -118,6 +125,8 @@ export interface Venue {
   roomPriceMin?: number;
   roomPriceMax?: number;
   mealPrices?: Record<string, number> | null;
+  contacts?: VenueContact[] | null;
+  homepage?: string | null;
   halls: VenueHall[];
   facilities: string[];
   eventFit: string[];
