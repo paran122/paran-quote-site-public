@@ -61,6 +61,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Supabase 연결 실패 시 무시
   }
 
+  const venuePages: MetadataRoute.Sitemap = [];
+  try {
+    if (supabase) {
+      const { data: venues } = await supabase
+        .from("public_venues")
+        .select("slug, updated_at")
+        .eq("is_visible", true)
+        .order("updated_at", { ascending: false });
+      if (venues?.length) {
+        for (const venue of venues) {
+          venuePages.push({
+            url: `${siteUrl}/venues/${venue.slug}`,
+            lastModified: venue.updated_at ? new Date(venue.updated_at) : new Date(),
+            changeFrequency: "monthly",
+            priority: 0.7,
+          });
+        }
+      }
+    }
+  } catch {
+    // 무시
+  }
+
   // 홈페이지: 가장 최근 콘텐츠 업데이트 기준
   const latestContent = [latestBlogDate, latestPortfolioDate]
     .filter((d): d is Date => d !== null)
@@ -89,6 +112,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${siteUrl}/blog`,
       lastModified: latestBlogDate ?? homepageDate,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/venues`,
+      lastModified: venuePages[0]?.lastModified ?? homepageDate,
       changeFrequency: "weekly",
       priority: 0.7,
     },
@@ -226,5 +255,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [...staticPages, ...blogPages, ...portfolioPages];
+  return [...staticPages, ...venuePages, ...blogPages, ...portfolioPages];
 }
