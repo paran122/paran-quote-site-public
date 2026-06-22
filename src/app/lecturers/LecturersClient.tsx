@@ -126,13 +126,13 @@ export default function LecturersClient({ lecturers }: { lecturers: Lecturer[] }
             <span>/</span>
             <Link href="/guide" className="hover:text-slate-600">가이드</Link>
             <span>/</span>
-            <span className="text-slate-600">강사 섭외</span>
+            <span className="text-slate-600">명사 정보</span>
           </nav>
-          <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-primary">강사 정보</p>
+          <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-primary">명사 정보</p>
           <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h1 className="font-display text-2xl font-bold tracking-tight text-slate-900 md:text-4xl">
-                강사 정보
+                명사 정보
               </h1>
               <p className="mt-2 max-w-2xl text-sm text-slate-500">
                 분야별 강사 정보입니다. 강의 주제·약력을 확인하고 문의해 주세요.

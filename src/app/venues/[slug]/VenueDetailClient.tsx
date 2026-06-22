@@ -112,7 +112,7 @@ export default function VenueDetailClient({
           <span>/</span>
           <Link href="/guide" className="transition-colors hover:text-slate-600">가이드</Link>
           <span>/</span>
-          <Link href="/venues" className="transition-colors hover:text-slate-600">행사장 추천</Link>
+          <Link href="/venues" className="transition-colors hover:text-slate-600">행사장 정보</Link>
           <span>/</span>
           <span className="text-slate-600">{v.name}</span>
         </nav>

@@ -94,7 +94,7 @@ export default async function LecturerDetailPage({ params }: Props) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "홈", item: "https://parancompany.co.kr" },
       { "@type": "ListItem", position: 2, name: "가이드", item: "https://parancompany.co.kr/guide" },
-      { "@type": "ListItem", position: 3, name: "강사 섭외", item: "https://parancompany.co.kr/lecturers" },
+      { "@type": "ListItem", position: 3, name: "명사 정보", item: "https://parancompany.co.kr/lecturers" },
       { "@type": "ListItem", position: 4, name: `${l.name} (${catLabel(l.category)})`, item: url },
     ],
   };

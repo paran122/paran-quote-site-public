@@ -139,7 +139,7 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
             <span>/</span>
             <Link href="/guide" className="hover:text-slate-600">가이드</Link>
             <span>/</span>
-            <span className="text-slate-600">행사장 추천</span>
+            <span className="text-slate-600">행사장 정보</span>
           </nav>
           <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-primary">행사장 정보</p>
           <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -219,7 +219,7 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
               href="/#contact"
               className="shrink-0 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white hover:bg-blue-500"
             >
-              행사장 추천 받기
+              행사장 문의하기
             </Link>
           </div>
         </div>

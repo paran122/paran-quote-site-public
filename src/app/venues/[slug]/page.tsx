@@ -119,7 +119,7 @@ export default async function VenueDetailPage({ params }: Props) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "홈", item: "https://parancompany.co.kr" },
       { "@type": "ListItem", position: 2, name: "가이드", item: "https://parancompany.co.kr/guide" },
-      { "@type": "ListItem", position: 3, name: "행사장 추천", item: "https://parancompany.co.kr/venues" },
+      { "@type": "ListItem", position: 3, name: "행사장 정보", item: "https://parancompany.co.kr/venues" },
       { "@type": "ListItem", position: 4, name: v.name, item: url },
     ],
   };
