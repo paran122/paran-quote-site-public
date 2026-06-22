@@ -189,11 +189,11 @@ export default function VenueDetailClient({
             <h2 className="mb-4 text-[15px] font-semibold text-slate-800">
               행사장 공통 사진<span className="ml-1.5 text-[13px] font-normal text-slate-400">({commonPhotos.length}장)</span>
             </h2>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="scrollbar-hide -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
               {commonPhotos.map((p) => (
-                <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="cursor-zoom-in">
+                <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="shrink-0 cursor-zoom-in">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.url} alt={p.caption ?? v.name} className="aspect-square w-full rounded-[8px] object-cover" loading="lazy" />
+                  <img src={p.url} alt={p.caption ?? v.name} className="h-32 w-44 rounded-[8px] object-cover sm:h-40 sm:w-56" loading="lazy" />
                 </button>
               ))}
             </div>
@@ -307,7 +307,7 @@ export default function VenueDetailClient({
                     ))}
                   </div>
                 )}
-                {/* 홀별 사진 — 카테고리(정면·무대·로비…)별 */}
+                {/* 홀별 사진 — 카테고리(정면·무대·로비…)별 가로 스크롤 한 줄 */}
                 {photoGs.length > 0 ? (
                   <div className="mt-3 space-y-3 border-t border-slate-100 pt-3">
                     {photoGs.map((g) => (
@@ -315,11 +315,11 @@ export default function VenueDetailClient({
                         <p className="mb-1.5 text-[12px] font-medium text-slate-500">
                           {photoCatLabel(g.cat)}<span className="ml-1.5 text-[11px] text-slate-300">{g.items.length}</span>
                         </p>
-                        <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4">
+                        <div className="scrollbar-hide -mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1">
                           {g.items.map((p) => (
-                            <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="cursor-zoom-in">
+                            <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="shrink-0 cursor-zoom-in">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={p.url} alt={p.caption ?? h.name} className="aspect-square w-full rounded-[6px] object-cover" loading="lazy" />
+                              <img src={p.url} alt={p.caption ?? h.name} className="h-24 w-32 rounded-[6px] object-cover sm:h-28 sm:w-[160px]" loading="lazy" />
                             </button>
                           ))}
                         </div>
