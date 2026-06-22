@@ -197,44 +197,48 @@ export default function LecturerDetailClient({
         </Link>
       </div>
 
-      {/* 라이트박스 */}
+      {/* 라이트박스 — 가운데 모달 카드 */}
       {lbIdx != null && gallery[lbIdx] && (
-        <div className="fixed inset-0 z-[120] flex flex-col bg-slate-950/95 backdrop-blur-md" onClick={close}>
-          <div className="flex items-center justify-between px-4 py-3 text-white">
-            <span className="max-w-[55%] truncate text-[13px] font-medium">{gallery[lbIdx].caption ?? l.name}</span>
-            <span className="text-[13px] font-medium tabular-nums">{lbIdx + 1} / {gallery.length}</span>
-            <button type="button" onClick={close} className="rounded-full p-1 hover:bg-white/10" aria-label="닫기"><X className="h-6 w-6" /></button>
-          </div>
+        <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/80 p-3 backdrop-blur-md sm:p-6" onClick={close}>
           <div
-            className="flex flex-1 items-center justify-center px-2"
+            className="flex max-h-[88vh] w-full max-w-[920px] flex-col overflow-hidden rounded-2xl bg-slate-900 shadow-2xl ring-1 ring-white/10"
             onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
-            onTouchEnd={(e) => {
-              if (touchX.current == null || gallery.length < 2) return;
-              const dx = e.changedTouches[0].clientX - touchX.current;
-              touchX.current = null;
-              if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
-            }}
           >
+            <div className="flex items-center justify-between gap-3 px-4 py-3 text-white">
+              <span className="min-w-0 flex-1 truncate text-[13px] font-medium">{gallery[lbIdx].caption ?? l.name}</span>
+              <span className="shrink-0 text-[13px] font-medium tabular-nums text-white/70">{lbIdx + 1} / {gallery.length}</span>
+              <button type="button" onClick={close} className="shrink-0 rounded-full p-1 text-white/80 hover:bg-white/10 hover:text-white" aria-label="닫기"><X className="h-5 w-5" /></button>
+            </div>
+            <div
+              className="relative flex min-h-0 flex-1 items-center justify-center bg-black"
+              onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
+              onTouchEnd={(e) => {
+                if (touchX.current == null || gallery.length < 2) return;
+                const dx = e.changedTouches[0].clientX - touchX.current;
+                touchX.current = null;
+                if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={gallery[lbIdx].url} alt={gallery[lbIdx].caption ?? l.name} className="max-h-[64vh] max-w-full object-contain" />
+              {gallery.length > 1 && (
+                <>
+                  <button type="button" onClick={() => go(-1)} className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 hover:bg-black/70" aria-label="이전"><ChevronLeft className="h-5 w-5 text-white" /></button>
+                  <button type="button" onClick={() => go(1)} className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 hover:bg-black/70" aria-label="다음"><ChevronRight className="h-5 w-5 text-white" /></button>
+                </>
+              )}
+            </div>
             {gallery.length > 1 && (
-              <button type="button" onClick={() => go(-1)} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/40 hover:bg-black/60" aria-label="이전"><ChevronLeft className="h-5 w-5 text-white" /></button>
-            )}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={gallery[lbIdx].url} alt={gallery[lbIdx].caption ?? l.name} className="mx-2 max-h-[78vh] max-w-full rounded-[8px] object-contain" />
-            {gallery.length > 1 && (
-              <button type="button" onClick={() => go(1)} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/40 hover:bg-black/60" aria-label="다음"><ChevronRight className="h-5 w-5 text-white" /></button>
+              <div className="scrollbar-hide flex gap-1.5 overflow-x-auto px-3 py-2.5">
+                {gallery.map((img, i) => (
+                  <button key={i} type="button" onClick={() => setLbIdx(i)} className="shrink-0">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={img.url} alt="" className={`h-11 w-14 rounded-[5px] object-cover transition-opacity ${i === lbIdx ? "ring-2 ring-white" : "opacity-50 hover:opacity-100"}`} />
+                  </button>
+                ))}
+              </div>
             )}
           </div>
-          {gallery.length > 1 && (
-            <div className="scrollbar-hide flex gap-1.5 overflow-x-auto px-4 py-3" onClick={(e) => e.stopPropagation()}>
-              {gallery.map((img, i) => (
-                <button key={i} type="button" onClick={() => setLbIdx(i)} className="shrink-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img.url} alt="" className={`h-12 w-16 rounded-[6px] object-cover transition-opacity ${i === lbIdx ? "ring-2 ring-white" : "opacity-50 hover:opacity-100"}`} />
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       )}
     </div>
