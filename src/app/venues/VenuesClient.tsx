@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Search, MapPin, Users, LayoutGrid, BadgeCheck, Building2 } from "lucide-react";
+import { Search, MapPin, Users, LayoutGrid, Building2 } from "lucide-react";
 import type { Venue } from "@/types";
-import { VENUE_TYPE_BADGE, CAP_BUCKETS, capBucket, typeLabel } from "@/lib/venueMeta";
+import { VENUE_TYPE_BADGE, typeLabel } from "@/lib/venueMeta";
 
 const ALL = "전체";
 
@@ -96,7 +96,6 @@ function FilterGroup({
 export default function VenuesClient({ venues }: { venues: Venue[] }) {
   const [region, setRegion] = useState(ALL);
   const [vtype, setVtype] = useState(ALL);
-  const [cap, setCap] = useState(ALL);
   const [query, setQuery] = useState("");
 
   const regions = useMemo(
@@ -118,14 +117,13 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
     return venues.filter((v) => {
       if (region !== ALL && v.region !== region) return false;
       if (vtype !== ALL && typeLabel(v.venueType) !== vtype) return false;
-      if (cap !== ALL && capBucket(v.maxCapacity) !== cap) return false;
       if (query) {
         const q = query.toLowerCase();
         if (!v.name.toLowerCase().includes(q) && !(v.region ?? "").toLowerCase().includes(q)) return false;
       }
       return true;
     });
-  }, [venues, region, vtype, cap, query]);
+  }, [venues, region, vtype, query]);
 
   const typeOptions = types.map((t) => typeLabel(t));
 
@@ -147,9 +145,6 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
               <h1 className="font-display text-2xl font-bold tracking-tight text-slate-900 md:text-4xl">
                 행사장 정보
               </h1>
-              <p className="mt-2 max-w-2xl text-sm text-slate-500">
-                지역·인원·유형별 행사장 정보입니다. 문의 주시면 안내해 드립니다.
-              </p>
             </div>
             <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 md:w-72">
               <Search className="h-4 w-4 text-slate-400" />
@@ -161,15 +156,6 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
               />
             </div>
           </div>
-          <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-            <div>
-              <span className="font-display text-xl font-bold tabular-nums text-slate-900">{venues.length}</span>{" "}
-              <span className="text-slate-500">등록 행사장</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-slate-500">
-              <BadgeCheck className="h-4 w-4 text-teal-500" />지역·유형별 안내
-            </div>
-          </div>
         </div>
       </section>
 
@@ -179,7 +165,6 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
           <div className="sticky top-[72px]">
             <FilterGroup title="지역" options={regions} active={region} onPick={setRegion} counts={regionCounts} />
             <FilterGroup title="유형" options={typeOptions} active={vtype} onPick={setVtype} />
-            <FilterGroup title="수용 인원" options={CAP_BUCKETS} active={cap} onPick={setCap} />
           </div>
         </aside>
 
