@@ -17,6 +17,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
 } from "lucide-react";
 import type { Venue, Portfolio } from "@/types";
 import {
@@ -78,6 +79,7 @@ export default function VenueDetailClient({
   const contacts = (v.contacts ?? []).filter((c) => c.phone || c.email || c.name);
   const hasContact = contacts.length > 0 || !!v.homepage;
   const [hallTab, setHallTab] = useState(0);
+  const [photosOpen, setPhotosOpen] = useState(true);
 
   // 라이트박스
   const [lbIdx, setLbIdx] = useState<number | null>(null);
@@ -312,24 +314,42 @@ export default function VenueDetailClient({
                     ))}
                   </div>
                 )}
-                {/* 홀별 사진 — 카테고리(정면·무대·로비…)별 가로 스크롤 한 줄 */}
+                {/* 홀별 사진 — 카테고리별 가로 스크롤, 접기/펼치기 */}
                 {photoGs.length > 0 ? (
-                  <div className="mt-3 space-y-3 border-t border-slate-100 pt-3">
-                    {photoGs.map((g) => (
-                      <div key={g.cat}>
-                        <p className="mb-1.5 text-[12px] font-medium text-slate-500">
-                          {photoCatLabel(g.cat)}<span className="ml-1.5 text-[11px] text-slate-300">{g.items.length}</span>
-                        </p>
-                        <div className="scrollbar-hide -mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1">
-                          {g.items.map((p) => (
-                            <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="shrink-0 cursor-zoom-in">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={p.url} alt={p.caption ?? h.name} className="h-24 w-32 rounded-[6px] object-cover sm:h-28 sm:w-[160px]" loading="lazy" />
-                            </button>
-                          ))}
-                        </div>
+                  <div className="mt-3 border-t border-slate-100 pt-3">
+                    <button
+                      type="button"
+                      onClick={() => setPhotosOpen((o) => !o)}
+                      className="flex w-full items-center justify-between"
+                      aria-expanded={photosOpen}
+                    >
+                      <span className="text-[12px] font-medium text-slate-500">
+                        사진<span className="ml-1.5 text-[11px] text-slate-300">{hallPhotoMap.get(h.name)?.length ?? 0}장</span>
+                      </span>
+                      <span className="flex items-center gap-1 text-[12px] font-medium text-slate-400 hover:text-slate-600">
+                        {photosOpen ? "접기" : "펼치기"}
+                        <ChevronDown size={15} className={`transition-transform ${photosOpen ? "rotate-180" : ""}`} />
+                      </span>
+                    </button>
+                    {photosOpen && (
+                      <div className="mt-2 space-y-3">
+                        {photoGs.map((g) => (
+                          <div key={g.cat}>
+                            <p className="mb-1.5 text-[12px] font-medium text-slate-500">
+                              {photoCatLabel(g.cat)}<span className="ml-1.5 text-[11px] text-slate-300">{g.items.length}</span>
+                            </p>
+                            <div className="scrollbar-hide -mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1">
+                              {g.items.map((p) => (
+                                <button key={p.idx} type="button" onClick={() => setLbIdx(p.idx)} className="shrink-0 cursor-zoom-in">
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img src={p.url} alt={p.caption ?? h.name} className="h-24 w-32 rounded-[6px] object-cover sm:h-28 sm:w-[160px]" loading="lazy" />
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    )}
                   </div>
                 ) : (
                   <p className="mt-3 border-t border-slate-100 pt-3 text-[12px] text-slate-400">등록된 사진이 없습니다.</p>
