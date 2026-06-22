@@ -208,33 +208,46 @@ export default function VenueDetailClient({
             <h2 className="mb-4 text-[15px] font-semibold text-slate-800">
               홀 안내<span className="ml-1.5 text-[13px] font-normal text-slate-400">({halls.length}개)</span>
             </h2>
-            <p className="mb-3 text-[13px] text-slate-400">홀별 <b className="font-medium text-slate-500">수용 규모와 1일 대관료</b>를 한눈에 비교하세요.</p>
-            <div className="overflow-hidden rounded-[10px] border border-slate-200 bg-white">
+            <p className="mb-3 text-[13px] text-slate-400">홀별 <b className="font-medium text-slate-500">형태 · 수용 규모 · 1일 대관료</b>를 한눈에 비교하세요.</p>
+            <div className="overflow-x-auto rounded-[10px] border border-slate-200 bg-white">
               <table className="w-full text-[13px]">
                 <thead className="border-b border-slate-200 bg-slate-50 text-[12px] text-slate-500">
                   <tr>
                     <th className="px-4 py-2.5 text-left font-medium">홀</th>
-                    <th className="w-[34%] border-l border-slate-200 px-4 py-2.5 text-right font-semibold text-slate-700">최대 수용</th>
-                    <th className="w-[34%] border-l border-slate-200 px-4 py-2.5 text-right font-semibold text-slate-700">1일 대관료</th>
+                    <th className="px-4 py-2.5 text-left font-medium">형태</th>
+                    <th className="border-l border-slate-200 px-4 py-2.5 text-right font-semibold text-slate-700">최대 수용</th>
+                    <th className="border-l border-slate-200 px-4 py-2.5 text-right font-semibold text-slate-700">1일 대관료</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {halls.map((h, i) => (
-                    <tr key={i}>
-                      <td className="px-4 py-3.5 font-medium text-slate-700">
-                        {h.name}
-                        {h.floor ? <span className="ml-1 text-[11px] text-slate-400">({h.floor})</span> : null}
-                      </td>
-                      <td className="border-l border-slate-100 px-4 py-3.5 text-right tabular-nums">
-                        {h.max_capacity != null ? <span className="text-[16px] font-bold text-slate-900">{h.max_capacity.toLocaleString()}<span className="ml-0.5 text-[11px] font-normal text-slate-400">명</span></span> : <span className="text-slate-400">—</span>}
-                      </td>
-                      <td className="border-l border-slate-100 px-4 py-3.5 text-right tabular-nums">
-                        {h.rental_min != null || h.rental_max != null
-                          ? <span className="text-[15px] font-bold text-primary">{wonRange(h.rental_min, h.rental_max)}</span>
-                          : <span className="text-[13px] text-slate-400">문의</span>}
-                      </td>
-                    </tr>
-                  ))}
+                  {halls.map((h, i) => {
+                    const shapes = hallShapes(h.capacity_modes);
+                    return (
+                      <tr key={i}>
+                        <td className="px-4 py-3.5 font-medium text-slate-700">
+                          {h.name}
+                          {h.floor ? <span className="ml-1 text-[11px] text-slate-400">({h.floor})</span> : null}
+                        </td>
+                        <td className="px-4 py-3.5">
+                          {shapes.length ? (
+                            <div className="flex flex-wrap gap-1">
+                              {shapes.map((s) => (
+                                <span key={s} className="rounded-md bg-slate-100 px-2 py-0.5 text-[11.5px] font-medium text-slate-600">{s}</span>
+                              ))}
+                            </div>
+                          ) : <span className="text-slate-400">—</span>}
+                        </td>
+                        <td className="border-l border-slate-100 px-4 py-3.5 text-right tabular-nums">
+                          {h.max_capacity != null ? <span className="text-[16px] font-bold text-slate-900">{h.max_capacity.toLocaleString()}<span className="ml-0.5 text-[11px] font-normal text-slate-400">명</span></span> : <span className="text-slate-400">—</span>}
+                        </td>
+                        <td className="border-l border-slate-100 px-4 py-3.5 text-right tabular-nums">
+                          {h.rental_min != null || h.rental_max != null
+                            ? <span className="text-[15px] font-bold text-primary">{wonRange(h.rental_min, h.rental_max)}</span>
+                            : <span className="text-[13px] text-slate-400">문의</span>}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -536,6 +549,20 @@ export default function VenueDetailClient({
       )}
     </div>
   );
+}
+
+const HALL_SHAPE: Record<string, string> = {
+  theater: "극장형",
+  banquet: "연회장형",
+  classroom: "교실형",
+  reception: "리셉션형",
+  u_shape: "U자형",
+};
+function hallShapes(modes?: Record<string, number> | null): string[] {
+  if (!modes) return [];
+  return ["theater", "banquet", "classroom", "reception", "u_shape"]
+    .filter((k) => modes[k] != null)
+    .map((k) => HALL_SHAPE[k]);
 }
 
 function wonRange(min?: number | null, max?: number | null): string {
