@@ -22,8 +22,6 @@ import {
 import type { Venue, Portfolio } from "@/types";
 import {
   VENUE_TYPE_BADGE,
-  CAP_MODE_LABEL,
-  CAP_MODE_ORDER,
   PHOTO_CAT_ORDER,
   photoCatLabel,
   typeLabel,
@@ -45,9 +43,6 @@ export default function VenueDetailClient({
   const gallery = v.images ?? [];
   const cover = v.coverUrl ?? gallery[0]?.url ?? null;
   const halls = v.halls ?? [];
-  const modes = CAP_MODE_ORDER.filter((m) =>
-    halls.some((h) => h.capacity_modes && h.capacity_modes[m] != null)
-  );
   const mapUrl = v.addressApprox
     ? `https://map.kakao.com/?q=${encodeURIComponent(v.addressApprox)}`
     : null;
@@ -208,43 +203,35 @@ export default function VenueDetailClient({
         )}
 
         {/* 홀 안내 (수용 표) */}
-        {modes.length > 0 && (
+        {halls.length > 0 && (
           <section className="mb-8">
             <h2 className="mb-4 text-[15px] font-semibold text-slate-800">
               홀 안내<span className="ml-1.5 text-[13px] font-normal text-slate-400">({halls.length}개)</span>
             </h2>
-            <p className="mb-3 text-[13px] text-slate-400">홀별 <b className="font-medium text-slate-500">배치 종류 · 최대 수용 · 1일 대관료</b>를 한눈에 비교하세요.</p>
-            <div className="overflow-x-auto rounded-[10px] border border-slate-200 bg-white">
+            <p className="mb-3 text-[13px] text-slate-400">홀별 <b className="font-medium text-slate-500">수용 규모와 1일 대관료</b>를 한눈에 비교하세요.</p>
+            <div className="overflow-hidden rounded-[10px] border border-slate-200 bg-white">
               <table className="w-full text-[13px]">
                 <thead className="border-b border-slate-200 bg-slate-50 text-[12px] text-slate-500">
                   <tr>
                     <th className="px-4 py-2.5 text-left font-medium">홀</th>
-                    <th className="border-l border-slate-200 bg-blue-50/40 px-3 py-2.5 text-right font-semibold text-slate-700">최대 수용</th>
-                    {modes.map((m) => (
-                      <th key={m} className="px-3 py-2.5 text-right font-medium">{CAP_MODE_LABEL[m]}</th>
-                    ))}
-                    <th className="border-l border-slate-200 bg-blue-50/40 px-3 py-2.5 text-right font-semibold text-slate-700">1일 대관료</th>
+                    <th className="w-[34%] border-l border-slate-200 px-4 py-2.5 text-right font-semibold text-slate-700">최대 수용</th>
+                    <th className="w-[34%] border-l border-slate-200 px-4 py-2.5 text-right font-semibold text-slate-700">1일 대관료</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {halls.map((h, i) => (
                     <tr key={i}>
-                      <td className="px-4 py-3 font-medium text-slate-700">
+                      <td className="px-4 py-3.5 font-medium text-slate-700">
                         {h.name}
                         {h.floor ? <span className="ml-1 text-[11px] text-slate-400">({h.floor})</span> : null}
                       </td>
-                      <td className="border-l border-slate-100 bg-blue-50/40 px-3 py-3 text-right tabular-nums">
-                        {h.max_capacity != null ? <span className="text-[15px] font-bold text-slate-900">{h.max_capacity.toLocaleString()}<span className="ml-0.5 text-[11px] font-normal text-slate-400">명</span></span> : <span className="text-slate-400">—</span>}
+                      <td className="border-l border-slate-100 px-4 py-3.5 text-right tabular-nums">
+                        {h.max_capacity != null ? <span className="text-[16px] font-bold text-slate-900">{h.max_capacity.toLocaleString()}<span className="ml-0.5 text-[11px] font-normal text-slate-400">명</span></span> : <span className="text-slate-400">—</span>}
                       </td>
-                      {modes.map((m) => (
-                        <td key={m} className="px-3 py-3 text-right tabular-nums text-slate-500">
-                          {h.capacity_modes?.[m] != null ? h.capacity_modes[m].toLocaleString() : "—"}
-                        </td>
-                      ))}
-                      <td className="border-l border-slate-100 bg-blue-50/40 px-3 py-3 text-right tabular-nums">
+                      <td className="border-l border-slate-100 px-4 py-3.5 text-right tabular-nums">
                         {h.rental_min != null || h.rental_max != null
-                          ? <span className="font-semibold text-primary">{wonRange(h.rental_min, h.rental_max)}</span>
-                          : <span className="text-[12px] text-slate-400">문의</span>}
+                          ? <span className="text-[15px] font-bold text-primary">{wonRange(h.rental_min, h.rental_max)}</span>
+                          : <span className="text-[13px] text-slate-400">문의</span>}
                       </td>
                     </tr>
                   ))}
