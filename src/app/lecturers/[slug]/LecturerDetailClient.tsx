@@ -47,7 +47,12 @@ export default function LecturerDetailClient({
       else if (e.key === "ArrowRight") go(1);
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
   }, [lbIdx, close, go]);
 
   return (
@@ -194,7 +199,7 @@ export default function LecturerDetailClient({
 
       {/* 라이트박스 */}
       {lbIdx != null && gallery[lbIdx] && (
-        <div className="fixed inset-0 z-[100] flex flex-col bg-slate-950/95" onClick={close}>
+        <div className="fixed inset-0 z-[120] flex flex-col bg-slate-950/95 backdrop-blur-md" onClick={close}>
           <div className="flex items-center justify-between px-4 py-3 text-white">
             <span className="max-w-[55%] truncate text-[13px] font-medium">{gallery[lbIdx].caption ?? l.name}</span>
             <span className="text-[13px] font-medium tabular-nums">{lbIdx + 1} / {gallery.length}</span>
