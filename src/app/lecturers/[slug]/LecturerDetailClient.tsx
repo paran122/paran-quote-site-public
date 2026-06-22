@@ -59,7 +59,7 @@ export default function LecturerDetailClient({
           <span>/</span>
           <Link href="/guide" className="transition-colors hover:text-slate-600">가이드</Link>
           <span>/</span>
-          <Link href="/lecturers" className="transition-colors hover:text-slate-600">강사 섭외</Link>
+          <Link href="/lecturers" className="transition-colors hover:text-slate-600">명사 정보</Link>
           <span>/</span>
           <span className="text-slate-600">{l.name}</span>
         </nav>

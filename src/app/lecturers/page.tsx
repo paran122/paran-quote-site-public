@@ -4,7 +4,7 @@ import type { Lecturer } from "@/types";
 import LecturersClient from "./LecturersClient";
 
 export const metadata: Metadata = {
-  title: "강사 정보 | 파란컴퍼니",
+  title: "명사 정보 | 파란컴퍼니",
   description:
     "분야별 강사 정보입니다. 강의 주제·약력을 확인하고 문의해 주세요.",
   alternates: { canonical: "https://parancompany.co.kr/lecturers" },
@@ -48,7 +48,7 @@ export default async function LecturersPage() {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "홈", item: "https://parancompany.co.kr" },
       { "@type": "ListItem", position: 2, name: "가이드", item: "https://parancompany.co.kr/guide" },
-      { "@type": "ListItem", position: 3, name: "강사 섭외", item: "https://parancompany.co.kr/lecturers" },
+      { "@type": "ListItem", position: 3, name: "명사 정보", item: "https://parancompany.co.kr/lecturers" },
     ],
   };
 

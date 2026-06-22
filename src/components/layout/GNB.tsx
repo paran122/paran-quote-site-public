@@ -17,8 +17,8 @@ const navItems: { label: string; anchor: string; isPage?: boolean }[] = [
 
 // 가이드 드롭다운 — 행사장 추천을 최상단 강조, 기존 가이드 페이지들 동반 노출
 const guideItems: { href: string; label: string; desc?: string; highlight?: boolean }[] = [
-  { href: "/venues", label: "행사장 추천", desc: "직접 답사한 행사장 찾기", highlight: true },
-  { href: "/lecturers", label: "강사 섭외", desc: "검증한 강사 풀 찾기", highlight: true },
+  { href: "/venues", label: "행사장 정보", desc: "지역·유형별 행사장", highlight: true },
+  { href: "/lecturers", label: "명사 정보", desc: "분야별 명사·강사 정보", highlight: true },
   { href: "/guide/venue", label: "행사장 선택법", desc: "장소 고르는 기준" },
   { href: "/guide/scale", label: "규모별 가이드", desc: "인원별 행사 준비" },
   { href: "/guide/pricing", label: "비용 가이드", desc: "예산·견적 안내" },
