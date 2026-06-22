@@ -129,8 +129,10 @@ export default function VenueDetailClient({
           <div className="mb-2 flex items-center gap-2">
             <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium ${badge}`}>{typeLabel(v.venueType)}</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{v.name}</h1>
-          {v.tagline && <p className="mt-2 text-[14px] text-slate-500">{v.tagline}</p>}
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{v.name}</h1>
+            {v.tagline && <span className="text-[14px] text-slate-500">{v.tagline}</span>}
+          </div>
           <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-slate-500">
             <span className="flex items-center gap-1"><Users size={14} />최대 {v.maxCapacity ? v.maxCapacity.toLocaleString() : "—"}명</span>
             <span className="flex items-center gap-1"><Building2 size={14} />홀 {v.hallCount ?? halls.length}개</span>
