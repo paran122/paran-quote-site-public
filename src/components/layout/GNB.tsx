@@ -333,11 +333,11 @@ export default function GNB() {
                   }`}
                 >
                   <span className="flex items-center gap-1.5">
-                    <span className={`text-xs font-medium ${sub.highlight ? "text-teal-300" : "text-white/80"}`}>
+                    <span className={`text-xs font-medium ${sub.highlight ? "text-white" : "text-white/80"}`}>
                       {sub.label}
                     </span>
                     {sub.highlight && (
-                      <span className="rounded-full bg-teal-400/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-teal-300">
+                      <span className="rounded-full bg-white/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white/90">
                         NEW
                       </span>
                     )}
@@ -473,7 +473,7 @@ export default function GNB() {
                                   }}
                                   className={`flex items-center gap-1.5 text-sm transition-colors ${
                                     sub.highlight
-                                      ? "text-teal-300"
+                                      ? "text-white"
                                       : pathname === sub.href
                                         ? "text-white"
                                         : "text-white/40 hover:text-white"
@@ -481,7 +481,7 @@ export default function GNB() {
                                 >
                                   {sub.label}
                                   {sub.highlight && (
-                                    <span className="rounded-full bg-teal-400/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-teal-300">
+                                    <span className="rounded-full bg-white/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white/90">
                                       NEW
                                     </span>
                                   )}
