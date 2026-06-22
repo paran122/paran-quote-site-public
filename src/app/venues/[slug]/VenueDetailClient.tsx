@@ -178,7 +178,7 @@ export default function VenueDetailClient({
               className="mt-4 flex items-center gap-2 border-t border-slate-100 pt-4 text-[13px] text-slate-600 transition-colors hover:text-primary"
             >
               <MapPin size={14} className="shrink-0 text-slate-400" />
-              <span className="flex-1">{v.addressApprox}</span>
+              <span>{v.addressApprox}</span>
               <span className="text-[12px] font-medium text-primary">카카오맵 ›</span>
             </a>
           )}
