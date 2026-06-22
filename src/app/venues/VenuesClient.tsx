@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, MapPin, Users, LayoutGrid, Building2 } from "lucide-react";
 import type { Venue } from "@/types";
-import { VENUE_TYPE_BADGE, typeLabel } from "@/lib/venueMeta";
+import { VENUE_TYPE_BADGE, typeLabel, sidoOf, sidoSort } from "@/lib/venueMeta";
 
 const ALL = "전체";
 
@@ -99,7 +99,7 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
   const [query, setQuery] = useState("");
 
   const regions = useMemo(
-    () => Array.from(new Set(venues.map((v) => v.region).filter((r): r is string => !!r))).sort(),
+    () => Array.from(new Set(venues.map((v) => sidoOf(v.region, v.addressApprox)))).sort(sidoSort),
     [venues]
   );
   const types = useMemo(
@@ -109,13 +109,16 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
 
   const regionCounts = useMemo(() => {
     const c: Record<string, number> = { [ALL]: venues.length };
-    for (const v of venues) if (v.region) c[v.region] = (c[v.region] ?? 0) + 1;
+    for (const v of venues) {
+      const s = sidoOf(v.region, v.addressApprox);
+      c[s] = (c[s] ?? 0) + 1;
+    }
     return c;
   }, [venues]);
 
   const filtered = useMemo(() => {
     return venues.filter((v) => {
-      if (region !== ALL && v.region !== region) return false;
+      if (region !== ALL && sidoOf(v.region, v.addressApprox) !== region) return false;
       if (vtype !== ALL && typeLabel(v.venueType) !== vtype) return false;
       if (query) {
         const q = query.toLowerCase();
