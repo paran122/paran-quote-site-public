@@ -480,7 +480,7 @@ export default function VenueDetailClient({
 
       {/* 라이트박스 — 가운데 모달 카드 */}
       {lbIdx != null && gallery[lbIdx] && (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/80 p-3 backdrop-blur-md sm:p-6" onClick={close}>
+        <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/70 p-3 backdrop-blur-sm sm:p-6" onClick={close}>
           <div
             className="flex max-h-[88vh] w-full max-w-[920px] flex-col overflow-hidden rounded-2xl bg-slate-900 shadow-2xl ring-1 ring-white/10"
             onClick={(e) => e.stopPropagation()}
