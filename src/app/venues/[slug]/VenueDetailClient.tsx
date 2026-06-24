@@ -255,20 +255,28 @@ export default function VenueDetailClient({
         )}
 
         {/* 부대시설 가격 */}
-        {hasFacilityPrice && (
+        {(hasFacilityPrice || (v.menuNotes && v.menuNotes.trim())) && (
           <section className="mb-8">
             <h2 className="mb-1 text-[15px] font-semibold text-slate-800">부대시설 가격</h2>
             <p className="mb-3 text-[13px] text-slate-400">객실·식사 등 부대 가격입니다. 대관료는 위 홀 안내를 참고하세요.</p>
-            <div className="divide-y divide-slate-50 overflow-hidden rounded-[10px] border border-slate-200 bg-white">
-              {hasRoom && <PriceRow label="객실 (2인 1실/박)" value={wonRange(v.roomPriceMin, v.roomPriceMax)} />}
-              {(["breakfast", "lunch", "dinner"] as const).map((k) => {
-                const mn = meal[`${k}_min`];
-                const mx = meal[`${k}_max`];
-                if (mn == null && mx == null) return null;
-                const lbl = { breakfast: "조식", lunch: "중식", dinner: "석식" }[k];
-                return <PriceRow key={k} label={`식사 ${lbl} / 인`} value={wonRange(mn, mx)} />;
-              })}
-            </div>
+            {hasFacilityPrice && (
+              <div className="divide-y divide-slate-50 overflow-hidden rounded-[10px] border border-slate-200 bg-white">
+                {hasRoom && <PriceRow label="객실 (2인 1실/박)" value={wonRange(v.roomPriceMin, v.roomPriceMax)} />}
+                {(["breakfast", "lunch", "dinner"] as const).map((k) => {
+                  const mn = meal[`${k}_min`];
+                  const mx = meal[`${k}_max`];
+                  if (mn == null && mx == null) return null;
+                  const lbl = { breakfast: "조식", lunch: "중식", dinner: "석식" }[k];
+                  return <PriceRow key={k} label={`식사 ${lbl} / 인`} value={wonRange(mn, mx)} />;
+                })}
+              </div>
+            )}
+            {v.menuNotes && v.menuNotes.trim() && (
+              <div className="mt-3 rounded-[10px] border border-slate-200 bg-slate-50/60 px-4 py-3.5">
+                <p className="mb-1.5 text-[12px] font-semibold text-slate-500">대표 메뉴·가격</p>
+                <p className="whitespace-pre-line text-[13.5px] leading-[1.7] text-slate-700">{v.menuNotes.trim()}</p>
+              </div>
+            )}
           </section>
         )}
 
