@@ -242,7 +242,7 @@ export default function VenueDetailClient({
                         </td>
                         <td className="border-l border-slate-100 px-4 py-3.5 text-right tabular-nums">
                           {h.rental_min != null || h.rental_max != null
-                            ? <span className="text-[15px] font-bold text-primary">{wonRange(h.rental_min, h.rental_max)}</span>
+                            ? <span className="text-[15px] font-bold text-primary">{manwonRange(h.rental_min, h.rental_max)}</span>
                             : <span className="text-[13px] text-slate-400">문의</span>}
                         </td>
                       </tr>
@@ -563,6 +563,15 @@ function hallShapes(modes?: Record<string, number> | null): string[] {
   return ["theater", "banquet", "classroom", "reception", "u_shape"]
     .filter((k) => modes[k] != null)
     .map((k) => HALL_SHAPE[k]);
+}
+
+// 1일 대관료 — 만원 단위 표시
+function manwonRange(min?: number | null, max?: number | null): string {
+  const m = (n: number) => `${(n / 10000).toLocaleString("ko-KR", { maximumFractionDigits: 1 })}만원`;
+  if (min != null && max != null) return min === max ? m(min) : `${(min / 10000).toLocaleString("ko-KR", { maximumFractionDigits: 1 })}~${m(max)}`;
+  if (min != null) return `${m(min)}~`;
+  if (max != null) return `~${m(max)}`;
+  return "문의";
 }
 
 function wonRange(min?: number | null, max?: number | null): string {
