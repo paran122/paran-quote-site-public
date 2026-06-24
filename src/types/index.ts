@@ -151,6 +151,7 @@ export interface Venue {
   roomPriceMin?: number;
   roomPriceMax?: number;
   mealPrices?: Record<string, number> | null;
+  menuNotes?: string | null;
   contacts?: VenueContact[] | null;
   homepage?: string | null;
   halls: VenueHall[];
