@@ -345,6 +345,9 @@ body {
 .prose-blog img[src*="#w25"] { width: 25%; display: block; margin-left: auto; margin-right: auto; }
 .prose-blog img[src*="#w50"] { width: 50%; display: block; margin-left: auto; margin-right: auto; }
 .prose-blog img[src*="#w75"] { width: 75%; display: block; margin-left: auto; margin-right: auto; }
+/* 정렬 변형: -l 왼쪽 / -r 오른쪽 (기본 가운데). #wNN 규칙이 부분일치로 함께 적용되므로 뒤에서 마진만 덮어씀 */
+.prose-blog img[src*="#w25-l"], .prose-blog img[src*="#w50-l"], .prose-blog img[src*="#w75-l"] { margin-left: 0; margin-right: auto; }
+.prose-blog img[src*="#w25-r"], .prose-blog img[src*="#w50-r"], .prose-blog img[src*="#w75-r"] { margin-left: auto; margin-right: 0; }
 /* 사진 그리드: .blog-photo-grid 클래스가 있으면 3열 썸네일 */
 .prose-blog .blog-photo-grid {
   @apply grid grid-cols-3 gap-2 my-6 sm:gap-3;
