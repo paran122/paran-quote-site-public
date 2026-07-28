@@ -70,6 +70,8 @@ export interface EventGalleryImage {
   event: string;
   client: string;
   meta?: string;
+  /** 포트폴리오 상세 딥링크 (있으면 카드가 링크로 렌더) */
+  href?: string;
 }
 export interface EventPainSolution {
   pain: string;
@@ -149,35 +151,35 @@ export const EVENT_HERO_IMAGE: Record<EventService["key"], string> = {
 /* ── 서비스별 수행 사례 갤러리 (검증된 portfolio 사진 + 실명 캡션) ── */
 export const EVENT_GALLERY: Record<EventService["key"], EventGalleryImage[]> = {
   conference: [
-    { src: `${SB}/kls/photo-03.webp`, alt: "컨퍼런스 대행 - KLS 한국어교육 국제학술대회 현장", event: "KLS 한국어교육 국제학술대회", client: "경기도교육청", meta: "약 400명" },
-    { src: `${SB}/kls/photo-10.webp`, alt: "학술대회 대행 - KLS 행사장 전경", event: "KLS 국제학술대회 행사장 전경", client: "경기도교육청", meta: "약 400명" },
-    { src: `${SB}/international-forum/photo-05.webp`, alt: "포럼 대행 - 중앙아시아 교육협력포럼", event: "중앙아시아 교육협력포럼", client: "경기도교육청", meta: "약 300명" },
-    { src: "/assets/images/services/conf-goyang-essay.webp", alt: "컨퍼런스 대행 - 고양 학교체육 성장 컨퍼런스 에세이 전시", event: "고양 학교체육 성장 컨퍼런스", client: "고양교육청", meta: "약 200명" },
-    { src: `${SB}/auto-seminar-fall/photo-02.webp`, alt: "세미나 대행 - 추계 자동차부품산업 세미나", event: "추계 자동차부품산업 세미나", client: "자동차부품산업진흥재단", meta: "약 200명" },
-    { src: `${SB}/auto-seminar-summer/photo-01.webp`, alt: "세미나 대행 - 하계 자동차부품산업 세미나", event: "하계 자동차부품산업 세미나", client: "자동차부품산업진흥재단", meta: "약 200명" },
+    { src: `${SB}/kls/photo-03.webp`, alt: "컨퍼런스 대행 - KLS 한국어교육 국제학술대회 현장", event: "KLS 한국어교육 국제학술대회", client: "경기도교육청", meta: "약 400명", href: "/work/kls" },
+    { src: `${SB}/kls/photo-10.webp`, alt: "학술대회 대행 - KLS 행사장 전경", event: "KLS 국제학술대회 행사장 전경", client: "경기도교육청", meta: "약 400명", href: "/work/kls" },
+    { src: `${SB}/international-forum/photo-05.webp`, alt: "포럼 대행 - 중앙아시아 교육협력포럼", event: "중앙아시아 교육협력포럼", client: "경기도교육청", meta: "약 300명", href: "/work/international-forum" },
+    { src: "/assets/images/services/conf-goyang-essay.webp", alt: "컨퍼런스 대행 - 고양 학교체육 성장 컨퍼런스 에세이 전시", event: "고양 학교체육 성장 컨퍼런스", client: "고양교육청", meta: "약 200명", href: "/work/goyang-conference" },
+    { src: `${SB}/auto-seminar-fall/photo-02.webp`, alt: "세미나 대행 - 추계 자동차부품산업 세미나", event: "추계 자동차부품산업 세미나", client: "자동차부품산업진흥재단", meta: "약 200명", href: "/work/auto-seminar-fall" },
+    { src: `${SB}/auto-seminar-summer/photo-01.webp`, alt: "세미나 대행 - 하계 자동차부품산업 세미나", event: "하계 자동차부품산업 세미나", client: "자동차부품산업진흥재단", meta: "약 200명", href: "/work/auto-seminar-summer" },
   ],
   education: [
-    { src: "/assets/images/services/edu-community-busan.webp", alt: "교육 대행 - 지역사회 역량강화 프로그램 현장 단체사진", event: "지역사회 역량강화 프로그램", client: "한국에너지정보문화재단", meta: "약 100명" },
-    { src: "/assets/images/services/edu-community-lecture.webp", alt: "교육 대행 - 지역사회 역량강화 강연 세션", event: "지역사회 역량강화 강연 세션", client: "한국에너지정보문화재단", meta: "약 100명" },
-    { src: "/assets/images/services/edu-parent-lecture.webp", alt: "교육 대행 - 찾아가는 경기학부모교육 강연", event: "찾아가는 경기학부모교육", client: "경기도교육청", meta: "5개 도시 순회" },
-    { src: `${SB}/parent-education/photo-17.webp`, alt: "교육 대행 - 찾아가는 경기학부모교육 현장", event: "찾아가는 경기학부모교육 현장", client: "경기도교육청", meta: "회당 약 150명" },
-    { src: `${SB}/navy-camp/photo-01.webp`, alt: "캠프 대행 - 필승해군캠프", event: "필승해군캠프", client: "대한민국 해군", meta: "약 300명" },
-    { src: "/assets/images/services/edu-artist-rights.webp", alt: "교육 대행 - 예술인 권리보호 교육 강의", event: "예술인 권리보호 교육", client: "한국예술인복지재단", meta: "약 100명" },
+    { src: "/assets/images/services/edu-community-busan.webp", alt: "교육 대행 - 지역사회 역량강화 프로그램 현장 단체사진", event: "지역사회 역량강화 프로그램", client: "한국에너지정보문화재단", meta: "약 100명", href: "/work/community-energy" },
+    { src: "/assets/images/services/edu-community-lecture.webp", alt: "교육 대행 - 지역사회 역량강화 강연 세션", event: "지역사회 역량강화 강연 세션", client: "한국에너지정보문화재단", meta: "약 100명", href: "/work/community-energy" },
+    { src: "/assets/images/services/edu-parent-lecture.webp", alt: "교육 대행 - 찾아가는 경기학부모교육 강연", event: "찾아가는 경기학부모교육", client: "경기도교육청", meta: "5개 도시 순회", href: "/work/parent-education" },
+    { src: `${SB}/parent-education/photo-17.webp`, alt: "교육 대행 - 찾아가는 경기학부모교육 현장", event: "찾아가는 경기학부모교육 현장", client: "경기도교육청", meta: "회당 약 150명", href: "/work/parent-education" },
+    { src: `${SB}/navy-camp/photo-01.webp`, alt: "캠프 대행 - 필승해군캠프", event: "필승해군캠프", client: "대한민국 해군", meta: "약 300명", href: "/work/navy-camp" },
+    { src: "/assets/images/services/edu-artist-rights.webp", alt: "교육 대행 - 예술인 권리보호 교육 강의", event: "예술인 권리보호 교육", client: "한국예술인복지재단", meta: "약 100명", href: "/work/artist-rights" },
   ],
   booth: [
-    { src: "/assets/images/services/booth-kls-experience.webp", alt: "체험부스 운영 - KLS 국제학술대회 체험부스", event: "KLS 국제학술대회 체험부스", client: "경기도교육청" },
-    { src: "/assets/images/services/booth-goyang-wall.webp", alt: "전시월 - 고양 학교체육 컨퍼런스", event: "고양 학교체육 컨퍼런스", client: "고양교육청" },
-    { src: "/assets/images/services/booth-forum-culture.webp", alt: "전통문화 체험존 - 중앙아시아 교육협력 포럼", event: "중앙아시아 교육협력 포럼", client: "경기도교육청" },
-    { src: "/assets/images/services/booth-council-kls.webp", alt: "전시부스 - 교육감협의회 부스 설치", event: "교육감협의회 부스 설치", client: "경기도교육청" },
+    { src: "/assets/images/services/booth-kls-experience.webp", alt: "체험부스 운영 - KLS 국제학술대회 체험부스", event: "KLS 국제학술대회 체험부스", client: "경기도교육청", href: "/work/kls-space-design" },
+    { src: "/assets/images/services/booth-goyang-wall.webp", alt: "전시월 - 고양 학교체육 컨퍼런스", event: "고양 학교체육 컨퍼런스", client: "고양교육청", href: "/work/goyang-conference-space-design" },
+    { src: "/assets/images/services/booth-forum-culture.webp", alt: "전통문화 체험존 - 중앙아시아 교육협력 포럼", event: "중앙아시아 교육협력 포럼", client: "경기도교육청", href: "/work/international-forum-space-design" },
+    { src: "/assets/images/services/booth-council-kls.webp", alt: "전시부스 - 교육감협의회 부스 설치", event: "교육감협의회 부스 설치", client: "경기도교육청", href: "/work/education-council-booth" },
     { src: "/assets/images/services/booth-incheon-metaverse.webp", alt: "체험부스 - 인천공항 메타버스 체험부스", event: "인천공항 메타버스 체험부스", client: "국립온라인과학관" },
     { src: "/assets/images/services/booth-science-class.webp", alt: "체험부스 운영 - 찾아가는 과학교실", event: "찾아가는 과학교실 운영", client: "국립온라인과학관" },
   ],
   government: [
-    { src: `${SB}/goyang-conference/photo-10.webp`, alt: "공공기관 행사 대행 - 고양 학교체육 컨퍼런스", event: "고양 학교체육 성장 컨퍼런스", client: "고양교육청", meta: "약 200명" },
-    { src: `${SB}/kls/photo-12.webp`, alt: "공공기관 행사 대행 - KLS 국제학술대회", event: "KLS 한국어교육 국제학술대회", client: "경기도교육청", meta: "약 400명" },
-    { src: `${SB}/community-energy/photo-12.webp`, alt: "공공기관 행사 대행 - 지역사회 역량강화", event: "지역사회 역량강화 프로그램", client: "한국에너지정보문화재단", meta: "약 100명" },
-    { src: `${SB}/navy-camp/photo-16.webp`, alt: "공공기관 행사 대행 - 필승해군캠프", event: "필승해군캠프", client: "대한민국 해군", meta: "약 300명" },
-    { src: `${SB}/parent-education/photo-17.webp`, alt: "관공서 행사 대행 - 찾아가는 경기학부모교육", event: "찾아가는 경기학부모교육", client: "경기도교육청", meta: "5개 도시 순회" },
+    { src: `${SB}/goyang-conference/photo-10.webp`, alt: "공공기관 행사 대행 - 고양 학교체육 컨퍼런스", event: "고양 학교체육 성장 컨퍼런스", client: "고양교육청", meta: "약 200명", href: "/work/goyang-conference" },
+    { src: `${SB}/kls/photo-12.webp`, alt: "공공기관 행사 대행 - KLS 국제학술대회", event: "KLS 한국어교육 국제학술대회", client: "경기도교육청", meta: "약 400명", href: "/work/kls" },
+    { src: `${SB}/community-energy/photo-12.webp`, alt: "공공기관 행사 대행 - 지역사회 역량강화", event: "지역사회 역량강화 프로그램", client: "한국에너지정보문화재단", meta: "약 100명", href: "/work/community-energy" },
+    { src: `${SB}/navy-camp/photo-16.webp`, alt: "공공기관 행사 대행 - 필승해군캠프", event: "필승해군캠프", client: "대한민국 해군", meta: "약 300명", href: "/work/navy-camp" },
+    { src: `${SB}/parent-education/photo-17.webp`, alt: "관공서 행사 대행 - 찾아가는 경기학부모교육", event: "찾아가는 경기학부모교육", client: "경기도교육청", meta: "5개 도시 순회", href: "/work/parent-education" },
     { src: `${SB}/kls/photo-07.webp`, alt: "공공기관 행사 대행 - KLS 전시 부스", event: "KLS 국제학술대회 부스 운영", client: "경기도교육청" },
   ],
 };
@@ -185,8 +187,8 @@ export const EVENT_GALLERY: Record<EventService["key"], EventGalleryImage[]> = {
 /* ── 실적 섹션 현장 사진 스트립 (갤러리와 중복되지 않는 검증 사진) ── */
 export const EVENT_STRIP: Record<EventService["key"], EventGalleryImage[]> = {
   conference: [
-    { src: "/assets/images/services/conf-goyang-students.webp", alt: "고양 학교체육 성장 컨퍼런스 참가 학생들", event: "고양 학교체육 성장 컨퍼런스", client: "고양교육청" },
-    { src: `${SB}/international-forum/photo-07.webp`, alt: "중앙아시아 교육협력포럼 현장", event: "중앙아시아 교육협력포럼", client: "경기도교육청" },
+    { src: "/assets/images/services/conf-goyang-students.webp", alt: "고양 학교체육 성장 컨퍼런스 참가 학생들", event: "고양 학교체육 성장 컨퍼런스", client: "고양교육청", href: "/work/goyang-conference" },
+    { src: `${SB}/international-forum/photo-07.webp`, alt: "중앙아시아 교육협력포럼 현장", event: "중앙아시아 교육협력포럼", client: "경기도교육청", href: "/work/international-forum" },
     { src: `${SB}/auto-seminar-spring/photo-06.webp`, alt: "춘계 자동차부품산업 세미나 현장", event: "춘계 자동차부품산업 세미나", client: "자동차부품산업진흥재단" },
     { src: `${SB}/auto-seminar-spring/photo-12.webp`, alt: "춘계 자동차부품산업 세미나 진행", event: "춘계 자동차부품산업 세미나", client: "자동차부품산업진흥재단" },
   ],
@@ -204,9 +206,9 @@ export const EVENT_STRIP: Record<EventService["key"], EventGalleryImage[]> = {
   ],
   government: [
     { src: `${SB}/kls/photo-03.webp`, alt: "KLS 국제학술대회 현장", event: "KLS 국제학술대회", client: "경기도교육청" },
-    { src: `${SB}/international-forum/photo-05.webp`, alt: "중앙아시아 교육협력포럼 현장", event: "중앙아시아 교육협력포럼", client: "경기도교육청" },
+    { src: `${SB}/international-forum/photo-05.webp`, alt: "중앙아시아 교육협력포럼 현장", event: "중앙아시아 교육협력포럼", client: "경기도교육청", href: "/work/international-forum" },
     { src: `${SB}/community-energy/photo-01.webp`, alt: "지역사회 역량강화 현장", event: "지역사회 역량강화", client: "한국에너지정보문화재단" },
-    { src: `${SB}/parent-education/photo-15.webp`, alt: "찾아가는 경기학부모교육 현장", event: "찾아가는 경기학부모교육", client: "경기도교육청" },
+    { src: `${SB}/parent-education/photo-15.webp`, alt: "찾아가는 경기학부모교육 현장", event: "찾아가는 경기학부모교육", client: "경기도교육청", href: "/work/parent-education" },
   ],
 };
 
