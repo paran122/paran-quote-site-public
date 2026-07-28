@@ -101,17 +101,26 @@ export default function EventGroupPage({ service }: { service: EventService }) {
             <Link href={service.workHref} className="shrink-0 text-sm text-blue-600 font-medium hover:underline">전체 보기 →</Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-x-3 gap-y-6 md:gap-x-4 md:gap-y-8">
-            {gallery.map((img) => (
-              <div key={img.src} className="group">
-                <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
-                  <Image src={img.src} alt={img.alt} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width:768px) 50vw, 33vw" unoptimized />
-                </div>
-                <div className="mt-2.5 px-0.5">
-                  <p className="text-[13px] md:text-sm font-bold text-[#0d1a4e] leading-snug">{img.event}</p>
-                  <p className="text-[11px] md:text-xs text-slate-400 mt-0.5">{img.client}{img.meta ? ` · ${img.meta}` : ""}</p>
-                </div>
-              </div>
-            ))}
+            {gallery.map((img) => {
+              const card = (
+                <>
+                  <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
+                    <Image src={img.src} alt={img.alt} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width:768px) 50vw, 33vw" unoptimized />
+                  </div>
+                  <div className="mt-2.5 px-0.5">
+                    <p className="text-[13px] md:text-sm font-bold text-[#0d1a4e] leading-snug group-hover:text-blue-700 transition-colors">{img.event}</p>
+                    <p className="text-[11px] md:text-xs text-slate-400 mt-0.5">{img.client}{img.meta ? ` · ${img.meta}` : ""}</p>
+                  </div>
+                </>
+              );
+              return img.href ? (
+                <Link key={img.src} href={img.href} className="group block" aria-label={`${img.event} 사례 자세히 보기`}>
+                  {card}
+                </Link>
+              ) : (
+                <div key={img.src} className="group">{card}</div>
+              );
+            })}
           </div>
         </div>
       </section>
