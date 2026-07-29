@@ -32,6 +32,10 @@ const BLOG_TO_PORTFOLIO: Record<string, { slug: string; title: string }> = {
   "LED-Wall-행사-운영-EBS-스페이스홀": { slug: "parent-education", title: "찾아가는 경기학부모교육" },
   "학부모-교육-행사-기획-등록-동선": { slug: "parent-education", title: "찾아가는 경기학부모교육" },
   "전국-순회-교육-운영-예술인-권리보호": { slug: "artist-rights", title: "예술인 권리보호 교육" },
+  "코엑스-스튜디오159-대관-led-대관료-좌석": {
+    slug: "제12회-2026년-보건의료빅데이터ai-활용-창업경진대회",
+    title: "코엑스 스튜디오159 창업경진대회 시상식",
+  },
 };
 
 /* ── 글 내용 기반 CTA 자동 매칭 ──
