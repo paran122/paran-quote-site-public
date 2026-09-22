@@ -41,6 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!l) return {};
   const url = `https://parancompany.co.kr/lecturers/${l.slug}`;
   return {
+    // 콘텐츠 축적 전까지 검색 노출 보류
+    robots: { index: false, follow: false },
     title: l.metaTitle || `${l.name} 강사 — 강의 주제·약력 | 파란컴퍼니`,
     description: l.metaDescription || `${l.name} 강사 프로필. ${l.lectureTitle ?? ""}`.trim(),
     alternates: { canonical: url },

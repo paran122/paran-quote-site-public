@@ -4,6 +4,8 @@ import type { Venue } from "@/types";
 import VenuesClient from "./VenuesClient";
 
 export const metadata: Metadata = {
+  // 콘텐츠 축적 전까지 검색 노출 보류
+  robots: { index: false, follow: false },
   title: "행사장 정보 | 파란컴퍼니",
   description:
     "지역·수용 인원·유형별 행사장 정보입니다. 문의 주시면 안내해 드립니다.",

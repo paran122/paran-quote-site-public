@@ -49,6 +49,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!v) return {};
   const url = `https://parancompany.co.kr/venues/${v.slug}`;
   return {
+    // 콘텐츠 축적 전까지 검색 노출 보류
+    robots: { index: false, follow: false },
     title: v.metaTitle || `${v.name} 행사장 정보 | 파란컴퍼니`,
     description: v.metaDescription || `${v.region ?? ""} ${v.name} 행사장 정보입니다.`,
     alternates: { canonical: url },
