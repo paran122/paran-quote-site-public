@@ -11,8 +11,8 @@ import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/r
 import { formatPhoneNumber } from "@/lib/phoneFormat";
 import {
   MAX_FILES,
-  MAX_FILE_SIZE_LABEL,
-  OVERSIZE_CONTACT_EMAIL,
+  ATTACHMENT_HINT,
+  OVERSIZE_NOTICE,
   validateFiles,
   uploadAttachments,
   type UploadedFile,
@@ -469,7 +469,7 @@ export default function Contact() {
                 <div className="mb-6 md:mb-8">
                   <div className="flex items-center gap-1 md:gap-2">
                     <h3 className="text-[14px] font-bold text-gray-900 md:text-base">파일 첨부</h3>
-                    <span className="text-[10px] text-gray-400 md:text-[11px]">선택사항 (최대 {MAX_FILES}개, {MAX_FILE_SIZE_LABEL} 이하 · 초과 시 {OVERSIZE_CONTACT_EMAIL})</span>
+                    <span className="text-[10px] text-gray-400 md:text-[11px]">선택사항 ({ATTACHMENT_HINT})</span>
                   </div>
                   <div className="mt-1 md:mt-3">
                     <input
@@ -514,6 +514,7 @@ export default function Contact() {
                         ))}
                       </div>
                     )}
+                    <p className="mt-2 text-[10px] leading-relaxed text-gray-400 md:mt-2.5 md:text-[11px]">{OVERSIZE_NOTICE}</p>
                   </div>
                 </div>
 

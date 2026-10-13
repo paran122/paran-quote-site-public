@@ -12,8 +12,8 @@ import { REFERRAL_SOURCES, REFERRAL_OTHER, buildReferralLine } from "@/lib/refer
 import { formatPhoneNumber, KOREAN_PHONE_REGEX } from "@/lib/phoneFormat";
 import {
   MAX_FILES,
-  MAX_FILE_SIZE_LABEL,
-  OVERSIZE_CONTACT_EMAIL,
+  ATTACHMENT_HINT,
+  OVERSIZE_NOTICE,
   validateFiles,
   uploadAttachments,
   type UploadedFile,
@@ -717,7 +717,7 @@ export default function Estimate() {
                         <div className="mb-3 flex items-center gap-2 md:mb-4">
                           <div className="h-5 w-1 rounded-full bg-indigo-500" />
                           <h4 className="text-sm font-bold text-gray-900">파일 첨부</h4>
-                          <span className="text-[11px] text-gray-400">선택사항 (최대 {MAX_FILES}개, {MAX_FILE_SIZE_LABEL} 이하 · 초과 시 {OVERSIZE_CONTACT_EMAIL})</span>
+                          <span className="text-[11px] text-gray-400">선택사항 ({ATTACHMENT_HINT})</span>
                         </div>
                         <input
                           ref={fileInputRef}
@@ -761,6 +761,7 @@ export default function Estimate() {
                             ))}
                           </div>
                         )}
+                        <p className="mt-2 text-[11px] leading-relaxed text-gray-400">{OVERSIZE_NOTICE}</p>
                       </div>
                     </div>
                   </div>

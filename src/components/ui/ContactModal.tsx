@@ -7,8 +7,8 @@ import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/r
 import { formatPhoneNumber } from "@/lib/phoneFormat";
 import {
   MAX_FILES,
-  MAX_FILE_SIZE_LABEL,
-  OVERSIZE_CONTACT_EMAIL,
+  ATTACHMENT_HINT,
+  OVERSIZE_NOTICE,
   validateFiles,
   uploadAttachments,
   type UploadedFile,
@@ -358,7 +358,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
           <div className="mt-4">
             <div className="flex items-center gap-1.5">
               <label className="text-[13px] font-medium text-slate-600">파일 첨부</label>
-              <span className="text-[11px] text-slate-400">선택사항 (최대 {MAX_FILES}개, {MAX_FILE_SIZE_LABEL} 이하 · 초과 시 {OVERSIZE_CONTACT_EMAIL})</span>
+              <span className="text-[11px] text-slate-400">선택사항 ({ATTACHMENT_HINT})</span>
             </div>
             <div className="mt-1.5">
               <input
@@ -403,6 +403,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                   ))}
                 </div>
               )}
+              <p className="mt-2 text-[11px] leading-relaxed text-slate-400">{OVERSIZE_NOTICE}</p>
             </div>
           </div>
 
