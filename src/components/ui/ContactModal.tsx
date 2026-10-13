@@ -5,16 +5,15 @@ import { X, Loader2, Paperclip, FileText, Image as ImageIcon, Check } from "luci
 import { showToast } from "@/components/ui/Toast";
 import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/referralSources";
 import { formatPhoneNumber } from "@/lib/phoneFormat";
+import {
+  MAX_FILES,
+  MAX_FILE_SIZE_LABEL,
+  OVERSIZE_CONTACT_EMAIL,
+  validateFiles,
+  uploadAttachments,
+  type UploadedFile,
+} from "@/lib/attachments";
 
-const MAX_FILES = 5;
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
-
-interface UploadedFile {
-  name: string;
-  url: string;
-  size: number;
-  type: string;
-}
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes}B`;
@@ -119,15 +118,10 @@ export default function ContactModal({ isOpen, onClose }: Props) {
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files || []);
-    if (files.length + selected.length > MAX_FILES) {
-      showToast(`최대 ${MAX_FILES}개까지 첨부 가능합니다.`);
+    const invalid = validateFiles(selected, files.length);
+    if (invalid) {
+      showToast(invalid);
       return;
-    }
-    for (const file of selected) {
-      if (file.size > MAX_FILE_SIZE) {
-        showToast(`${file.name}: 10MB 이하 파일만 첨부 가능합니다.`);
-        return;
-      }
     }
     setFiles((prev) => [...prev, ...selected]);
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -141,15 +135,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
     if (files.length === 0) return [];
     setUploading(true);
     try {
-      const formData = new FormData();
-      files.forEach((f) => formData.append("files", f));
-      const res = await fetch("/api/contact/upload", { method: "POST", body: formData });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: "업로드 실패" }));
-        throw new Error(err.error);
-      }
-      const data = await res.json();
-      return data.files;
+      return await uploadAttachments(files);
     } finally {
       setUploading(false);
     }
@@ -372,7 +358,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
           <div className="mt-4">
             <div className="flex items-center gap-1.5">
               <label className="text-[13px] font-medium text-slate-600">파일 첨부</label>
-              <span className="text-[11px] text-slate-400">선택사항 (최대 {MAX_FILES}개, 10MB 이하)</span>
+              <span className="text-[11px] text-slate-400">선택사항 (최대 {MAX_FILES}개, {MAX_FILE_SIZE_LABEL} 이하 · 초과 시 {OVERSIZE_CONTACT_EMAIL})</span>
             </div>
             <div className="mt-1.5">
               <input
