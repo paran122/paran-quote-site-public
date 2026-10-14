@@ -5,6 +5,7 @@ import { X, Loader2, Paperclip, FileText, Image as ImageIcon, Check } from "luci
 import { showToast } from "@/components/ui/Toast";
 import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/referralSources";
 import { formatPhoneNumber } from "@/lib/phoneFormat";
+import { createInquiryNumber } from "@/lib/quoteNumber";
 import {
   MAX_FILES,
   ATTACHMENT_LIMIT_TEXT,
@@ -150,10 +151,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
     if (hasError || submitting) return;
     setSubmitting(true);
 
-    const quoteNumber = `IQ-${new Date()
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, "")}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, "0")}`;
+    const quoteNumber = createInquiryNumber();
 
     try {
       let attachments: UploadedFile[] = [];

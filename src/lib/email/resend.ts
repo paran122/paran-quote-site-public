@@ -6,6 +6,9 @@ export const FROM_EMAIL =
 export const ADMIN_EMAIL =
   process.env.RESEND_ADMIN_EMAIL || "info@parancompany.co.kr";
 
+/** 외부 API 응답 대기 상한 — 서버리스 함수 제한(10초) 안에서 끝나도록 */
+const TIMEOUT_MS = 4000;
+
 /** Resend API 직접 호출 (SDK 우회) */
 export async function sendEmail(params: {
   from: string;
@@ -17,21 +20,29 @@ export async function sendEmail(params: {
     return { success: false, error: "RESEND_API_KEY not configured" };
   }
 
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: params.from,
-      to: [params.to],
-      subject: params.subject,
-      html: params.html,
-    }),
-  });
+  let response: Response;
+  try {
+    response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: params.from,
+        to: [params.to],
+        subject: params.subject,
+        html: params.html,
+      }),
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
+  } catch (err) {
+    // 타임아웃·네트워크 오류 — 접수 자체는 성공 처리해야 하므로 여기서 흡수
+    console.error("[resend] Request failed:", err);
+    return { success: false, error: String(err) };
+  }
 
-  const result = await response.json();
+  const result = await response.json().catch(() => ({}));
 
   if (!response.ok) {
     console.error("[resend] API error:", result);

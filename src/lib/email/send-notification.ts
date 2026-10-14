@@ -22,33 +22,31 @@ export async function sendQuoteNotification(
     return { admin: false, customer: false };
   }
 
-  const results = { admin: false, customer: false };
-
-  // 관리자 알림
-  try {
-    const result = await sendEmail({
+  // 순차 발송하면 지연이 더해져 함수 제한에 걸리므로 두 건을 동시에 보낸다
+  const [admin, customer] = await Promise.allSettled([
+    sendEmail({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
       subject: adminNotifySubject(data),
       html: adminNotifyHtml(data),
-    });
-    results.admin = result.success;
-  } catch (err) {
-    console.error("[email] Failed to send admin notification:", err);
-  }
-
-  // 고객 확인 메일
-  try {
-    const result = await sendEmail({
+    }),
+    sendEmail({
       from: FROM_EMAIL,
       to: data.email,
       subject: customerConfirmSubject(data),
       html: customerConfirmHtml(data),
-    });
-    results.customer = result.success;
-  } catch (err) {
-    console.error("[email] Failed to send customer confirmation:", err);
+    }),
+  ]);
+
+  if (admin.status === "rejected") {
+    console.error("[email] Failed to send admin notification:", admin.reason);
+  }
+  if (customer.status === "rejected") {
+    console.error("[email] Failed to send customer confirmation:", customer.reason);
   }
 
-  return results;
+  return {
+    admin: admin.status === "fulfilled" && admin.value.success,
+    customer: customer.status === "fulfilled" && customer.value.success,
+  };
 }

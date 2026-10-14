@@ -9,6 +9,7 @@ import { showToast } from "@/components/ui/Toast";
 import AnimatedCheckbox from "@/components/ui/AnimatedCheckbox";
 import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/referralSources";
 import { formatPhoneNumber } from "@/lib/phoneFormat";
+import { createInquiryNumber } from "@/lib/quoteNumber";
 import {
   MAX_FILES,
   ATTACHMENT_LIMIT_TEXT,
@@ -138,10 +139,7 @@ export default function Contact() {
     }
     setSubmitting(true);
 
-    const quoteNumber = `IQ-${new Date()
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, "")}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, "0")}`;
+    const quoteNumber = createInquiryNumber();
 
     try {
       let attachments: UploadedFile[] = [];

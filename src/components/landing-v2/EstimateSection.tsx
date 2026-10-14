@@ -10,6 +10,7 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { ESTIMATE_EVENT_TYPES, ESTIMATE_GROUPS, ESTIMATE_DESIGN_IDS, ESTIMATE_SCALES, ESTIMATE_INCLUDES, ESTIMATE_DETAIL, ESTIMATE_CHIPS, formatRangeText } from "@/lib/pricing";
 import { REFERRAL_SOURCES, REFERRAL_OTHER, buildReferralLine } from "@/lib/referralSources";
 import { formatPhoneNumber, KOREAN_PHONE_REGEX } from "@/lib/phoneFormat";
+import { createQuoteNumber } from "@/lib/quoteNumber";
 import {
   MAX_FILES,
   ATTACHMENT_LIMIT_TEXT,
@@ -185,10 +186,7 @@ export default function Estimate() {
     if (hasError || submitting) return;
     setSubmitting(true);
 
-    const quoteNumber = `QT-${new Date()
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, "")}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, "0")}`;
+    const quoteNumber = createQuoteNumber();
 
     // 간편 견적: 유형 + 규모 + 예상 범위를 단일 항목으로 전달
     const cartItems = [
