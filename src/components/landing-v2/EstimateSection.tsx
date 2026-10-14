@@ -12,8 +12,8 @@ import { REFERRAL_SOURCES, REFERRAL_OTHER, buildReferralLine } from "@/lib/refer
 import { formatPhoneNumber, KOREAN_PHONE_REGEX } from "@/lib/phoneFormat";
 import {
   MAX_FILES,
-  ATTACHMENT_HINT,
-  OVERSIZE_NOTICE,
+  ATTACHMENT_LIMIT_TEXT,
+  OVERSIZE_CONTACT_EMAIL,
   validateFiles,
   uploadAttachments,
   type UploadedFile,
@@ -717,7 +717,7 @@ export default function Estimate() {
                         <div className="mb-3 flex items-center gap-2 md:mb-4">
                           <div className="h-5 w-1 rounded-full bg-indigo-500" />
                           <h4 className="text-sm font-bold text-gray-900">파일 첨부</h4>
-                          <span className="text-[11px] text-gray-400">선택사항 ({ATTACHMENT_HINT})</span>
+                          <span className="text-[11px] text-gray-400">선택사항</span>
                         </div>
                         <input
                           ref={fileInputRef}
@@ -761,7 +761,16 @@ export default function Estimate() {
                             ))}
                           </div>
                         )}
-                        <p className="mt-2 text-[11px] leading-relaxed text-gray-400">{OVERSIZE_NOTICE}</p>
+                        <p className="mt-2 text-xs font-medium leading-relaxed text-gray-700">
+                          {ATTACHMENT_LIMIT_TEXT} 그 이상은{" "}
+                          <a
+                            href={`mailto:${OVERSIZE_CONTACT_EMAIL}`}
+                            className="font-bold text-blue-600 underline underline-offset-2"
+                          >
+                            {OVERSIZE_CONTACT_EMAIL}
+                          </a>
+                          로 보내주시면 확인 후 연락드리겠습니다.
+                        </p>
                       </div>
                     </div>
                   </div>

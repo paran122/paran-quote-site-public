@@ -11,8 +11,8 @@ import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/r
 import { formatPhoneNumber } from "@/lib/phoneFormat";
 import {
   MAX_FILES,
-  ATTACHMENT_HINT,
-  OVERSIZE_NOTICE,
+  ATTACHMENT_LIMIT_TEXT,
+  OVERSIZE_CONTACT_EMAIL,
   validateFiles,
   uploadAttachments,
   type UploadedFile,
@@ -469,7 +469,7 @@ export default function Contact() {
                 <div className="mb-6 md:mb-8">
                   <div className="flex items-center gap-1 md:gap-2">
                     <h3 className="text-[14px] font-bold text-gray-900 md:text-base">파일 첨부</h3>
-                    <span className="text-[10px] text-gray-400 md:text-[11px]">선택사항 ({ATTACHMENT_HINT})</span>
+                    <span className="text-[10px] text-gray-400 md:text-[11px]">선택사항</span>
                   </div>
                   <div className="mt-1 md:mt-3">
                     <input
@@ -514,7 +514,16 @@ export default function Contact() {
                         ))}
                       </div>
                     )}
-                    <p className="mt-2 text-[10px] leading-relaxed text-gray-400 md:mt-2.5 md:text-[11px]">{OVERSIZE_NOTICE}</p>
+                    <p className="mt-2 text-[11px] font-medium leading-relaxed text-gray-700 md:mt-2.5 md:text-xs">
+                      {ATTACHMENT_LIMIT_TEXT} 그 이상은{" "}
+                      <a
+                        href={`mailto:${OVERSIZE_CONTACT_EMAIL}`}
+                        className="font-bold text-blue-600 underline underline-offset-2"
+                      >
+                        {OVERSIZE_CONTACT_EMAIL}
+                      </a>
+                      로 보내주시면 확인 후 연락드리겠습니다.
+                    </p>
                   </div>
                 </div>
 

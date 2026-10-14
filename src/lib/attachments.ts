@@ -5,10 +5,8 @@ export const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 export const MAX_FILE_SIZE_LABEL = "50MB";
 export const OVERSIZE_CONTACT_EMAIL = "info@parancompany.co.kr";
 
-/** 첨부 영역 제목 옆 짧은 힌트 */
-export const ATTACHMENT_HINT = `최대 ${MAX_FILES}개, 개당 ${MAX_FILE_SIZE_LABEL} 이하`;
-/** 한도 초과 시 안내 (첨부 영역 하단 고정 노출) */
-export const OVERSIZE_NOTICE = `${MAX_FILE_SIZE_LABEL}가 넘는 파일은 ${OVERSIZE_CONTACT_EMAIL}로 보내주세요.`;
+/** 첨부 한도 안내 (첨부 영역 하단 고정 노출) */
+export const ATTACHMENT_LIMIT_TEXT = `최대 ${MAX_FILES}개, 개당 ${MAX_FILE_SIZE_LABEL}까지 첨부할 수 있습니다.`;
 
 export interface UploadedFile {
   name: string;
