@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+
+/** 행사일 미입력 시 메일·알림톡에 표시할 값 */
+const NO_DATE_LABEL = "-";
 import { z } from "zod/v4";
 import {
   sendQuoteNotification,
@@ -45,7 +48,7 @@ const QuoteRequestSchema = z.object({
   email: z.email(),
   department: z.string().optional(),
   event_name: z.string().min(1),
-  event_date: z.string().min(1),
+  event_date: z.string().min(1).optional(),
   event_venue: z.string().optional(),
   event_type: z.string().optional(),
   attendees: z.string().optional(),
@@ -103,7 +106,7 @@ export async function POST(request: Request) {
       email: data.email,
       department: data.department,
       event_name: data.event_name,
-      event_date: data.event_date,
+      event_date: data.event_date || null,
       event_venue: data.event_venue,
       event_type: data.event_type,
       attendees: data.attendees,
@@ -168,7 +171,7 @@ export async function POST(request: Request) {
       email: data.email,
       department: data.department,
       eventName: data.event_name,
-      eventDate: data.event_date,
+      eventDate: data.event_date || NO_DATE_LABEL,
       eventVenue: data.event_venue,
       eventType: data.event_type,
       attendees: data.attendees,
@@ -180,33 +183,50 @@ export async function POST(request: Request) {
       attachments: emailAttachments,
     };
 
-    const emailResult = await sendQuoteNotification(emailData);
-
     // 알림톡 발송 (실패해도 성공 반환 — 이메일과 동일 정책)
-    let alimtalkResult = { success: false };
-    try {
+    const sendAlimtalk = async (): Promise<{ success: boolean }> => {
       if (isInquiry) {
         const { sendInquiryAlimtalk } = await import("@/lib/alimtalk");
-        alimtalkResult = await sendInquiryAlimtalk({
+        return sendInquiryAlimtalk({
           phone: data.phone,
           contactName: data.contact_name,
           quoteNumber: data.quote_number,
-        });
-      } else {
-        const { sendQuoteAlimtalk } = await import("@/lib/alimtalk");
-        alimtalkResult = await sendQuoteAlimtalk({
-          phone: data.phone,
-          contactName: data.contact_name,
-          quoteNumber: data.quote_number,
-          organization: data.organization,
-          eventType: data.event_type || data.event_name,
-          eventDate: data.event_date,
-          totalAmount: data.total_amount,
         });
       }
-    } catch (alimtalkErr) {
-      console.error("[api/quote] Alimtalk send error:", alimtalkErr);
+      const { sendQuoteAlimtalk } = await import("@/lib/alimtalk");
+      return sendQuoteAlimtalk({
+        phone: data.phone,
+        contactName: data.contact_name,
+        quoteNumber: data.quote_number,
+        organization: data.organization,
+        eventType: data.event_type || data.event_name,
+        eventDate: data.event_date || NO_DATE_LABEL,
+        totalAmount: data.total_amount,
+      });
+    };
+
+    // 메일과 알림톡을 동시에 보낸다. 순차로 기다리면 지연이 더해져
+    // 서버리스 함수 제한에 걸리고, 저장은 됐는데 사용자에게는 오류로 보인다.
+    const [emailSettled, alimtalkSettled] = await Promise.allSettled([
+      sendQuoteNotification(emailData),
+      sendAlimtalk(),
+    ]);
+
+    if (emailSettled.status === "rejected") {
+      console.error("[api/quote] Email send error:", emailSettled.reason);
     }
+    if (alimtalkSettled.status === "rejected") {
+      console.error("[api/quote] Alimtalk send error:", alimtalkSettled.reason);
+    }
+
+    const emailResult =
+      emailSettled.status === "fulfilled"
+        ? emailSettled.value
+        : { admin: false, customer: false };
+    const alimtalkResult =
+      alimtalkSettled.status === "fulfilled"
+        ? alimtalkSettled.value
+        : { success: false };
 
     return NextResponse.json({ success: true, email: emailResult, alimtalk: alimtalkResult });
   } catch (err) {

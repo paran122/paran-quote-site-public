@@ -73,6 +73,8 @@ export async function sendAlimtalk({
         "x-ncp-apigw-signature-v2": signature,
       },
       body: JSON.stringify(body),
+      // 응답이 늦어도 접수 응답이 막히지 않도록 상한을 둔다
+      signal: AbortSignal.timeout(4000),
     });
 
     if (!res.ok) {

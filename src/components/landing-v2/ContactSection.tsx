@@ -9,10 +9,11 @@ import { showToast } from "@/components/ui/Toast";
 import AnimatedCheckbox from "@/components/ui/AnimatedCheckbox";
 import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/referralSources";
 import { formatPhoneNumber } from "@/lib/phoneFormat";
+import { createInquiryNumber } from "@/lib/quoteNumber";
 import {
   MAX_FILES,
-  ATTACHMENT_HINT,
-  OVERSIZE_NOTICE,
+  ATTACHMENT_LIMIT_TEXT,
+  OVERSIZE_CONTACT_EMAIL,
   validateFiles,
   uploadAttachments,
   type UploadedFile,
@@ -44,7 +45,8 @@ const MESSAGE_PLACEHOLDERS: Record<string, string> = {
   "PPT·카드뉴스·편집디자인": "예: 발표용 PPT 20장 디자인을 맡기고 싶습니다.",
   "전시부스·포토존": "예: 행사장 포토존 디자인·제작이 필요합니다.",
 };
-const DEFAULT_PLACEHOLDER = "행사명, 예상 인원수, 참고 사항 등 자유롭게 적어주세요.";
+const DEFAULT_PLACEHOLDER =
+  "행사명, 예상 인원수, 참고 사항 등 자유롭게 적어주세요.\n행사일이 정해졌다면 날짜도 함께 적어주세요. (예: 11월 20일)";
 
 interface ContactForm {
   contactName: string;
@@ -137,10 +139,7 @@ export default function Contact() {
     }
     setSubmitting(true);
 
-    const quoteNumber = `IQ-${new Date()
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, "")}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, "0")}`;
+    const quoteNumber = createInquiryNumber();
 
     try {
       let attachments: UploadedFile[] = [];
@@ -168,7 +167,7 @@ export default function Contact() {
         phone: form.phone,
         email: form.email,
         event_name: serviceSel ? `${serviceSel} 문의` : "문의",
-        event_date: (timingSel === TIMING_DATED && eventDate) || new Date().toISOString().slice(0, 10),
+        event_date: (timingSel === TIMING_DATED && eventDate) || undefined,
         event_type: serviceSel || "문의",
         memo: prependReferralToMemo(referralSources, messageWithMeta, referralOther),
         cart_items: [],
@@ -416,8 +415,11 @@ export default function Contact() {
                   <div className="mb-2.5 flex items-center gap-1.5 md:mb-4 md:gap-2">
                     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-extrabold text-white md:text-[11px]">4</span>
                     <h3 className="text-[14px] font-bold text-gray-900 md:text-base">남기실 말씀</h3>
-                    <span className="text-[10px] text-gray-400 md:text-[11px]">선택사항</span>
                   </div>
+                  <p className="mb-2 rounded-lg border border-blue-100 bg-blue-50/70 px-3 py-2 text-[11px] font-medium leading-relaxed text-blue-900 md:mb-3 md:px-3.5 md:py-2.5 md:text-xs">
+                    자세히 적어주실수록 정확한 견적을 안내해 드릴 수 있습니다.
+                    행사 목적과 예상 인원, 일정, 장소, 필요한 항목을 함께 알려주세요.
+                  </p>
                   <textarea
                     rows={3}
                     placeholder={MESSAGE_PLACEHOLDERS[serviceSel] ?? DEFAULT_PLACEHOLDER}
@@ -469,7 +471,7 @@ export default function Contact() {
                 <div className="mb-6 md:mb-8">
                   <div className="flex items-center gap-1 md:gap-2">
                     <h3 className="text-[14px] font-bold text-gray-900 md:text-base">파일 첨부</h3>
-                    <span className="text-[10px] text-gray-400 md:text-[11px]">선택사항 ({ATTACHMENT_HINT})</span>
+                    <span className="text-[10px] font-medium text-gray-500 md:text-[11px]">선택사항</span>
                   </div>
                   <div className="mt-1 md:mt-3">
                     <input
@@ -514,7 +516,16 @@ export default function Contact() {
                         ))}
                       </div>
                     )}
-                    <p className="mt-2 text-[10px] leading-relaxed text-gray-400 md:mt-2.5 md:text-[11px]">{OVERSIZE_NOTICE}</p>
+                    <p className="mt-2 text-[11px] leading-relaxed text-gray-600 md:mt-2.5 md:text-xs">
+                      {ATTACHMENT_LIMIT_TEXT} 그 이상은{" "}
+                      <a
+                        href={`mailto:${OVERSIZE_CONTACT_EMAIL}`}
+                        className="font-bold text-blue-600 underline underline-offset-2"
+                      >
+                        {OVERSIZE_CONTACT_EMAIL}
+                      </a>
+                      로 보내주시면 확인 후 연락드리겠습니다.
+                    </p>
                   </div>
                 </div>
 
