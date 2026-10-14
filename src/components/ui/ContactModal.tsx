@@ -169,7 +169,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
         phone: form.phone,
         email: form.email,
         event_name: "문의",
-        event_date: new Date().toISOString().slice(0, 10),
+        event_date: undefined,
         event_type: "문의",
         memo: prependReferralToMemo(referralSources, form.message, referralOther),
         cart_items: [],
@@ -347,7 +347,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
             </label>
             <textarea
               rows={4}
-              placeholder="행사명, 예상 인원수, 참고 사항 등 자유롭게 적어주세요."
+              placeholder="행사명, 예상 인원수, 참고 사항 등 자유롭게 적어주세요.&#10;행사일이 정해졌다면 날짜도 함께 적어주세요. (예: 11월 20일)"
               value={form.message}
               onChange={(e) => updateField("message", e.target.value)}
               className="w-full resize-none rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-[14px] text-slate-900 placeholder-slate-300 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary/20"
@@ -358,7 +358,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
           <div className="mt-4">
             <div className="flex items-center gap-1.5">
               <label className="text-[13px] font-medium text-slate-600">파일 첨부</label>
-              <span className="text-[11px] text-slate-400">선택사항</span>
+              <span className="text-[11px] font-medium text-slate-500">선택사항</span>
             </div>
             <div className="mt-1.5">
               <input
@@ -403,7 +403,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                   ))}
                 </div>
               )}
-              <p className="mt-2 text-[11px] font-medium leading-relaxed text-slate-700">
+              <p className="mt-2 text-[11px] leading-relaxed text-slate-600">
                 {ATTACHMENT_LIMIT_TEXT} 그 이상은{" "}
                 <a
                   href={`mailto:${OVERSIZE_CONTACT_EMAIL}`}

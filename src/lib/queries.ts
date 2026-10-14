@@ -211,7 +211,7 @@ export async function submitQuote(quote: {
   email: string;
   department?: string;
   event_name: string;
-  event_date: string;
+  event_date?: string;
   event_venue?: string;
   event_type?: string;
   attendees?: string;
@@ -235,7 +235,7 @@ export async function submitQuoteViaApi(quote: {
   email: string;
   department?: string;
   event_name: string;
-  event_date: string;
+  event_date?: string;
   event_venue?: string;
   event_type?: string;
   attendees?: string;

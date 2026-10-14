@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+
+/** 행사일 미입력 시 메일·알림톡에 표시할 값 */
+const NO_DATE_LABEL = "-";
 import { z } from "zod/v4";
 import {
   sendQuoteNotification,
@@ -45,7 +48,7 @@ const QuoteRequestSchema = z.object({
   email: z.email(),
   department: z.string().optional(),
   event_name: z.string().min(1),
-  event_date: z.string().min(1),
+  event_date: z.string().min(1).optional(),
   event_venue: z.string().optional(),
   event_type: z.string().optional(),
   attendees: z.string().optional(),
@@ -103,7 +106,7 @@ export async function POST(request: Request) {
       email: data.email,
       department: data.department,
       event_name: data.event_name,
-      event_date: data.event_date,
+      event_date: data.event_date || null,
       event_venue: data.event_venue,
       event_type: data.event_type,
       attendees: data.attendees,
@@ -168,7 +171,7 @@ export async function POST(request: Request) {
       email: data.email,
       department: data.department,
       eventName: data.event_name,
-      eventDate: data.event_date,
+      eventDate: data.event_date || NO_DATE_LABEL,
       eventVenue: data.event_venue,
       eventType: data.event_type,
       attendees: data.attendees,
@@ -200,7 +203,7 @@ export async function POST(request: Request) {
           quoteNumber: data.quote_number,
           organization: data.organization,
           eventType: data.event_type || data.event_name,
-          eventDate: data.event_date,
+          eventDate: data.event_date || NO_DATE_LABEL,
           totalAmount: data.total_amount,
         });
       }
