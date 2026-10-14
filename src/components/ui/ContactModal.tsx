@@ -6,10 +6,10 @@ import { showToast } from "@/components/ui/Toast";
 import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/referralSources";
 import { formatPhoneNumber } from "@/lib/phoneFormat";
 import { createInquiryNumber } from "@/lib/quoteNumber";
+import CopyEmail from "@/components/ui/CopyEmail";
 import {
   MAX_FILES,
   ATTACHMENT_LIMIT_TEXT,
-  OVERSIZE_CONTACT_EMAIL,
   validateFiles,
   uploadAttachments,
   type UploadedFile,
@@ -402,14 +402,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                 </div>
               )}
               <p className="mt-2 text-[11px] leading-relaxed text-slate-600">
-                {ATTACHMENT_LIMIT_TEXT} 그 이상은{" "}
-                <a
-                  href={`mailto:${OVERSIZE_CONTACT_EMAIL}`}
-                  className="font-bold text-blue-600 underline underline-offset-2"
-                >
-                  {OVERSIZE_CONTACT_EMAIL}
-                </a>
-                로 보내주시면 확인 후 연락드리겠습니다.
+                {ATTACHMENT_LIMIT_TEXT} 그 이상은 <CopyEmail />로 보내주시면 확인 후 연락드리겠습니다.
               </p>
             </div>
           </div>
