@@ -11,10 +11,10 @@ import { ESTIMATE_EVENT_TYPES, ESTIMATE_GROUPS, ESTIMATE_DESIGN_IDS, ESTIMATE_SC
 import { REFERRAL_SOURCES, REFERRAL_OTHER, buildReferralLine } from "@/lib/referralSources";
 import { formatPhoneNumber, KOREAN_PHONE_REGEX } from "@/lib/phoneFormat";
 import { createQuoteNumber } from "@/lib/quoteNumber";
+import CopyEmail from "@/components/ui/CopyEmail";
 import {
   MAX_FILES,
   ATTACHMENT_LIMIT_TEXT,
-  OVERSIZE_CONTACT_EMAIL,
   validateFiles,
   uploadAttachments,
   type UploadedFile,
@@ -762,14 +762,7 @@ export default function Estimate() {
                           </div>
                         )}
                         <p className="mt-2 text-xs leading-relaxed text-gray-600">
-                          {ATTACHMENT_LIMIT_TEXT} 그 이상은{" "}
-                          <a
-                            href={`mailto:${OVERSIZE_CONTACT_EMAIL}`}
-                            className="font-bold text-blue-600 underline underline-offset-2"
-                          >
-                            {OVERSIZE_CONTACT_EMAIL}
-                          </a>
-                          로 보내주시면 확인 후 연락드리겠습니다.
+                          {ATTACHMENT_LIMIT_TEXT} 그 이상은 <CopyEmail />로 보내주시면 확인 후 연락드리겠습니다.
                         </p>
                       </div>
                     </div>
