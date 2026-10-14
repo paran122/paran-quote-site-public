@@ -417,8 +417,11 @@ export default function Contact() {
                   <div className="mb-2.5 flex items-center gap-1.5 md:mb-4 md:gap-2">
                     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-extrabold text-white md:text-[11px]">4</span>
                     <h3 className="text-[14px] font-bold text-gray-900 md:text-base">남기실 말씀</h3>
-                    <span className="text-[10px] font-medium text-gray-500 md:text-[11px]">선택사항</span>
                   </div>
+                  <p className="mb-2 rounded-lg border border-blue-100 bg-blue-50/70 px-3 py-2 text-[11px] font-medium leading-relaxed text-blue-900 md:mb-3 md:px-3.5 md:py-2.5 md:text-xs">
+                    자세히 적어주실수록 정확한 견적을 안내해 드릴 수 있습니다.
+                    행사 목적과 예상 인원, 일정, 장소, 필요한 항목을 함께 알려주세요.
+                  </p>
                   <textarea
                     rows={3}
                     placeholder={MESSAGE_PLACEHOLDERS[serviceSel] ?? DEFAULT_PLACEHOLDER}
