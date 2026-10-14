@@ -4,6 +4,8 @@ import type { Lecturer } from "@/types";
 import LecturersClient from "./LecturersClient";
 
 export const metadata: Metadata = {
+  // 콘텐츠 축적 전까지 검색 노출 보류
+  robots: { index: false, follow: false },
   title: "명사 정보 | 파란컴퍼니",
   description:
     "분야별 강사 정보입니다. 강의 주제·약력을 확인하고 문의해 주세요.",
