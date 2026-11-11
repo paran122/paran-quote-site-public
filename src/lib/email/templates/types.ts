@@ -13,7 +13,7 @@ export interface QuoteEmailData {
   email: string;
   department?: string;
   eventName: string;
-  eventDate: string;
+  eventDate: string;  // 미입력 시 "-"
   eventVenue?: string;
   eventType?: string;
   attendees?: string;

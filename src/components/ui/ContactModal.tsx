@@ -5,16 +5,16 @@ import { X, Loader2, Paperclip, FileText, Image as ImageIcon, Check } from "luci
 import { showToast } from "@/components/ui/Toast";
 import { REFERRAL_SOURCES, REFERRAL_OTHER, prependReferralToMemo } from "@/lib/referralSources";
 import { formatPhoneNumber } from "@/lib/phoneFormat";
+import { createInquiryNumber } from "@/lib/quoteNumber";
+import CopyEmail from "@/components/ui/CopyEmail";
+import {
+  MAX_FILES,
+  ATTACHMENT_LIMIT_TEXT,
+  validateFiles,
+  uploadAttachments,
+  type UploadedFile,
+} from "@/lib/attachments";
 
-const MAX_FILES = 5;
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
-
-interface UploadedFile {
-  name: string;
-  url: string;
-  size: number;
-  type: string;
-}
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes}B`;
@@ -119,15 +119,10 @@ export default function ContactModal({ isOpen, onClose }: Props) {
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files || []);
-    if (files.length + selected.length > MAX_FILES) {
-      showToast(`최대 ${MAX_FILES}개까지 첨부 가능합니다.`);
+    const invalid = validateFiles(selected, files.length);
+    if (invalid) {
+      showToast(invalid);
       return;
-    }
-    for (const file of selected) {
-      if (file.size > MAX_FILE_SIZE) {
-        showToast(`${file.name}: 10MB 이하 파일만 첨부 가능합니다.`);
-        return;
-      }
     }
     setFiles((prev) => [...prev, ...selected]);
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -141,15 +136,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
     if (files.length === 0) return [];
     setUploading(true);
     try {
-      const formData = new FormData();
-      files.forEach((f) => formData.append("files", f));
-      const res = await fetch("/api/contact/upload", { method: "POST", body: formData });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: "업로드 실패" }));
-        throw new Error(err.error);
-      }
-      const data = await res.json();
-      return data.files;
+      return await uploadAttachments(files);
     } finally {
       setUploading(false);
     }
@@ -164,10 +151,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
     if (hasError || submitting) return;
     setSubmitting(true);
 
-    const quoteNumber = `IQ-${new Date()
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, "")}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, "0")}`;
+    const quoteNumber = createInquiryNumber();
 
     try {
       let attachments: UploadedFile[] = [];
@@ -183,7 +167,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
         phone: form.phone,
         email: form.email,
         event_name: "문의",
-        event_date: new Date().toISOString().slice(0, 10),
+        event_date: undefined,
         event_type: "문의",
         memo: prependReferralToMemo(referralSources, form.message, referralOther),
         cart_items: [],
@@ -361,7 +345,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
             </label>
             <textarea
               rows={4}
-              placeholder="행사명, 예상 인원수, 참고 사항 등 자유롭게 적어주세요."
+              placeholder="행사명, 예상 인원수, 참고 사항 등 자유롭게 적어주세요.&#10;행사일이 정해졌다면 날짜도 함께 적어주세요. (예: 11월 20일)"
               value={form.message}
               onChange={(e) => updateField("message", e.target.value)}
               className="w-full resize-none rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-[14px] text-slate-900 placeholder-slate-300 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary/20"
@@ -372,7 +356,7 @@ export default function ContactModal({ isOpen, onClose }: Props) {
           <div className="mt-4">
             <div className="flex items-center gap-1.5">
               <label className="text-[13px] font-medium text-slate-600">파일 첨부</label>
-              <span className="text-[11px] text-slate-400">선택사항 (최대 {MAX_FILES}개, 10MB 이하)</span>
+              <span className="text-[11px] font-medium text-slate-500">선택사항</span>
             </div>
             <div className="mt-1.5">
               <input
@@ -417,6 +401,9 @@ export default function ContactModal({ isOpen, onClose }: Props) {
                   ))}
                 </div>
               )}
+              <p className="mt-2 text-[11px] leading-relaxed text-slate-600">
+                {ATTACHMENT_LIMIT_TEXT} 그 이상은 <CopyEmail />로 보내주시면 확인 후 연락드리겠습니다.
+              </p>
             </div>
           </div>
 

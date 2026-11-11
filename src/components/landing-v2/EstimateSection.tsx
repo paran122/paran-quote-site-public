@@ -10,16 +10,16 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { ESTIMATE_EVENT_TYPES, ESTIMATE_GROUPS, ESTIMATE_DESIGN_IDS, ESTIMATE_SCALES, ESTIMATE_INCLUDES, ESTIMATE_DETAIL, ESTIMATE_CHIPS, formatRangeText } from "@/lib/pricing";
 import { REFERRAL_SOURCES, REFERRAL_OTHER, buildReferralLine } from "@/lib/referralSources";
 import { formatPhoneNumber, KOREAN_PHONE_REGEX } from "@/lib/phoneFormat";
+import { createQuoteNumber } from "@/lib/quoteNumber";
+import CopyEmail from "@/components/ui/CopyEmail";
+import {
+  MAX_FILES,
+  ATTACHMENT_LIMIT_TEXT,
+  validateFiles,
+  uploadAttachments,
+  type UploadedFile,
+} from "@/lib/attachments";
 
-const MAX_FILES = 5;
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
-
-interface UploadedFile {
-  name: string;
-  url: string;
-  size: number;
-  type: string;
-}
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes}B`;
@@ -152,15 +152,10 @@ export default function Estimate() {
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files || []);
-    if (files.length + selected.length > MAX_FILES) {
-      showToast(`최대 ${MAX_FILES}개까지 첨부 가능합니다.`);
+    const invalid = validateFiles(selected, files.length);
+    if (invalid) {
+      showToast(invalid);
       return;
-    }
-    for (const file of selected) {
-      if (file.size > MAX_FILE_SIZE) {
-        showToast(`${file.name}: 10MB 이하 파일만 첨부 가능합니다.`);
-        return;
-      }
     }
     setFiles((prev) => [...prev, ...selected]);
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -174,15 +169,7 @@ export default function Estimate() {
     if (files.length === 0) return [];
     setUploading(true);
     try {
-      const formData = new FormData();
-      files.forEach((f) => formData.append("files", f));
-      const res = await fetch("/api/contact/upload", { method: "POST", body: formData });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: "업로드 실패" }));
-        throw new Error(err.error);
-      }
-      const data = await res.json();
-      return data.files;
+      return await uploadAttachments(files);
     } finally {
       setUploading(false);
     }
@@ -199,10 +186,7 @@ export default function Estimate() {
     if (hasError || submitting) return;
     setSubmitting(true);
 
-    const quoteNumber = `QT-${new Date()
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, "")}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, "0")}`;
+    const quoteNumber = createQuoteNumber();
 
     // 간편 견적: 유형 + 규모 + 예상 범위를 단일 항목으로 전달
     const cartItems = [
@@ -239,7 +223,7 @@ export default function Estimate() {
         email: form.email,
         department: form.department || undefined,
         event_name: active.name,
-        event_date: form.eventDate || new Date().toISOString().slice(0, 10),
+        event_date: form.eventDate || undefined,
         event_venue: form.eventVenue || undefined,
         event_type: active.name,
         memo: combinedMemo,
@@ -652,7 +636,9 @@ export default function Estimate() {
                         <div className="space-y-3">
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <label className="mb-1.5 block text-xs font-medium text-gray-500">행사 예정일</label>
+                              <label className="mb-1.5 block text-xs font-medium text-gray-500">
+                                행사 예정일 <span className="font-normal text-gray-400">(미정이면 비워두세요)</span>
+                              </label>
                               <input type="date" value={form.eventDate} onChange={(e) => updateField("eventDate", e.target.value)} className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm text-gray-900 outline-none transition-all focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100" />
                             </div>
                             <div>
@@ -719,7 +705,7 @@ export default function Estimate() {
                         </div>
                         <textarea
                           rows={5}
-                          placeholder="행사 목적, 참석자 규모, 특별 요청사항 등을 자유롭게 작성해주세요"
+                          placeholder="행사 목적, 참석자 규모, 특별 요청사항 등을 자유롭게 작성해주세요&#10;행사일이 미정이라면 예상 시기를, 확정되면 날짜를 적어주세요. (예: 11월 중순 / 11월 20일)"
                           value={form.memo}
                           onChange={(e) => updateField("memo", e.target.value)}
                           className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm text-gray-900 placeholder-gray-300 outline-none transition-all focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100"
@@ -731,7 +717,7 @@ export default function Estimate() {
                         <div className="mb-3 flex items-center gap-2 md:mb-4">
                           <div className="h-5 w-1 rounded-full bg-indigo-500" />
                           <h4 className="text-sm font-bold text-gray-900">파일 첨부</h4>
-                          <span className="text-[11px] text-gray-400">선택사항 (최대 {MAX_FILES}개, 10MB 이하)</span>
+                          <span className="text-[11px] font-medium text-gray-500">선택사항</span>
                         </div>
                         <input
                           ref={fileInputRef}
@@ -775,6 +761,9 @@ export default function Estimate() {
                             ))}
                           </div>
                         )}
+                        <p className="mt-2 text-xs leading-relaxed text-gray-600">
+                          {ATTACHMENT_LIMIT_TEXT} 그 이상은 <CopyEmail />로 보내주시면 확인 후 연락드리겠습니다.
+                        </p>
                       </div>
                     </div>
                   </div>

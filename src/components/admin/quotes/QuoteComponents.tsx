@@ -27,7 +27,7 @@ export interface QuoteItem {
   email: string;
   department: string | null;
   event_name: string;
-  event_date: string;
+  event_date: string | null;
   event_venue: string | null;
   event_type: string | null;
   attendees: string | null;
@@ -73,7 +73,8 @@ export function formatDateTime(dateStr: string) {
   });
 }
 
-function formatEventDate(dateStr: string) {
+function formatEventDate(dateStr: string | null) {
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleDateString("ko-KR", {
     year: "numeric",
     month: "long",

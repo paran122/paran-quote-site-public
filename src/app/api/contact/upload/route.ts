@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+// 파일은 브라우저 → Supabase Storage로 직접 올라간다.
+// 이 라우트는 업로드 티켓(서명 URL)만 발급하므로 서버리스 요청 본문 제한(6MB)에 걸리지 않는다.
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 const MAX_FILES = 5;
 
 // 확장자 기반 화이트리스트 (브라우저/OS마다 MIME 인식이 달라 확장자로 검증)
@@ -65,6 +67,12 @@ function isRateLimited(ip: string): boolean {
   return entry.count > RATE_LIMIT_MAX;
 }
 
+interface RequestedFile {
+  name: string;
+  size: number;
+  type?: string;
+}
+
 export async function POST(request: Request) {
   try {
     const ip =
@@ -86,8 +94,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const formData = await request.formData();
-    const files = formData.getAll("files") as File[];
+    const body = await request.json().catch(() => null);
+    const files: RequestedFile[] = Array.isArray(body?.files) ? body.files : [];
 
     if (files.length === 0) {
       return NextResponse.json(
@@ -102,11 +110,17 @@ export async function POST(request: Request) {
       );
     }
 
-    // 파일 유효성 검사
+    // 파일 유효성 검사 (실제 용량은 Storage 버킷 한도로도 한 번 더 막힌다)
     for (const file of files) {
+      if (typeof file?.name !== "string" || typeof file?.size !== "number") {
+        return NextResponse.json(
+          { error: "유효하지 않은 요청입니다." },
+          { status: 400 }
+        );
+      }
       if (file.size > MAX_FILE_SIZE) {
         return NextResponse.json(
-          { error: `${file.name}: 파일 크기는 10MB 이하여야 합니다.` },
+          { error: `${file.name}: 파일 크기는 50MB 이하여야 합니다. 더 큰 파일은 info@parancompany.co.kr로 보내주세요.` },
           { status: 400 }
         );
       }
@@ -126,13 +140,18 @@ export async function POST(request: Request) {
     });
 
     const timestamp = Date.now();
-    const uploaded: { name: string; url: string; size: number; type: string }[] =
-      [];
+    const tickets: {
+      name: string;
+      path: string;
+      token: string;
+      type: string;
+      size: number;
+    }[] = [];
 
     for (const file of files) {
       const ext = getExtension(file.name);
       // Supabase Storage 키는 ASCII만 허용 → 한글/특수문자 제거하고 확장자만 유지
-      // 원본 파일명은 uploaded.name 으로 별도 저장됨
+      // 원본 파일명은 tickets.name 으로 별도 저장됨
       const path = `${timestamp}_${Math.random().toString(36).slice(2, 10)}${ext}`;
 
       // 빈 MIME 또는 octet-stream이면 확장자 기반으로 보정
@@ -141,32 +160,29 @@ export async function POST(request: Request) {
           ? file.type
           : EXT_TO_MIME[ext] || "application/octet-stream";
 
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const { error } = await db.storage
+      const { data, error } = await db.storage
         .from("contact-attachments")
-        .upload(path, buffer, {
-          contentType,
-          cacheControl: "3600",
-        });
+        .createSignedUploadUrl(path);
 
-      if (error) {
-        console.error("[contact/upload] Upload failed:", { name: file.name, ext, contentType, error });
+      if (error || !data) {
+        console.error("[contact/upload] Signed URL 발급 실패:", { name: file.name, ext, error });
         return NextResponse.json(
-          { error: `${file.name} 업로드에 실패했습니다. (${error.message})` },
+          { error: `${file.name} 업로드 준비에 실패했습니다.` },
           { status: 500 }
         );
       }
 
-      // 스토리지 경로만 저장 (어드민에서 볼 때 실시간 signed URL 발급)
-      uploaded.push({
+      tickets.push({
         name: file.name,
-        url: path,
-        size: file.size,
+        path,
+        token: data.token,
         type: contentType,
+        size: file.size,
       });
     }
 
-    return NextResponse.json({ success: true, files: uploaded });
+    // 스토리지 경로만 저장 (어드민에서 볼 때 실시간 signed URL 발급)
+    return NextResponse.json({ success: true, tickets });
   } catch (err) {
     console.error("[contact/upload] Unexpected error:", err);
     return NextResponse.json(
