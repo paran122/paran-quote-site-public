@@ -144,6 +144,8 @@ export async function POST(request: Request) {
       name: string;
       path: string;
       token: string;
+      /** 서명된 업로드 주소(Supabase 클라이언트 없이 올리는 화면용) */
+      signedUrl: string;
       type: string;
       size: number;
     }[] = [];
@@ -176,6 +178,7 @@ export async function POST(request: Request) {
         name: file.name,
         path,
         token: data.token,
+        signedUrl: data.signedUrl,
         type: contentType,
         size: file.size,
       });

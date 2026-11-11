@@ -1,0 +1,14 @@
+/* 자주 묻는 질문: 주제별 묶음 + 접고 펼치기 (미리보기 전용, 1.1: 확인사항 아래로 이동) */
+#booklet-faq .fx-list{display:grid;gap:40px;max-width:880px;margin:0 auto}
+#booklet-faq .fx-label{margin:0 0 6px;font:700 13px/1.4 Pretendard,sans-serif;letter-spacing:.04em;color:#6b6676}
+#booklet-faq details.ref-faq{border-bottom:1px solid #dedbe6}
+#booklet-faq details.ref-faq summary{position:relative;display:block;list-style:none;padding:20px 44px 20px 0;font:700 18px/1.5 Pretendard,sans-serif;color:#15141a;cursor:pointer;word-break:keep-all}
+#booklet-faq details.ref-faq summary::-webkit-details-marker{display:none}
+#booklet-faq details.ref-faq summary::after{content:"";position:absolute;right:8px;top:50%;width:10px;height:10px;border-right:2px solid #15141a;border-bottom:2px solid #15141a;transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+#booklet-faq details.ref-faq[open] summary::after{transform:translateY(-20%) rotate(-135deg)}
+#booklet-faq details.ref-faq summary:focus-visible{outline:3px solid #173eb8;outline-offset:2px}
+#booklet-faq details.ref-faq p{margin:0;padding:0 44px 22px 0;font:400 16px/1.75 Pretendard,sans-serif;color:#4c4756;word-break:keep-all}
+#booklet-faq .fx-more{margin:0;text-align:center;font:400 15px/1.6 Pretendard,sans-serif;color:#6b6676}
+#booklet-faq .fx-more a{color:#15141a;font-weight:600}
+@media(max-width:767px){#booklet-faq .fx-list{gap:32px}#booklet-faq details.ref-faq summary{font-size:16px;padding:16px 36px 16px 0}#booklet-faq details.ref-faq p{font-size:15px;padding-right:0}}
+@media(prefers-reduced-motion:reduce){#booklet-faq details.ref-faq summary::after{transition:none}}

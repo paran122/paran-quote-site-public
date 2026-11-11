@@ -1,0 +1,15 @@
+/* 2026-11-08 제작 전 확인사항 카드 4칸(service_live.notes_cards가 .nt-cards를 붙인 섹션만) */
+#service-notes.nt-cards .nt-ic svg{fill:none;stroke:#15141a;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#service-notes.nt-cards h3{margin:0 0 6px;font-size:18px;font-weight:800;letter-spacing:-.02em;color:#15141a}
+#service-notes.nt-cards p{margin:0;color:#55545f;font-size:15px;line-height:1.65}
+#service-notes.nt-cards .nt-ic{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:#f2f9d6;margin-bottom:16px}#service-notes.nt-cards .nt-ic svg{width:24px;height:24px}
+#service-notes.nt-cards .nt2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:980px;margin:36px auto 0;text-align:left}
+#service-notes.nt-cards .nt2 article{padding:28px 28px 30px;border:1.5px solid #ececf0;border-radius:18px;background:#fff}
+/* 차례로 떠오름 */
+#service-notes.nt-cards.nt-anim .nt7 article{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+#service-notes.nt-cards.nt-in .nt7 article{opacity:1;transform:none}
+#service-notes.nt-cards.nt-in .nt7 article:nth-child(1){transition-delay:0.12s}#service-notes.nt-cards.nt-in .nt7 article:nth-child(2){transition-delay:0.28s}#service-notes.nt-cards.nt-in .nt7 article:nth-child(3){transition-delay:0.44s}#service-notes.nt-cards.nt-in .nt7 article:nth-child(4){transition-delay:0.60s}
+@media(max-width:767px){#service-notes.nt-cards .nt2{grid-template-columns:1fr}}
+/* 5칸이면 위 3칸·아래 2칸 */
+#service-notes.nt-cards .nt-n5{grid-template-columns:repeat(6,1fr)}#service-notes.nt-cards .nt-n5 article{grid-column:span 2}#service-notes.nt-cards .nt-n5 article:nth-child(n+4){grid-column:span 3}
+@media(max-width:767px){#service-notes.nt-cards .nt-n5{grid-template-columns:1fr}#service-notes.nt-cards .nt-n5 article{grid-column:auto!important}}

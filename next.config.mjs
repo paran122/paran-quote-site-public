@@ -1,5 +1,32 @@
+import { readFileSync } from "node:fs";
+
+// 서비스 사이트(정적 생성물, public/store)가 차지하는 주소. 서비스 사이트 생성기가 store-routes.json 을 만든다.
+const store = JSON.parse(
+  readFileSync(new URL("./store-routes.json", import.meta.url), "utf8")
+);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return {
+      // 메인과 목록 주소는 새 서비스 사이트가 먼저 받는다. 그 밖의 주소(/blog, /work/[slug], /services/government 등)는 기존 그대로.
+      beforeFiles: [
+        { source: "/", destination: "/store/index.html" },
+        ...store.pages.map((page) => ({
+          source: `/${page}`,
+          destination: `/store/${page}/index.html`,
+        })),
+        {
+          source: `/services/:id(${store.services.join("|")})`,
+          destination: "/store/services/:id/index.html",
+        },
+      ],
+      // 기존 public/assets 에 없는 파일만 서비스 사이트 자산으로 넘긴다
+      afterFiles: [
+        { source: "/assets/:path*", destination: "/store/assets/:path*" },
+      ],
+    };
+  },
   images: {
     remotePatterns: [
       {

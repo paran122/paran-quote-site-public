@@ -1,0 +1,436 @@
+/* 서비스별 첫 화면 장면 (책자 외 9개). 영역 크기 기준(cqw/cqh·%)이라 PC·모바일이 같은 구도.
+   한 장면 = 한 서비스의 일하는 방식: 포스터 조립, 현수막 펼침, 리플렛 접지, 무대 화면 전환,
+   카드뉴스 피드, 포토월 촬영, 패널 세우기, 부스 백월 접기, 부스 운영. */
+.sv-scene{--lime:#ccff30;--ink:#15141a;--loop:9s;position:relative;display:block;width:100%;height:100%;margin:0;container-type:size;isolation:isolate;outline:none;font-family:Pretendard,sans-serif;overflow:visible}
+.sv-scene:focus-visible{outline:2px solid #829bff;outline-offset:4px}
+.sv-scene img{display:block;max-width:none;margin:0}
+.sv-scene .sv-ghost{position:absolute;left:8%;top:14%;width:82%;height:62%;border-radius:14px;background:#25262e}
+.sv-scene .sc-label{position:absolute;z-index:8;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#15141aee;color:#fff;font:700 clamp(10px,2.6cqw,12px)/1 Pretendard,sans-serif;white-space:nowrap;box-shadow:0 6px 16px -6px #000c}
+.sv-scene .sc-label::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--lime)}
+.sv-scene .sc-note{position:absolute;z-index:8;margin:0;color:var(--lime);font:800 clamp(14px,4.1cqw,22px)/1.08 Pretendard,sans-serif;letter-spacing:-.03em;white-space:nowrap}
+.sv-scene .sc-dim{position:absolute;z-index:7;color:var(--lime);font:700 clamp(9px,2.3cqw,12px)/1 Pretendard,sans-serif;white-space:nowrap}
+.sv-scene.is-paused *,.sv-scene.is-paused *::before,.sv-scene.is-paused *::after{animation-play-state:paused!important}
+@media(prefers-reduced-motion:reduce){.sv-scene *,.sv-scene *::before,.sv-scene *::after{animation:none!important;transition:none!important}}
+
+/* 1 포스터: 행사별 포스터(1~3장)가 부스·패널처럼 아래에서 서고 빛이 지나간 뒤 손글씨 메모. 회차마다 다른 행사 (JS가 data-set 변경) */
+.sc-poster{--loop:8s}
+.sc-poster .ps-cycle{position:absolute;inset:0;animation:ps-tick var(--loop) infinite}
+@keyframes ps-tick{to{opacity:1}}
+.sc-poster .ps-set{display:none;position:absolute;inset:0}
+.sc-poster[data-set="0"] .pss0,.sc-poster[data-set="1"] .pss1,.sc-poster[data-set="2"] .pss2,.sc-poster[data-set="3"] .pss3{display:block}
+.sc-poster .ps-sheet{position:absolute;top:var(--t);left:var(--l);height:var(--h);aspect-ratio:var(--ar);rotate:var(--r);border-radius:4px;overflow:hidden;transform-origin:50% 100%;box-shadow:0 22px 40px -14px #000d;animation:ps-rise var(--loop) cubic-bezier(.2,.8,.25,1) infinite backwards;animation-delay:calc(var(--k) * .25s)}
+.sc-poster .ps-sheet img{width:100%;height:100%;object-fit:cover}
+@keyframes ps-rise{0%,3%{opacity:0;transform:perspective(700px) rotateX(-70deg)}16%,86%{opacity:1;transform:none}92%,100%{opacity:0;transform:none}}
+.sc-poster .ps-sheet::after{content:"";position:absolute;top:-10%;bottom:-10%;width:30%;left:-40%;background:linear-gradient(100deg,transparent,#ffffff55,transparent);rotate:12deg;animation:ps-glint var(--loop) ease-in-out infinite backwards}
+@keyframes ps-glint{0%,24%{left:-40%}38%,100%{left:130%}}
+.sc-poster .ps-n1{left:5%;top:1%;font-size:clamp(16px,4.6cqw,23px);line-height:1.05;animation:ps-memo1 var(--loop) infinite backwards}
+.sc-poster .ps-n2{right:5%;top:90%;animation:ps-memo2 var(--loop) infinite backwards}
+.sc-poster .ps-curl{position:absolute;width:clamp(30px,9cqw,44px);aspect-ratio:6/5;overflow:visible}
+.sc-poster .ps-curl path{fill:none;stroke:var(--lime);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1}
+.sc-poster .ps-n1 .ps-curl{left:.3em;top:calc(100% + 2px)}.sc-poster .ps-n1 .ps-curl path{animation:ps-ink1 var(--loop) infinite backwards}
+/* 아래 메모: 물결 밑줄이 그어지고 연필 */
+.sc-poster .ps-wave{position:absolute;left:-4%;top:100%;width:108%;height:12px;margin-top:2px;overflow:visible}
+.sc-poster .ps-wave path{fill:none;stroke:var(--lime);stroke-width:3;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1;animation:ps-ink2 var(--loop) infinite backwards}
+.sc-poster .ps-pencil{position:absolute;left:calc(100% + 6px);bottom:-2px;width:28px;height:28px;overflow:visible}
+.sc-poster .ps-pencil path{fill:none;stroke:var(--lime);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+/* 위 메모: 글자 양쪽 반짝이(왼쪽 위·오른쪽 아래)가 톡 튀어나옴 */
+.sc-poster .ps-spark{position:absolute;width:26px;height:26px;animation:ps-pop var(--loop) cubic-bezier(.22,1,.36,1) infinite backwards}
+.sc-poster .ps-sp-a{right:calc(100% - 2px);bottom:calc(100% - 10px);rotate:-40deg}
+.sc-poster .ps-sp-b{left:calc(100% + 2px);top:calc(100% - 14px);rotate:140deg}
+@keyframes ps-pop{0%,44%{scale:0;opacity:0}50%,84%{scale:1;opacity:1}90%,100%{opacity:0}}
+.sc-poster .ps-spark i{position:absolute;left:50%;top:50%;width:3px;height:10px;margin:-13px 0 0 -1.5px;background:var(--lime);border-radius:2px;transform-origin:50% 13px;rotate:-50deg}
+.sc-poster .ps-spark i:nth-child(2){rotate:0deg}.sc-poster .ps-spark i:nth-child(3){rotate:50deg}
+@keyframes ps-memo1{0%,40%{opacity:0;translate:0 6px}46%,84%{opacity:1;translate:0 0}90%,100%{opacity:0}}
+@keyframes ps-memo2{0%,50%{opacity:0;translate:0 6px}56%,84%{opacity:1;translate:0 0}90%,100%{opacity:0}}
+@keyframes ps-ink1{0%,42%{stroke-dashoffset:1}50%,84%{stroke-dashoffset:0;opacity:1}90%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes ps-ink2{0%,52%{stroke-dashoffset:1}60%,84%{stroke-dashoffset:0;opacity:1}90%,100%{stroke-dashoffset:0;opacity:0}}
+
+/* 2 현수막·X배너: 홈페이지 목업 사진이 크게 들어오고, 같은 행사 다른 목업이 카드로 얹힌 뒤 빛 → 손글씨 메모. 회차마다 다른 행사 (JS가 data-set 변경) */
+.sc-banner{--loop:8s}
+.sc-banner .bn-cycle{position:absolute;inset:0;animation:bn-tick var(--loop) infinite}
+@keyframes bn-tick{to{opacity:1}}
+.sc-banner .bn-set{display:none;position:absolute;inset:0}
+.sc-banner[data-set="0"] .bns0,.sc-banner[data-set="1"] .bns1,.sc-banner[data-set="2"] .bns2{display:block}
+.sc-banner .bn-main{position:absolute;left:var(--l);top:var(--t);width:var(--w);aspect-ratio:var(--ar);border-radius:12px;overflow:hidden;box-shadow:0 22px 40px -16px #000e;animation:bn-main var(--loop) cubic-bezier(.3,1.1,.4,1) infinite backwards}
+@keyframes bn-main{0%,2%{opacity:0;scale:.95}10%,86%{opacity:1;scale:1}92%,100%{opacity:0;scale:1}}
+.sc-banner .bn-card{position:absolute;right:2%;top:var(--t);height:var(--h);aspect-ratio:var(--ar);padding:5px;background:#fff;border-radius:4px;rotate:var(--r);box-shadow:0 18px 30px -12px #000e;animation:bn-card var(--loop) cubic-bezier(.22,1,.36,1) infinite backwards;animation-delay:.5s}
+.sc-banner .bn-card img{border-radius:2px}
+@keyframes bn-card{0%,6%{opacity:0;translate:20px -10px;scale:.88}16%,84%{opacity:1;translate:0 0;scale:1}90%,100%{opacity:0}}
+.sc-banner .bn-main img,.sc-banner .bn-card img{display:block;width:100%;height:100%;object-fit:cover}
+.sc-banner .bn-main::after{content:"";position:absolute;top:-10%;bottom:-10%;width:30%;left:-40%;background:linear-gradient(100deg,transparent,#ffffff55,transparent);rotate:12deg;animation:bn-glint var(--loop) ease-in-out infinite backwards}
+@keyframes bn-glint{0%,22%{left:-40%}36%,100%{left:130%}}
+.sc-banner .bn-n1{left:5%;top:1%;font-size:clamp(16px,4.6cqw,23px);line-height:1.05;animation:bn-memo1 var(--loop) infinite backwards}
+.sc-banner .bn-n2{left:var(--nl,6%);top:var(--nt,86%);animation:bn-memo2 var(--loop) infinite backwards}
+.sc-banner .bn-curl{position:absolute;left:.3em;top:calc(100% + 2px);width:clamp(30px,9cqw,44px);aspect-ratio:6/5;overflow:visible}
+.sc-banner .bn-curl path,.sc-banner .bn-wave path{fill:none;stroke:var(--lime);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1}
+.sc-banner .bn-curl path{animation:bn-ink1 var(--loop) infinite backwards}
+.sc-banner .bn-wave{position:absolute;left:-4%;top:100%;width:108%;height:12px;margin-top:2px;overflow:visible}
+.sc-banner .bn-wave path{stroke-width:3;animation:bn-ink2 var(--loop) infinite backwards}
+.sc-banner .bn-pencil{position:absolute;left:calc(100% + 6px);bottom:-2px;width:28px;height:28px;overflow:visible}
+.sc-banner .bn-pencil path{fill:none;stroke:var(--lime);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.sc-banner .bn-spark{position:absolute;width:26px;height:26px;animation:bn-pop var(--loop) cubic-bezier(.22,1,.36,1) infinite backwards}
+.sc-banner .bn-spark i{position:absolute;left:50%;top:50%;width:3px;height:10px;margin:-13px 0 0 -1.5px;background:var(--lime);border-radius:2px;transform-origin:50% 13px;rotate:-50deg}
+.sc-banner .bn-spark i:nth-child(2){rotate:0deg}.sc-banner .bn-spark i:nth-child(3){rotate:50deg}
+.sc-banner .bn-sp-a{right:calc(100% - 2px);bottom:calc(100% - 10px);rotate:-40deg}
+.sc-banner .bn-sp-b{left:calc(100% + 2px);top:calc(100% - 14px);rotate:140deg}
+@keyframes bn-pop{0%,44%{scale:0;opacity:0}50%,84%{scale:1;opacity:1}90%,100%{opacity:0}}
+@keyframes bn-memo1{0%,40%{opacity:0;translate:0 6px}46%,84%{opacity:1;translate:0 0}90%,100%{opacity:0}}
+@keyframes bn-memo2{0%,50%{opacity:0;translate:0 6px}56%,84%{opacity:1;translate:0 0}90%,100%{opacity:0}}
+@keyframes bn-ink1{0%,42%{stroke-dashoffset:1}50%,84%{stroke-dashoffset:0;opacity:1}90%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes bn-ink2{0%,52%{stroke-dashoffset:1}60%,84%{stroke-dashoffset:0;opacity:1}90%,100%{stroke-dashoffset:0;opacity:0}}
+
+/* 3 리플렛: 3단 펼침면이 접혔다 펼쳐진다 */
+/* 3-2 리플렛(확정 방향): 접힌 표지가 양쪽으로 넘어가며 펼친 면이 됨. 실제 바깥면·안쪽면, 종이결·접힌 선 그림자, 작은 반동. 배치·메모는 현수막(.sc-banner)과 같음 */
+.sc-leaflet{--loop:9s;--grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .18 0 0 0 0 .15 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.sc-leaflet .lfa{position:absolute;left:18%;top:21%;width:64%;aspect-ratio:var(--ar);perspective:4200px;animation:lfa-in var(--loop) infinite backwards}
+@keyframes lfa-in{0%{opacity:0;translate:0 10px}5%,86%{opacity:1;translate:0 0}92%,100%{opacity:0;translate:0 0}}
+.sc-leaflet .bn-n2{left:auto;right:calc(4% + 34px)}  /* 아래 메모는 오른쪽 아래(연필 자리 포함) */
+.sc-leaflet .lfa-mv,.sc-leaflet .lfa-p{transform-style:preserve-3d}
+.sc-leaflet .lfa-mv{position:absolute;inset:0}
+.sc-leaflet .lfa3 .lfa-mv{animation:lfa-mv3 var(--loop) infinite backwards}
+.sc-leaflet .lfa2 .lfa-mv{animation:lfa-mv2 var(--loop) infinite backwards}
+@keyframes lfa-mv3{0%,100%{translate:0 0}}
+@keyframes lfa-mv2{0%,10%{translate:-25% 0}21%,100%{translate:0 0}}
+.sc-leaflet .lfa-p{position:absolute;top:0;height:100%}
+.sc-leaflet .lfa-f{position:absolute;inset:0;backface-visibility:hidden;background-image:var(--grain),var(--img);background-size:180px 180px,var(--bs);background-position:0 0,var(--bp);background-repeat:repeat,no-repeat;box-shadow:0 16px 26px -14px #000d}
+.sc-leaflet .lfa-f::before,.sc-leaflet .lfa-f::after{content:"";position:absolute;inset:0;pointer-events:none}
+.sc-leaflet .lfa-back{transform:rotateY(180deg);box-shadow:none}
+.sc-leaflet .lfa-base .lfa-f::before{background:linear-gradient(90deg,#0000002e,#0000 5%,#0000 95%,#0000002e)}
+.sc-leaflet .lfa-cover{left:0;transform-origin:100% 50%;animation:lfa-cover var(--loop) infinite backwards}
+.sc-leaflet .lfa-flap{transform-origin:0 50%;animation:lfa-flap var(--loop) infinite backwards}
+.sc-leaflet .lfa-cover>.lfa-f:first-child::before{background:linear-gradient(90deg,#ffffff10 70%,#00000026)}
+.sc-leaflet .lfa-flap>.lfa-f:first-child::before{background:linear-gradient(90deg,#0000001f,#0000 18%)}
+.sc-leaflet .lfa-cover .lfa-f::after{background:linear-gradient(270deg,#000a,#0002);opacity:0;animation:lfa-shc var(--loop) infinite backwards}
+.sc-leaflet .lfa-flap .lfa-f::after{background:linear-gradient(90deg,#000a,#0002);opacity:0;animation:lfa-shf var(--loop) infinite backwards}
+@keyframes lfa-cover{0%,10%{transform:translateZ(2px) rotateY(180deg)}22%{transform:translateZ(1px) rotateY(-2deg)}25%,100%{transform:rotateY(0)}}
+@keyframes lfa-flap{0%,13%{transform:translateZ(1px) rotateY(-180deg)}26%{transform:translateZ(.5px) rotateY(2deg)}29%,100%{transform:rotateY(0)}}
+@keyframes lfa-shc{0%,10%{opacity:0}16%{opacity:.45}22%,100%{opacity:0}}
+@keyframes lfa-shf{0%,13%{opacity:0}19.5%{opacity:.45}26%,100%{opacity:0}}
+.sc-leaflet .lf-book{position:absolute;left:8%;top:12%;width:62%;aspect-ratio:1080/764;perspective:900px;z-index:3}
+.sc-leaflet .lf-panel{position:absolute;top:0;width:33.34%;height:100%;background-size:300% 100%;background-repeat:no-repeat;box-shadow:0 18px 30px -16px #000d;backface-visibility:hidden}
+.sc-leaflet .lf-l{left:0;background-position:0 0;transform-origin:100% 50%;animation:lf-l var(--loop) cubic-bezier(.5,0,.2,1) infinite}
+.sc-leaflet .lf-c{left:33.33%;background-position:50% 0}
+.sc-leaflet .lf-r{left:66.66%;background-position:100% 0;transform-origin:0 50%;animation:lf-r var(--loop) cubic-bezier(.5,0,.2,1) infinite}
+@keyframes lf-l{0%,8%{transform:rotateY(178deg);filter:brightness(.6)}30%,80%{transform:rotateY(0);filter:none}95%,100%{transform:rotateY(178deg);filter:brightness(.6)}}
+@keyframes lf-r{0%,14%{transform:rotateY(-176deg);filter:brightness(.6)}36%,74%{transform:rotateY(0);filter:none}90%,100%{transform:rotateY(-176deg);filter:brightness(.6)}}
+.sc-leaflet .lf-crease{position:absolute;top:0;bottom:0;width:1px;background:#15141a33;z-index:4}
+.sc-leaflet .lf-dim{left:8%;top:6%;animation:lf-fade var(--loop) infinite}
+@keyframes lf-fade{0%,30%{opacity:0}38%,78%{opacity:1}88%,100%{opacity:0}}
+.sc-leaflet .lf-langs{position:absolute;right:6%;top:8%;width:25%;height:76%;z-index:5}
+.sc-leaflet .lf-cover{position:absolute;inset:0;border-radius:4px;overflow:hidden;box-shadow:0 18px 30px -14px #000d;animation:lf-cover calc(var(--loop) * 1) infinite}
+.sc-leaflet .lf-cover img{width:100%;height:100%;object-fit:cover}
+.sc-leaflet .lf-cover:nth-child(2){animation-delay:calc(var(--loop) * -.75)}.sc-leaflet .lf-cover:nth-child(3){animation-delay:calc(var(--loop) * -.5)}.sc-leaflet .lf-cover:nth-child(4){animation-delay:calc(var(--loop) * -.25)}
+@keyframes lf-cover{0%{opacity:0;translate:0 10px}4%,24%{opacity:1;translate:0 0}28%,100%{opacity:0;translate:0 -6px}}
+.sc-leaflet .lf-lang{position:absolute;left:50%;bottom:-11%;translate:-50% 0;z-index:6}
+.sc-leaflet .lf-lang span{display:inline-flex;position:absolute;left:0;top:0;translate:-50% 0;opacity:0;animation:lf-cover var(--loop) infinite}
+.sc-leaflet .lf-lang span:nth-child(2){animation-delay:calc(var(--loop) * -.75)}.sc-leaflet .lf-lang span:nth-child(3){animation-delay:calc(var(--loop) * -.5)}.sc-leaflet .lf-lang span:nth-child(4){animation-delay:calc(var(--loop) * -.25)}
+.sc-leaflet .lf-note{left:8%;bottom:3%}
+
+/* 4-2 행사 진행 PPT(확정 방향 A): 왼쪽 진행 화면은 슬라이드가 순서대로 착착 넘어가고 아래 줄에서 지금 장이 밝게 표시(PPT 슬라이드 보기처럼), 오른쪽 폴라로이드는 무대 사진이 따로 바뀜. 회차·메모는 현수막(.sc-banner) 틀. ppa-*6·ppa-*9 키프레임은 장수·비율로 계산한 값 */
+.sc-ppta{--loop:18s}
+.sc-ppta .ppa-scr{position:absolute;left:5%;top:22%;width:56%;aspect-ratio:var(--ar);border-radius:6px;overflow:hidden;background:#0d0d12;box-shadow:0 0 0 3px #0d0d12,0 22px 40px -16px #000e}
+.sc-ppta .ppa-scr img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;opacity:0;animation:var(--show) var(--deck) infinite backwards;animation-delay:calc(var(--deck) / var(--n) * var(--k))}
+.sc-ppta .ppa-strip{position:absolute;left:5%;width:56%;top:calc(22% + 56cqw / (var(--ar)) + 7px);height:calc(6.5cqw + 8px);padding:4px 0;overflow:hidden;-webkit-mask:linear-gradient(90deg,#0000,#000 12%,#000 88%,#0000);mask:linear-gradient(90deg,#0000,#000 12%,#000 88%,#0000)}
+.sc-ppta .ppa-rail{position:relative;left:50%;display:flex;height:100%;width:max-content;animation:var(--rail) var(--deck) infinite backwards}
+.sc-ppta .ppa-rail i{flex:none;height:100%;aspect-ratio:var(--ar);margin-right:1.2cqw;border-radius:3px;overflow:hidden;opacity:.4;outline:2px solid transparent;outline-offset:2px;animation:var(--on) var(--deck) infinite backwards;animation-delay:calc(var(--deck) / var(--n) * var(--k))}
+.sc-ppta .ppa-rail img{display:block;width:100%;height:100%;object-fit:cover}
+.sc-ppta .ppa-pola{position:absolute;right:4%;top:33%;width:36%;padding:5px 5px 18px;background:#fff;border-radius:3px;rotate:3deg;box-shadow:0 18px 30px -12px #000e;z-index:3}
+.sc-ppta .ppa-pola>span{position:relative;display:block;aspect-ratio:3/2;overflow:hidden;background:#222}
+.sc-ppta .ppa-pola img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;opacity:0;animation:ppa-photo var(--loop) infinite backwards;animation-delay:calc(var(--loop) / 3 * var(--k))}
+.sc-ppta .bn-n2{left:auto;right:calc(4% + 34px);top:87%}  /* 아래 메모는 오른쪽 아래(연필 자리 포함) */
+@keyframes ppa-photo{0%{opacity:0;scale:1.06}5%{opacity:1;scale:1}33.3%{opacity:1;scale:1}36.3%,100%{opacity:0;scale:1}}
+.sc-ppta .ppa-n6{--n:6;--deck:18.0s;--show:ppa-show6;--on:ppa-on6;--rail:ppa-rail6}
+@keyframes ppa-show6{0%{opacity:0}1.39%,16.67%{opacity:1}18.06%,100%{opacity:0}}
+@keyframes ppa-on6{0%{opacity:.4;outline-color:transparent}1.39%,16.67%{opacity:1;outline-color:var(--lime)}18.06%,100%{opacity:.4;outline-color:transparent}}
+@keyframes ppa-rail6{0.00%,16.67%{transform:translateX(-5.20cqw)}19.44%,33.33%{transform:translateX(-16.80cqw)}36.11%,50.00%{transform:translateX(-28.40cqw)}52.78%,66.67%{transform:translateX(-40.00cqw)}69.44%,83.33%{transform:translateX(-51.60cqw)}86.11%,100.00%{transform:translateX(-63.20cqw)}}
+.sc-ppta .ppa-n9{--n:9;--deck:18.0s;--show:ppa-show9;--on:ppa-on9;--rail:ppa-rail9}
+@keyframes ppa-show9{0%{opacity:0}1.39%,11.11%{opacity:1}12.50%,100%{opacity:0}}
+@keyframes ppa-on9{0%{opacity:.4;outline-color:transparent}1.39%,11.11%{opacity:1;outline-color:var(--lime)}12.50%,100%{opacity:.4;outline-color:transparent}}
+@keyframes ppa-rail9{0.00%,11.11%{transform:translateX(-5.78cqw)}13.89%,22.22%{transform:translateX(-18.53cqw)}25.00%,33.33%{transform:translateX(-31.29cqw)}36.11%,44.44%{transform:translateX(-44.04cqw)}47.22%,55.56%{transform:translateX(-56.80cqw)}58.33%,66.67%{transform:translateX(-69.56cqw)}69.44%,77.78%{transform:translateX(-82.31cqw)}80.56%,88.89%{transform:translateX(-95.07cqw)}91.67%,100.00%{transform:translateX(-107.82cqw)}}
+/* 4 행사 진행 PPT: 무대 화면이 식순대로 넘어간다 */
+.sc-ppt{--loop:12.5s}
+.sc-ppt .pp-stage{position:absolute;left:5%;top:5%;width:90%;height:80%;border-radius:12px;background:radial-gradient(120% 90% at 50% 0%,#3a3550 0%,#1d1c24 60%,#15141a 100%)}
+.sc-ppt .pp-screen{position:absolute;left:15%;top:10%;width:70%;aspect-ratio:16/10;border:4px solid #0d0d12;border-radius:6px;background:#0d0d12;overflow:hidden;box-shadow:0 0 60px -10px #8c7cff66,0 24px 40px -20px #000}
+.sc-ppt .pp-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:pp-slide var(--loop) infinite}
+.sc-ppt .pp-slide:nth-child(2){animation-delay:calc(var(--loop) * .2)}.sc-ppt .pp-slide:nth-child(3){animation-delay:calc(var(--loop) * .4)}.sc-ppt .pp-slide:nth-child(4){animation-delay:calc(var(--loop) * .6)}.sc-ppt .pp-slide:nth-child(5){animation-delay:calc(var(--loop) * .8)}
+@keyframes pp-slide{0%{opacity:0;scale:1.04}3%,19%{opacity:1;scale:1}22%,100%{opacity:0}}
+.sc-ppt .pp-step{position:absolute;left:15%;top:62%;width:70%;display:flex;justify-content:space-between;gap:4px;z-index:3}
+.sc-ppt .pp-step span{flex:1;padding:6px 0;border-radius:6px;background:#2a2833;color:#9a98a6;text-align:center;font:700 clamp(8px,2.2cqw,11px)/1 Pretendard,sans-serif;white-space:nowrap;animation:pp-step var(--loop) infinite}
+.sc-ppt .pp-step span:nth-child(2){animation-delay:calc(var(--loop) * .2)}.sc-ppt .pp-step span:nth-child(3){animation-delay:calc(var(--loop) * .4)}.sc-ppt .pp-step span:nth-child(4){animation-delay:calc(var(--loop) * .6)}.sc-ppt .pp-step span:nth-child(5){animation-delay:calc(var(--loop) * .8)}
+@keyframes pp-step{0%,19%{background:var(--lime);color:var(--ink)}22%,100%{background:#2a2833;color:#9a98a6}}
+.sc-ppt .pp-podium{position:absolute;left:66%;top:68%;width:10%;height:15%;border-radius:4px 4px 0 0;background:linear-gradient(#3a3747,#24222c);z-index:2}
+.sc-ppt .pp-photo{position:absolute;right:1%;bottom:0;width:34%;aspect-ratio:3/2;border-radius:10px;overflow:hidden;z-index:5;rotate:3deg;box-shadow:0 18px 30px -12px #000d;border:3px solid #26252d}
+.sc-ppt .pp-photo img{width:100%;height:100%;object-fit:cover}
+.sc-ppt .pp-click{position:absolute;left:58%;top:76%;z-index:6;width:30px;height:30px;border-radius:50%;background:var(--lime);display:grid;place-items:center;color:var(--ink);font:900 16px/1 Pretendard;animation:pp-click calc(var(--loop) * .2) infinite}
+@keyframes pp-click{0%,80%{scale:1;box-shadow:0 0 0 0 #ccff3088}90%{scale:.86;box-shadow:0 0 0 10px #ccff3000}100%{scale:1}}
+.sc-ppt .pp-note{left:3%;bottom:2%}
+
+/* 5-2 카드뉴스(확정 방향 C): 왼쪽 휴대폰에서 카드를 한 장씩 넘기면 오른쪽 기관 계정 피드(3×2)에 한 칸씩 채워짐. 회차·메모는 현수막(.sc-banner) 틀. ppc-*6 키프레임은 장수로 계산한 값 */
+.sc-cardc{--loop:18s}
+.sc-cardc .ppc-phone{position:absolute;left:31%;top:16%;height:69%;aspect-ratio:9/19.5;border-radius:4.4cqw;background:#0b0b0f;padding:.9cqw;box-shadow:0 0 0 1.5px #4a4956,0 26px 44px -18px #000}
+.sc-cardc .ppc-phone::before{content:"";position:absolute;right:-2px;top:24%;width:2px;height:12%;border-radius:0 2px 2px 0;background:#4a4956}  /* 전원 버튼 */
+.sc-cardc .ppc-phone::after{content:"";position:absolute;left:-2px;top:18%;width:2px;height:7%;border-radius:2px 0 0 2px;background:#4a4956;box-shadow:0 calc(var(--ph,1) * 2.6cqw) 0 #4a4956}  /* 음량 버튼 */
+.sc-cardc .ppc-screen{position:relative;display:flex;flex-direction:column;width:100%;height:100%;border-radius:3.6cqw;overflow:hidden;background:#fff;padding-top:3.4cqw}
+.sc-cardc .ppc-screen::before{content:"9:41";position:absolute;left:2.6cqw;top:1.05cqw;font:700 1.25cqw/1 Pretendard,sans-serif;color:#111}  /* 상태 표시줄 */
+.sc-cardc .ppc-screen::after{content:"";position:absolute;left:50%;top:.8cqw;width:32%;height:1.7cqw;translate:-50% 0;border-radius:1cqw;background:#0b0b0f}  /* 카메라 섬 */
+.sc-cardc .ppc-bar{display:flex;align-items:center;gap:1.2cqw;padding:2cqw 2cqw 1.4cqw;font:700 1.9cqw/1 Pretendard,sans-serif;color:#222;white-space:nowrap;overflow:hidden}
+.sc-cardc .ppc-bar i{flex:none;width:3.8cqw;height:3.8cqw;border-radius:50%;background:linear-gradient(135deg,#a98bff,#ff8fcf)}
+.sc-cardc .ppc-view{position:relative;flex:none;width:100%;aspect-ratio:var(--ar);overflow:hidden;background:#eee}
+.sc-cardc .ppc-track{position:absolute;inset:0;display:flex;animation:var(--track) var(--loop) infinite backwards}
+.sc-cardc .ppc-track img{flex:none;display:block;width:100%;height:100%;object-fit:cover}
+.sc-cardc .ppc-dots{display:flex;justify-content:center;gap:.9cqw;padding:1.8cqw 0}
+.sc-cardc .ppc-dots i{width:1.1cqw;height:1.1cqw;border-radius:50%;background:#cfcfd8;animation:var(--dot) var(--loop) infinite backwards;animation-delay:calc(var(--loop) / var(--n) * var(--k))}
+.sc-cardc .ppc-cap{flex:none;margin:0 2.4cqw;height:1.4cqw;border-radius:2px;background:#e8e8ee}
+.sc-cardc .ppc-cap+.ppc-cap{margin-top:1.2cqw;width:60%}
+.sc-cardc .ppc-feed{position:absolute;left:66%;top:30%;width:28%;display:grid;grid-template-columns:repeat(3,1fr);gap:1cqw}
+.sc-cardc .ppc-feed i{aspect-ratio:var(--ar);border-radius:3px;overflow:hidden;background:#2a2933;opacity:.3;outline:2px solid transparent;outline-offset:1px;animation:var(--feed) var(--loop) infinite backwards;animation-delay:calc(var(--loop) / var(--n) * var(--k))}
+.sc-cardc .ppc-feed img{display:block;width:100%;height:100%;object-fit:cover}
+.sc-cardc .ppc-n6{--n:6;--track:ppc-track6;--dot:ppc-dot6;--feed:ppc-feed6}
+@keyframes ppc-track6{0.00%,16.67%{transform:translateX(0%)}19.72%,33.33%{transform:translateX(-100%)}36.39%,50.00%{transform:translateX(-200%)}53.06%,66.67%{transform:translateX(-300%)}69.72%,83.33%{transform:translateX(-400%)}86.39%,100.00%{transform:translateX(-500%)}}
+@keyframes ppc-dot6{0%{background:#cfcfd8;scale:1}1.39%,16.67%{background:#3b82f6;scale:1.3}18.06%,100%{background:#cfcfd8;scale:1}}
+@keyframes ppc-feed6{0%{opacity:.3;outline-color:transparent}3.06%,16.67%{opacity:1;outline-color:var(--lime)}18.06%,100%{opacity:1;outline-color:transparent}}
+.sc-cardc .bn-n2{left:auto;right:calc(4% + 34px);top:87%}  /* 아래 메모는 오른쪽 아래(연필 자리 포함) */
+/* 한 회차가 18초로 길어 메모를 일찍 띄움(현수막 틀은 40%부터라 7초 넘게 기다림) */
+.sc-cardc .bn-n1,.sc-ppta .bn-n1{animation-name:ppc-memo1}.sc-cardc .bn-n2,.sc-ppta .bn-n2{animation-name:ppc-memo2}.sc-cardc .bn-curl path,.sc-ppta .bn-curl path{animation-name:ppc-ink1}.sc-cardc .bn-wave path,.sc-ppta .bn-wave path{animation-name:ppc-ink2}.sc-cardc .bn-spark,.sc-ppta .bn-spark{animation-name:ppc-pop}  /* 카드뉴스·PPT: 메모가 회차 시작 1초 안팎에 바로 나옴 */
+@keyframes ppc-memo1{0%,4%{opacity:0;translate:0 6px}8%,90%{opacity:1;translate:0 0}95%,100%{opacity:0}}
+@keyframes ppc-memo2{0%,9%{opacity:0;translate:0 6px}13%,90%{opacity:1;translate:0 0}95%,100%{opacity:0}}
+@keyframes ppc-ink1{0%,5%{stroke-dashoffset:1}10%,90%{stroke-dashoffset:0;opacity:1}95%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes ppc-ink2{0%,10%{stroke-dashoffset:1}15%,90%{stroke-dashoffset:0;opacity:1}95%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes ppc-pop{0%,7%{scale:0;opacity:0}10%,90%{scale:1;opacity:1}95%,100%{opacity:0}}
+/* PPT 아래 메모는 세 번째 슬라이드가 넘어올 때 나옴(경청 6장=6초, 핵심광물 9장=4초) */
+.sc-ppta .ppa-n6 .bn-n2{animation-name:ppa-memo2-6}.sc-ppta .ppa-n6 .bn-wave path{animation-name:ppa-ink2-6}
+@keyframes ppa-memo2-6{0%,33.33%{opacity:0;translate:0 6px}37.33%,90%{opacity:1;translate:0 0}95%,100%{opacity:0}}
+@keyframes ppa-ink2-6{0%,34.33%{stroke-dashoffset:1}39.33%,90%{stroke-dashoffset:0;opacity:1}95%,100%{stroke-dashoffset:0;opacity:0}}
+.sc-ppta .ppa-n9 .bn-n2{animation-name:ppa-memo2-9}.sc-ppta .ppa-n9 .bn-wave path{animation-name:ppa-ink2-9}
+@keyframes ppa-memo2-9{0%,22.22%{opacity:0;translate:0 6px}26.22%,90%{opacity:1;translate:0 0}95%,100%{opacity:0}}
+@keyframes ppa-ink2-9{0%,23.22%{stroke-dashoffset:1}28.22%,90%{stroke-dashoffset:0;opacity:1}95%,100%{stroke-dashoffset:0;opacity:0}}
+/* 5 카드뉴스: 휴대폰 화면에서 카드를 넘겨 본다 */
+.sc-card .cn-phone{position:absolute;left:30%;top:2%;width:34%;height:96%;border-radius:26px;background:#0d0d12;padding:3.2% 2.4%;box-shadow:0 24px 40px -16px #000e,inset 0 0 0 2px #34323d;z-index:4}
+.sc-card .cn-screen{display:block;position:relative;width:100%;height:100%;border-radius:20px;overflow:hidden;background:#fff}
+.sc-card .cn-bar{position:absolute;left:0;right:0;top:0;z-index:2;height:12%;display:flex;align-items:center;gap:6px;padding:0 8%;background:#fff;color:var(--ink);font:700 clamp(8px,2.2cqw,11px)/1 Pretendard}
+.sc-card .cn-bar i{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#ccff30,#3ac6ff)}
+.sc-card .cn-track{position:absolute;left:0;top:12%;width:400%;height:68%;display:flex;animation:cn-swipe var(--loop) cubic-bezier(.6,0,.2,1) infinite}
+.sc-card .cn-track img{width:25%;height:100%;object-fit:cover}
+@keyframes cn-swipe{0%,18%{translate:0 0}25%,43%{translate:-25% 0}50%,68%{translate:-50% 0}75%,93%{translate:-75% 0}100%{translate:-75% 0}}
+.sc-card .cn-dots{position:absolute;left:0;right:0;top:82%;display:flex;justify-content:center;gap:5px}
+.sc-card .cn-dots i{width:6px;height:6px;border-radius:50%;background:#d6d4dc;animation:cn-dot var(--loop) infinite}
+.sc-card .cn-dots i:nth-child(2){animation-delay:calc(var(--loop) * .25)}.sc-card .cn-dots i:nth-child(3){animation-delay:calc(var(--loop) * .5)}.sc-card .cn-dots i:nth-child(4){animation-delay:calc(var(--loop) * .75)}
+@keyframes cn-dot{0%,22%{background:#15141a;width:14px;border-radius:4px}25%,100%{background:#d6d4dc}}
+.sc-card .cn-cap{position:absolute;left:8%;right:8%;top:88%;height:3%;border-radius:2px;background:#e6e4ec}
+.sc-card .cn-cap::after{content:"";position:absolute;left:0;top:180%;width:60%;height:100%;border-radius:2px;background:#eeedf2}
+.sc-card .cn-side{position:absolute;width:27%;aspect-ratio:1;border-radius:10px;overflow:hidden;box-shadow:0 18px 30px -14px #000d;z-index:3}
+.sc-card .cn-side img{width:100%;height:100%;object-fit:cover}
+.sc-card .cn-s1{left:2%;top:10%;rotate:-6deg;animation:cn-float 6s ease-in-out infinite alternate}
+.sc-card .cn-s2{right:3%;top:44%;rotate:5deg;animation:cn-float 7s ease-in-out -2s infinite alternate}
+@keyframes cn-float{to{translate:0 -10px}}
+.sc-card .cn-swipe{position:absolute;left:42%;top:44%;z-index:6;width:34px;height:34px;border-radius:50%;background:#ffffffcc;box-shadow:0 0 0 6px #ffffff44;animation:cn-finger calc(var(--loop) * .25) ease-in-out infinite}
+@keyframes cn-finger{0%,40%{translate:4cqw 0;opacity:0}50%{opacity:1}75%{translate:-4cqw 0;opacity:1}85%,100%{opacity:0}}
+.sc-card .cn-note{left:2%;bottom:3%}
+.sc-card .cn-size{right:3%;top:8%}
+
+/* 6 포토월: 배경이 세워지고 카메라가 찍는다 */
+.sc-wall .pw-wall{position:absolute;left:4%;top:12%;width:76%;height:56%;border-radius:12px;overflow:hidden;box-shadow:0 22px 40px -16px #000d;background:#25262e;transform-origin:50% 50%;animation:pw-tick var(--loop) linear infinite,pw-enter .9s cubic-bezier(.22,1,.36,1) both}
+.sc-wall .pw-wall img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 47%;opacity:0;scale:1.04;transition:opacity .45s ease,scale .9s cubic-bezier(.2,.7,.2,1)}
+/* 포토존이 위에서 아래로 빠르게 내려옴(약 0.7초) */
+/* 포토존은 처음부터 보이고, 행사가 바뀔 때만 겹쳐 바뀜. pw-tick은 회차 전환(animationiteration)용 */
+@keyframes pw-tick{to{opacity:1}}
+/* 첫 진입 한 번만: 옆으로 누운 카드가 돌아오듯 뒤집히며 등장(3안 C 확정) */
+.sc-wall{perspective:900px}
+@keyframes pw-enter{from{opacity:0;transform:rotateY(-75deg)}40%{opacity:1}to{opacity:1;transform:rotateY(0)}}
+.sc-wall .pw-finder{position:absolute;left:12%;top:17%;width:60%;height:46%;z-index:4;animation:pw-finder var(--loop) cubic-bezier(.4,0,.2,1) infinite}
+.sc-wall .pw-finder i{position:absolute;width:18%;height:22%;border:3px solid #fff}
+.sc-wall .pw-finder i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}.sc-wall .pw-finder i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}.sc-wall .pw-finder i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}.sc-wall .pw-finder i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
+.sc-wall .pw-finder b{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px;border:2px solid var(--lime);border-radius:50%}
+@keyframes pw-finder{0%,22%{opacity:0;scale:1.25}32%,50%{opacity:1;scale:1}54%,100%{opacity:0;scale:1}}
+.sc-wall .pw-flash{position:absolute;left:4%;top:12%;width:76%;height:56%;border-radius:12px;background:#fff;z-index:5;opacity:0;animation:pw-flash var(--loop) infinite}
+@keyframes pw-flash{0%,50%{opacity:0}52%{opacity:.95}60%,100%{opacity:0}}
+.sc-wall .pw-print{position:absolute;right:1%;bottom:4%;width:34%;padding:2.6%;background:#fbfbf8;border-radius:4px;z-index:6;rotate:6deg;box-shadow:0 20px 34px -12px #000e;animation:pw-print var(--loop) cubic-bezier(.22,1,.36,1) infinite}
+.sc-wall .pw-print img{width:100%;aspect-ratio:4/3;object-fit:cover}
+@keyframes pw-print{0%,54%{opacity:0;translate:0 -30px;rotate:-8deg}64%,92%{opacity:1;translate:0 0;rotate:6deg}100%{opacity:0}}
+.sc-wall .pw-shot{position:absolute;right:8%;top:6%;animation:pw-shot var(--loop) cubic-bezier(.22,1,.36,1) infinite}
+.sc-wall .pw-shot::before{animation:pw-dot var(--loop) infinite}
+.sc-wall .pw-rays{position:absolute;left:50%;top:-16px;width:22px;height:18px;margin-left:-11px;overflow:visible}
+.sc-wall .pw-rays path{fill:none;stroke:var(--lime);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:8;stroke-dashoffset:8;animation:pw-rays var(--loop) infinite}
+@keyframes pw-shot{0%,52%{opacity:0;scale:.85;translate:0 4px}57%,90%{opacity:1;scale:1;translate:0 0}96%,100%{opacity:0}}
+@keyframes pw-dot{0%,55%{box-shadow:0 0 0 0 #ccff3088}62%{box-shadow:0 0 0 6px #ccff3000}100%{box-shadow:none}}
+@keyframes pw-rays{0%,54%{stroke-dashoffset:8;opacity:1}60%{stroke-dashoffset:0;opacity:1}68%,100%{stroke-dashoffset:-8;opacity:0}}
+.sc-wall .pw-note{left:3%;top:73%;font-size:clamp(13px,3.6cqw,19px);white-space:nowrap;animation:pw-note var(--loop) infinite}
+@keyframes pw-note{0%,16%{opacity:0;translate:0 6px}22%,94%{opacity:1;translate:0 0}100%{opacity:0}}
+/* 자료집 첫 화면처럼 손글씨 밑줄이 그어지고 카메라 낙서·반짝임 */
+.sc-wall .pw-ul{position:absolute;left:-2%;top:100%;width:104%;height:12px;margin-top:3px;overflow:visible}
+.sc-wall .pw-ul path{fill:none;stroke:var(--lime);stroke-width:3.4;stroke-linecap:round;stroke-dasharray:260;stroke-dashoffset:260;animation:pw-draw var(--loop) cubic-bezier(.5,0,.2,1) infinite}
+@keyframes pw-draw{0%,22%{stroke-dashoffset:260}32%,94%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+.sc-wall .pw-cam{position:absolute;left:100%;top:-30%;width:1.7em;height:1.4em;margin-left:.35em;overflow:visible;rotate:-10deg;animation:pw-cam var(--loop) infinite}
+.sc-wall .pw-cam path,.sc-wall .pw-cam circle{fill:none;stroke:var(--lime);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+@keyframes pw-cam{0%,30%{opacity:0;scale:.6}36%,52%{opacity:1;scale:1}55%{scale:1.18}58%,94%{opacity:1;scale:1}100%{opacity:0}}
+.sc-wall .pw-spark{position:absolute;left:calc(100% + 2.3em);top:-62%;width:18px;height:18px}
+.sc-wall .pw-spark i{position:absolute;left:50%;top:50%;width:2.6px;height:7px;margin:-11px 0 0 -1.3px;border-radius:2px;background:var(--lime);transform-origin:50% 11px;animation:pw-tw var(--loop) infinite}
+.sc-wall .pw-spark i:nth-child(2){rotate:90deg}.sc-wall .pw-spark i:nth-child(3){rotate:180deg}.sc-wall .pw-spark i:nth-child(4){rotate:270deg}
+@keyframes pw-tw{0%,52%{opacity:0;scale:.4}55%{opacity:1;scale:1.2}62%{opacity:1;scale:.9}70%,100%{opacity:0;scale:.6}}
+
+/* 7 전시 패널: 안내판이 하나씩 세워진다 */
+.sc-panel .pn-floor{position:absolute;left:4%;right:4%;bottom:10%;height:2px;background:#3a3844}
+.sc-panel .pn-item{position:absolute;bottom:10%;width:22%;z-index:3;transform-origin:50% 100%;animation:pn-up var(--loop) cubic-bezier(.22,1,.36,1) infinite}
+.sc-panel .pn-item img{width:100%;aspect-ratio:1090/1600;object-fit:cover;border-radius:3px;box-shadow:0 18px 30px -14px #000e}
+.sc-panel .pn-item svg{position:absolute;left:10%;bottom:-9%;width:80%;height:24%;z-index:-1}
+.sc-panel .pn-item svg path{fill:none;stroke:#8f8d9a;stroke-width:3;stroke-linecap:round}
+.sc-panel .pn-1{left:6%}.sc-panel .pn-2{left:31%;animation-delay:.35s}.sc-panel .pn-3{left:56%;animation-delay:.7s}
+@keyframes pn-up{0%,6%{opacity:0;transform:rotateX(80deg) translateY(10px)}20%,88%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+.sc-panel .pn-board{position:absolute;right:3%;top:6%;width:20%;aspect-ratio:3508/4961;z-index:4;perspective:600px}
+.sc-panel .pn-board img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:3px;box-shadow:0 18px 30px -14px #000e;backface-visibility:hidden;animation:pn-flip var(--loop) infinite}
+.sc-panel .pn-board img:nth-child(2){animation-delay:calc(var(--loop) * -.66)}.sc-panel .pn-board img:nth-child(3){animation-delay:calc(var(--loop) * -.33)}
+@keyframes pn-flip{0%{opacity:0;transform:rotateY(-90deg)}5%,30%{opacity:1;transform:none}35%,100%{opacity:0;transform:rotateY(90deg)}}
+.sc-panel .pn-size{position:absolute;z-index:5;animation:pn-fade var(--loop) infinite}
+@keyframes pn-fade{0%,20%{opacity:0}26%,88%{opacity:1}100%{opacity:0}}
+.sc-panel .pn-size1{left:12%;top:4%}.sc-panel .pn-size2{right:6%;top:62%}
+.sc-panel .pn-note{left:4%;bottom:0}
+
+/* 8 부스 그래픽: 전시 패널처럼 여섯 조각이 차례로 서고 빛이 지나간 뒤, 책자처럼 손글씨 메모로 강점 표시. 회차마다 다른 디자인 (JS가 data-set 변경) */
+.sc-booth{--loop:8s;--wt:23.4%;--wb:72.6%}
+.sc-booth[data-set="1"]{--wt:31.8%;--wb:64.2%}
+.sc-booth .bt-cycle{position:absolute;inset:0;animation:bt-tick var(--loop) infinite}
+@keyframes bt-tick{to{opacity:1}}
+.sc-booth .bt-set{display:none;position:absolute;left:-1%;top:48%;translate:0 -50%;width:104%;perspective:800px;z-index:3}
+.sc-booth[data-set="0"] .bs0,.sc-booth[data-set="1"] .bs1{display:block}
+.sc-booth .bt-damun-design{aspect-ratio:1920/769}
+.sc-booth .bt-nhn-design{aspect-ratio:1600/421}
+.sc-booth .bt-set>i{position:absolute;top:0;width:16.75%;height:100%;background-repeat:no-repeat;background-size:600% 100%;transform-origin:50% 100%;box-shadow:0 16px 24px -14px #000c;animation:bt-rise var(--loop) cubic-bezier(.2,.8,.25,1) infinite backwards;animation-delay:calc(var(--k) * .12s)}
+.sc-booth .bt-set>i:first-child{border-radius:8px 0 0 8px}.sc-booth .bt-set>i:nth-last-child(2){border-radius:0 8px 8px 0}
+.sc-booth .bt-n1{left:9%;top:calc(var(--wt) - 16%);animation:bt-memo1 var(--loop) infinite}
+.sc-booth .bt-n2{right:7%;top:calc(var(--wb) + 8%);animation:bt-memo2 var(--loop) infinite}
+.sc-booth .bt-n1 span,.sc-booth .bt-n2 span{display:none}
+.sc-booth[data-set="0"] .m0,.sc-booth[data-set="1"] .m1{display:inline}
+.sc-booth .bt-curl{position:absolute;width:clamp(32px,9cqw,46px);aspect-ratio:6/5;overflow:visible}
+.sc-booth .bt-curl path{fill:none;stroke:var(--lime);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1}
+.sc-booth .bt-c1{left:.4em;top:calc(100% + 2px)}.sc-booth .bt-c1 path{animation:bt-draw1 var(--loop) infinite}
+.sc-booth .bt-c2{right:calc(100% + 2px);bottom:55%;rotate:180deg}.sc-booth .bt-c2 path{animation:bt-draw2 var(--loop) infinite}
+.sc-booth .bt-spark{position:absolute;right:100%;bottom:55%;width:26px;height:26px}
+.sc-booth .bt-spark i{position:absolute;left:50%;top:50%;width:3px;height:10px;margin:-13px 0 0 -1.5px;background:var(--lime);border-radius:2px;transform-origin:50% 13px;rotate:-50deg}
+.sc-booth .bt-spark i:nth-child(2){rotate:0deg}.sc-booth .bt-spark i:nth-child(3){rotate:50deg}
+.sc-booth .bt-pencil{position:absolute;left:calc(100% + 6px);bottom:45%;width:28px;height:28px;overflow:visible}
+.sc-booth .bt-pencil path{fill:none;stroke:var(--lime);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+@keyframes bt-memo1{0%,38%{opacity:0;translate:0 6px}44%,84%{opacity:1;translate:0 0}90%,100%{opacity:0}}
+@keyframes bt-memo2{0%,50%{opacity:0;translate:0 6px}56%,84%{opacity:1;translate:0 0}90%,100%{opacity:0}}
+@keyframes bt-draw1{0%,40%{stroke-dashoffset:1;opacity:1}48%,84%{stroke-dashoffset:0;opacity:1}90%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes bt-draw2{0%,52%{stroke-dashoffset:1;opacity:1}60%,84%{stroke-dashoffset:0;opacity:1}90%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes bt-rise{0%,3%{opacity:0;transform:rotateX(-72deg)}14%,84%{opacity:1;transform:none}90%,100%{opacity:0;transform:none}}
+.sc-booth .bt-glint{position:absolute;inset:0;overflow:hidden;border-radius:8px;pointer-events:none}
+.sc-booth .bt-glint::after{content:"";position:absolute;top:-10%;bottom:-10%;width:22%;left:-30%;background:linear-gradient(100deg,transparent,#ffffff55,transparent);rotate:12deg;animation:bt-glint var(--loop) ease-in-out infinite}
+@keyframes bt-glint{0%,24%{left:-30%}38%,100%{left:120%}}
+.sc-booth .bt-floor{position:absolute;left:0;right:0;top:calc(var(--wb) + 1%);height:12px;border-radius:50%;background:radial-gradient(closest-side,#00000088,transparent);z-index:1}
+/* 글과 나란한 넓은 배치: 왼쪽 여백만큼 키움(--wt/--wb = 벽 위·아래 위치, 메모·바닥이 따라감) */
+@container booklet-story (min-width:701px){.sc-booth .bt-set{left:-12%;width:116%}.sc-booth .bt-damun-design{left:-7%;width:106%}.sc-booth{--wt:19.3%;--wb:76.7%}.sc-booth[data-set="1"]{--wt:27.4%;--wb:68.6%}}
+
+/* 9 홍보부스 운영: 부스 사진 옆으로 운영 장면 폴라로이드 3장(중간에 다른 장면으로 바뀜), 방문 수가 오르고 손글씨 메모. 회차마다 다른 행사 (JS가 data-set 변경) */
+@property --visits{syntax:'<integer>';inherits:false;initial-value:0}
+.sc-op .op-cycle{position:absolute;inset:0;animation:op-tick var(--loop) infinite}
+@keyframes op-tick{to{opacity:1}}
+.sc-op .op-set{display:none;position:absolute;inset:0}
+.sc-op[data-set="0"] .os0,.sc-op[data-set="1"] .os1{display:block}
+.sc-op .op-photo{position:absolute;left:3%;top:14%;width:62%;height:72%;border-radius:12px;overflow:hidden;box-shadow:0 22px 40px -16px #000e}
+.sc-op .op-photo img{width:100%;height:100%;object-fit:cover}
+.sc-op .op-pol{position:absolute;z-index:5;width:30%;padding:5px;background:#fff;border-radius:4px;box-shadow:0 16px 28px -12px #000d;rotate:var(--r);animation:op-pol var(--loop) cubic-bezier(.22,1,.36,1) infinite backwards;animation-delay:var(--d)}
+.sc-op .op-pol img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px}
+.sc-op .op-pol .op-b{position:absolute;left:5px;top:5px;width:calc(100% - 10px);opacity:0;animation:op-swap var(--loop) ease-in-out infinite backwards;animation-delay:var(--d)}
+.sc-op .op-q1{right:4%;top:2%;--r:4deg;--d:.3s}.sc-op .op-q2{right:10%;top:27%;--r:-3deg;--d:.9s}.sc-op .op-q3{right:3%;top:51%;--r:3deg;--d:1.5s}
+@keyframes op-pol{0%,3%{opacity:0;translate:24px -8px;scale:.9}10%,90%{opacity:1;translate:0 0;scale:1}97%,100%{opacity:0}}
+@keyframes op-swap{0%,44%{opacity:0}52%,100%{opacity:1}}
+.sc-op .op-count{position:absolute;left:1%;top:88%;z-index:6;padding:10px 14px;border-radius:12px;background:#15141aee;color:#fff;box-shadow:0 14px 26px -12px #000e}
+.sc-op .op-count b{font:800 clamp(18px,5.4cqw,28px)/1.1 Pretendard;color:var(--lime);font-variant-numeric:tabular-nums;animation:op-count var(--loop) cubic-bezier(.2,.6,.2,1) infinite}
+.sc-op .op-count small{font:800 clamp(10px,3cqw,15px)/1 Pretendard;margin-left:3px;color:#fff}
+@media(prefers-reduced-motion:reduce){.sc-op .op-count b{--visits:var(--to)}}
+@keyframes op-count{0%,10%{--visits:0}60%,96%{--visits:var(--to)}100%{--visits:var(--to)}}
+.sc-op .op-note{right:5%;top:88%;animation:op-note var(--loop) infinite}
+@keyframes op-note{0%,66%{opacity:0;translate:0 6px}72%,92%{opacity:1;translate:0 0}98%,100%{opacity:0}}
+.sc-op .op-curl{position:absolute;right:20%;bottom:calc(100% + 2px);width:clamp(30px,9cqw,44px);aspect-ratio:6/5;overflow:visible}
+.sc-op .op-curl path{fill:none;stroke:var(--lime);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1;animation:op-ink var(--loop) infinite}
+@keyframes op-ink{0%,68%{stroke-dashoffset:1}76%,100%{stroke-dashoffset:0}}
+.sc-op .op-spark{position:absolute;right:100%;bottom:55%;width:26px;height:26px}
+.sc-op .op-top{left:7%;top:0;animation:op-top var(--loop) infinite}
+@keyframes op-top{0%,30%{opacity:0;translate:0 6px}36%,92%{opacity:1;translate:0 0}98%,100%{opacity:0}}
+.sc-op .op-down{left:.4em;right:auto;top:calc(100% + 2px);bottom:auto}
+.sc-op .op-top .op-spark{left:100%;right:auto;margin-left:4px;scale:-1 1}
+@container booklet-story (max-width:700px){.sc-op .op-top .op-spark{display:none}}
+.sc-op .op-down path{animation-name:op-ink0}
+@keyframes op-ink0{0%,32%{stroke-dashoffset:1}40%,100%{stroke-dashoffset:0}}
+.sc-op .op-spark i{position:absolute;left:50%;top:50%;width:3px;height:10px;margin:-13px 0 0 -1.5px;background:var(--lime);border-radius:2px;transform-origin:50% 13px;rotate:-50deg}
+.sc-op .op-spark i:nth-child(2){rotate:0deg}.sc-op .op-spark i:nth-child(3){rotate:50deg}
+
+.booklet-sales .b-hero.stripe-proportions .b-animation:has(.sv-scene){height:clamp(320px,39cqi,390px);overflow:visible;background:#15141a;border:0;border-radius:0}
+@container booklet-story (max-width:700px){
+ .booklet-sales .b-hero.stripe-proportions .b-animation:has(.sv-scene){height:clamp(250px,74cqi,320px)}
+}
+
+/* 포토월: 반복할 때마다 다른 행사 (JS가 data-set 변경) */
+.sc-wall .pw-print img,.sc-wall .pw-note>span{display:none}
+.sc-wall[data-set="0"] .pw-wall .ws0,.sc-wall[data-set="1"] .pw-wall .ws1,.sc-wall[data-set="2"] .pw-wall .ws2{opacity:1;scale:1}
+.sc-wall[data-set="0"] .ws0,.sc-wall[data-set="1"] .ws1,.sc-wall[data-set="2"] .ws2{display:block}
+.sc-wall .pw-note>span.ws0,.sc-wall .pw-note>span.ws1,.sc-wall .pw-note>span.ws2{display:none}
+.sc-wall[data-set="0"] .pw-note>.ws0,.sc-wall[data-set="1"] .pw-note>.ws1,.sc-wall[data-set="2"] .pw-note>.ws2{display:inline}
+
+/* 7-2 전시 패널(확정 방향 C): 바닥에 누운 패널 다섯 장이 차례로 일어서며 전시 벽 완성. 회차마다 다른 행사 */
+.sc-panel2{--loop:9s}
+.sc-panel2 .pn-wall{position:absolute;left:4%;top:13%;width:92%;aspect-ratio:1800/780;perspective:800px;animation:pw-tick var(--loop) linear infinite}
+.sc-panel2 .pn-set{position:absolute;inset:0;display:none}
+.sc-panel2[data-set="0"] .pn-set.ws0,.sc-panel2[data-set="1"] .pn-set.ws1,.sc-panel2[data-set="2"] .pn-set.ws2{display:block}
+.sc-panel2 .pn-set i{position:absolute;top:0;width:20.15%;height:100%;background-repeat:no-repeat;background-size:500% 100%;transform-origin:50% 100%;box-shadow:0 16px 24px -14px #000c;animation:pn-rise var(--loop) cubic-bezier(.2,.8,.25,1) infinite;animation-delay:calc(var(--k) * .12s)}
+.sc-panel2 .pn-set i:first-child{border-radius:8px 0 0 8px}.sc-panel2 .pn-set i:last-child{border-radius:0 8px 8px 0}
+@keyframes pn-rise{0%{opacity:0;transform:rotateX(-72deg)}8%{opacity:1;transform:none}93%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+.sc-panel2 .pn-floor2{position:absolute;left:2%;right:2%;top:66.5%;height:10px;border-radius:50%;background:radial-gradient(closest-side,#00000088,transparent);z-index:-1}
+.sc-panel2 .pn-note2{left:4%;top:73%;font-size:clamp(13px,3.6cqw,19px);white-space:nowrap;animation:pw-note var(--loop) infinite}
+.sc-panel2 .pn-note2>span{display:none}
+.sc-panel2[data-set="0"] .pn-note2>.ws0,.sc-panel2[data-set="1"] .pn-note2>.ws1,.sc-panel2[data-set="2"] .pn-note2>.ws2{display:inline}
+.sc-panel2 .pw-ul{position:absolute;left:-2%;top:100%;width:104%;height:12px;margin-top:3px;overflow:visible}
+.sc-panel2 .pw-ul path{fill:none;stroke:var(--lime);stroke-width:3.4;stroke-linecap:round;stroke-dasharray:260;stroke-dashoffset:260;animation:pw-draw var(--loop) cubic-bezier(.5,0,.2,1) infinite}
+/* 패널 번호가 일어서는 순서대로 뜨고, 완성 뒤 빛이 지나가며, 한 장을 크게 뽑아 보여 줌 */
+.sc-panel2 .pn-nums{position:absolute;left:0;right:0;top:-11%;height:10%;pointer-events:none}
+.sc-panel2 .pn-nums em{position:absolute;translate:-50% 0;font:800 clamp(9px,2.4cqw,12px)/1 Pretendard,sans-serif;font-style:normal;color:var(--ink);background:var(--lime);padding:3px 6px;border-radius:999px;opacity:0;animation:pn-num var(--loop) infinite;animation-delay:calc(var(--k) * .12s)}
+@keyframes pn-num{0%,4%{opacity:0;translate:-50% 6px}9%,30%{opacity:1;translate:-50% 0}36%,100%{opacity:0;translate:-50% 0}}
+.sc-panel2 .pn-glint{position:absolute;inset:0;overflow:hidden;border-radius:8px;pointer-events:none}
+.sc-panel2 .pn-glint::after{content:"";position:absolute;top:-10%;bottom:-10%;width:22%;left:-30%;background:linear-gradient(100deg,transparent,#ffffff55,transparent);rotate:12deg;animation:pn-glint var(--loop) ease-in-out infinite}
+@keyframes pn-glint{0%,14%{left:-30%}26%,100%{left:120%}}
+.sc-panel2 .pn-card{position:absolute;right:3%;top:40%;z-index:6;width:25%;aspect-ratio:3/4;background:#fff;border-radius:6px;rotate:5deg;box-shadow:0 22px 36px -12px #000e;animation:pn-card var(--loop) cubic-bezier(.22,1,.36,1) infinite}
+.sc-panel2 .pn-zoom{position:absolute;inset:6%;display:none;border-radius:3px;background-repeat:no-repeat;background-size:500% auto;background-position:25% 46%}
+.sc-panel2[data-set="0"] .pn-zoom.ws0,.sc-panel2[data-set="1"] .pn-zoom.ws1,.sc-panel2[data-set="2"] .pn-zoom.ws2{display:block}
+.sc-panel2 .pn-tag{position:absolute;left:0;right:0;bottom:4%;text-align:center;color:var(--ink);font:700 clamp(8px,2.1cqw,11px)/1 Pretendard,sans-serif;white-space:nowrap}
+@keyframes pn-card{0%,30%{opacity:0;translate:-60% -20%;scale:.5;rotate:0deg}40%,92%{opacity:1;translate:0 0;scale:1;rotate:5deg}100%{opacity:0}}
+
+/* 7-3 전시 패널(확정): 백월 한 장으로 '흩어진 원고 -> 읽히는 벽' 전후 이야기 (자료집 첫 화면과 같은 주석 방식) */
+.sc-panel3{--loop:10s}
+.sc-panel3 .pn-src{position:absolute;z-index:6;display:flex;align-items:center;gap:6px;padding:6px 10px 6px 6px;border-radius:8px;background:#fff;color:var(--ink);font:700 clamp(9px,2.5cqw,12px)/1 Pretendard,sans-serif;white-space:nowrap;rotate:var(--r);box-shadow:0 12px 22px -10px #000c;animation:pn-src var(--loop) cubic-bezier(.5,0,.3,1) infinite}
+.sc-panel3 .pn-src b{padding:4px 5px;border-radius:4px;color:#fff;font-size:.82em;font-weight:900}
+.sc-panel3 .pn-src .hwp{background:#2a7bd8}.sc-panel3 .pn-src .xls{background:#1f8a4c}.sc-panel3 .pn-src .doc{background:#2b5bd7}.sc-panel3 .pn-src .num{background:#e5322d}
+@keyframes pn-src{0%{opacity:0;translate:0 10px}5%,14%{opacity:1;translate:0 0;scale:1}22%{opacity:0;translate:var(--tx) var(--ty);scale:.4}100%{opacity:0;translate:var(--tx) var(--ty);scale:.4}}
+.sc-panel3 .pn-wall{position:absolute;left:4%;top:12%;width:92%;aspect-ratio:1800/780;perspective:800px}
+.sc-panel3 .pn-wall>i{position:absolute;top:0;width:20.15%;height:100%;background-repeat:no-repeat;background-size:500% 100%;transform-origin:50% 100%;box-shadow:0 16px 24px -14px #000c;animation:pn3-rise var(--loop) cubic-bezier(.2,.8,.25,1) infinite;animation-delay:calc(var(--k) * .1s)}
+.sc-panel3 .pn-wall>i:first-child{border-radius:8px 0 0 8px}.sc-panel3 .pn-wall>i:nth-child(5){border-radius:0 8px 8px 0}
+@keyframes pn3-rise{0%,17%{opacity:0;transform:rotateX(-72deg)}25%,94%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+.sc-panel3 .pn-glint{position:absolute;inset:0;overflow:hidden;border-radius:8px;pointer-events:none}
+.sc-panel3 .pn-glint::after{content:"";position:absolute;top:-10%;bottom:-10%;width:22%;left:-30%;background:linear-gradient(100deg,transparent,#ffffff55,transparent);rotate:12deg;animation:pn3-glint var(--loop) ease-in-out infinite}
+@keyframes pn3-glint{0%,28%{left:-30%}38%,100%{left:120%}}
+.sc-panel3 .pn-ring{position:absolute;z-index:3;left:16.5%;top:48%;width:11%;height:10.5%;border:2.5px solid var(--lime);border-radius:50%;rotate:-6deg;clip-path:inset(0 100% 0 0);animation:pn-ring var(--loop) cubic-bezier(.5,0,.2,1) infinite}
+@keyframes pn-ring{0%,36%{clip-path:inset(0 100% 0 0)}43%,93%{clip-path:inset(0 0 0 0);opacity:1}100%{opacity:0}}
+.sc-panel3 .pn-brace{position:absolute;z-index:3;left:27%;top:29.5%;width:62.5%;height:3%;border:2.5px solid var(--lime);border-bottom:0;border-radius:6px 6px 0 0;transform-origin:0 50%;scale:0 1;animation:pn-brace var(--loop) cubic-bezier(.5,0,.2,1) infinite}
+.sc-panel3 .pn-brace::after{content:"";position:absolute;left:50%;top:-9px;width:2.5px;height:8px;background:var(--lime)}
+@keyframes pn-brace{0%,46%{scale:0 1}54%,93%{scale:1 1;opacity:1}100%{opacity:0}}
+.sc-panel3 .pn-say{position:absolute;z-index:4;color:var(--lime);font:800 clamp(12px,3.4cqw,18px)/1 Pretendard,sans-serif;font-style:normal;letter-spacing:-.03em;white-space:nowrap;text-shadow:0 2px 8px #000c;opacity:0}
+.sc-panel3 .s1{left:15%;top:60%;animation:pn-s1 var(--loop) infinite}.sc-panel3 .s2{left:58%;top:-12%;translate:-50% 0;animation:pn-s2 var(--loop) infinite}
+@keyframes pn-s1{0%,41%{opacity:0;translate:0 6px}46%,93%{opacity:1;translate:0 0}100%{opacity:0}}
+@keyframes pn-s2{0%,51%{opacity:0}56%,93%{opacity:1}100%{opacity:0}}
+.sc-panel3 .pn-floor2{position:absolute;left:2%;right:2%;top:64%;height:10px;border-radius:50%;background:radial-gradient(closest-side,#00000088,transparent);z-index:-1}
+.sc-panel3 .pn-card{position:absolute;right:3%;top:42%;z-index:6;width:23%;aspect-ratio:3/4;background:#fff;border-radius:6px;rotate:5deg;box-shadow:0 22px 36px -12px #000e;animation:pn3-card var(--loop) cubic-bezier(.22,1,.36,1) infinite}
+.sc-panel3 .pn-zoom{position:absolute;inset:6%;border-radius:3px;background-repeat:no-repeat;background-size:500% auto;background-position:25% 46%}
+@keyframes pn3-card{0%,60%{opacity:0;translate:-60% -20%;scale:.5;rotate:0deg}68%,93%{opacity:1;translate:0 0;scale:1;rotate:5deg}100%{opacity:0}}
+.sc-panel3 .pn-note3{left:4%;top:72%;font-size:clamp(13px,3.8cqw,20px);white-space:nowrap;animation:pn-note3 var(--loop) infinite}
+@keyframes pn-note3{0%,62%{opacity:0;translate:0 6px}68%,94%{opacity:1;translate:0 0}100%{opacity:0}}
+.sc-panel3 .pw-ul{position:absolute;left:-2%;top:100%;width:104%;height:12px;margin-top:3px;overflow:visible}
+.sc-panel3 .pw-ul path{fill:none;stroke:var(--lime);stroke-width:3.4;stroke-linecap:round;stroke-dasharray:260;stroke-dashoffset:260;animation:pn-ul var(--loop) cubic-bezier(.5,0,.2,1) infinite}
+@keyframes pn-ul{0%,68%{stroke-dashoffset:260}78%,94%{stroke-dashoffset:0;opacity:1}100%{opacity:0}}
+/* 7-4 전시 패널: 정책소개존 디자인 원본, 패널 6장 */
+.sc-panel3 .pn-wall{aspect-ratio:1920/769;top:14%}
+.sc-panel3 .pn-wall>i{width:16.75%;background-size:600% 100%}
+.sc-panel3 .pn-wall>i:nth-child(5){border-radius:0}.sc-panel3 .pn-wall>i:nth-child(6){border-radius:0 8px 8px 0}
+/* 마지막 장(NEXT)이 앞으로 나와 크게 보였다가 제자리로. 왼쪽 문구와 겹치지 않게 오른쪽 장 */
+.sc-panel3 .pn-wall>.pn-pop{position:absolute;left:83.25%;top:0;width:16.75%;height:100%;z-index:5;background-repeat:no-repeat;background-size:600% 100%;background-position:100% 0;border-radius:0 8px 8px 0;transform-origin:100% 20%;opacity:0;animation:pn-pop var(--loop) cubic-bezier(.3,1.1,.4,1) infinite}
+@keyframes pn-pop{0%,40%{opacity:0;transform:none;box-shadow:none}44%{opacity:1;transform:none}52%,74%{opacity:1;transform:translate(-14%,-3%) scale(1.4);box-shadow:0 30px 50px -14px #000e;border-radius:6px}82%{opacity:1;transform:none;box-shadow:none}86%,100%{opacity:0}}
+.sc-panel3 .pn-note3{top:68%}

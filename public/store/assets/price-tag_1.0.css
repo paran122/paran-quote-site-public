@@ -1,0 +1,4 @@
+/* 2026-11-08 가격표 참고가: 책자 의뢰 범위 카드 (다른 서비스는 booklet-scope-cards_1.0.css에 같은 규칙) */
+#booklet-scope .sa-price{margin:18px 0 14px;display:grid;gap:4px}
+#booklet-scope .sa-price b{font-size:26px;line-height:1.2;font-weight:800;color:#15141a;letter-spacing:-.01em}
+#booklet-scope .sa-price span{font-size:14px;line-height:1.5;color:#55535e}

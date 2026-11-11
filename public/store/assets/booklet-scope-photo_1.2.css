@@ -1,0 +1,41 @@
+/* 의뢰 범위: 실제 자료집 이미지 (미리보기 전용) */
+.sx-bar{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:10px 20px;background:#15141a;color:#fff;font:500 13px Pretendard,sans-serif}
+.sx-bar div{display:flex;flex-wrap:wrap;gap:6px}
+.sx-bar button{min-height:38px;padding:8px 14px;border:1px solid #3a3844;border-radius:999px;background:transparent;color:#d9d7e2;font:600 13px Pretendard,sans-serif;cursor:pointer}
+.sx-bar button[aria-pressed=true]{background:#d1ff39;border-color:#d1ff39;color:#15141a}
+
+.booklet-sales #booklet-scope .ref-package-photo.sx-media{position:relative;display:block;padding:0;border:0;background:#eeeef3}
+.booklet-sales #booklet-scope .max-w-420:nth-child(2) .sx-media{background:#e9edf6}
+.booklet-sales #booklet-scope .sx-media img{display:block;margin:0;max-width:none;min-width:0;position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* 디자인만: 노트북 화면에 PDF로 열린 자료집 + PDF 파일 아이콘 (종이가 아닌 파일로 받는다는 느낌) */
+.sx-laptop{position:absolute;left:50%;top:12%;width:72%;transform:translateX(-54%)}
+.sx-lid{display:block;padding:2.4%;border-radius:10px 10px 4px 4px;background:#26242c;box-shadow:0 18px 30px -14px rgba(20,20,30,.5)}
+.sx-viewer{display:flex;flex-direction:column;aspect-ratio:16/10;overflow:hidden;border-radius:3px;background:#55535e}
+.sx-vbar{display:flex;align-items:center;gap:3px;height:11%;padding:0 4%;background:#3b3943;color:#e9e7f0;font:600 clamp(7px,1.6cqi,10px)/1 Pretendard,sans-serif;white-space:nowrap}
+.sx-vbar i{width:5px;height:5px;border-radius:50%;background:#77747f}
+.sx-vbar b{margin-left:6px;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.sx-vbody{flex:1;display:flex;min-height:0}
+.sx-thumbs{display:flex;flex-direction:column;gap:6%;width:15%;padding:5% 3%;background:#47454f}
+.booklet-sales #booklet-scope .sx-thumbs img{position:static;width:100%;height:auto;aspect-ratio:1/1.414;outline:1px solid rgba(255,255,255,.18)}
+.booklet-sales #booklet-scope .sx-thumbs img:nth-child(3){outline:2px solid #d1ff39}
+.sx-spread{flex:1;display:flex;justify-content:center;align-items:center;gap:2px;padding:5% 0}
+.booklet-sales #booklet-scope .sx-spread img{position:static;height:100%;width:auto;aspect-ratio:1/1.414;box-shadow:0 3px 8px rgba(0,0,0,.35)}
+.sx-base{display:block;height:7px;margin:0 -6%;border-radius:0 0 10px 10px;background:linear-gradient(#cfcdd6,#a9a6b2)}
+.sx-file{position:absolute;right:6%;bottom:6%;z-index:3;width:17%;max-width:70px;filter:drop-shadow(0 10px 14px rgba(20,20,30,.28))}
+.sx-file svg{display:block;width:100%;height:auto}
+/* 디자인 + 인쇄·제본: 인쇄한 책 세 권을 겹쳐 세움 */
+.sx-stack{position:absolute;top:12%;bottom:12%;left:50%;aspect-ratio:1/1.414;transform:translateX(-50%)}
+.sx-stack img{border-radius:2px 4px 4px 2px;box-shadow:0 2px 4px rgba(20,20,30,.15),0 18px 28px -12px rgba(20,20,30,.45)}
+.sx-stack img:nth-child(1){transform:translateX(-62%) rotate(-8deg) scale(.9)}
+.sx-stack img:nth-child(2){transform:translateX(62%) rotate(7deg) scale(.9)}
+.sx-stack img:nth-child(3){z-index:2}
+.sx-stack::after{content:"";position:absolute;inset:0;z-index:3;background:linear-gradient(90deg,rgba(0,0,0,.22),rgba(255,255,255,.12) 5%,transparent 9%);pointer-events:none}
+
+/* B: 사진을 조금 낮추고, 포함 내용 → 견적 안내 → 버튼 순서 */
+#booklet-scope[data-sx=b] .ref-package-photo.sx-media{aspect-ratio:16/10.5}
+#booklet-scope[data-sx=b] .ref-includes{margin:4px auto 0;padding:18px 0 0;border-top:1px solid #e6e3ec;width:100%}
+#booklet-scope[data-sx=b] .ref-price{margin:18px 0 0;font-size:15px;font-weight:600;color:#60596c}
+#booklet-scope[data-sx=b] .sb-card .ref-button{margin-top:auto;margin-bottom:0}
+#booklet-scope[data-sx=b] .ref-includes{margin-bottom:22px!important}
+#booklet-scope[data-sx=b] .sb-card{display:flex;flex-direction:column}
+#booklet-scope[data-sx=b] .ref-price{margin-top:auto;padding-top:18px}

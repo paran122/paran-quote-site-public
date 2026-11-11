@@ -12,3 +12,226 @@
   for = "/images/*"
   [headers.values]
     Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+# >>> store-routes (export_bundle.py 가 씀, 직접 고치지 말 것)
+[[redirects]]
+  from = "/"
+  to = "/store/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services"
+  to = "/store/services/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/cart"
+  to = "/store/cart/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/request"
+  to = "/store/request/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/requests"
+  to = "/store/requests/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/guide"
+  to = "/store/guide/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/work"
+  to = "/store/work/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/about"
+  to = "/store/about/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/privacy"
+  to = "/store/privacy/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/badge"
+  to = "/store/services/badge/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/banner"
+  to = "/store/services/banner/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/booklet"
+  to = "/store/services/booklet/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/booth-graphic"
+  to = "/store/services/booth-graphic/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/booth-operation"
+  to = "/store/services/booth-operation/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/booth-structure"
+  to = "/store/services/booth-structure/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/card-news"
+  to = "/store/services/card-news/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/did"
+  to = "/store/services/did/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/dimensional-letters"
+  to = "/store/services/dimensional-letters/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/display-table"
+  to = "/store/services/display-table/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/electric"
+  to = "/store/services/electric/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/event-planning"
+  to = "/store/services/event-planning/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/event-report"
+  to = "/store/services/event-report/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/exhibition-panel"
+  to = "/store/services/exhibition-panel/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/furniture"
+  to = "/store/services/furniture/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/hand-sign"
+  to = "/store/services/hand-sign/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/honeycomb-table"
+  to = "/store/services/honeycomb-table/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/infographic"
+  to = "/store/services/infographic/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/installation"
+  to = "/store/services/installation/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/leaflet"
+  to = "/store/services/leaflet/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/nameplate"
+  to = "/store/services/nameplate/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/photo-wall"
+  to = "/store/services/photo-wall/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/podium"
+  to = "/store/services/podium/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/poster"
+  to = "/store/services/poster/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/ppt"
+  to = "/store/services/ppt/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/program-planning"
+  to = "/store/services/program-planning/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/registration"
+  to = "/store/services/registration/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/signage"
+  to = "/store/services/signage/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/sound"
+  to = "/store/services/sound/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/staff"
+  to = "/store/services/staff/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/transport"
+  to = "/store/services/transport/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/tv-rental"
+  to = "/store/services/tv-rental/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/web-poster"
+  to = "/store/services/web-poster/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/services/x-banner"
+  to = "/store/services/x-banner/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/*"
+  to = "/store/assets/:splat"
+  status = 200
+  force = false
+# <<< store-routes
