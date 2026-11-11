@@ -1566,3 +1566,5 @@ body.lm-open{overflow:hidden}
 .paran-content .case-more a:hover{color:#173eb8;text-decoration:underline}
 @media(max-width:1000px){.paran-content .case-more ul{columns:2}}
 @media(max-width:600px){.paran-content .case-more ul{columns:1}.paran-content .case-more{margin-bottom:40px}}
+/* 2026-11-12 접수 완료 화면의 합계 표: 접수 정보 표(2칸)의 칸 나눔이 겹쳐 글자가 쪼개지던 것 */
+.receipt dl.ref-total{grid-template-columns:1fr;max-width:440px;margin-top:22px}
