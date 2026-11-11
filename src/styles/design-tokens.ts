@@ -294,7 +294,7 @@ export const sectionPatterns = {
         <h2 className="text-xl md:text-2xl font-bold mb-3">제목</h2>
         <p className="text-slate-500 text-sm mb-8">설명</p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a href="/#contact" className="btn-primary btn-lg">무료 견적 요청하기</a>
+          <a href="/request?mode=consult" className="btn-primary btn-lg">무료 견적 요청하기</a>
           <a href="tel:02-6342-2800" className="btn-outline btn-lg">02-6342-2800</a>
         </div>
       </div>

@@ -340,7 +340,7 @@ export default function FAQClient() {
           </p>
           <div className="mx-auto mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
             <a
-              href="/#contact"
+              href="/request?mode=consult"
               className="inline-flex items-center rounded-lg bg-blue-600 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
             >
               문의하기

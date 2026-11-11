@@ -204,7 +204,7 @@ export default function VenuesClient({ venues }: { venues: Venue[] }) {
               <p className="mt-1.5 text-sm text-white/60">인원·일정을 알려주시면 안내해 드립니다.</p>
             </div>
             <Link
-              href="/#contact"
+              href="/request?mode=consult"
               className="shrink-0 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white hover:bg-blue-500"
             >
               행사장 문의하기

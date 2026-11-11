@@ -1557,3 +1557,12 @@ body.lm-open{overflow:hidden}
 @media(max-width:767px){.fj-about-orbits>span:nth-child(3){left:10%}}
 .fj-work img.fj-work-photo{height:300px!important;min-height:300px;flex:0 0 300px;aspect-ratio:auto!important;object-fit:cover}
 @media(max-width:767px){.fj-work img.fj-work-photo{height:230px!important;min-height:230px;flex-basis:230px}}
+/* 2026-11-12 진행 사례: 기존 사례 전체 목록(제목만, 두 줄 넘으면 여러 칸) */
+.paran-content .case-more{margin:8px 0 56px}
+.paran-content .case-more h2{font-size:24px;margin:0 0 18px}
+.paran-content .case-more ul{list-style:none;margin:0;padding:0;columns:3;column-gap:32px}
+.paran-content .case-more li{break-inside:avoid;border-bottom:1px solid #e6e6ec}
+.paran-content .case-more a{display:block;padding:12px 2px;font-size:15px;line-height:1.45;color:#15141a;text-decoration:none}
+.paran-content .case-more a:hover{color:#173eb8;text-decoration:underline}
+@media(max-width:1000px){.paran-content .case-more ul{columns:2}}
+@media(max-width:600px){.paran-content .case-more ul{columns:1}.paran-content .case-more{margin-bottom:40px}}

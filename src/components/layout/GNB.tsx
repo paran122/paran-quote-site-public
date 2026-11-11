@@ -203,8 +203,7 @@ export default function GNB() {
             );
           })}
           <a
-            href="/?scrollTo=contact"
-            onClick={(e) => handleNavClick(e, { label: "문의하기", anchor: "#contact" })}
+            href="/request?mode=consult"
             className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
           >
             문의하기
@@ -507,8 +506,7 @@ export default function GNB() {
                 );
               })}
               <a
-                href="/?scrollTo=contact"
-                onClick={(e) => handleNavClick(e, { label: "문의하기", anchor: "#contact" })}
+                href="/request?mode=consult"
                 className="mt-2 rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white"
               >
                 문의하기

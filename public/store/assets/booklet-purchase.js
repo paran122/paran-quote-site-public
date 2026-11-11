@@ -16,7 +16,7 @@
  // 하단 바 금액: 옵션 폼의 예상금액을 그대로 따라감
  const priceOut=bar.querySelector('span');
  // 옵션 창 아래 고정: 옵션이 길어도 금액과 담기 버튼이 항상 보이게(좁은 화면에서만 보임)
- const foot=document.createElement('div');foot.className='bq-foot';foot.hidden=true;foot.innerHTML='<div><small>예상금액 · 부가세 포함</small><b></b></div><button type="button" class="button primary"></button>';panel.append(foot);
+ const foot=document.createElement('div');foot.className='bq-foot';foot.hidden=true;foot.innerHTML='<div><small>견적 금액 · 부가세 포함</small><b></b></div><button type="button" class="button primary"></button>';panel.append(foot);
  const footPrice=foot.querySelector('b'),footBtn=foot.querySelector('button');
  footBtn.addEventListener('click',()=>{const form=panel.querySelector('form.config-form');if(!form)return;form.requestSubmit?form.requestSubmit():form.querySelector('.commit')?.click();setTimeout(()=>{const err=form.querySelector('.config-error:not([hidden])')||panel.querySelector('.added-link');err?.scrollIntoView({block:'center',behavior:'smooth'})},50)});
  const syncPrice=()=>{const s=panel.querySelector('.config-price strong'),c=panel.querySelector('form.config-form .commit');const t=s?s.textContent.trim():'';if(t&&priceOut){const v=t+' · 부가세 포함';if(priceOut.textContent!==v)priceOut.textContent=v}if(t&&footPrice.textContent!==t)footPrice.textContent=t;if(c&&footBtn.textContent!==c.textContent)footBtn.textContent=c.textContent;if(foot.hidden!==!c)foot.hidden=!c};

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { supabase } from "@/lib/supabase";
+import storeRoutes from "../../store-routes.json";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl =
@@ -74,6 +75,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const SERVICES_UPDATED = new Date("2026-07-28"); // 수행사례 갤러리 → 포트폴리오 상세 내부링크 25개 연결
   const COMPANY_UPDATED = new Date("2026-06-14"); // og:image 메타 보강 (회사소개 공유 썸네일)
   const POLICY_UPDATED = new Date("2026-03-10");
+
+  // 서비스 사이트(장바구니형) 주소: 소개와 서비스 상세. 목록은 store-routes.json(서비스 사이트 생성기가 씀)
+  const STORE_UPDATED = new Date("2026-11-12");
+  const storePages: MetadataRoute.Sitemap = storeRoutes.sitemap.map((path) => ({
+    url: `${siteUrl}${path}`,
+    lastModified: STORE_UPDATED,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -228,5 +238,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [...staticPages, ...blogPages, ...portfolioPages];
+  return [...staticPages, ...storePages, ...blogPages, ...portfolioPages];
 }

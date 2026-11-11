@@ -218,7 +218,7 @@ export default function LecturersClient({ lecturers }: { lecturers: Lecturer[] }
               <p className="mt-1.5 text-sm text-white/60">원하는 주제·일정을 알려주시면 안내해 드립니다.</p>
             </div>
             <Link
-              href="/#contact"
+              href="/request?mode=consult"
               className="shrink-0 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white hover:bg-blue-500"
             >
               강사 추천 받기

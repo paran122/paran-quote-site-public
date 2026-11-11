@@ -178,7 +178,7 @@ export default function LecturerDetailClient({
           </div>
           <div className="flex items-center gap-2.5">
             <Link href="/lecturers" className="btn-ghost btn-md">목록으로</Link>
-            <Link href="/#contact" className="btn-primary btn-md">강의 문의하기</Link>
+            <Link href="/request?mode=consult" className="btn-primary btn-md">강의 문의하기</Link>
           </div>
         </div>
 
