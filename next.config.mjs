@@ -20,6 +20,8 @@ const nextConfig = {
           source: `/services/:id(${store.services.join("|")})`,
           destination: "/store/services/:id/index.html",
         },
+        // 견적 바로보기 링크(/q/<키>)는 내 견적 요청 화면이 받아서 그린다
+        { source: "/q/:key", destination: "/store/requests/index.html" },
       ],
       // 기존 public/assets 에 없는 파일만 서비스 사이트 자산으로 넘긴다
       afterFiles: [

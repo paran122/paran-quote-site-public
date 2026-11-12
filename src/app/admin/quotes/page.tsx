@@ -51,6 +51,23 @@ export default function AdminQuotesPage() {
     }
   }
 
+  function handleQuoteSaved(
+    id: string,
+    saved: { revision: NonNullable<QuoteItem["revisions"]>[number]; total_amount: number }
+  ) {
+    setQuotes((prev) =>
+      prev.map((q) =>
+        q.id === id
+          ? {
+              ...q,
+              revisions: [...(q.revisions ?? []), saved.revision],
+              total_amount: saved.total_amount,
+            }
+          : q
+      )
+    );
+  }
+
   const filtered = filter === "전체" ? quotes : quotes.filter((q) => q.status === filter);
 
   const statusCounts = quotes.reduce<Record<string, number>>((acc, q) => {
@@ -126,6 +143,7 @@ export default function AdminQuotesPage() {
                     quote={q}
                     updatingId={updatingId}
                     onStatusChange={handleStatusChange}
+                    onQuoteSaved={handleQuoteSaved}
                   />
                 )}
               </div>

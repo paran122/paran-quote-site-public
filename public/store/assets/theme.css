@@ -1568,3 +1568,26 @@ body.lm-open{overflow:hidden}
 @media(max-width:600px){.paran-content .case-more ul{columns:1}.paran-content .case-more{margin-bottom:40px}}
 /* 2026-11-12 접수 완료 화면의 합계 표: 접수 정보 표(2칸)의 칸 나눔이 겹쳐 글자가 쪼개지던 것 */
 .receipt dl.ref-total{grid-template-columns:1fr;max-width:440px;margin-top:22px}
+
+/* 2026-11-12 견적 바로보기 화면(/q/…)과 접수 완료 화면의 견적 주소 상자 */
+.quote-view .qv-pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.quote-view .qv-rev{font-size:13px;color:#55535e}
+.quote-view .qv-notice{margin:22px 0 4px;padding:16px 18px;border-radius:12px;background:#f4f3f8}
+.quote-view .qv-notice b{display:block;font-size:13px;color:#55535e;margin-bottom:6px}
+.quote-view .qv-notice p{margin:0;white-space:pre-wrap;line-height:1.7;color:#15141a}
+.quote-view .qv-empty{margin:22px 0;padding:18px;border-radius:12px;background:#f4f3f8;color:#3a3942}
+.quote-view table.qv-lines{width:100%;border-collapse:collapse;margin-top:24px;font-size:15px}
+.quote-view .qv-lines th{padding:10px 8px;border-bottom:2px solid #15141a;font-size:13px;color:#55535e;font-weight:600;text-align:left}
+.quote-view .qv-lines td{padding:14px 8px;border-bottom:1px solid #e3e2e8;vertical-align:top;color:#15141a}
+.quote-view .qv-lines th:nth-child(2),.quote-view .qv-lines td:nth-child(2){text-align:center;white-space:nowrap;width:72px}
+.quote-view .qv-lines th:nth-child(3),.quote-view .qv-lines td:nth-child(3){text-align:right;white-space:nowrap;font-weight:700}
+.quote-view .qv-lines td b{display:block;font-weight:700}
+.quote-view .qv-lines td span{display:block;margin-top:4px;font-size:13px;color:#55535e;line-height:1.6}
+.quote-view dl.ref-total{margin-left:auto}
+.receipt .qv-link{margin-top:24px;padding:16px 18px;border-radius:12px;background:#f4f3f8}
+.receipt .qv-link b{display:block;font-size:15px;color:#15141a}
+.receipt .qv-link p{margin:6px 0 12px;font-size:13px;color:#55535e;line-height:1.6}
+.receipt .qv-link div{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.receipt .qv-link a{flex:1 1 240px;min-width:0;font-size:13px;word-break:break-all;color:#15141a;text-decoration:underline}
+@media(max-width:520px){.quote-view table.qv-lines{font-size:14px}.quote-view .qv-lines th:nth-child(2),.quote-view .qv-lines td:nth-child(2){width:52px}}
+@media print{.receipt .qv-link{display:none}}

@@ -2,6 +2,9 @@ import type { QuoteEmailData, CartItemForEmail, EmailAttachment } from "./types"
 import { parseReferralFromMemo } from "../../referralSources";
 
 function formatKRW(amount: number): string {
+  // 천 원 미만 단위가 있으면(서비스 사이트 접수 금액) 원 단위로 정확히 적는다
+  const exactWon = Math.round(amount * 10000);
+  if (exactWon % 1000 !== 0) return `${exactWon.toLocaleString("ko-KR")}원`;
   if (amount >= 10000) {
     const eok = Math.floor(amount / 10000);
     const man = amount % 10000;

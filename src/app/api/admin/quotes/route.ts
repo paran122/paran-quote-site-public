@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { isAuthenticated } from "@/lib/admin-auth";
+import { quoteLinkKey } from "@/lib/quote/link";
 
 export async function GET() {
   const authed = await isAuthenticated();
@@ -20,5 +21,11 @@ export async function GET() {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json(data ?? []);
+  // 고객에게 보내는 견적 바로보기 주소(사이트 주소를 뺀 경로)
+  const rows = (data ?? []).map((row: { quote_number?: string }) => {
+    const linkKey = row.quote_number ? quoteLinkKey(row.quote_number) : null;
+    return { ...row, link_path: linkKey ? `/q/${linkKey}` : null };
+  });
+
+  return NextResponse.json(rows);
 }

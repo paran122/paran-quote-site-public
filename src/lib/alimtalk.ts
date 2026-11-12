@@ -27,10 +27,31 @@ interface AlimtalkVariable {
   [key: string]: string;
 }
 
+/** 알림톡 버튼(웹링크). 카카오에 등록한 템플릿의 버튼과 이름·주소 형식이 같아야 한다. */
+interface AlimtalkButton {
+  type: "WL";
+  name: string;
+  linkMobile: string;
+  linkPc: string;
+}
+
 interface SendAlimtalkParams {
   templateCode: string;
   to: string;
   variables: AlimtalkVariable;
+  buttons?: AlimtalkButton[];
+}
+
+/**
+ * 견적 바로보기 버튼이 달린 새 템플릿을 쓸지.
+ * 카카오 심사가 끝난 뒤 Netlify 환경값 NCP_ALIMTALK_LINK_TEMPLATES=on 으로 켠다.
+ * 꺼져 있거나 새 템플릿 발송이 실패하면 기존 템플릿으로 보낸다.
+ */
+const LINK_TEMPLATES_ON = process.env.NCP_ALIMTALK_LINK_TEMPLATES === "on";
+const LINK_BUTTON_NAME = "견적 바로보기";
+
+function linkButton(url: string): AlimtalkButton[] {
+  return [{ type: "WL", name: LINK_BUTTON_NAME, linkMobile: url, linkPc: url }];
 }
 
 /** 알림톡 단건 발송 */
@@ -38,6 +59,7 @@ export async function sendAlimtalk({
   templateCode,
   to,
   variables,
+  buttons,
 }: SendAlimtalkParams): Promise<{ success: boolean; error?: string }> {
   if (!NCP_ACCESS_KEY || !NCP_SECRET_KEY || !NCP_SERVICE_ID) {
     console.warn("[alimtalk] NCP credentials not configured, skipping");
@@ -59,6 +81,7 @@ export async function sendAlimtalk({
         countryCode: "82",
         to: normalizePhone(to),
         content,
+        ...(buttons && buttons.length > 0 ? { buttons } : {}),
       },
     ],
   };
@@ -117,6 +140,47 @@ function buildContent(templateCode: string, vars: AlimtalkVariable): string {
 감사합니다.`;
   }
 
+  if (templateCode === "ParanQuoteReceived2") {
+    return `안녕하세요, ${vars.고객명}님.
+파란컴퍼니입니다.
+
+요청하신 견적이 정상적으로 접수되었습니다.
+
+■ 접수 정보
+ㅇ 접수번호 : ${vars.접수번호}
+ㅇ 기관/회사 : ${vars.기관명}
+ㅇ 견적 금액 : ${vars.견적금액}
+
+아래 버튼에서 견적 내용을 언제든 다시 확인하실 수 있습니다.
+상담 중 견적이 바뀌면 같은 주소에 반영됩니다.
+
+담당자가 확인 후 1영업일 이내에 연락드리겠습니다.
+
+ㅇ 전화 문의 : 02-6342-2800
+               (평일 09:00~18:00)
+
+감사합니다.`;
+  }
+
+  if (templateCode === "ParanQuoteUpdated") {
+    return `안녕하세요, ${vars.고객명}님.
+파란컴퍼니입니다.
+
+상담 내용을 반영해 견적을 수정했습니다.
+
+■ 견적 정보
+ㅇ 접수번호 : ${vars.접수번호}
+ㅇ 견적 차수 : ${vars.차수}차
+ㅇ 견적 금액 : ${vars.견적금액}
+
+아래 버튼에서 수정된 견적을 확인해 주세요.
+
+ㅇ 전화 문의 : 02-6342-2800
+               (평일 09:00~18:00)
+
+감사합니다.`;
+  }
+
   if (templateCode === "ParanInquiryReceived") {
     return `안녕하세요, ${vars.고객명}님.
 파란컴퍼니입니다.
@@ -146,8 +210,26 @@ export async function sendQuoteAlimtalk(params: {
   eventType: string;
   eventDate: string;
   totalAmount: number;
+  /** 견적 바로보기 주소. 새 템플릿이 켜져 있을 때만 쓴다. */
+  linkUrl?: string | null;
 }) {
   const { formatPriceWon } = await import("@/lib/pricing");
+
+  if (LINK_TEMPLATES_ON && params.linkUrl) {
+    const sent = await sendAlimtalk({
+      templateCode: "ParanQuoteReceived2",
+      to: params.phone,
+      variables: {
+        고객명: params.contactName,
+        접수번호: params.quoteNumber,
+        기관명: params.organization,
+        견적금액: formatPriceWon(params.totalAmount),
+      },
+      buttons: linkButton(params.linkUrl),
+    });
+    if (sent.success) return sent;
+    console.warn("[alimtalk] link template failed, falling back:", sent.error);
+  }
 
   return sendAlimtalk({
     templateCode: "ParanQuoteReceived",
@@ -177,5 +259,33 @@ export async function sendInquiryAlimtalk(params: {
       고객명: params.contactName,
       접수번호: params.quoteNumber,
     },
+  });
+}
+
+/* ── 편의 함수: 견적 수정 알림톡 (새 템플릿이 켜져 있을 때만 발송) ── */
+
+export async function sendQuoteUpdatedAlimtalk(params: {
+  phone: string;
+  contactName: string;
+  quoteNumber: string;
+  rev: number;
+  /** 만 원 단위 */
+  totalAmount: number;
+  linkUrl: string;
+}): Promise<{ success: boolean; error?: string }> {
+  if (!LINK_TEMPLATES_ON) {
+    return { success: false, error: "link templates are off" };
+  }
+  const { formatPriceWon } = await import("@/lib/pricing");
+  return sendAlimtalk({
+    templateCode: "ParanQuoteUpdated",
+    to: params.phone,
+    variables: {
+      고객명: params.contactName,
+      접수번호: params.quoteNumber,
+      차수: String(params.rev),
+      견적금액: formatPriceWon(params.totalAmount),
+    },
+    buttons: linkButton(params.linkUrl),
   });
 }

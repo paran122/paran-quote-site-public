@@ -393,6 +393,9 @@ export function formatRangeText(band: EstimateScaleBand): string {
 /* ── 유틸 ── */
 
 export function formatPriceWon(price: number): string {
+  // 천 원 미만 단위가 있으면(서비스 사이트 접수 금액) 원 단위로 정확히 적는다
+  const exactWon = Math.round(price * 10000);
+  if (exactWon % 1000 !== 0) return `${exactWon.toLocaleString("ko-KR")}원`;
   if (price >= 10000) {
     const eok = Math.floor(price / 10000);
     const man = price % 10000;

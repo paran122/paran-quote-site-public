@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod/v4";
 import { saveAndNotifyQuote, type QuoteCartItem } from "@/lib/quote/process";
 import { createInquiryNumber, createQuoteNumber } from "@/lib/quoteNumber";
+import { siteUrlFromRequest } from "@/lib/quote/link";
 import {
   normalizeStoreRequest,
   StoreInputError,
@@ -14,6 +15,8 @@ import {
 
 const MAX_BODY_BYTES = 64 * 1024;
 const MAX_FILES = 5;
+/** 저장 단위: 만 원 */
+const WON_PER_MAN = 10000;
 
 const rateLimit = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1분
@@ -48,8 +51,9 @@ function toCartItem(item: StoreItem): QuoteCartItem {
   return {
     id: item.serviceId,
     name: item.counts ? `${item.name} (${item.counts})` : item.name,
-    // 줄 금액(부가세 포함). 금액이 정해지지 않는 구성은 0으로 두고 메모에 '상담 후 확정'으로 적는다
-    price: item.estimate?.price ?? 0,
+    // 줄 금액(부가세 포함). 기존 접수와 같이 만 원 단위로 저장한다(메일·알림톡·관리자 화면이 만 원 기준).
+    // 금액이 정해지지 않는 구성은 0으로 두고 메모에 '상담 후 확정'으로 적는다
+    price: (item.estimate?.price ?? 0) / WON_PER_MAN,
     qty: 1,
     unit: "식",
     category: item.category,
@@ -58,6 +62,9 @@ function toCartItem(item: StoreItem): QuoteCartItem {
       ...(item.options ?? {}),
       _summary: item.summary ?? "",
       _counts: item.counts ?? "",
+      // 견적 링크 화면이 쓰는 값(원 단위)
+      _supply: item.estimate?.supply ?? null,
+      _ship: item.estimate?.ship ?? 0,
       _basis: item.estimate?.basis ?? "",
       _qty: item.qty ?? 1,
       _design: item.design ?? 1,
@@ -163,8 +170,9 @@ export async function POST(request: Request) {
       event_type: consult ? "문의" : "서비스 견적",
       memo: buildMemo(store.event.brief, store.event.budget, items, totals, store.topic?.name),
       cart_items: items.map(toCartItem),
-      total_amount: totals?.total ?? 0,
+      total_amount: (totals?.total ?? 0) / WON_PER_MAN,
       attachments: attachments.data,
+      site_url: siteUrlFromRequest(request),
     });
     if (!result.ok) {
       return NextResponse.json({ error: result.error }, { status: result.status });
@@ -182,6 +190,7 @@ export async function POST(request: Request) {
         status: "received",
         createdAt: now.toISOString(),
       },
+      link: result.link,
       email: result.email,
       alimtalk: result.alimtalk,
     });

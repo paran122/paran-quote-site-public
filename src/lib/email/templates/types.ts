@@ -24,6 +24,8 @@ export interface QuoteEmailData {
   /** "견적" | "문의" */
   type: "quote" | "inquiry";
   attachments?: EmailAttachment[];
+  /** 견적 바로보기 주소(고객 메일에 버튼으로 넣는다) */
+  linkUrl?: string | null;
 }
 
 export interface CartItemForEmail {

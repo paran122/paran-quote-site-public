@@ -1,6 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod/v4";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isAuthenticated } from "@/lib/admin-auth";
+import { quoteLinkUrl, siteUrlFromRequest } from "@/lib/quote/link";
+import {
+  computeTotals,
+  manFromWon,
+  readRevisions,
+  type QuoteRevision,
+  type QuoteRow,
+} from "@/lib/quote/view";
+import { sendEmail, RESEND_API_KEY, FROM_EMAIL } from "@/lib/email/resend";
+import { quoteUpdatedHtml, quoteUpdatedSubject } from "@/lib/email/templates/quote-updated";
+import { sendQuoteUpdatedAlimtalk } from "@/lib/alimtalk";
 
 export async function PATCH(
   request: NextRequest,
@@ -33,4 +45,153 @@ export async function PATCH(
   }
 
   return NextResponse.json({ success: true });
+}
+
+/* ── 견적 수정: 새 차수를 이력에 덧붙인다 ── */
+
+const MAX_LINES = 60;
+const MAX_AMOUNT = 10_000_000_000;
+
+const RevisionSchema = z.object({
+  lines: z
+    .array(
+      z.object({
+        name: z.string().trim().min(1).max(120),
+        detail: z.string().trim().max(300),
+        qty: z.number().positive().max(100000),
+        unit: z.string().trim().max(10),
+        // 할인 줄은 음수 단가로 넣는다
+        unitPrice: z.number().int().min(-MAX_AMOUNT).max(MAX_AMOUNT),
+      })
+    )
+    .min(1)
+    .max(MAX_LINES),
+  ship: z.number().int().min(0).max(100_000_000),
+  notice: z.string().trim().max(2000),
+  notify: z.boolean(),
+});
+
+const MISSING_COLUMN_MESSAGE =
+  "DB에 견적 이력 칸(revisions)이 아직 없습니다. 안내된 SQL을 먼저 실행해 주세요.";
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const authed = await isAuthenticated();
+  if (!authed) {
+    return NextResponse.json({ error: "인증이 필요합니다" }, { status: 401 });
+  }
+  if (!supabaseAdmin) {
+    return NextResponse.json({ error: "DB 미설정" }, { status: 500 });
+  }
+
+  const { id } = await params;
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "요청 형식이 올바르지 않습니다" }, { status: 400 });
+  }
+  const parsed = RevisionSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "입력값을 확인해 주세요. 품목명과 수량은 비울 수 없습니다." },
+      { status: 400 }
+    );
+  }
+  const input = parsed.data;
+
+  const { data: found, error: loadError } = await supabaseAdmin
+    .from("quotes")
+    .select("*")
+    .eq("id", id)
+    .limit(1);
+  if (loadError) {
+    return NextResponse.json({ error: loadError.message }, { status: 500 });
+  }
+  const row = (found?.[0] ?? null) as (QuoteRow & { phone: string; email: string }) | null;
+  if (!row) {
+    return NextResponse.json({ error: "견적을 찾을 수 없습니다" }, { status: 404 });
+  }
+  if (!("revisions" in row)) {
+    return NextResponse.json({ error: MISSING_COLUMN_MESSAGE }, { status: 409 });
+  }
+
+  const history = readRevisions(row);
+  const totals = computeTotals(input.lines, input.ship);
+  if (totals.total < 0) {
+    return NextResponse.json({ error: "합계가 0원보다 작을 수 없습니다" }, { status: 400 });
+  }
+  const now = new Date().toISOString();
+  const revision: QuoteRevision = {
+    rev: (history.length ? history[history.length - 1].rev : 0) + 1,
+    at: now,
+    lines: input.lines,
+    ship: input.ship,
+    notice: input.notice,
+    supply: totals.supply,
+    vat: totals.vat,
+    total: totals.total,
+  };
+
+  const { error: saveError } = await supabaseAdmin
+    .from("quotes")
+    .update({
+      revisions: [...history, revision],
+      total_amount: manFromWon(totals.total),
+      updated_at: now,
+    })
+    .eq("id", id);
+  if (saveError) {
+    const missing = /revisions/i.test(saveError.message);
+    return NextResponse.json(
+      { error: missing ? MISSING_COLUMN_MESSAGE : saveError.message },
+      { status: missing ? 409 : 500 }
+    );
+  }
+
+  const link = quoteLinkUrl(siteUrlFromRequest(request), row.quote_number);
+  const notified = { email: false, alimtalk: false };
+  if (input.notify && link) {
+    const [mail, talk] = await Promise.allSettled([
+      RESEND_API_KEY
+        ? sendEmail({
+            from: FROM_EMAIL,
+            to: row.email,
+            subject: quoteUpdatedSubject({
+              contactName: row.contact_name,
+              quoteNumber: row.quote_number,
+              eventName: row.event_name,
+              revision,
+              linkUrl: link,
+            }),
+            html: quoteUpdatedHtml({
+              contactName: row.contact_name,
+              quoteNumber: row.quote_number,
+              eventName: row.event_name,
+              revision,
+              linkUrl: link,
+            }),
+          })
+        : Promise.resolve({ success: false }),
+      sendQuoteUpdatedAlimtalk({
+        phone: row.phone,
+        contactName: row.contact_name,
+        quoteNumber: row.quote_number,
+        rev: revision.rev,
+        totalAmount: manFromWon(totals.total),
+        linkUrl: link,
+      }),
+    ]);
+    notified.email = mail.status === "fulfilled" && mail.value.success;
+    notified.alimtalk = talk.status === "fulfilled" && talk.value.success;
+  }
+
+  return NextResponse.json({
+    success: true,
+    revision,
+    total_amount: manFromWon(totals.total),
+    notified,
+  });
 }

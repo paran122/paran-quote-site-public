@@ -2,6 +2,7 @@ import {
   sendQuoteNotification,
   type QuoteEmailData,
 } from "@/lib/email/send-notification";
+import { quoteLinkUrl } from "@/lib/quote/link";
 
 /** 행사일 미입력 시 메일·알림톡에 표시할 값 */
 const NO_DATE_LABEL = "-";
@@ -46,6 +47,8 @@ export interface QuoteInput {
   discount_amount?: number;
   user_id?: string;
   attachments?: QuoteAttachment[];
+  /** 접수가 들어온 사이트 주소. 있으면 견적 바로보기 링크를 만들어 메일·알림톡에 넣는다. */
+  site_url?: string;
 }
 
 export type QuoteResult =
@@ -53,6 +56,8 @@ export type QuoteResult =
       ok: true;
       email: { admin: boolean; customer: boolean };
       alimtalk: { success: boolean };
+      /** 견적 바로보기 주소(만들 수 없으면 null) */
+      link: string | null;
     }
   | { ok: false; status: number; error: string };
 
@@ -133,6 +138,8 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
     }
   }
 
+  const linkUrl = quoteLinkUrl(data.site_url, data.quote_number);
+
   const emailData: QuoteEmailData = {
     quoteNumber: data.quote_number,
     contactName: data.contact_name,
@@ -151,6 +158,7 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
     discountAmount: data.discount_amount,
     type: isInquiry ? "inquiry" : "quote",
     attachments: emailAttachments,
+    linkUrl,
   };
 
   // 알림톡 발송 (실패해도 성공 반환 — 이메일과 동일 정책)
@@ -172,6 +180,7 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
       eventType: data.event_type || data.event_name,
       eventDate: data.event_date || NO_DATE_LABEL,
       totalAmount: data.total_amount,
+      linkUrl,
     });
   };
 
@@ -191,6 +200,7 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
 
   return {
     ok: true,
+    link: linkUrl,
     email:
       emailSettled.status === "fulfilled"
         ? emailSettled.value

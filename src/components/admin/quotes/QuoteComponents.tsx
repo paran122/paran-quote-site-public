@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import { parseReferralFromMemo } from "@/lib/referralSources";
 import { formatPriceWon } from "@/lib/pricing";
+import type { QuoteRevision, QuoteRow as StoredQuoteRow } from "@/lib/quote/view";
+import { QuoteLinkAndEdit, type QuoteSaved } from "./QuoteEditor";
 
 /* ── 타입 ── */
 export interface QuoteItem {
@@ -38,6 +40,11 @@ export interface QuoteItem {
   attachments: Array<{ name: string; url: string; size: number; type: string }> | null;
   status: string;
   created_at: string;
+  updated_at?: string | null;
+  /** 담당자가 고쳐 저장한 견적 차수들(없으면 접수 내용 그대로) */
+  revisions?: QuoteRevision[] | null;
+  /** 고객 견적 링크 경로 (/q/…) */
+  link_path?: string | null;
 }
 
 interface QuoteNote {
@@ -224,10 +231,12 @@ export function QuoteDetail({
   quote: q,
   updatingId,
   onStatusChange,
+  onQuoteSaved,
 }: {
   quote: QuoteItem;
   updatingId: string | null;
   onStatusChange: (id: string, status: string) => void;
+  onQuoteSaved: (id: string, saved: QuoteSaved) => void;
 }) {
   const inquiry = isInquiry(q);
 
@@ -296,7 +305,9 @@ export function QuoteDetail({
       {/* 견적 항목 */}
       {!inquiry && q.cart_items.length > 0 && (
         <div>
-          <span className="text-xs text-slate-400 mb-1 block">견적 항목</span>
+          <span className="text-xs text-slate-400 mb-1 block">
+            {q.revisions && q.revisions.length > 0 ? "접수 때 항목 (합계는 최신 견적)" : "견적 항목"}
+          </span>
           <div className="bg-white rounded-md p-2.5 space-y-1 border border-slate-100">
             {q.cart_items.map((item, i) => (
               <div key={i} className="flex justify-between text-sm">
@@ -350,6 +361,13 @@ export function QuoteDetail({
       {q.attachments && q.attachments.length > 0 && (
         <AttachmentList attachments={q.attachments} />
       )}
+
+      {/* 고객 견적 링크 · 견적 수정 */}
+      <QuoteLinkAndEdit
+        quote={q as unknown as StoredQuoteRow}
+        linkPath={q.link_path ?? null}
+        onSaved={(saved) => onQuoteSaved(q.id, saved)}
+      />
 
       {/* 내부 메모 */}
       <NotesSection quoteId={q.id} />

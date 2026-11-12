@@ -2,6 +2,9 @@ import type { QuoteEmailData, CartItemForEmail } from "./types";
 import { parseReferralFromMemo } from "../../referralSources";
 
 function formatKRW(amount: number): string {
+  // 천 원 미만 단위가 있으면(서비스 사이트 접수 금액) 원 단위로 정확히 적는다
+  const exactWon = Math.round(amount * 10000);
+  if (exactWon % 1000 !== 0) return `${exactWon.toLocaleString("ko-KR")}원`;
   if (amount >= 10000) {
     const eok = Math.floor(amount / 10000);
     const man = amount % 10000;
@@ -57,6 +60,11 @@ export function customerConfirmHtml(data: QuoteEmailData): string {
             <div style="font-size:14px;color:#334155;line-height:1.6;white-space:pre-wrap">${body}</div>
           </div>` : "";
           })()}
+          ${data.linkUrl ? `
+          <div style="text-align:center;margin:0 0 24px">
+            <a href="${data.linkUrl}" style="display:inline-block;padding:14px 28px;background:#1d4ed8;color:#fff;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px">접수 내용 보기</a>
+            <p style="margin:10px 0 0;font-size:12px;color:#94a3b8;line-height:1.6">견적이 준비되면 같은 주소에서 확인하실 수 있습니다.</p>
+          </div>` : ""}
           <p style="margin:0;font-size:14px;color:#64748b;line-height:1.7">
             확인 후 빠른 시일 내에 회신 드리겠습니다.<br/>
             급한 건은 전화(02-6342-2800)로 연락 주시면 더 빠르게 도움드릴 수 있습니다.
@@ -113,6 +121,12 @@ export function customerConfirmHtml(data: QuoteEmailData): string {
           <div style="text-align:right;margin-bottom:24px">
             <span style="font-size:13px;color:#64748b">총 금액: </span>
             <span style="font-size:18px;color:#1d4ed8;font-weight:800">${formatKRW(data.totalAmount)}</span>
+          </div>` : ""}
+
+          ${data.linkUrl ? `
+          <div style="text-align:center;margin:0 0 24px">
+            <a href="${data.linkUrl}" style="display:inline-block;padding:14px 28px;background:#1d4ed8;color:#fff;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px">견적 바로보기</a>
+            <p style="margin:10px 0 0;font-size:12px;color:#94a3b8;line-height:1.6">이 주소에서 견적을 언제든 다시 볼 수 있습니다.<br/>상담 중 견적이 바뀌면 같은 주소에 반영됩니다.</p>
           </div>` : ""}
 
           <div style="padding:20px;background:#f8fafc;border-radius:8px;text-align:center">

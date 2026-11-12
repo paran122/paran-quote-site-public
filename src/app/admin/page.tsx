@@ -101,6 +101,19 @@ function QuotesSection() {
                 quote={q}
                 updatingId={updatingId}
                 onStatusChange={handleStatusChange}
+                onQuoteSaved={(id, saved) =>
+                  setQuotes((prev) =>
+                    prev.map((item) =>
+                      item.id === id
+                        ? {
+                            ...item,
+                            revisions: [...(item.revisions ?? []), saved.revision],
+                            total_amount: saved.total_amount,
+                          }
+                        : item
+                    )
+                  )
+                }
               />
             )}
           </div>

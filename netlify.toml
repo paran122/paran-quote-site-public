@@ -105,6 +105,11 @@
   status = 200
   force = true
 [[redirects]]
+  from = "/q/*"
+  to = "/store/requests/index.html"
+  status = 200
+  force = true
+[[redirects]]
   from = "/assets/*"
   to = "/store/assets/:splat"
   status = 200

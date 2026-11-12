@@ -12,7 +12,7 @@ function text(v,name,max,required=true){if(typeof v!=='string')v='';v=v.trim();i
 const VAT=0.1;
 // 견적 계산식은 ui/quote-core.js가 원본(빌드가 ../data/quote-core.js로 복사). 화면과 같은 파일
 const {man,num,sides,meters,estimate,docTotals}=require('../data/quote-core.js');
-function estimateLine(p,v,qty,count=1){const e=estimate(p,v,count,qty);if(!e)return null;return {price:Math.round(e.total),label:Math.round(e.total).toLocaleString('ko-KR')+'원',basis:'디자인 '+man(e.dU)+(e.make?' + '+(p.quote.install?'제작':e.part||'제작')+' '+man(e.mU-(e.inst||0)):'')+(e.inst?' + '+p.quote.install.label+' '+man(e.inst):'')+(e.ship?' + 택배 '+man(e.ship):'')+(e.quick?' + 퀵 배송 실비':''),make:e.make}}
+function estimateLine(p,v,qty,count=1){const e=estimate(p,v,count,qty);if(!e)return null;const r=estimate(p,v,count,qty,true);return {supply:Math.round(r.dU+r.mU)*r.n,ship:r.ship||0,price:Math.round(e.total),label:Math.round(e.total).toLocaleString('ko-KR')+'원',basis:'디자인 '+man(e.dU)+(e.make?' + '+(p.quote.install?'제작':e.part||'제작')+' '+man(e.mU-(e.inst||0)):'')+(e.inst?' + '+p.quote.install.label+' '+man(e.inst):'')+(e.ship?' + 택배 '+man(e.ship):'')+(e.quick?' + 퀵 배송 실비':''),make:e.make}}
 function quoteTotals(items){const t=docTotals(items,id=>CATALOG.find(p=>p.id===id));return {supply:t.sub,vat:t.vat,ship:t.ship,total:t.total,unpriced:t.unpriced,priceDate:CATALOG.find(p=>p.priceDate)?.priceDate||null}}
 function normalize(b){
  if(!UUID.test(b.id||'')||!TOKEN.test(b.token||''))fail('접수 식별값이 올바르지 않습니다. 페이지를 새로 열어 주세요.');

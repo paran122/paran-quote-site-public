@@ -4,6 +4,11 @@
 import store from "./functions/service-store.js";
 
 export interface StoreEstimate {
+  /** 공급가(원, 부가세 별도) */
+  supply: number;
+  /** 배송비(원, 부가세 없음) */
+  ship: number;
+  /** 줄 금액(원, 부가세 포함) */
   price: number;
   label: string;
   basis: string;
