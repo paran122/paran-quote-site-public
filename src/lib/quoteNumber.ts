@@ -26,15 +26,17 @@ function kstParts(date: Date) {
 
 function build(prefix: string, now: Date): string {
   const { date, time } = kstParts(now);
-  return `${prefix}-${date}-${time}`;
+  // 같은 초에 두 건이 들어와도 겹치지 않게 난수 2자리를 붙인다(견적 링크가 접수번호로 묶이므로 중복이면 안 된다)
+  const tail = String(Math.floor(Math.random() * 100)).padStart(2, "0");
+  return `${prefix}-${date}-${time}${tail}`;
 }
 
-/** 문의 접수번호 (예: IQ-20261014-143052) */
+/** 문의 접수번호 (예: IQ-20261014-14305207) */
 export function createInquiryNumber(now: Date = new Date()): string {
   return build(PREFIX_INQUIRY, now);
 }
 
-/** 견적 접수번호 (예: QT-20261014-143052) */
+/** 견적 접수번호 (예: QT-20261014-14305207) */
 export function createQuoteNumber(now: Date = new Date()): string {
   return build(PREFIX_QUOTE, now);
 }

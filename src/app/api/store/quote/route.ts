@@ -123,14 +123,6 @@ export async function POST(request: Request) {
       }
     }
 
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-    if (isRateLimited(ip)) {
-      return NextResponse.json(
-        { error: "너무 많은 요청입니다. 잠시 후 다시 시도해주세요." },
-        { status: 429 }
-      );
-    }
-
     const raw = await request.text();
     if (Buffer.byteLength(raw, "utf8") > MAX_BODY_BYTES) {
       return NextResponse.json({ error: "요청 내용이 너무 큽니다." }, { status: 413 });
@@ -152,6 +144,15 @@ export async function POST(request: Request) {
     }
 
     const store = normalizeStoreRequest(input);
+
+    // 횟수 제한은 검증을 통과한 요청만 센다(틀린 칸을 고쳐 다시 보내는 고객이 막히지 않게)
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "너무 많은 요청입니다. 잠시 후 다시 시도해주세요." },
+        { status: 429 }
+      );
+    }
     const items = store.items.filter((item) => item.serviceId !== "_totals");
     const totals = store.items.find((item) => item.serviceId === "_totals")?.totals;
     const consult = store.mode === "consult";

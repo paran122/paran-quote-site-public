@@ -229,6 +229,7 @@ function QuoteEditor({
                 value={line.name}
                 onChange={(e) => update(i, { name: e.target.value })}
                 placeholder="품목명"
+                maxLength={120}
                 aria-label={`${i + 1}번 품목명`}
               />
               <input
@@ -236,6 +237,7 @@ function QuoteEditor({
                 value={line.detail}
                 onChange={(e) => update(i, { detail: e.target.value })}
                 placeholder="규격·내용 (선택)"
+                maxLength={1000}
                 aria-label={`${i + 1}번 규격·내용`}
               />
             </div>
@@ -251,6 +253,7 @@ function QuoteEditor({
               value={line.unit}
               onChange={(e) => update(i, { unit: e.target.value })}
               placeholder="단위"
+              maxLength={10}
               aria-label={`${i + 1}번 단위`}
             />
             <input

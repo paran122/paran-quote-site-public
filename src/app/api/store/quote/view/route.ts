@@ -55,13 +55,20 @@ export async function POST(request: Request) {
     .select("*")
     .eq("quote_number", quoteNumber)
     .order("created_at", { ascending: true })
-    .limit(1);
+    .limit(2);
 
   if (error) {
     console.error("[quote-view] load failed:", error.message);
     return NextResponse.json(
       { error: "지금은 견적을 불러올 수 없습니다. 잠시 후 다시 시도해 주세요." },
       { status: 503 }
+    );
+  }
+  // 예전 접수 중에는 번호가 겹친 것이 있다. 그런 번호는 남의 견적이 보일 수 있어 링크로 열어 주지 않는다.
+  if ((data?.length ?? 0) > 1) {
+    return NextResponse.json(
+      { error: "이 접수는 링크로 볼 수 없습니다. 02-6342-2800으로 문의해 주세요." },
+      { status: 404 }
     );
   }
   const row = (data?.[0] ?? null) as QuoteRow | null;

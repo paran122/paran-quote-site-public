@@ -49,11 +49,25 @@ export function verifyQuoteLinkKey(linkKey: unknown): string | null {
 }
 
 /** 요청이 들어온 주소(미리보기·운영 어디서든 그 사이트 주소로 링크를 만든다) */
-export function siteUrlFromRequest(request: Request): string | undefined {
-  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
-  if (!host || !/^[a-z0-9.-]+(:\d+)?$/i.test(host)) return process.env.NEXT_PUBLIC_SITE_URL;
-  const proto =
-    request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim() ||
-    (host.startsWith("localhost") ? "http" : "https");
-  return `${proto}://${host}`;
+const PRODUCTION_URL = "https://parancompany.co.kr";
+
+/** 링크에 써도 되는 주소인지: 운영 도메인, 이 프로젝트의 Netlify 미리보기, 내 컴퓨터 */
+function isOwnHost(host: string): boolean {
+  const name = host.toLowerCase().replace(/:\d+$/, "");
+  return (
+    name === "parancompany.co.kr" ||
+    name === "www.parancompany.co.kr" ||
+    name === "paran-quote.netlify.app" ||
+    name.endsWith("--paran-quote.netlify.app") ||
+    name === "localhost" ||
+    name === "127.0.0.1"
+  );
+}
+
+export function siteUrlFromRequest(request: Request): string {
+  // 요청 헤더는 보낸 쪽이 바꿀 수 있다. 우리 주소가 아니면 운영 주소로 링크를 만든다(메일 속 버튼이 엉뚱한 곳을 가리키지 않게).
+  const host = request.headers.get("host") || "";
+  if (!isOwnHost(host)) return process.env.NEXT_PUBLIC_SITE_URL || PRODUCTION_URL;
+  const local = host.startsWith("localhost") || host.startsWith("127.0.0.1");
+  return `${local ? "http" : "https"}://${host}`;
 }

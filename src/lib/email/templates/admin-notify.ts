@@ -1,5 +1,36 @@
 import type { QuoteEmailData, CartItemForEmail, EmailAttachment } from "./types";
 import { parseReferralFromMemo } from "../../referralSources";
+import { escapeHtml } from "./layout";
+
+/** 고객이 입력한 값은 모두 글자 그대로 보이게 바꾼 사본을 만든다(메일에 태그·링크가 끼어들지 못하게) */
+function escapeData(data: QuoteEmailData): QuoteEmailData {
+  const e = (value: string | undefined) => (value === undefined ? value : escapeHtml(value));
+  return {
+    ...data,
+    quoteNumber: escapeHtml(data.quoteNumber),
+    contactName: escapeHtml(data.contactName),
+    organization: escapeHtml(data.organization),
+    phone: escapeHtml(data.phone),
+    email: escapeHtml(data.email),
+    department: e(data.department),
+    eventName: escapeHtml(data.eventName),
+    eventDate: escapeHtml(data.eventDate),
+    eventVenue: e(data.eventVenue),
+    eventType: e(data.eventType),
+    attendees: e(data.attendees),
+    memo: e(data.memo),
+    cartItems: data.cartItems.map((item) => ({
+      ...item,
+      name: escapeHtml(item.name),
+      unit: e(item.unit),
+    })),
+    attachments: data.attachments?.map((file) => ({
+      ...file,
+      name: escapeHtml(file.name),
+      url: escapeHtml(file.url),
+    })),
+  };
+}
 
 function formatKRW(amount: number): string {
   // 천 원 미만 단위가 있으면(서비스 사이트 접수 금액) 원 단위로 정확히 적는다
@@ -108,7 +139,8 @@ export function adminNotifySubject(data: QuoteEmailData): string {
   return `[${label}]-${name}`;
 }
 
-export function adminNotifyHtml(data: QuoteEmailData): string {
+export function adminNotifyHtml(raw: QuoteEmailData): string {
+  const data = escapeData(raw);
   const { referral, body: memoBody } = parseReferralFromMemo(data.memo);
   const referralBlock = referral
     ? `

@@ -48,6 +48,17 @@ interface SendAlimtalkParams {
  * 꺼져 있거나 새 템플릿 발송이 실패하면 기존 템플릿으로 보낸다.
  */
 const LINK_TEMPLATES_ON = process.env.NCP_ALIMTALK_LINK_TEMPLATES === "on";
+/**
+ * 새 템플릿 발송에 이 시간보다 오래 걸렸으면 예전 템플릿으로 다시 보내지 않는다.
+ * 두 번을 차례로 기다리면 접수 함수의 제한 시간(10초)을 넘겨, 저장은 됐는데 고객에게는 오류로 보인다.
+ */
+const FALLBACK_BUDGET_MS = 3000;
+
+/** 금액이 정해지지 않은 접수(상담 후 확정 품목만 담음)는 0원 대신 글로 적는다 */
+function amountLabel(totalMan: number, format: (n: number) => string): string {
+  return totalMan > 0 ? format(totalMan) : "상담 후 확정";
+}
+
 function linkButton(url: string, name = "견적 바로보기"): AlimtalkButton[] {
   return [{ type: "WL", name, linkMobile: url, linkPc: url }];
 }
@@ -226,6 +237,7 @@ export async function sendQuoteAlimtalk(params: {
 }) {
   const { formatPriceWon } = await import("@/lib/pricing");
 
+  const startedAt = Date.now();
   if (LINK_TEMPLATES_ON && params.linkUrl) {
     const sent = await sendAlimtalk({
       templateCode: "ParanQuoteReceived2",
@@ -234,12 +246,12 @@ export async function sendQuoteAlimtalk(params: {
         고객명: params.contactName,
         행사명: params.eventName || "-",
         요청내용: params.requestSummary || "-",
-        견적금액: formatPriceWon(params.totalAmount),
+        견적금액: amountLabel(params.totalAmount, formatPriceWon),
         접수번호: params.quoteNumber,
       },
       buttons: linkButton(params.linkUrl),
     });
-    if (sent.success) return sent;
+    if (sent.success || Date.now() - startedAt > FALLBACK_BUDGET_MS) return sent;
     console.warn("[alimtalk] link template failed, falling back:", sent.error);
   }
 
@@ -252,7 +264,7 @@ export async function sendQuoteAlimtalk(params: {
       기관명: params.organization,
       행사유형: params.eventType,
       행사일시: params.eventDate,
-      예상금액: formatPriceWon(params.totalAmount),
+      예상금액: amountLabel(params.totalAmount, formatPriceWon),
     },
   });
 }
@@ -268,6 +280,7 @@ export async function sendInquiryAlimtalk(params: {
   /** 고객이 적은 행사·작업명 (새 템플릿용) */
   eventName?: string;
 }) {
+  const startedAt = Date.now();
   if (LINK_TEMPLATES_ON && params.linkUrl) {
     const sent = await sendAlimtalk({
       templateCode: "ParanInquiryReceived2",
@@ -279,7 +292,7 @@ export async function sendInquiryAlimtalk(params: {
       },
       buttons: linkButton(params.linkUrl, "접수 내용 보기"),
     });
-    if (sent.success) return sent;
+    if (sent.success || Date.now() - startedAt > FALLBACK_BUDGET_MS) return sent;
     console.warn("[alimtalk] link template failed, falling back:", sent.error);
   }
 

@@ -11,6 +11,8 @@ export interface QuoteLine {
   unit: string;
   /** 단가(원) */
   unitPrice: number;
+  /** 금액이 아직 정해지지 않은 줄(상담 후 확정). 0원인 줄과 구분한다. */
+  tbd?: boolean;
 }
 
 /** 담당자가 고쳐 저장한 견적 한 차수 */
@@ -115,15 +117,16 @@ function originalLines(row: QuoteRow): { lines: QuoteLine[]; ship: number; vatIn
       ship += number(options._ship);
       return {
         name: text(item.name),
-        detail: text(options._summary),
+        detail: text(options._summary).slice(0, 1000),
         qty: 1,
         unit: text(item.unit) || "식",
         unitPrice: number(options._supply),
+        ...(typeof options._supply === "number" ? {} : { tbd: true }),
       };
     }
     return {
       name: text(item.name),
-      detail: text(options._summary),
+      detail: text(options._summary).slice(0, 1000),
       qty,
       unit: text(item.unit) || "개",
       unitPrice: Math.round(number(item.price) * WON_PER_MAN),

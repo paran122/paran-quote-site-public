@@ -51,13 +51,16 @@ export async function PATCH(
 
 const MAX_LINES = 60;
 const MAX_AMOUNT = 10_000_000_000;
+/** 합계 칸(INTEGER)에 들어가는 한도 */
+const MAX_TOTAL = 2_000_000_000;
+const DETAIL_MAX = 1000;
 
 const RevisionSchema = z.object({
   lines: z
     .array(
       z.object({
         name: z.string().trim().min(1).max(120),
-        detail: z.string().trim().max(300),
+        detail: z.string().trim().max(DETAIL_MAX),
         qty: z.number().positive().max(100000),
         unit: z.string().trim().max(10),
         // 할인 줄은 음수 단가로 넣는다
@@ -95,8 +98,21 @@ export async function PUT(
   }
   const parsed = RevisionSchema.safeParse(body);
   if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    const where =
+      issue && issue.path[0] === "lines" && typeof issue.path[1] === "number"
+        ? `${issue.path[1] + 1}번 줄 `
+        : "";
+    const field: Record<string, string> = {
+      name: "품목명(1~120자)",
+      detail: `규격·내용(${DETAIL_MAX}자 이하)`,
+      qty: "수량(0보다 큰 수)",
+      unit: "단위(10자 이하)",
+      unitPrice: "단가(원 단위 정수)",
+    };
+    const key = String(issue?.path[issue.path.length - 1] ?? "");
     return NextResponse.json(
-      { error: "입력값을 확인해 주세요. 품목명과 수량은 비울 수 없습니다." },
+      { error: `입력값을 확인해 주세요: ${where}${field[key] ?? key}` },
       { status: 400 }
     );
   }
@@ -122,6 +138,9 @@ export async function PUT(
   const totals = computeTotals(input.lines, input.ship);
   if (totals.total < 0) {
     return NextResponse.json({ error: "합계가 0원보다 작을 수 없습니다" }, { status: 400 });
+  }
+  if (totals.total > MAX_TOTAL) {
+    return NextResponse.json({ error: "합계가 20억 원을 넘으면 저장할 수 없습니다" }, { status: 400 });
   }
   const now = new Date().toISOString();
   const revision: QuoteRevision = {

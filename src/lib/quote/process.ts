@@ -83,7 +83,8 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
   if (!url || !anonKey) {
     return { ok: false, status: 500, error: "Supabase not configured" };
   }
-  const db = createClient(url, anonKey, {
+  // 저장은 서버 전용 키가 있으면 그것으로 한다(공개 키의 쓰기 권한을 나중에 막아도 접수가 끊기지 않게). 없으면 기존처럼 공개 키.
+  const db = createClient(url, process.env.SUPABASE_SERVICE_ROLE_KEY || anonKey, {
     auth: { persistSession: false, autoRefreshToken: false },
     db: { schema: "paran_quote_site" },
   });
