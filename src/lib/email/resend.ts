@@ -6,6 +6,13 @@ export const FROM_EMAIL =
 export const ADMIN_EMAIL =
   process.env.RESEND_ADMIN_EMAIL || "info@parancompany.co.kr";
 
+/** 시험 접수(행사명이 [TEST]로 시작)는 단체 메일함 대신 이 주소로만 알린다 */
+export const TEST_ADMIN_EMAIL = "kds@parancompany.co.kr";
+
+export function isTestSubmission(eventName: string): boolean {
+  return eventName.trim().toUpperCase().startsWith("[TEST]");
+}
+
 /** 외부 API 응답 대기 상한 — 서버리스 함수 제한(10초) 안에서 끝나도록 */
 const TIMEOUT_MS = 4000;
 

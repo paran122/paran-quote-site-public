@@ -1,4 +1,11 @@
-import { sendEmail, RESEND_API_KEY, FROM_EMAIL, ADMIN_EMAIL } from "./resend";
+import {
+  sendEmail,
+  RESEND_API_KEY,
+  FROM_EMAIL,
+  ADMIN_EMAIL,
+  TEST_ADMIN_EMAIL,
+  isTestSubmission,
+} from "./resend";
 import { adminNotifySubject, adminNotifyHtml } from "./templates/admin-notify";
 import {
   customerConfirmSubject,
@@ -26,7 +33,7 @@ export async function sendQuoteNotification(
   const [admin, customer] = await Promise.allSettled([
     sendEmail({
       from: FROM_EMAIL,
-      to: ADMIN_EMAIL,
+      to: isTestSubmission(data.eventName) ? TEST_ADMIN_EMAIL : ADMIN_EMAIL,
       subject: adminNotifySubject(data),
       html: adminNotifyHtml(data),
     }),
