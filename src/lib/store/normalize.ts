@@ -40,6 +40,8 @@ export interface StoreRequest {
   customer: { name: string; organization: string; email: string; phone: string };
   event: { title: string; date: string; location: string; budget: string; brief: string };
   items: StoreItem[];
+  /** 상담 접수가 시작된 서비스(없으면 null) */
+  topic: { id: string; name: string } | null;
 }
 
 /** 검증 실패 시 사용자에게 보여 줄 메시지와 상태 코드 */

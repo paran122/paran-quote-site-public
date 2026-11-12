@@ -12,7 +12,7 @@ function sides(t){const s=String(t||'').replace(/(\d),(?=\d{3})/g,'$1'),r=/(\d+(
 // 기본은 첫 숫자(가로), long=true면 긴 변(현수막은 '0.9m × 5m'처럼 순서가 바뀌어도 긴 쪽이 길이)
 function meters(t,long=false){const a=sides(t);return a.length?(long?Math.max(...a):a[0]):0}
 function isMake(p,v){const s=p.prices?.[v.scope];return Boolean(s&&s.addon)}
-function estimate(p,v,count=1,qty=1,raw=false){const q=p.quote,pr=p.prices;if(!q||!pr)return null;if(v.scope!==undefined&&!pr[v.scope])return null;const all=Object.values(pr),d=all[0],s=pr[v.scope]||d,make=Boolean(s.addon);
+function estimateBase(p,v,count=1,qty=1,raw=false){const q=p.quote,pr=p.prices;if(!q||!pr)return null;if(v.scope!==undefined&&!pr[v.scope])return null;const all=Object.values(pr),d=all[0],s=pr[v.scope]||d,make=Boolean(s.addon);
  // raw=true: 공급가(견적서용, 부가세 별도) / false: 사이트 표시가(부가세 포함)
  const own=x=>raw?x.own_s:x.own,ex_=x=>(raw?x.own_extra_s:x.own_extra)||0,B=raw&&q.banner_s?q.banner_s:q.banner;let dU=own(d),mU=make?own(s):0,mX=make?ex_(s):0;
  if(B){const x=v.kind==='X배너';dU=x?B.x.design:B.h.design;if(make){const g=v.kind==='대형 현수막'&&B.big;if(x)mU=B.x.make+(v.stand==='실내 거치대'?B.x.stand:0);else if(g){/* 폭 3m 통천: 두 변이 모두 폭 이내면 짧은 변이 길이, 아니면 긴 변 */const a=sides(v.bigSize),hi=a.length?Math.max(...a):g.tiers[0][0],L=a.length>1&&hi<=g.width+1e-9?Math.min(...a):hi,t=g.tiers,k=t.find(y=>L<=y[0]+1e-9),z=t[t.length-1];mU=k?k[1]:z[1]+Math.ceil((L-z[0])*2-1e-9)*g.overHalf}else mU=Math.ceil((meters(v.size,true)||1)-1e-9)*B.h.perM;mU*=qty}}
@@ -25,6 +25,8 @@ function estimate(p,v,count=1,qty=1,raw=false){const q=p.quote,pr=p.prices;if(!q
  const ship=make&&q.parcel&&v.delivery!=='퀵 배송'?q.parcel:0;
  const iz=make&&q.install&&!(q.install.not||[]).includes(v.scope)?q.install.map[v[q.install.opt]]:null,inst=iz?(raw?iz.fee_s:iz.fee):0;mU+=inst;
  const n=q.count?count:1;return {total:(dU+mU)*n+ship,dU,mU,inst,n,make,part:s.part,ship,quick:make&&q.parcel&&!ship}}
+// 2026-11-12 화면 표시가도 견적서와 같은 식으로: 공급가 × 1.1 + 배송비. 예전엔 천 원 단위로 반올림한 표시가를 써서 품목 금액과 합계가 몇백 원 달랐음
+function estimate(p,v,count=1,qty=1,raw=false){const e=estimateBase(p,v,count,qty,true);if(!e||raw)return e;const sub=Math.round(e.dU+e.mU)*e.n;return {...e,dU:e.dU*1.1,mU:e.mU*1.1,inst:(e.inst||0)*1.1,total:sub+Math.trunc(sub*0.1)+e.ship}}
 /* 견적 합계(회사 견적서 규칙 v2.5 디자인 트랙): 공급가 합 → 부가세 TRUNC 10% → 배송비 실비(부가세 없음) → 합계(절사 없음, 2026-11-12) */
 function docTotals(items,find){const lines=items.map(x=>{const p=find(x.serviceId);const e=p&&estimate(p,x.options||{},x.design||1,x.qty||1,true);return {x,p,e}});const priced=lines.filter(l=>l.e);
  const sub=priced.reduce((a,l)=>a+Math.round(l.e.dU+l.e.mU)*l.e.n,0),vat=Math.trunc(sub*0.1),ship=priced.reduce((a,l)=>a+l.e.ship,0),total=sub+vat+ship;

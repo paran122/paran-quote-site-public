@@ -70,9 +70,11 @@ function buildMemo(
   brief: string,
   budget: string,
   items: StoreItem[],
-  totals: StoreTotals | undefined
+  totals: StoreTotals | undefined,
+  topic: string | undefined
 ): string {
   const parts: string[] = [];
+  if (topic) parts.push(`[상담 서비스] ${topic}`);
   if (brief) parts.push(`[요청사항]\n${brief}`);
   if (budget && budget !== "미정") parts.push(`[예산] ${budget}`);
   if (items.length > 0) {
@@ -159,7 +161,7 @@ export async function POST(request: Request) {
       event_date: store.event.date || undefined,
       event_venue: store.event.location || undefined,
       event_type: consult ? "문의" : "서비스 견적",
-      memo: buildMemo(store.event.brief, store.event.budget, items, totals),
+      memo: buildMemo(store.event.brief, store.event.budget, items, totals, store.topic?.name),
       cart_items: items.map(toCartItem),
       total_amount: totals?.total ?? 0,
       attachments: attachments.data,
@@ -174,6 +176,7 @@ export async function POST(request: Request) {
         id: typeof input.id === "string" ? input.id : "",
         number,
         mode: store.mode,
+        topic: store.topic,
         title: store.event.title,
         items: store.items,
         status: "received",
