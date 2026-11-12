@@ -2689,16 +2689,62 @@
     "id": "booth-operation",
     "name": "홍보부스 운영",
     "category": "공간·전시",
-    "description": "홍보 목적과 현장 여건에 맞춰 필요한 부스 운영 범위를 함께 정합니다.",
+    "description": "박람회·전시회 홍보부스의 관람객 안내와 체험·이벤트 진행을 맡습니다. 운영 인력 수와 일수를 고르면 금액이 바로 나옵니다.",
     "image": "/assets/service-thumbs/booth-operation.webp",
-    "options": [],
+    "options": [
+      {
+        "key": "scope",
+        "label": "의뢰 범위",
+        "values": [
+          "현장 운영",
+          "기획·디자인·제작 + 운영"
+        ],
+        "defaultValue": "현장 운영",
+        "allowCustom": false
+      },
+      {
+        "key": "people",
+        "label": "운영 인력",
+        "values": [
+          "2명",
+          "3명",
+          "4명",
+          "5명"
+        ],
+        "defaultValue": "2명",
+        "allowCustom": true
+      },
+      {
+        "key": "days",
+        "label": "운영 일수",
+        "values": [
+          "1일",
+          "2일",
+          "3일"
+        ],
+        "defaultValue": "1일",
+        "allowCustom": true
+      },
+      {
+        "key": "wall",
+        "label": "부스 벽면 길이",
+        "values": [
+          "7m",
+          "8m",
+          "9m",
+          "10m"
+        ],
+        "defaultValue": "7m",
+        "allowCustom": true
+      }
+    ],
     "includes": [
       "홍보 목적·행사 일정·현장 여건 확인",
-      "상담 후 확정한 범위의 현장 운영 지원"
+      "선택한 인원·일수의 현장 운영(매니저 포함, 1일 8시간)"
     ],
     "excludes": [
-      "운영 인원·시간·역할은 별도 협의",
-      "디자인·제작·설치 포함 여부는 별도 확인"
+      "기념품 구매·포장",
+      "패널 출력·설치"
     ],
     "materials": [
       "행사 목적·일정·장소",
@@ -2706,10 +2752,9 @@
     ],
     "unit": "건",
     "type": "service",
-    "consultOnly": true,
     "priceMode": "ref",
     "priceLabel": "55만 원~",
-    "lead": "운영 일정·인원·업무 범위 확인 후 안내",
+    "lead": "운영 일정과 역할 확인 후 안내",
     "digitalScope": null,
     "printOnlyOptions": [],
     "listed": true,
@@ -2731,17 +2776,36 @@
         "label": "132만 원~",
         "price": 1320000,
         "own": 770000,
-        "own_extra": null,
+        "own_extra": 110000,
         "own_s": 700000,
-        "own_extra_s": null,
+        "own_extra_s": 100000,
         "addon": true,
         "part": "기획·디자인·제작",
-        "basis": "부스 3m×2m(뒷벽 3m + 옆벽 2m×2 = 7m) 디자인 · 벽면 1m 추가 +11만 원 · 패널 출력·설치 별도",
+        "basis": "부스 3m×2m(뒷벽 3m + 옆벽 2m×2 = 7m) 디자인 · 패널 출력·설치 별도",
         "parts": "현장 운영 55만 원 + 기획·디자인·제작 77만 원",
-        "extra": "운영 인력 1명·1일 추가 +27.5만 원"
+        "extra": "운영 인력 1명·1일 추가 +27.5만 원 · 벽면 1m 추가 +11만 원"
       }
     },
     "vat": "부가세 포함",
+    "quote": {
+      "crew": {
+        "people": "people",
+        "days": "days",
+        "min": 2,
+        "maxPeople": 30,
+        "maxDays": 30,
+        "wall": {
+          "opt": "wall",
+          "base": 7
+        }
+      },
+      "hide": {
+        "wall": {
+          "scope": "현장 운영"
+        }
+      },
+      "ship": "기념품과 패널 출력·설치비는 금액에 들어 있지 않습니다. 필요하면 상담에서 따로 안내합니다."
+    },
     "priceDate": "2026-11-08 21:39",
     "icon": "<circle cx=\"32\" cy=\"34\" r=\"22\"/><path fill=\"#d1ff39\" d=\"M32 34 32 12a22 22 0 0 1 15.6 6.4ZM32 34l22 0a22 22 0 0 1-6.4 15.6ZM32 34v22a22 22 0 0 1-15.6-6.4ZM32 34H10a22 22 0 0 1 6.4-15.6Z\"/><circle cx=\"32\" cy=\"34\" r=\"3\" fill=\"#fff\"/><path d=\"M28 4h8l-4 7Z\"/>"
   }

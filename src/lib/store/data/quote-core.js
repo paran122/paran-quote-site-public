@@ -14,20 +14,24 @@ function sides(t,def=''){const s=String(t||'').normalize('NFKC').replace(/(\d),(
 // 기본은 첫 숫자(가로), long=true면 긴 변(현수막은 '0.9m × 5m'처럼 순서가 바뀌어도 긴 쪽이 길이)
 function meters(t,long=false){const a=sides(t);return a.length?(long?Math.max(...a):a[0]):0}
 function pagesOf(t){return Math.ceil(num(t)-1e-9)}
+// 금액 내역 한 줄: '디자인 55만 원 + 인쇄 5만 600원 + 택배 4,000원' / 홍보부스 운영은 '운영 2명 × 1일 55만 원 + …'
+function basisText(p,e){const q=p.quote,head=e.crew?`운영 ${e.crew.n}명 × ${e.crew.days}일 ${man(e.dU)}`:`디자인 ${man(e.dU)}`;return head+(e.make?` + ${q.install?'제작':e.part||'제작'} ${man(e.mU-(e.inst||0))}`:'')+(e.inst?` + ${q.install.label} ${man(e.inst)}`:'')+(e.ship?` + 택배 ${man(e.ship)}`:e.make&&q.parcel?' + 퀵 배송 실비':'')}
 // 인쇄 수량은 묶음 단위(포스터 10장, 리플렛 100부 등). 단위에 안 맞는 수는 위로 맞춤: 11장 → 20장
 function snapQty(q,n){const P=q&&q.print;if(!P||!(n>P.base))return P?Math.max(P.base,n):n;return P.base+Math.ceil((n-P.base)/P.step-1e-9)*P.step}
 // 직접 입력한 사양이 계산할 수 없는 값이면 안내 문구를 돌려줌('' = 문제 없음). 화면과 서버가 같이 씀. hid(key): 그 칸이 숨겨져 있는지
 const LIMIT_M=100,LIMIT_PAGES=2000;
 function specProblem(p,v,hid=()=>false){const q=p.prices&&p.quote;if(!q)return '';const opt=k=>p.options.find(o=>o.key===k),typed=k=>{const o=opt(k);return o&&!hid(k)&&!(o.values||[]).includes(String(v[k]||''))?o:null};
  if(q.maxSize){const o=typed(q.maxSize.opt);if(o){const a=sides(v[o.key],q.banner?'':'mm').map(x=>Math.round(x*1000)).sort((x,y)=>y-x);if(a.length>1&&(a[0]>q.maxSize.mm[0]||a[1]>q.maxSize.mm[1]))return q.maxSize.msg||`${o.label}는 ${q.maxSize.mm[0]} × ${q.maxSize.mm[1]}mm 이하로 입력해 주세요. 더 큰 크기는 상담으로 문의해 주세요.`}}
- for(const k of [q.len&&q.len.opt,q.banner&&'size',q.banner&&'bigSize'].filter(Boolean)){const o=typed(k);if(!o)continue;const a=sides(v[k]);if(!a.length||a.some(x=>!(x>0)))return `${o.label}를 숫자와 단위로 입력해 주세요. 예: 5m × 0.9m`;if(Math.max(...a)>LIMIT_M)return `${o.label}는 ${LIMIT_M}m까지 입력할 수 있습니다. 더 큰 크기는 상담으로 문의해 주세요.`}
+ for(const k of [q.len&&q.len.opt,q.banner&&'size',q.banner&&'bigSize',q.crew&&q.crew.wall.opt].filter(Boolean)){const o=typed(k);if(!o)continue;const a=sides(v[k]);if(!a.length||a.some(x=>!(x>0)))return `${o.label}를 숫자와 단위로 입력해 주세요. 예: ${q.crew?'9m':'5m × 0.9m'}`;if(Math.max(...a)>LIMIT_M)return `${o.label}는 ${LIMIT_M}m까지 입력할 수 있습니다. 더 큰 크기는 상담으로 문의해 주세요.`}
+ if(q.crew){const c=q.crew,po=typed(c.people),dO=typed(c.days);if(po){const n=num(v[po.key]);if(!(n>=c.min))return `${po.label}은 ${c.min}명부터 선택할 수 있습니다.`;if(n>c.maxPeople)return `${po.label}이 ${c.maxPeople}명을 넘으면 상담으로 문의해 주세요.`}if(dO){const n=num(v[dO.key]);if(!(n>=1))return `${dO.label}를 1 이상의 숫자로 입력해 주세요.`;if(n>c.maxDays)return `${dO.label}가 ${c.maxDays}일을 넘으면 상담으로 문의해 주세요.`}}
  if(q.pages){const o=typed(q.pages.opt);if(o){const n=num(v[o.key]);if(!(n>=1))return `${o.label}를 1 이상의 숫자로 입력해 주세요.`;if(n>LIMIT_PAGES)return `${o.label}는 ${LIMIT_PAGES.toLocaleString('ko-KR')}까지 입력할 수 있습니다. 더 많으면 상담으로 문의해 주세요.`}}
  return ''}
 function isMake(p,v){const s=p.prices?.[v.scope];return Boolean(s&&s.addon)}
 function estimateBase(p,v,count=1,qty=1,raw=false){const q=p.quote,pr=p.prices;if(!q||!pr)return null;if(v.scope!==undefined&&!pr[v.scope])return null;const all=Object.values(pr),d=all[0],s=pr[v.scope]||d,make=Boolean(s.addon);
  // raw=true: 공급가(견적서용, 부가세 별도) / false: 사이트 표시가(부가세 포함)
- const own=x=>raw?x.own_s:x.own,ex_=x=>(raw?x.own_extra_s:x.own_extra)||0,B=raw&&q.banner_s?q.banner_s:q.banner;let dU=own(d),mU=make?own(s):0,mX=make?ex_(s):0;
+ const own=x=>raw?x.own_s:x.own,ex_=x=>(raw?x.own_extra_s:x.own_extra)||0,B=raw&&q.banner_s?q.banner_s:q.banner;let dU=own(d),mU=make?own(s):0,mX=make?ex_(s):0,crew=null;
  if(B){const x=v.kind==='X배너';dU=x?B.x.design:B.h.design;if(make){const g=v.kind==='대형 현수막'&&B.big;if(x)mU=B.x.make+(v.stand==='실내 거치대'?B.x.stand:0);else if(g){/* 폭 3m 통천: 두 변이 모두 폭 이내면 짧은 변이 길이, 아니면 긴 변 */const a=sides(v.bigSize),hi=a.length?Math.max(...a):g.tiers[0][0],L=a.length>1&&hi<=g.width+1e-9?Math.min(...a):hi,t=g.tiers,k=t.find(y=>L<=y[0]+1e-9),z=t[t.length-1];mU=k?k[1]:z[1]+Math.ceil((L-z[0])*2-1e-9)*g.overHalf}else mU=Math.ceil((meters(v.size,true)||1)-1e-9)*B.h.perM;mU*=qty}}
+ else if(q.crew){/* 홍보부스 운영: 인원 × 일수 × 1명·1일 단가(첫 범위의 추가 단가). 부스 디자인은 벽면 기준 길이 초과분만 더함 */const c=q.crew;crew={n:Math.max(c.min||1,pagesOf(v[c.people])||c.min||1),days:Math.max(1,pagesOf(v[c.days])||1)};dU=ex_(d)*crew.n*crew.days;if(make){const ex=Math.max(0,Math.ceil(meters(v[c.wall.opt],true)-c.wall.base-1e-9));mU=own(s)+ex*ex_(s)}}
  else{if(q.len){const ex=Math.max(0,Math.ceil(meters(v[q.len.opt],true)-q.len.base-1e-9));dU+=ex*ex_(d);if(make)mU+=ex*ex_(s)}
   if(q.pages){const ex=Math.max(0,pagesOf(v[q.pages.opt])-q.pages.base);dU+=ex*ex_(d)}
   if(q.scale){const k=Object.keys(q.scale.map).find(k=>String(v[q.scale.opt]||'').startsWith(k));dU*=k?q.scale.map[k]:1}
@@ -36,11 +40,11 @@ function estimateBase(p,v,count=1,qty=1,raw=false){const q=p.quote,pr=p.prices;i
   if(make&&q.print){mU+=Math.max(0,Math.ceil((qty-q.print.base)/q.print.step))*mX}}
  const ship=make&&q.parcel&&v.delivery!=='퀵 배송'?q.parcel:0;
  const iz=make&&q.install&&!(q.install.not||[]).includes(v.scope)?q.install.map[v[q.install.opt]]:null,inst=iz?(raw?iz.fee_s:iz.fee):0;mU+=inst;
- const n=q.count?count:1;return {total:(dU+mU)*n+ship,dU,mU,inst,n,make,part:s.part,ship,quick:make&&q.parcel&&!ship}}
+ const n=q.count?count:1;return {total:(dU+mU)*n+ship,dU,mU,inst,n,make,part:s.part,ship,quick:make&&q.parcel&&!ship,crew}}
 // 2026-11-12 화면 표시가도 견적서와 같은 식으로: 공급가 × 1.1 + 배송비. 예전엔 천 원 단위로 반올림한 표시가를 써서 품목 금액과 합계가 몇백 원 달랐음
 function estimate(p,v,count=1,qty=1,raw=false){const e=estimateBase(p,v,count,qty,true);if(!e||raw)return e;const sub=Math.round(e.dU+e.mU)*e.n;return {...e,dU:e.dU*1.1,mU:e.mU*1.1,inst:(e.inst||0)*1.1,total:sub+Math.trunc(sub*0.1)+e.ship}}
 /* 견적 합계(회사 견적서 규칙 v2.5 디자인 트랙): 공급가 합 → 부가세 TRUNC 10% → 배송비 실비(부가세 없음) → 합계(절사 없음, 2026-11-12) */
 function docTotals(items,find){const lines=items.map(x=>{const p=find(x.serviceId);const e=p&&estimate(p,x.options||{},x.design||1,x.qty||1,true);return {x,p,e}});const priced=lines.filter(l=>l.e);
  const sub=priced.reduce((a,l)=>a+Math.round(l.e.dU+l.e.mU)*l.e.n,0),vat=Math.trunc(sub*0.1),ship=priced.reduce((a,l)=>a+l.e.ship,0),total=sub+vat+ship;
  return {lines,sub,vat,ship,total,unpriced:lines.length-priced.length}}
-return {man,num,sides,meters,isMake,estimate,docTotals,specProblem,snapQty,pagesOf}});
+return {man,num,sides,meters,isMake,estimate,docTotals,specProblem,snapQty,pagesOf,basisText}});
