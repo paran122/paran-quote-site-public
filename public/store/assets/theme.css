@@ -1591,3 +1591,5 @@ body.lm-open{overflow:hidden}
 .receipt .qv-link a{flex:1 1 240px;min-width:0;font-size:13px;word-break:break-all;color:#15141a;text-decoration:underline}
 @media(max-width:520px){.quote-view table.qv-lines{font-size:14px}.quote-view .qv-lines th:nth-child(2),.quote-view .qv-lines td:nth-child(2){width:52px}}
 @media print{.receipt .qv-link{display:none}}
+/* 2026-11-13 푸터 아래 줄 링크: 손가락으로 누르기 쉽게 높이 확보 */
+.fj-footer-legal a{display:inline-block;padding:11px 0}
