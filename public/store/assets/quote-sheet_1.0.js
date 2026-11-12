@@ -1,6 +1,6 @@
 /* 2026-11-08 온라인 견적서(산출내역서) PDF.
    양식: 「10 견적서_작성_시스템 v2.5」 §7 (A4 가로, 맑은 고딕, 메타 6행, 구분|항목|세부항목|수량|단위|단가|횟수|금액|비고, 색 5종, 인감 86×89px 견적업체 옆)
-   계산: 디자인 트랙 §6-2 — 공급가 소계 → 부가세 TRUNC 10% → 배송비 실비(§6-3, 부가세 없음) → 합계 만원 미만 절사.
+   계산: 디자인 트랙 §6-2 — 공급가 소계 → 부가세 TRUNC 10% → 배송비 실비(§6-3, 부가세 없음) → 합계(절사 없음, 2026-11-12).
    ui/app.js 가 넘겨주는 docTotals(calc)·byId(find)를 그대로 써서 장바구니·견적 요청 화면과 금액이 같다. */
 (()=>{
  'use strict';
@@ -37,7 +37,7 @@
    const sum=list.reduce((a,r)=>a+(r.price||0)*r.qty,0);body+=`<tr class="sub"><td colspan="7">${esc(g)} 소계</td><td style="text-align:right">${n0(sum)}</td><td></td></tr>`}
   if(ship)body+=`<tr><td class="g">배송 (실비)</td><td style="text-align:left">택배 배송</td><td style="text-align:left">인쇄물 택배</td><td style="text-align:right">${shipN}</td><td>건</td><td style="text-align:right">${n0(ship/shipN)}</td><td style="text-align:right">1</td><td style="text-align:right">${n0(ship)}</td><td style="text-align:left;font-size:9pt;color:${C.note}">실비 정산(부가세 제외)</td></tr>`;
   const sum=(l,v,cls,note='')=>`<tr class="${cls}"><td colspan="7">${l}</td><td style="text-align:right">${v}</td><td style="text-align:left;font-size:9pt">${note}</td></tr>`;
-  body+=sum('소계',n0(t.sub),'tot')+sum('부가세 (10%)',n0(t.vat),'plain')+(ship?sum('배송비 (실비)',n0(ship),'plain','부가세 산정 제외'):'')+sum('합계금액',n0(t.total),'grand',t.cut?'만원 미만 절사':'');
+  body+=sum('소계',n0(t.sub),'tot')+sum('부가세 (10%)',n0(t.vat),'plain')+(ship?sum('배송비 (실비)',n0(ship),'plain','부가세 산정 제외'):'')+sum('합계금액',n0(t.total),'grand');
   const meta=(l,v)=>`<tr><th>${l}</th><td colspan="8" style="text-align:left">${v}</td></tr>`;
   return `<div class="qs"><h1>산 출 내 역 서</h1><table class="meta">
    ${meta('수신',esc(o.to||'귀하'))}${meta('견적명',esc(o.title||'행사 디자인 서비스'))}

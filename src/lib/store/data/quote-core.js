@@ -25,8 +25,8 @@ function estimate(p,v,count=1,qty=1,raw=false){const q=p.quote,pr=p.prices;if(!q
  const ship=make&&q.parcel&&v.delivery!=='퀵 배송'?q.parcel:0;
  const iz=make&&q.install&&!(q.install.not||[]).includes(v.scope)?q.install.map[v[q.install.opt]]:null,inst=iz?(raw?iz.fee_s:iz.fee):0;mU+=inst;
  const n=q.count?count:1;return {total:(dU+mU)*n+ship,dU,mU,inst,n,make,part:s.part,ship,quick:make&&q.parcel&&!ship}}
-/* 견적 합계(회사 견적서 규칙 v2.5 디자인 트랙): 공급가 합 → 부가세 TRUNC 10% → 배송비 실비(부가세 없음) → 합계 만원 미만 절사 */
+/* 견적 합계(회사 견적서 규칙 v2.5 디자인 트랙): 공급가 합 → 부가세 TRUNC 10% → 배송비 실비(부가세 없음) → 합계(절사 없음, 2026-11-12) */
 function docTotals(items,find){const lines=items.map(x=>{const p=find(x.serviceId);const e=p&&estimate(p,x.options||{},x.design||1,x.qty||1,true);return {x,p,e}});const priced=lines.filter(l=>l.e);
- const sub=priced.reduce((a,l)=>a+Math.round(l.e.dU+l.e.mU)*l.e.n,0),vat=Math.trunc(sub*0.1),ship=priced.reduce((a,l)=>a+l.e.ship,0),total=Math.floor((sub+vat+ship)/10000)*10000;
- return {lines,sub,vat,ship,total,cut:sub+vat+ship-total,unpriced:lines.length-priced.length}}
+ const sub=priced.reduce((a,l)=>a+Math.round(l.e.dU+l.e.mU)*l.e.n,0),vat=Math.trunc(sub*0.1),ship=priced.reduce((a,l)=>a+l.e.ship,0),total=sub+vat+ship;
+ return {lines,sub,vat,ship,total,unpriced:lines.length-priced.length}}
 return {man,num,sides,meters,isMake,estimate,docTotals}});

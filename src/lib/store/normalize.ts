@@ -15,7 +15,6 @@ export interface StoreTotals {
   vat: number;
   ship: number;
   total: number;
-  cut: number;
   unpriced: number;
   priceDate: string | null;
 }

@@ -84,10 +84,9 @@ function buildMemo(
     });
     if (totals) {
       const ship = totals.ship ? ` + 배송 ${won(totals.ship)}` : "";
-      const cut = totals.cut ? ` − 만 원 미만 절사 ${won(totals.cut)}` : "";
       const unpriced = totals.unpriced ? ` · 금액 미정 ${totals.unpriced}건 제외` : "";
       lines.push(
-        `합계 ${won(totals.total)} (공급가 ${won(totals.supply)} + 부가세 ${won(totals.vat)}${ship}${cut})${unpriced}`
+        `합계 ${won(totals.total)} (공급가 ${won(totals.supply)} + 부가세 ${won(totals.vat)}${ship})${unpriced}`
       );
     }
     parts.push(`[선택 구성 · 부가세 포함]\n${lines.join("\n")}`);
