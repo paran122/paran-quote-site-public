@@ -51,7 +51,7 @@ function toCartItem(item: StoreItem): QuoteCartItem {
   return {
     id: item.serviceId,
     name: item.counts ? `${item.name} (${item.counts})` : item.name,
-    // 줄 금액(부가세 포함). 기존 접수와 같이 만 원 단위로 저장한다(메일·알림톡·관리자 화면이 만 원 기준).
+    // 줄 금액(부가세 포함). 기존 접수와 같이 만 원 단위로 둔다(메일·관리자 화면의 줄 금액이 만 원 기준).
     // 금액이 정해지지 않는 구성은 0으로 두고 메모에 '상담 후 확정'으로 적는다
     price: (item.estimate?.price ?? 0) / WON_PER_MAN,
     qty: 1,
@@ -170,7 +170,9 @@ export async function POST(request: Request) {
       event_type: consult ? "문의" : "서비스 견적",
       memo: buildMemo(store.event.brief, store.event.budget, items, totals, store.topic?.name),
       cart_items: items.map(toCartItem),
-      total_amount: (totals?.total ?? 0) / WON_PER_MAN,
+      // 합계 칸은 정수라 원 단위로 저장한다. 메일·알림톡 문구용 값(만 원)은 따로 넘긴다.
+      total_amount: totals?.total ?? 0,
+      total_amount_man: (totals?.total ?? 0) / WON_PER_MAN,
       attachments: attachments.data,
       site_url: siteUrlFromRequest(request),
     });

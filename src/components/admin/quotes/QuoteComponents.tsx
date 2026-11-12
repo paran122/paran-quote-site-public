@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { parseReferralFromMemo } from "@/lib/referralSources";
 import { formatPriceWon } from "@/lib/pricing";
-import type { QuoteRevision, QuoteRow as StoredQuoteRow } from "@/lib/quote/view";
+import { totalWon, type QuoteRevision, type QuoteRow as StoredQuoteRow } from "@/lib/quote/view";
 import { QuoteLinkAndEdit, type QuoteSaved } from "./QuoteEditor";
 
 /* ── 타입 ── */
@@ -66,6 +66,11 @@ const STATUS_STYLE: Record<string, { bg: string; text: string; icon: typeof Cloc
 };
 
 /* ── 유틸 ── */
+/** 합계 표시. 저장 단위(만 원·원)가 접수 종류마다 달라 totalWon 으로 맞춘다. */
+function formatTotal(q: QuoteItem) {
+  return formatPriceWon(totalWon(q) / 10000);
+}
+
 export function isInquiry(q: QuoteItem) {
   return q.event_name === "문의" || q.event_type === "문의";
 }
@@ -324,7 +329,7 @@ export function QuoteDetail({
             ))}
             <div className="border-t border-slate-100 pt-1 mt-1 flex justify-between font-medium text-sm">
               <span>합계</span>
-              <span>{formatPriceWon(q.total_amount)}</span>
+              <span>{formatTotal(q)}</span>
             </div>
             {q.discount_amount && q.discount_amount > 0 && (
               <div className="flex justify-between text-sm text-red-500">
@@ -431,7 +436,7 @@ export function QuoteRow({
       {!inquiry && (
         <div className="text-right shrink-0">
           <p className="text-sm font-semibold text-slate-900">
-            {formatPriceWon(q.total_amount)}
+            {formatTotal(q)}
           </p>
         </div>
       )}

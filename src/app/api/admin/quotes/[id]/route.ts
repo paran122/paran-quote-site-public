@@ -139,7 +139,8 @@ export async function PUT(
     .from("quotes")
     .update({
       revisions: [...history, revision],
-      total_amount: manFromWon(totals.total),
+      // 합계 칸은 정수. 고친 견적은 원 단위로 저장한다(읽을 때 totalWon 이 구분)
+      total_amount: totals.total,
       updated_at: now,
     })
     .eq("id", id);
@@ -191,7 +192,7 @@ export async function PUT(
   return NextResponse.json({
     success: true,
     revision,
-    total_amount: manFromWon(totals.total),
+    total_amount: totals.total,
     notified,
   });
 }

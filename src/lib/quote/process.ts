@@ -47,6 +47,8 @@ export interface QuoteInput {
   discount_amount?: number;
   user_id?: string;
   attachments?: QuoteAttachment[];
+  /** 메일·알림톡에 적을 합계(만 원). total_amount 를 원 단위로 저장하는 접수만 넘긴다. */
+  total_amount_man?: number;
   /** 접수가 들어온 사이트 주소. 있으면 견적 바로보기 링크를 만들어 메일·알림톡에 넣는다. */
   site_url?: string;
 }
@@ -139,6 +141,7 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
   }
 
   const linkUrl = quoteLinkUrl(data.site_url, data.quote_number);
+  const totalMan = data.total_amount_man ?? data.total_amount;
 
   const emailData: QuoteEmailData = {
     quoteNumber: data.quote_number,
@@ -154,7 +157,7 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
     attendees: data.attendees,
     memo: data.memo,
     cartItems: data.cart_items,
-    totalAmount: data.total_amount,
+    totalAmount: totalMan,
     discountAmount: data.discount_amount,
     type: isInquiry ? "inquiry" : "quote",
     attachments: emailAttachments,
@@ -179,7 +182,7 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
       organization: data.organization,
       eventType: data.event_type || data.event_name,
       eventDate: data.event_date || NO_DATE_LABEL,
-      totalAmount: data.total_amount,
+      totalAmount: totalMan,
       linkUrl,
     });
   };

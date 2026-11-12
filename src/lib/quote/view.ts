@@ -132,6 +132,21 @@ function originalLines(row: QuoteRow): { lines: QuoteLine[]; ship: number; vatIn
   return { lines, ship, vatIncluded: !hasSupply };
 }
 
+/**
+ * 합계(원).
+ * DB의 total_amount 는 정수 칸이다. 기존 사이트 접수는 만 원 단위로 들어 있고,
+ * 서비스 사이트 접수(줄마다 _supply 가 있음)와 담당자가 고친 견적은 원 단위로 저장한다.
+ */
+export function totalWon(row: Pick<QuoteRow, "cart_items" | "total_amount" | "revisions">): number {
+  const revisions = readRevisions(row);
+  if (revisions.length) return revisions[revisions.length - 1].total;
+  const items = Array.isArray(row.cart_items) ? (row.cart_items as StoredCartItem[]) : [];
+  const storeQuote =
+    items.length > 0 && items.every((item) => item.options != null && "_supply" in item.options);
+  const stored = number(row.total_amount);
+  return storeQuote ? Math.round(stored) : Math.round(stored * WON_PER_MAN);
+}
+
 export function latestRevision(row: QuoteRow): QuoteRevision | null {
   const revisions = readRevisions(row);
   return revisions.length ? revisions[revisions.length - 1] : null;
@@ -196,7 +211,7 @@ export function toPublicQuote(row: QuoteRow): PublicQuote {
   }
 
   const original = originalLines(row);
-  const total = Math.round(number(row.total_amount) * WON_PER_MAN);
+  const total = totalWon(row);
   let totals: QuoteTotals | null = null;
   if (original.lines.length > 0 && total > 0) {
     totals = original.vatIncluded
