@@ -1,6 +1,18 @@
-import type { QuoteEmailData, CartItemForEmail } from "./types";
+import type { QuoteEmailData } from "./types";
 import { parseReferralFromMemo } from "../../referralSources";
+import {
+  mailButton,
+  mailHeading,
+  mailLines,
+  mailNote,
+  mailShell,
+  mailText,
+  mailTotals,
+} from "./layout";
 
+// 접수 직후 고객에게 보내는 확인 메일(견적 요청 / 문의).
+
+/** 금액 표기. 값은 만 원 단위 */
 function formatKRW(amount: number): string {
   // 천 원 미만 단위가 있으면(서비스 사이트 접수 금액) 원 단위로 정확히 적는다
   const exactWon = Math.round(amount * 10000);
@@ -14,18 +26,10 @@ function formatKRW(amount: number): string {
   return `${amount.toLocaleString("ko-KR")}만원`;
 }
 
-function buildItemSummary(items: CartItemForEmail[]): string {
-  return items
-    .map((item) => {
-      const qty = item.qty ?? item.quantity ?? 1;
-      return `<tr>
-        <td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#334155">${item.name}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#64748b;text-align:center">${qty}${item.unit ? item.unit : "개"}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#334155;text-align:right">${formatKRW(item.price * qty)}</td>
-      </tr>`;
-    })
-    .join("");
-}
+const CONTACT_NOTE = [
+  "영업일 기준 1일 안에 담당자가 연락드립니다.",
+  "급한 건은 02-6342-2800으로 전화 주시면 더 빨리 도와드릴 수 있습니다.",
+];
 
 export function customerConfirmSubject(data: QuoteEmailData): string {
   if (data.type === "inquiry") {
@@ -36,113 +40,49 @@ export function customerConfirmSubject(data: QuoteEmailData): string {
 
 export function customerConfirmHtml(data: QuoteEmailData): string {
   if (data.type === "inquiry") {
-    return `
-<!DOCTYPE html>
-<html lang="ko">
-<head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;padding:32px 0">
-    <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1)">
-        <tr><td style="background:#1d4ed8;padding:28px 32px;text-align:center">
-          <h1 style="margin:0;color:#fff;font-size:22px;font-weight:700">문의가 접수되었습니다</h1>
-        </td></tr>
-        <tr><td style="padding:32px">
-          <p style="margin:0 0 20px;font-size:15px;color:#334155;line-height:1.7">
-            ${data.contactName}님, 안녕하세요.<br/>
-            파란컴퍼니에 문의해 주셔서 감사합니다.
-          </p>
-          ${(() => {
-            const { body } = parseReferralFromMemo(data.memo);
-            return body ? `
-          <div style="padding:16px;background:#f8fafc;border-radius:8px;border-left:3px solid #1d4ed8;margin-bottom:20px">
-            <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;font-weight:600">문의 내용</div>
-            <div style="font-size:14px;color:#334155;line-height:1.6;white-space:pre-wrap">${body}</div>
-          </div>` : "";
-          })()}
-          ${data.linkUrl ? `
-          <div style="text-align:center;margin:0 0 24px">
-            <a href="${data.linkUrl}" style="display:inline-block;padding:14px 28px;background:#1d4ed8;color:#fff;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px">접수 내용 보기</a>
-            <p style="margin:10px 0 0;font-size:12px;color:#94a3b8;line-height:1.6">견적이 준비되면 같은 주소에서 확인하실 수 있습니다.</p>
-          </div>` : ""}
-          <p style="margin:0;font-size:14px;color:#64748b;line-height:1.7">
-            확인 후 빠른 시일 내에 회신 드리겠습니다.<br/>
-            급한 건은 전화(02-6342-2800)로 연락 주시면 더 빠르게 도움드릴 수 있습니다.
-          </p>
-        </td></tr>
-        <tr><td style="padding:20px 32px;background:#f8fafc;border-top:1px solid #e2e8f0;text-align:center">
-          <p style="margin:0 0 4px;font-size:13px;color:#64748b;font-weight:600">파란컴퍼니</p>
-          <p style="margin:0;font-size:12px;color:#94a3b8">02-6342-2800 / info@parancompany.co.kr</p>
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
+    const { body } = parseReferralFromMemo(data.memo);
+    return mailShell(data.quoteNumber, [
+      mailHeading("문의를 접수했습니다.", [
+        `${data.contactName}님, 파란컴퍼니에 문의해 주셔서 감사합니다.`,
+      ]),
+      mailNote("남기신 내용", body || ""),
+      data.linkUrl
+        ? mailButton(
+            data.linkUrl,
+            "접수 내용 보기",
+            "견적이 준비되면 같은 주소에서 확인하실 수 있습니다."
+          )
+        : "",
+      mailText(CONTACT_NOTE),
+    ]);
   }
 
-  // 견적 접수 확인
-  return `
-<!DOCTYPE html>
-<html lang="ko">
-<head><meta charset="utf-8"/></head>
-<body style="margin:0;padding:0;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;padding:32px 0">
-    <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1)">
-        <tr><td style="background:#1d4ed8;padding:28px 32px;text-align:center">
-          <h1 style="margin:0;color:#fff;font-size:22px;font-weight:700">견적 요청이 접수되었습니다</h1>
-        </td></tr>
-        <tr><td style="padding:32px">
-          <p style="margin:0 0 24px;font-size:15px;color:#334155;line-height:1.7">
-            ${data.contactName}님, 안녕하세요.<br/>
-            파란컴퍼니에 견적을 요청해 주셔서 감사합니다.
-          </p>
+  const lines = data.cartItems.map((item) => {
+    const qty = item.qty ?? item.quantity ?? 1;
+    const amount = item.price * qty;
+    return {
+      name: item.name,
+      qty: `${qty}${item.unit ? item.unit : "개"}`,
+      amount: amount > 0 ? formatKRW(amount) : "상담 후 확정",
+    };
+  });
 
-          <div style="padding:16px 20px;background:#eff6ff;border-radius:8px;margin-bottom:24px">
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="font-size:13px;color:#64748b">견적 번호</td>
-                <td style="font-size:15px;color:#1d4ed8;font-weight:700;text-align:right">${data.quoteNumber}</td>
-              </tr>
-            </table>
-          </div>
-
-          ${data.cartItems.length > 0 ? `
-          <h3 style="margin:0 0 12px;font-size:14px;color:#1e293b;font-weight:700">요청 항목</h3>
-          <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:16px">
-            <tr style="background:#f8fafc">
-              <th style="padding:8px 12px;font-size:12px;color:#64748b;text-align:left;font-weight:600">항목</th>
-              <th style="padding:8px 12px;font-size:12px;color:#64748b;text-align:center;font-weight:600">수량</th>
-              <th style="padding:8px 12px;font-size:12px;color:#64748b;text-align:right;font-weight:600">금액</th>
-            </tr>
-            ${buildItemSummary(data.cartItems)}
-          </table>
-          <div style="text-align:right;margin-bottom:24px">
-            <span style="font-size:13px;color:#64748b">총 금액: </span>
-            <span style="font-size:18px;color:#1d4ed8;font-weight:800">${formatKRW(data.totalAmount)}</span>
-          </div>` : ""}
-
-          ${data.linkUrl ? `
-          <div style="text-align:center;margin:0 0 24px">
-            <a href="${data.linkUrl}" style="display:inline-block;padding:14px 28px;background:#1d4ed8;color:#fff;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px">견적 바로보기</a>
-            <p style="margin:10px 0 0;font-size:12px;color:#94a3b8;line-height:1.6">이 주소에서 견적을 언제든 다시 볼 수 있습니다.<br/>상담 중 견적이 바뀌면 같은 주소에 반영됩니다.</p>
-          </div>` : ""}
-
-          <div style="padding:20px;background:#f8fafc;border-radius:8px;text-align:center">
-            <p style="margin:0 0 8px;font-size:15px;color:#1e293b;font-weight:600">1영업일 이내 담당자가 연락드리겠습니다</p>
-            <p style="margin:0;font-size:13px;color:#64748b">
-              급한 건은 전화(02-6342-2800)로 연락 주시면<br/>더 빠르게 도움드릴 수 있습니다.
-            </p>
-          </div>
-        </td></tr>
-        <tr><td style="padding:20px 32px;background:#f8fafc;border-top:1px solid #e2e8f0;text-align:center">
-          <p style="margin:0 0 4px;font-size:13px;color:#64748b;font-weight:600">파란컴퍼니</p>
-          <p style="margin:0;font-size:12px;color:#94a3b8">02-6342-2800 / info@parancompany.co.kr</p>
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
+  return mailShell(data.quoteNumber, [
+    mailHeading("견적 요청을 접수했습니다.", [
+      `${data.contactName}님, 요청하신 내용입니다.`,
+      data.eventName,
+    ]),
+    mailLines(lines, "금액"),
+    lines.length > 0 && data.totalAmount > 0
+      ? mailTotals([], formatKRW(data.totalAmount))
+      : "",
+    data.linkUrl
+      ? mailButton(
+          data.linkUrl,
+          "견적 바로보기",
+          "같은 주소에서 언제든 다시 볼 수 있습니다. 상담 중 견적이 바뀌면 그 주소에 반영됩니다."
+        )
+      : "",
+    mailText(CONTACT_NOTE),
+  ]);
 }
