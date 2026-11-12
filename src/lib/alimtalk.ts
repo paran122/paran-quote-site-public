@@ -48,10 +48,8 @@ interface SendAlimtalkParams {
  * 꺼져 있거나 새 템플릿 발송이 실패하면 기존 템플릿으로 보낸다.
  */
 const LINK_TEMPLATES_ON = process.env.NCP_ALIMTALK_LINK_TEMPLATES === "on";
-const LINK_BUTTON_NAME = "견적 바로보기";
-
-function linkButton(url: string): AlimtalkButton[] {
-  return [{ type: "WL", name: LINK_BUTTON_NAME, linkMobile: url, linkPc: url }];
+function linkButton(url: string, name = "견적 바로보기"): AlimtalkButton[] {
+  return [{ type: "WL", name, linkMobile: url, linkPc: url }];
 }
 
 /** 알림톡 단건 발송 */
@@ -140,45 +138,54 @@ function buildContent(templateCode: string, vars: AlimtalkVariable): string {
 감사합니다.`;
   }
 
+  // 아래 세 템플릿은 2026-11-13 카카오에 등록한 문구와 글자·줄바꿈까지 같아야 발송된다
   if (templateCode === "ParanQuoteReceived2") {
-    return `안녕하세요, ${vars.고객명}님.
-파란컴퍼니입니다.
+    return `안녕하세요, ${vars.고객명}님. 파란컴퍼니입니다.
+홈페이지에서 요청하신 견적을 잘 받았습니다.
 
-요청하신 견적이 정상적으로 접수되었습니다.
+▪ 행사·작업명: ${vars.행사명}
+▪ 요청 내용: ${vars.요청내용}
+▪ 견적 금액: ${vars.견적금액}
+▪ 접수번호: ${vars.접수번호}
 
-■ 접수 정보
-ㅇ 접수번호 : ${vars.접수번호}
-ㅇ 기관/회사 : ${vars.기관명}
-ㅇ 견적 금액 : ${vars.견적금액}
+아래 버튼에서 견적을 다시 볼 수 있습니다.
+견적이 바뀌면 같은 버튼에서 바로 보입니다.
 
-아래 버튼에서 견적 내용을 언제든 다시 확인하실 수 있습니다.
-상담 중 견적이 바뀌면 같은 주소에 반영됩니다.
+영업일 기준 하루 안에 연락드리겠습니다.
 
-담당자가 확인 후 1영업일 이내에 연락드리겠습니다.
-
-ㅇ 전화 문의 : 02-6342-2800
-               (평일 09:00~18:00)
-
-감사합니다.`;
+문의 02-6342-2800 (평일 09:00~18:00)
+파란컴퍼니 드림`;
   }
 
   if (templateCode === "ParanQuoteUpdated") {
-    return `안녕하세요, ${vars.고객명}님.
-파란컴퍼니입니다.
+    return `안녕하세요, ${vars.고객명}님. 파란컴퍼니입니다.
+상담한 내용대로 견적을 고쳤습니다.
 
-상담 내용을 반영해 견적을 수정했습니다.
+▪ 행사·작업명: ${vars.행사명}
+▪ 고친 견적 금액: ${vars.견적금액}
+▪ 수정 횟수: ${vars.수정횟수}번째
+▪ 접수번호: ${vars.접수번호}
 
-■ 견적 정보
-ㅇ 접수번호 : ${vars.접수번호}
-ㅇ 견적 차수 : ${vars.차수}차
-ㅇ 견적 금액 : ${vars.견적금액}
+아래 버튼에서 고친 견적을 볼 수 있습니다.
 
-아래 버튼에서 수정된 견적을 확인해 주세요.
+문의 02-6342-2800 (평일 09:00~18:00)
+파란컴퍼니 드림`;
+  }
 
-ㅇ 전화 문의 : 02-6342-2800
-               (평일 09:00~18:00)
+  if (templateCode === "ParanInquiryReceived2") {
+    return `안녕하세요, ${vars.고객명}님. 파란컴퍼니입니다.
+홈페이지에 남기신 상담 요청을 잘 받았습니다.
 
-감사합니다.`;
+▪ 행사·작업명: ${vars.행사명}
+▪ 접수번호: ${vars.접수번호}
+
+아래 버튼에서 남기신 내용을 볼 수 있습니다.
+견적이 준비되면 같은 버튼에서 보입니다.
+
+영업일 기준 하루 안에 연락드리겠습니다.
+
+문의 02-6342-2800 (평일 09:00~18:00)
+파란컴퍼니 드림`;
   }
 
   if (templateCode === "ParanInquiryReceived") {
@@ -212,6 +219,10 @@ export async function sendQuoteAlimtalk(params: {
   totalAmount: number;
   /** 견적 바로보기 주소. 새 템플릿이 켜져 있을 때만 쓴다. */
   linkUrl?: string | null;
+  /** 고객이 적은 행사·작업명 (새 템플릿용) */
+  eventName?: string;
+  /** 요청한 구성 요약, 예: "포스터 외 2건" (새 템플릿용) */
+  requestSummary?: string;
 }) {
   const { formatPriceWon } = await import("@/lib/pricing");
 
@@ -221,9 +232,10 @@ export async function sendQuoteAlimtalk(params: {
       to: params.phone,
       variables: {
         고객명: params.contactName,
-        접수번호: params.quoteNumber,
-        기관명: params.organization,
+        행사명: params.eventName || "-",
+        요청내용: params.requestSummary || "-",
         견적금액: formatPriceWon(params.totalAmount),
+        접수번호: params.quoteNumber,
       },
       buttons: linkButton(params.linkUrl),
     });
@@ -251,7 +263,26 @@ export async function sendInquiryAlimtalk(params: {
   phone: string;
   contactName: string;
   quoteNumber: string;
+  /** 접수 내용 보기 주소. 새 템플릿이 켜져 있을 때만 쓴다. */
+  linkUrl?: string | null;
+  /** 고객이 적은 행사·작업명 (새 템플릿용) */
+  eventName?: string;
 }) {
+  if (LINK_TEMPLATES_ON && params.linkUrl) {
+    const sent = await sendAlimtalk({
+      templateCode: "ParanInquiryReceived2",
+      to: params.phone,
+      variables: {
+        고객명: params.contactName,
+        행사명: params.eventName || "-",
+        접수번호: params.quoteNumber,
+      },
+      buttons: linkButton(params.linkUrl, "접수 내용 보기"),
+    });
+    if (sent.success) return sent;
+    console.warn("[alimtalk] link template failed, falling back:", sent.error);
+  }
+
   return sendAlimtalk({
     templateCode: "ParanInquiryReceived",
     to: params.phone,
@@ -272,6 +303,7 @@ export async function sendQuoteUpdatedAlimtalk(params: {
   /** 만 원 단위 */
   totalAmount: number;
   linkUrl: string;
+  eventName: string;
 }): Promise<{ success: boolean; error?: string }> {
   if (!LINK_TEMPLATES_ON) {
     return { success: false, error: "link templates are off" };
@@ -282,9 +314,10 @@ export async function sendQuoteUpdatedAlimtalk(params: {
     to: params.phone,
     variables: {
       고객명: params.contactName,
-      접수번호: params.quoteNumber,
-      차수: String(params.rev),
+      행사명: params.eventName || "-",
       견적금액: formatPriceWon(params.totalAmount),
+      수정횟수: String(params.rev),
+      접수번호: params.quoteNumber,
     },
     buttons: linkButton(params.linkUrl),
   });

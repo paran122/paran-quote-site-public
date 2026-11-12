@@ -63,6 +63,13 @@ export type QuoteResult =
     }
   | { ok: false; status: number; error: string };
 
+/** 알림톡에 적는 요청 요약: 첫 품목 이름(괄호 속 수량 설명 제외) + "외 N건" */
+function summarizeItems(items: QuoteCartItem[]): string {
+  if (items.length === 0) return "-";
+  const first = items[0].name.replace(/\s*\([^)]*\)\s*$/, "").trim() || items[0].name;
+  return items.length > 1 ? `${first} 외 ${items.length - 1}건` : first;
+}
+
 /**
  * 접수 한 건을 저장하고 메일·알림톡을 보낸다.
  * `/api/quote`(기존 견적·문의 양식)와 `/api/store/quote`(서비스 장바구니)가 같이 쓴다.
@@ -172,6 +179,8 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
         phone: data.phone,
         contactName: data.contact_name,
         quoteNumber: data.quote_number,
+        linkUrl,
+        eventName: data.event_name,
       });
     }
     const { sendQuoteAlimtalk } = await import("@/lib/alimtalk");
@@ -184,6 +193,8 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
       eventDate: data.event_date || NO_DATE_LABEL,
       totalAmount: totalMan,
       linkUrl,
+      eventName: data.event_name,
+      requestSummary: summarizeItems(data.cart_items),
     });
   };
 

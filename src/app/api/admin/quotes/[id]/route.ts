@@ -183,6 +183,7 @@ export async function PUT(
         rev: revision.rev,
         totalAmount: manFromWon(totals.total),
         linkUrl: link,
+        eventName: row.event_name,
       }),
     ]);
     notified.email = mail.status === "fulfilled" && mail.value.success;
