@@ -3,6 +3,7 @@ import {
   type QuoteEmailData,
 } from "@/lib/email/send-notification";
 import { quoteLinkUrl } from "@/lib/quote/link";
+import { DAILY_NUMBER_PATTERN, dailyNumberPrefix } from "@/lib/quoteNumber";
 
 /** 행사일 미입력 시 메일·알림톡에 표시할 값 */
 const NO_DATE_LABEL = "-";
@@ -58,6 +59,8 @@ export type QuoteResult =
       ok: true;
       email: { admin: boolean; customer: boolean };
       alimtalk: { success: boolean };
+      /** 실제로 저장된 접수번호(서버가 발급한 번호) */
+      number: string;
       /** 견적 바로보기 주소(만들 수 없으면 null) */
       link: string | null;
     }
@@ -88,8 +91,27 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
     auth: { persistSession: false, autoRefreshToken: false },
     db: { schema: "paran_quote_site" },
   });
-  const { error: dbError } = await db.from("quotes").insert({
-    quote_number: data.quote_number,
+  // 접수번호는 서버가 '날짜-그날 순번'(261113-03)으로 발급한다. 화면이 보낸 번호는 발급에 실패했을 때만 쓴다.
+  const canAssign = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+  const nextNumber = async (): Promise<string | null> => {
+    const day = dailyNumberPrefix(new Date());
+    const { data: rows, error } = await db
+      .from("quotes")
+      .select("quote_number")
+      .like("quote_number", `${day}-%`)
+      .limit(5000);
+    if (error) return null;
+    let max = 0;
+    for (const row of (rows ?? []) as Array<{ quote_number: string }>) {
+      const m = DAILY_NUMBER_PATTERN.exec(row.quote_number);
+      if (m) max = Math.max(max, Number(m[1]));
+    }
+    return `${day}-${String(max + 1).padStart(2, "0")}`;
+  };
+  let quoteNumber = (canAssign ? await nextNumber() : null) ?? data.quote_number;
+
+  const { data: inserted, error: dbError } = await db.from("quotes").insert({
+    quote_number: quoteNumber,
     contact_name: data.contact_name,
     organization: data.organization,
     phone: data.phone,
@@ -106,11 +128,30 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
     discount_amount: data.discount_amount,
     user_id: data.user_id,
     attachments: data.attachments || [],
-  });
+  }).select("id");
 
   if (dbError) {
     console.error("[quote] DB insert failed:", dbError);
     return { ok: false, status: 500, error: "견적 저장에 실패했습니다" };
+  }
+
+  // 같은 순간에 두 건이 들어와 번호가 겹쳤으면, 먼저 저장된 건이 번호를 갖고 나중 건은 다음 번호로 바꾼다
+  const rowId = (inserted as Array<{ id: string }> | null)?.[0]?.id;
+  for (let attempt = 0; canAssign && rowId && attempt < 5; attempt++) {
+    const { data: same } = await db
+      .from("quotes")
+      .select("id")
+      .eq("quote_number", quoteNumber)
+      .order("created_at", { ascending: true })
+      .order("id", { ascending: true })
+      .limit(2);
+    const rows = (same ?? []) as Array<{ id: string }>;
+    if (rows.length < 2 || rows[0].id === rowId) break;
+    const next = await nextNumber();
+    if (!next) break;
+    const { error: renameError } = await db.from("quotes").update({ quote_number: next }).eq("id", rowId);
+    if (renameError) break;
+    quoteNumber = next;
   }
 
   // 이메일 발송 (DB 저장 성공 후, 이메일 실패해도 성공 반환)
@@ -148,11 +189,11 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
     }
   }
 
-  const linkUrl = quoteLinkUrl(data.site_url, data.quote_number);
+  const linkUrl = quoteLinkUrl(data.site_url, quoteNumber);
   const totalMan = data.total_amount_man ?? data.total_amount;
 
   const emailData: QuoteEmailData = {
-    quoteNumber: data.quote_number,
+    quoteNumber,
     contactName: data.contact_name,
     organization: data.organization,
     phone: data.phone,
@@ -179,7 +220,7 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
       return sendInquiryAlimtalk({
         phone: data.phone,
         contactName: data.contact_name,
-        quoteNumber: data.quote_number,
+        quoteNumber,
         linkUrl,
         eventName: data.event_name,
       });
@@ -188,7 +229,7 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
     return sendQuoteAlimtalk({
       phone: data.phone,
       contactName: data.contact_name,
-      quoteNumber: data.quote_number,
+      quoteNumber,
       organization: data.organization,
       eventType: data.event_type || data.event_name,
       eventDate: data.event_date || NO_DATE_LABEL,
@@ -215,6 +256,7 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
 
   return {
     ok: true,
+    number: quoteNumber,
     link: linkUrl,
     email:
       emailSettled.status === "fulfilled"

@@ -15,6 +15,7 @@ export default function AdminQuotesPage() {
   const [error, setError] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>("전체");
+  const [query, setQuery] = useState("");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -68,7 +69,18 @@ export default function AdminQuotesPage() {
     );
   }
 
-  const filtered = filter === "전체" ? quotes : quotes.filter((q) => q.status === filter);
+  // 접수번호·기관·담당자·행사명·전화로 찾기(띄어쓰기·대소문자·하이픈 무시)
+  const norm = (value: string | null | undefined) =>
+    (value ?? "").toLowerCase().replace(/[\s-]/g, "");
+  const needle = norm(query);
+  const byStatus = filter === "전체" ? quotes : quotes.filter((q) => q.status === filter);
+  const filtered = needle
+    ? byStatus.filter((q) =>
+        [q.quote_number, q.organization, q.contact_name, q.event_name, q.phone].some((v) =>
+          norm(v).includes(needle)
+        )
+      )
+    : byStatus;
 
   const statusCounts = quotes.reduce<Record<string, number>>((acc, q) => {
     const key = q.status || "접수대기";
@@ -83,6 +95,23 @@ export default function AdminQuotesPage() {
           {loading ? "불러오는 중..." : error ? "조회 실패" : `총 ${quotes.length}건`}
         </p>
       </div>
+
+      {/* 검색 */}
+      {!loading && !error && quotes.length > 0 && (
+        <div className="mb-3">
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="접수번호, 기관, 담당자, 행사명, 전화로 찾기 (예: 261113-03)"
+            aria-label="견적 요청 검색"
+            className="w-full max-w-md text-sm px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary"
+          />
+          {needle && (
+            <span className="ml-2 text-xs text-slate-500">{filtered.length}건</span>
+          )}
+        </div>
+      )}
 
       {/* 필터 탭 */}
       {!loading && !error && quotes.length > 0 && (
@@ -121,7 +150,11 @@ export default function AdminQuotesPage() {
       ) : filtered.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-sm text-slate-400">
-            {quotes.length === 0 ? "아직 견적 요청이 없습니다" : "해당 상태의 견적이 없습니다"}
+            {quotes.length === 0
+              ? "아직 견적 요청이 없습니다"
+              : needle
+                ? "찾는 견적이 없습니다"
+                : "해당 상태의 견적이 없습니다"}
           </p>
         </div>
       ) : (

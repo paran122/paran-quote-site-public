@@ -4,7 +4,8 @@ import { createHmac, timingSafeEqual } from "crypto";
 // 주소는 `/q/<접수번호>.<서명>` 이고, 서명은 서버만 아는 값으로 만든다.
 // DB에 따로 저장하지 않으므로 접수번호만 알아서는 주소를 만들 수 없다.
 
-const NUMBER_PATTERN = /^[A-Z]{2}-\d{8}-\d{3,8}$/;
+// 예전 번호(QT-20261112-231324, IQ-20260714-213)와 새 번호(261113-03) 둘 다
+const NUMBER_PATTERN = /^(?:[A-Z]{2}-\d{8}-\d{3,8}|\d{6}-\d{2,4})$/;
 const TOKEN_LENGTH = 32;
 
 function secret(): string {

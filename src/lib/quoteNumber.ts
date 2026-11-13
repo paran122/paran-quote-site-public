@@ -31,6 +31,14 @@ function build(prefix: string, now: Date): string {
   return `${prefix}-${date}-${time}${tail}`;
 }
 
+/** 새 접수번호의 앞부분: 한국 시간 기준 연월일 6자리 (예: 261113) */
+export function dailyNumberPrefix(now: Date = new Date()): string {
+  return kstParts(now).date.slice(2);
+}
+
+/** 새 접수번호 모양: 날짜 6자리-그날 순번 (예: 261113-03). 견적·문의가 순번을 같이 쓴다. */
+export const DAILY_NUMBER_PATTERN = /^\d{6}-(\d{2,4})$/;
+
 /** 문의 접수번호 (예: IQ-20261014-14305207) */
 export function createInquiryNumber(now: Date = new Date()): string {
   return build(PREFIX_INQUIRY, now);

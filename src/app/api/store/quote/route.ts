@@ -185,7 +185,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       request: {
         id: typeof input.id === "string" ? input.id : "",
-        number,
+        number: result.number,
         mode: store.mode,
         topic: store.topic,
         title: store.event.title,
