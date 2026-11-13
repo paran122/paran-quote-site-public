@@ -237,13 +237,40 @@ export function QuoteDetail({
   updatingId,
   onStatusChange,
   onQuoteSaved,
+  onDeleted,
 }: {
   quote: QuoteItem;
   updatingId: string | null;
   onStatusChange: (id: string, status: string) => void;
   onQuoteSaved: (id: string, saved: QuoteSaved) => void;
+  onDeleted: (id: string) => void;
 }) {
   const inquiry = isInquiry(q);
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleDelete() {
+    if (deleting) return;
+    const label = `${q.quote_number} · ${inquiry ? q.contact_name : `${q.organization} - ${q.event_name}`}`;
+    if (!window.confirm(`이 접수를 삭제할까요?
+
+${label}
+
+내부 메모와 견적 이력도 함께 지워지고, 고객의 견적 링크는 열리지 않게 됩니다. 되돌릴 수 없습니다.`)) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/quotes/${q.id}`, { method: "DELETE" });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert(data?.error || "삭제하지 못했습니다");
+        return;
+      }
+      onDeleted(q.id);
+    } catch {
+      alert("삭제하지 못했습니다. 연결을 확인해 주세요.");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   return (
     <div className="border-t border-slate-100 px-4 py-3 space-y-3 bg-slate-50/30">
@@ -399,6 +426,15 @@ export function QuoteDetail({
             );
           })}
         </div>
+        <button
+          type="button"
+          onClick={handleDelete}
+          disabled={deleting}
+          className="ml-auto inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-red-200 text-red-600 hover:bg-red-50 disabled:opacity-50 transition-colors"
+        >
+          <Trash2 className="w-3 h-3" />
+          {deleting ? "삭제하는 중..." : "접수 삭제"}
+        </button>
       </div>
     </div>
   );

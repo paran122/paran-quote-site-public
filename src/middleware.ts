@@ -133,6 +133,8 @@ export async function middleware(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
       const loginUrl = new URL("/admin/login", request.url);
+      // 로그인 뒤 원래 가려던 화면으로 돌아오게(메일의 바로가기 등)
+      loginUrl.searchParams.set("next", pathname + request.nextUrl.search);
       return NextResponse.redirect(loginUrl);
     }
   }

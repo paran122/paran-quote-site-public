@@ -101,6 +101,10 @@ function QuotesSection() {
                 quote={q}
                 updatingId={updatingId}
                 onStatusChange={handleStatusChange}
+                onDeleted={(id) => {
+                  setQuotes((prev) => prev.filter((item) => item.id !== id));
+                  setExpandedId(null);
+                }}
                 onQuoteSaved={(id, saved) =>
                   setQuotes((prev) =>
                     prev.map((item) =>

@@ -78,10 +78,12 @@ function buildMemo(
   budget: string,
   items: StoreItem[],
   totals: StoreTotals | undefined,
-  topic: string | undefined
+  topic: string | undefined,
+  due: string | undefined
 ): string {
   const parts: string[] = [];
   if (topic) parts.push(`[상담 서비스] ${topic}`);
+  if (due) parts.push(`[희망 납품일] ${due}`);
   if (brief) parts.push(`[요청사항]\n${brief}`);
   if (budget && budget !== "미정") parts.push(`[예산] ${budget}`);
   if (items.length > 0) {
@@ -169,7 +171,14 @@ export async function POST(request: Request) {
       event_date: store.event.date || undefined,
       event_venue: store.event.location || undefined,
       event_type: consult ? "문의" : "서비스 견적",
-      memo: buildMemo(store.event.brief, store.event.budget, items, totals, store.topic?.name),
+      memo: buildMemo(
+        store.event.brief,
+        store.event.budget,
+        items,
+        totals,
+        store.topic?.name,
+        store.event.due || undefined
+      ),
       cart_items: items.map(toCartItem),
       // 합계 칸은 정수라 원 단위로 저장한다. 메일·알림톡 문구용 값(만 원)은 따로 넘긴다.
       total_amount: totals?.total ?? 0,

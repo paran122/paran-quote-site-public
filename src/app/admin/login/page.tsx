@@ -1,12 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+/** 로그인 뒤 갈 곳. 관리자 주소만 허용한다. */
+function nextPath(): string {
+  const next = new URLSearchParams(window.location.search).get("next") || "";
+  return /^\/admin(\/|\?|$)/.test(next) && !next.startsWith("/admin/login") ? next : "/admin";
+}
 import { Lock } from "lucide-react";
 
 export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // 이미 로그인돼 있으면 바로 넘어간다. 메일 링크로 들어오면 보안 쿠키가 첫 요청에 실리지 않아 이 화면을 한 번 거친다.
+  useEffect(() => {
+    fetch("/api/admin/auth")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.authed) window.location.replace(nextPath());
+      })
+      .catch(() => {});
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -26,7 +42,7 @@ export default function AdminLoginPage() {
         return;
       }
 
-      window.location.href = "/admin";
+      window.location.href = nextPath();
     } catch {
       setError("네트워크 오류가 발생했습니다");
     } finally {

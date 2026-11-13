@@ -29,7 +29,17 @@ function escapeData(data: QuoteEmailData): QuoteEmailData {
       name: escapeHtml(file.name),
       url: escapeHtml(file.url),
     })),
+    linkUrl: data.linkUrl ? escapeHtml(data.linkUrl) : data.linkUrl,
+    adminUrl: data.adminUrl ? escapeHtml(data.adminUrl) : data.adminUrl,
   };
+}
+
+/** 메일 맨 위의 바로가기: 관리자 화면에서 열기 / 고객이 보는 견적 화면 */
+function shortcutBlock(data: QuoteEmailData): string {
+  if (!data.adminUrl && !data.linkUrl) return "";
+  const button = (href: string, label: string, primary: boolean) =>
+    `<a href="${href}" style="display:inline-block;margin:0 8px 8px 0;padding:10px 16px;font-size:13px;font-weight:700;text-decoration:none;border-radius:6px;${primary ? "background:#1d4ed8;color:#fff" : "background:#eff6ff;color:#1d4ed8"}">${label}</a>`;
+  return `<div style="margin:0 0 20px">${data.adminUrl ? button(data.adminUrl, "관리자에서 열기", true) : ""}${data.linkUrl ? button(data.linkUrl, "고객 견적 화면", false) : ""}</div>`;
 }
 
 function formatKRW(amount: number): string {
@@ -164,6 +174,7 @@ export function adminNotifyHtml(raw: QuoteEmailData): string {
           <p style="margin:8px 0 0;color:#bfdbfe;font-size:14px">${data.quoteNumber}</p>
         </td></tr>
         <tr><td style="padding:28px 32px">
+          ${shortcutBlock(data)}
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td style="padding:8px 0;font-size:13px;color:#94a3b8;width:100px">이름</td>
@@ -213,6 +224,7 @@ export function adminNotifyHtml(raw: QuoteEmailData): string {
           <p style="margin:8px 0 0;color:#bfdbfe;font-size:14px">${data.quoteNumber}</p>
         </td></tr>
         <tr><td style="padding:28px 32px">
+          ${shortcutBlock(data)}
           <h2 style="margin:0 0 16px;font-size:15px;color:#1d4ed8;font-weight:700">담당자 정보</h2>
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>

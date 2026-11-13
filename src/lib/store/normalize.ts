@@ -43,7 +43,15 @@ export interface StoreItem {
 export interface StoreRequest {
   mode: "services" | "consult";
   customer: { name: string; organization: string; email: string; phone: string };
-  event: { title: string; date: string; location: string; budget: string; brief: string };
+  event: {
+    title: string;
+    date: string;
+    /** 희망 납품일(YYYY-MM-DD, 없으면 빈 값) */
+    due: string;
+    location: string;
+    budget: string;
+    brief: string;
+  };
   items: StoreItem[];
   /** 상담 접수가 시작된 서비스(없으면 null) */
   topic: { id: string; name: string } | null;

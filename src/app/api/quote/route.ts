@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod/v4";
 import { saveAndNotifyQuote } from "@/lib/quote/process";
+import { siteUrlFromRequest } from "@/lib/quote/link";
 
 // IP 기반 Rate Limiting (메모리 기반, 서버리스 환경에서도 동작)
 const rateLimit = new Map<string, { count: number; resetAt: number }>();
@@ -80,7 +81,7 @@ export async function POST(request: Request) {
     }
 
     // 저장·메일·알림톡은 서비스 장바구니 접수(/api/store/quote)와 같은 함수를 쓴다
-    const result = await saveAndNotifyQuote(parsed.data);
+    const result = await saveAndNotifyQuote({ ...parsed.data, site_url: siteUrlFromRequest(request) });
     if (!result.ok) {
       return NextResponse.json({ error: result.error }, { status: result.status });
     }

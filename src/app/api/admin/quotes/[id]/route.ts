@@ -216,3 +216,36 @@ export async function PUT(
     notified,
   });
 }
+
+/* ── 견적 삭제: 시험 접수·잘못 들어온 접수를 지운다. 되돌릴 수 없다. ── */
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const authed = await isAuthenticated();
+  if (!authed) {
+    return NextResponse.json({ error: "인증이 필요합니다" }, { status: 401 });
+  }
+  if (!supabaseAdmin) {
+    return NextResponse.json({ error: "DB 미설정" }, { status: 500 });
+  }
+
+  const { id } = await params;
+  if (!/^[0-9a-f-]{36}$/i.test(id)) {
+    return NextResponse.json({ error: "잘못된 요청입니다" }, { status: 400 });
+  }
+
+  // 내부 메모를 먼저 지운다(견적에 딸린 기록)
+  const { error: notesError } = await supabaseAdmin.from("quote_notes").delete().eq("quote_id", id);
+  if (notesError) {
+    return NextResponse.json({ error: notesError.message }, { status: 500 });
+  }
+  const { data, error } = await supabaseAdmin.from("quotes").delete().eq("id", id).select("id");
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+  if (!data || data.length === 0) {
+    return NextResponse.json({ error: "이미 삭제됐거나 없는 견적입니다" }, { status: 404 });
+  }
+  return NextResponse.json({ success: true });
+}

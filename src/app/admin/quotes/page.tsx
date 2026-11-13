@@ -16,6 +16,12 @@ export default function AdminQuotesPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>("전체");
   const [query, setQuery] = useState("");
+
+  // 주소의 ?q= 값으로 바로 찾기(담당자 메일의 "관리자에서 열기")
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q) setQuery(q);
+  }, []);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -160,7 +166,8 @@ export default function AdminQuotesPage() {
       ) : (
         <div className="space-y-3">
           {filtered.map((q) => {
-            const isExpanded = expandedId === q.id;
+            // 검색 결과가 한 건이면 펼쳐서 보여 준다
+            const isExpanded = expandedId === q.id || (needle !== "" && filtered.length === 1 && expandedId === null);
             return (
               <div
                 key={q.id}
@@ -177,6 +184,10 @@ export default function AdminQuotesPage() {
                     updatingId={updatingId}
                     onStatusChange={handleStatusChange}
                     onQuoteSaved={handleQuoteSaved}
+                    onDeleted={(id) => {
+                      setQuotes((prev) => prev.filter((item) => item.id !== id));
+                      setExpandedId(null);
+                    }}
                   />
                 )}
               </div>

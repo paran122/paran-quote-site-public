@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabase as publicClient, supabaseAdmin } from "@/lib/supabase";
+
+// 메모 표는 로그인 계정만 다룰 수 있어 서버 전용 키로 읽고 쓴다(없으면 기존 공개 키)
+const supabase = supabaseAdmin ?? publicClient;
 import { isAuthenticated } from "@/lib/admin-auth";
 
 export async function GET(

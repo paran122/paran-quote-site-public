@@ -211,6 +211,9 @@ export async function saveAndNotifyQuote(data: QuoteInput): Promise<QuoteResult>
     type: isInquiry ? "inquiry" : "quote",
     attachments: emailAttachments,
     linkUrl,
+    adminUrl: data.site_url
+      ? `${data.site_url.replace(/\/+$/, "")}/admin/quotes?q=${encodeURIComponent(quoteNumber)}`
+      : null,
   };
 
   // 알림톡 발송 (실패해도 성공 반환 — 이메일과 동일 정책)

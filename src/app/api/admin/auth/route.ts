@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
+  isAuthenticated,
   verifyPassword,
   createSessionToken,
   setSessionCookie,
@@ -48,6 +49,11 @@ export async function POST(request: NextRequest) {
     const msg = err instanceof Error ? err.message : "로그인 실패";
     return NextResponse.json({ error: msg }, { status: 500 });
   }
+}
+
+/** 지금 로그인돼 있는지. 로그인 화면이 이미 로그인된 사람을 원래 가려던 주소로 보내는 데 쓴다. */
+export async function GET() {
+  return NextResponse.json({ authed: await isAuthenticated() });
 }
 
 export async function DELETE() {
