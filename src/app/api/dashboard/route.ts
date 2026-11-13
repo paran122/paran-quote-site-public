@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabase, supabaseAdmin } from "@/lib/supabase";
 import { isAuthenticated } from "@/lib/admin-auth";
 
 export async function GET() {
@@ -15,7 +15,8 @@ export async function GET() {
     supabase.from("blog_posts").select("id", { count: "exact", head: true }).eq("is_published", true),
     supabase.from("portfolios").select("id", { count: "exact", head: true }),
     supabase.from("portfolio_media").select("id", { count: "exact", head: true }),
-    supabase.from("quotes").select("id", { count: "exact", head: true }),
+    // 견적 표는 서버 전용 키로 센다(공개 키의 읽기 권한을 막아도 숫자가 나오게)
+    (supabaseAdmin ?? supabase).from("quotes").select("id", { count: "exact", head: true }),
   ]);
 
   return NextResponse.json({
