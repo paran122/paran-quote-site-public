@@ -13,6 +13,17 @@
   [headers.values]
     Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
 
+# 인트라넷 [진행 사례] 화면이 견적 구성 옵션 목록을 읽음(공개 정보, 2026-11-14). 다른 파일은 열지 않음
+[[headers]]
+  for = "/assets/catalog.json"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/store/assets/catalog.json"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+
 # >>> store-routes (export_bundle.py 가 씀, 직접 고치지 말 것)
 [[redirects]]
   from = "/"
@@ -57,6 +68,11 @@
 [[redirects]]
   from = "/privacy"
   to = "/store/privacy/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/work/p"
+  to = "/store/work/p/index.html"
   status = 200
   force = true
 [[redirects]]
