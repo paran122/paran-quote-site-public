@@ -5,6 +5,8 @@ const store = JSON.parse(
   readFileSync(new URL("./store-routes.json", import.meta.url), "utf8")
 );
 
+const STORAGE = "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
@@ -12,10 +14,14 @@ const nextConfig = {
       // 메인과 목록 주소는 새 서비스 사이트가 먼저 받는다. 그 밖의 주소(/blog, /work/[slug], /services/government 등)는 기존 그대로.
       beforeFiles: [
         { source: "/", destination: "/store/index.html" },
+        // 진행 사례 목록은 게시된 글 카드를 서버에서 넣는 work-list 가 받는다(store.ssr). 나머지는 정적 생성물
         ...store.pages.map((page) => ({
           source: `/${page}`,
-          destination: `/store/${page}/index.html`,
+          destination: (store.ssr || {})[page] || `/store/${page}/index.html`,
         })),
+        // 진행 사례 사진을 우리 도메인 주소로(이미지 검색). Netlify 에서는 netlify.toml 의 같은 규칙이 먼저 받는다
+        { source: "/media/:path*", destination: `${STORAGE}/object/public/site-cases/:path*` },
+        { source: "/media-r/:path*", destination: `${STORAGE}/render/image/public/site-cases/:path*` },
         {
           source: `/services/:id(${store.services.join("|")})`,
           destination: "/store/services/:id/index.html",

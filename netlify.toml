@@ -62,11 +62,6 @@
   status = 200
   force = true
 [[redirects]]
-  from = "/work"
-  to = "/store/work/index.html"
-  status = 200
-  force = true
-[[redirects]]
   from = "/about"
   to = "/store/about/index.html"
   status = 200
@@ -136,4 +131,14 @@
   to = "/store/assets/:splat"
   status = 200
   force = false
+[[redirects]]
+  from = "/media/*"
+  to = "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/site-cases/:splat"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/media-r/*"
+  to = "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/render/image/public/site-cases/:splat"
+  status = 200
+  force = true
 # <<< store-routes

@@ -1,7 +1,7 @@
 import { fetchCasePosts, postDescription, postUrl } from "@/lib/store/casePosts";
 
 // /llms.txt — AI 검색·답변 엔진용 사이트 안내(llmstxt.org). 아래 고정 안내 + 인트라넷에서 게시한 진행 사례 글 목록.
-// (예전 public/llms.txt 내용을 그대로 옮김. 고칠 때는 BASE 를 고친다)
+// (예전 public/llms.txt 내용을 그대로 옮김. 고칠 때는 BASE 를 고친다). 글 링크는 AI 도구용 마크다운 원문(.md)
 export const dynamic = "force-dynamic";
 
 const BASE = `# 파란컴퍼니 (PARAN Company)
@@ -59,7 +59,7 @@ const BASE = `# 파란컴퍼니 (PARAN Company)
 export async function GET() {
   const posts = (await fetchCasePosts(undefined, 600)) || [];
   const cases = posts.length
-    ? "\n\n## 진행 사례\n\n" + posts.map((p) => `- [${p.title}](${postUrl(p.slug)}): ${postDescription(p)}`).join("\n")
+    ? "\n\n## 진행 사례\n\n" + posts.map((p) => `- [${p.title}](${postUrl(p.slug)}.md): ${postDescription(p)}`).join("\n")
     : "";
   return new Response(BASE + cases + "\n", {
     headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=0, s-maxage=600, stale-while-revalidate=3600" },

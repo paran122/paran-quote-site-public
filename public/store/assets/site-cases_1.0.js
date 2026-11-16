@@ -10,12 +10,16 @@
    다른 스크립트(service-detail·booklet-cases)는 window.paranCasesReady 가 끝난 뒤 사례 줄을 묶는다. */
 (()=>{'use strict';
 const API='/api/store/cases?kind=',WAIT=1800;
+// 이 스크립트와 같은 판(?v=)의 CSS. 서비스 상세는 CSS 를 안 불러 두므로 필요할 때 붙임
+const VER=((document.currentScript&&document.currentScript.src)||'').match(/\?v=[\w]+/)?.[0]||'';
 const STORE='https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/site-cases/';
 const ROLE={design:'디자인',mock:'목업',site:'현장 사진'};
 const ARROW='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // DB 경로는 늘 'svc/…' 또는 'post/…'(SQL CHECK). '/'·http 로 시작하는 값은 시험 데이터용으로 그대로 씀
 const url=p=>/^(https?:)?\//.test(p)?p:STORE+String(p).split('/').map(encodeURIComponent).join('/');
+// 목록·카드용 작은 사진(Supabase 이미지 변환, 자르지 않음)
+const thumb=(p,w=640)=>/^(https?:)?\//.test(p)?p:STORE.replace('/object/','/render/image/')+String(p).split('/').map(encodeURIComponent).join('/')+`?width=${w}&resize=contain&quality=80`;
 const local=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 // 로컬 미리보기(정적 서버)에는 함수가 없음. ?cases=<폴더 주소> 로 시험 데이터(cases.json, posts.json, post-<주소이름>.json)를 줄 수 있음
 const test=new URLSearchParams(location.search).get('cases');
@@ -59,13 +63,15 @@ function booklet(rows){
 // ---- 진행 사례 목록 ----
 function workList(list){
  const grid=document.querySelector('[data-cases-live]');if(!grid||!list?.length)return;
+ // 운영 사이트는 서버(work-list)가 이미 카드를 넣어 보냄
+ if(grid.hasAttribute('data-cases-ssr'))return;
  const key=s=>String(s||'').replace(/\s+/g,''),seen=new Set(list.map(c=>key(c.title)));
  const cards=[...grid.children],shown=list.filter(c=>c.cover);
  cards.forEach(a=>{const h=a.querySelector('h2,h3');if(h&&seen.has(key(h.textContent)))a.hidden=true});
  const tpl=cards[0],meta=c=>[c.client,c.date].filter(Boolean).join(' · ');
  // 기본 틀(.case-card)이 아니면(테마 레이아웃) 첫 카드를 본으로 복사해 사진·글·주소만 바꿈
- if(!tpl||tpl.classList.contains('case-card')){grid.insertAdjacentHTML('afterbegin',shown.map(c=>`<article class="case-card is-live"><a href="${esc(postHref(c.slug))}"><img src="${esc(url(c.cover))}" alt="${esc(c.title)} 사례" width="700" height="460" loading="lazy" decoding="async"><span>${esc(meta(c))}</span><h3>${esc(c.title)} ${ARROW}</h3>${c.summary?`<p>${esc(c.summary)}</p>`:''}</a></article>`).join(''));return}
- shown.slice().reverse().forEach(c=>{const n=tpl.cloneNode(true);n.hidden=false;n.classList.add('is-live');const img=n.querySelector('img');if(img){img.src=url(c.cover);img.alt=c.title+' 사례';img.removeAttribute('srcset')}
+ if(!tpl||tpl.classList.contains('case-card')){grid.insertAdjacentHTML('afterbegin',shown.map(c=>`<article class="case-card is-live"><a href="${esc(postHref(c.slug))}"><img src="${esc(thumb(c.cover,800))}" alt="${esc(c.title)} 사례" width="700" height="460" loading="lazy" decoding="async"><span>${esc(meta(c))}</span><h3>${esc(c.title)} ${ARROW}</h3>${c.summary?`<p>${esc(c.summary)}</p>`:''}</a></article>`).join(''));return}
+ shown.slice().reverse().forEach(c=>{const n=tpl.cloneNode(true);n.hidden=false;n.classList.add('is-live');const img=n.querySelector('img');if(img){img.src=thumb(c.cover,800);img.alt=c.title+' 사례';img.removeAttribute('srcset')}
   const h=n.querySelector('h2,h3');if(h)h.textContent=c.title;const s=n.querySelector('span:not(.text)');if(s)s.textContent=meta(c);
   const p=n.querySelector('p');if(p){if(c.summary)p.textContent=c.summary;else p.remove()}
   n.querySelectorAll('a').forEach(a=>{a.href=postHref(c.slug);a.removeAttribute('target');a.removeAttribute('rel')});grid.prepend(n)});
@@ -121,6 +127,17 @@ async function postView(){
   <section class="wrap"><div class="callout"><h2>비슷한 행사를 준비하고 계신가요?</h2><p>필요한 구성만 골라 맡기거나, 행사 전체를 상담할 수 있습니다.</p><a class="button primary" href="/request/?mode=consult">내 행사 상담하기 ${ARROW}</a></div></section>`;
 }
 
+// ---- 서비스 상세: 이 서비스로 진행한 사례 글 (FAQ 앞) ----
+function servicePosts(list){
+ const rows=(list||[]).filter(c=>c.cover&&(c.services||[]).includes(pageId)).slice(0,6);if(!rows.length)return;
+ const before=document.querySelector('[data-detail-kind="faq"]');if(!before||document.querySelector('.svc-posts'))return;
+ if(!document.querySelector('link[href*="site-cases_1.0.css"]')){const l=document.createElement('link');l.rel='stylesheet';l.href='/assets/site-cases_1.0.css'+VER;document.head.append(l)}
+ const sec=document.createElement('section');sec.className='svc-posts';sec.setAttribute('aria-labelledby','svc-posts-h');
+ sec.innerHTML=`<div class="svc-posts-in"><h2 id="svc-posts-h">이 서비스로 진행한 사례</h2><ul>${rows.map(c=>`<li><a href="${esc(postHref(c.slug))}"><span class="svc-post-img"><img src="${esc(thumb(c.cover))}" alt="${esc(String(c.cover_alt||'').trim()||c.title+' 사례')}" loading="lazy" decoding="async"></span><strong>${esc(c.title)}</strong>${c.summary?`<small>${esc(c.summary)}</small>`:''}</a></li>`).join('')}</ul><a class="svc-posts-all" href="/work/">진행 사례 전체 보기 ${ARROW}</a></div>`;
+ before.before(sec);
+}
+
 if(onWork)get('posts').then(list=>ready(()=>workList(list)));
+if(pageId)get('posts').then(list=>ready(()=>servicePosts(list)));
 if(onPost)ready(postView);
 })();
