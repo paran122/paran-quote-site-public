@@ -95,9 +95,9 @@
 .post-overview th{width:9em;font-weight:600;color:var(--muted)}
 .post-timeline{margin:2.6em 0 0}
 .post-timeline ol{list-style:none;margin:0;padding:0}
-.post-timeline li{position:relative;display:grid;grid-template-columns:7.5em 1fr;gap:12px;padding:0 0 18px 18px;border-left:2px solid var(--line)}
+.post-timeline li{position:relative;display:grid;grid-template-columns:7.5em 1fr;gap:12px;padding:0 0 18px 20px}
 .post-timeline li:last-child{padding-bottom:0}
-.post-timeline li::before{content:"";position:absolute;left:-6px;top:.55em;width:10px;height:10px;border-radius:50%;background:var(--ink)}
+.post-timeline li::before{content:"";position:absolute;left:0;top:.55em;width:10px;height:10px;border-radius:50%;background:var(--ink)}
 .post-timeline time,.post-tl-d{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
 .post-timeline li p{margin:0;font-size:16px;line-height:1.7;word-break:keep-all}
 @media (max-width:760px){.post-overview th{width:6.5em}.post-timeline li{grid-template-columns:1fr;gap:2px}}
