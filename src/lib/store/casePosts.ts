@@ -9,6 +9,7 @@ import catalog from "./data/catalog.json";
 
 export const SITE_URL = "https://parancompany.co.kr";
 export const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const SUPABASE_RENDER = "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/render/image/public/site-cases/";
 
 export type PostFile = { path: string; w?: number | null; h?: number | null; alt?: string };
 export type PostBlock =
@@ -142,7 +143,10 @@ export function shareImage(post: CasePost) {
   if (!pick) return null;
   const w = Math.min(pick.w || 1200, 1200);
   const h = pick.w && pick.h ? Math.round((pick.h * w) / pick.w) : null;
-  return { url: abs(sizedPath(pick.path, w)), alt: pick.alt, w, h };
+  // Supabase 를 직접 가리킴: 우리 도메인(/media-r, Netlify 프록시)을 거치면 수집기에도 webp 가 가서 카카오톡 등에서 안 보일 수 있음.
+  // Supabase 는 webp 를 받는다고 밝힌 요청에만 webp, 나머지(공유 미리보기 수집기)엔 jpeg
+  const url = /^(https?:)?\//.test(pick.path) ? abs(pick.path) : `${SUPABASE_RENDER}${encPath(pick.path)}?width=${w}&resize=contain&quality=80`;
+  return { url, alt: pick.alt, w, h };
 }
 
 export function postFaqs(post: CasePost) {
