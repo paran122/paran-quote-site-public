@@ -26,6 +26,12 @@
 
 # >>> store-routes (export_bundle.py 가 씀, 직접 고치지 말 것)
 [[redirects]]
+  from = "/work/p"
+  to = "/work/p/:c"
+  status = 301
+  force = true
+  query = {c = ":c"}
+[[redirects]]
   from = "/"
   to = "/store/index.html"
   status = 200

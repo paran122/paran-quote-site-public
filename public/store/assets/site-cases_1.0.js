@@ -3,7 +3,9 @@
        서비스 상세 화면의 작업 사례 줄을 게시된 사례로 바꿈. 없거나 못 읽으면 빌드에 들어 있는 사례 그대로
    · 진행 사례(블로그)  ?kind=posts → 목록,  ?kind=post&slug= → 글 하나 (site_public_posts)
    (운영 사이트 Next.js 의 src/app/api/store/cases/route.ts. 초안 서버 함수 service-store.js 에도 ?action= 으로 같은 것이 있음)
-       /work/ 목록 맨 앞에 글 카드, /work/p/?c=주소이름 에 글 본문과 [이 구성으로 견적 담기]
+       /work/ 목록 맨 앞에 글 카드, /work/p/<주소이름> 에 글 본문과 [이 구성으로 견적 담기]
+       운영 사이트는 글 본문·머리 정보·구조화 데이터를 서버가 넣어 보냄(src/app/work/p/[slug]/route.ts, data-ssr).
+       그때 이 스크립트는 견적 구성 칸([data-case-quote])만 채움. 예전 주소 /work/p/?c= 는 새 주소로 옮김
    글자는 모두 escape/textContent 로만 넣는다(HTML 실행 없음).
    다른 스크립트(service-detail·booklet-cases)는 window.paranCasesReady 가 끝난 뒤 사례 줄을 묶는다. */
 (()=>{'use strict';
@@ -24,7 +26,9 @@ function get(kind,slug){
  return fetch(src,{signal:ctl?.signal,headers:{Accept:'application/json'}}).then(r=>r.ok?r.json():null).then(d=>Array.isArray(d)?d:Array.isArray(d?.items)?d.items:null).catch(()=>null).finally(()=>clearTimeout(t));
 }
 const path=location.pathname,pageId=(path.match(/^\/services\/([a-z0-9-]+)\/?$/)||[])[1];
-const onWork=/^\/work\/?$/.test(path),onPost=/^\/work\/p\/?$/.test(path);
+const onWork=/^\/work\/?$/.test(path),onPost=/^\/work\/p(\/[a-z0-9-]+)?\/?$/.test(path);
+// 글 주소: 운영은 /work/p/<주소이름>(서버가 그림), 로컬 정적 미리보기는 /work/p/?c=<주소이름>
+const postHref=slug=>local||test?'/work/p/?c='+encodeURIComponent(slug):'/work/p/'+encodeURIComponent(slug);
 const ready=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn):fn();
 
 // ---- 서비스 상세: 작업 사례 줄 바꾸기 (다른 스크립트가 묶기 전에) ----
@@ -60,48 +64,60 @@ function workList(list){
  cards.forEach(a=>{const h=a.querySelector('h2,h3');if(h&&seen.has(key(h.textContent)))a.hidden=true});
  const tpl=cards[0],meta=c=>[c.client,c.date].filter(Boolean).join(' · ');
  // 기본 틀(.case-card)이 아니면(테마 레이아웃) 첫 카드를 본으로 복사해 사진·글·주소만 바꿈
- if(!tpl||tpl.classList.contains('case-card')){grid.insertAdjacentHTML('afterbegin',shown.map(c=>`<article class="case-card is-live"><a href="/work/p/?c=${encodeURIComponent(c.slug)}"><img src="${esc(url(c.cover))}" alt="${esc(c.title)} 사례" width="700" height="460" loading="lazy" decoding="async"><span>${esc(meta(c))}</span><h3>${esc(c.title)} ${ARROW}</h3>${c.summary?`<p>${esc(c.summary)}</p>`:''}</a></article>`).join(''));return}
+ if(!tpl||tpl.classList.contains('case-card')){grid.insertAdjacentHTML('afterbegin',shown.map(c=>`<article class="case-card is-live"><a href="${esc(postHref(c.slug))}"><img src="${esc(url(c.cover))}" alt="${esc(c.title)} 사례" width="700" height="460" loading="lazy" decoding="async"><span>${esc(meta(c))}</span><h3>${esc(c.title)} ${ARROW}</h3>${c.summary?`<p>${esc(c.summary)}</p>`:''}</a></article>`).join(''));return}
  shown.slice().reverse().forEach(c=>{const n=tpl.cloneNode(true);n.hidden=false;n.classList.add('is-live');const img=n.querySelector('img');if(img){img.src=url(c.cover);img.alt=c.title+' 사례';img.removeAttribute('srcset')}
   const h=n.querySelector('h2,h3');if(h)h.textContent=c.title;const s=n.querySelector('span:not(.text)');if(s)s.textContent=meta(c);
   const p=n.querySelector('p');if(p){if(c.summary)p.textContent=c.summary;else p.remove()}
-  n.querySelectorAll('a').forEach(a=>{a.href='/work/p/?c='+encodeURIComponent(c.slug);a.removeAttribute('target');a.removeAttribute('rel')});grid.prepend(n)});
+  n.querySelectorAll('a').forEach(a=>{a.href=postHref(c.slug);a.removeAttribute('target');a.removeAttribute('rel')});grid.prepend(n)});
 }
 
 // ---- 진행 사례 글 ----
 function b64(json){return btoa(String.fromCharCode(...new TextEncoder().encode(json))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
 // 글 블록: 빈 줄은 문단, 줄바꿈은 <br>. 모두 escape 뒤에 만듦
 const paras=t=>String(t||'').trim().split(/\n{2,}/).map(x=>`<p>${esc(x).replace(/\n/g,'<br>')}</p>`).join('');
-async function postView(){
- const box=document.querySelector('[data-case-view]');if(!box)return;
- const slug=new URLSearchParams(location.search).get('c')||'';
- const list=slug?await get('post',slug):null,c=list?.[0];
- if(!c){box.innerHTML=`<section class="page-intro wrap"><h1>사례를 찾을 수 없습니다.</h1><p>${list?'주소가 바뀌었거나 게시가 내려간 사례입니다.':'사례 정보를 불러오지 못했습니다. 잠시 후 다시 열어 주세요.'}</p><a class="button primary" href="/work/">진행 사례 전체 보기 ${ARROW}</a></section>`;return}
- document.title=c.title+' | 파란컴퍼니';
- const md=document.querySelector('meta[name="description"]');if(md&&c.summary)md.setAttribute('content',c.summary);
+// 사진 대체 문구: 사진마다 쓴 alt → 묶음 설명 → 제목 + 순번 (서버 casePosts.ts altOf 와 같게)
+const altOf=(c,f,cap,n)=>String(f?.alt||'').trim()||String(cap||'').trim()||`${c.title} 사진 ${n}`;
+async function quoteHtml(c){
  const cat=await fetch('/assets/catalog.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]),P=id=>cat.find(p=>p.id===id),Q=window.ParanQuote;
  // 빠진 옵션은 장바구니와 같은 기본값으로 채워 계산(장바구니 금액과 같게)
  const lines=(c.quote||[]).filter(q=>P(q.serviceId)).map(q=>{const p=P(q.serviceId),options=Object.fromEntries(p.options.map(o=>[o.key,q.options?.[o.key]??o.defaultValue??o.values?.[0]??'']));let price=0;
   try{const e=Q?.estimate(p,options,q.design||1,q.qty||1);price=e?.total?Math.round(e.total):0}catch{}
   const spec=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음').slice(0,3).map(o=>options[o.key]).join(' · ');
   return {p,q:{...q,options},price,spec}});
+ if(!lines.length)return '';
  const total=lines.reduce((a,l)=>a+l.price,0),unpriced=lines.some(l=>!l.price);
+ return `<section class="wrap case-quote" aria-labelledby="case-quote-h"><div><h2 id="case-quote-h">이 행사 구성으로 견적 받기</h2><p>파란이 이 행사에서 맡은 ${lines.length}가지 구성을 그대로 장바구니에 담습니다. 담은 뒤 수량·사양을 바꿀 수 있습니다.</p>
+   <ul>${lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?` <span>${esc(l.q.label)}</span>`:''}<small>${esc(l.spec)}</small><em>${l.price?l.price.toLocaleString('ko-KR')+'원':'상담 후 확정'}</em></li>`).join('')}</ul>
+   <p class="case-total">${total?`참고 금액 <b>${total.toLocaleString('ko-KR')}원</b>${unpriced?' + 상담 항목':''} <small>부가세 포함 · 확정 금액은 담당자 검토 후 안내</small>`:'금액은 담당자 검토 후 안내합니다.'}</p></div>
+   <div class="case-actions"><a class="button primary" data-case-cart href="/cart/#add=${b64(JSON.stringify({from:c.slug,items:lines.map(l=>({serviceId:l.p.id,options:l.q.options,design:l.q.design||1,qty:l.q.qty||1}))}))}">이 구성으로 견적 담기 ${ARROW}</a><a class="button case-consult" href="/request/?mode=consult">이 행사처럼 상담하기</a></div></section>`;
+}
+async function postView(){
+ const box=document.querySelector('[data-case-view]');if(!box)return;
+ const qs=new URLSearchParams(location.search).get('c')||'',seg=(path.match(/^\/work\/p\/([a-z0-9-]+)\/?$/)||[])[1]||'';
+ // 예전 주소(/work/p/?c=)로 들어오면 새 주소로(운영만)
+ if(!seg&&qs&&!local&&!test){location.replace(postHref(qs));return}
+ const slug=seg||qs,ssr=box.dataset.ssr;
+ if(ssr==='missing')return;
+ const list=slug?await get('post',slug):null,c=list?.[0];
+ if(ssr&&ssr===slug){if(c){const q=box.querySelector('[data-case-quote]');if(q)q.innerHTML=await quoteHtml(c)}return}
+ if(!c){box.innerHTML=`<section class="page-intro wrap"><h1>사례를 찾을 수 없습니다.</h1><p>${list?'주소가 바뀌었거나 게시가 내려간 사례입니다.':'사례 정보를 불러오지 못했습니다. 잠시 후 다시 열어 주세요.'}</p><a class="button primary" href="/work/">진행 사례 전체 보기 ${ARROW}</a></section>`;return}
+ document.title=c.title+' | 파란컴퍼니';
+ const md=document.querySelector('meta[name="description"]');if(md&&c.summary)md.setAttribute('content',c.summary);
  const facts=[['발주',c.client],['행사일',c.date],['장소',c.venue]].filter(x=>x[1]);
- const F=c.files||{},img=id=>F[id];
+ const F=c.files||{},img=id=>F[id];let n=0;const faqs=[];
  const body=(c.body||[]).map(b=>{
   if(b.t==='h')return b.text?`<h2>${esc(b.text)}</h2>`:'';
   if(b.t==='p')return paras(b.text);
-  if(b.t==='img'){const fs=(b.files||[]).map(img).filter(Boolean);if(!fs.length)return '';
-   return `<figure class="post-photos n${Math.min(fs.length,3)}">${fs.map(f=>`<a href="${esc(url(f.path))}" target="_blank" rel="noopener"><img src="${esc(url(f.path))}" alt="${esc(b.caption||c.title)}" ${f.w?`width="${f.w}" height="${f.h}"`:''} loading="lazy" decoding="async"></a>`).join('')}${b.caption?`<figcaption>${esc(b.caption)}</figcaption>`:''}</figure>`}
+  if(b.t==='faq'){if(String(b.q||'').trim()&&String(b.a||'').trim())faqs.push(`<div class="post-faq-item"><h3>${esc(b.q)}</h3>${paras(b.a)}</div>`);return ''}
+  if(b.t==='img'){const fs=(b.files||[]).map(id=>({f:img(id),n:++n})).filter(x=>x.f);if(!fs.length)return '';
+   return `<figure class="post-photos n${Math.min(fs.length,3)}">${fs.map(({f,n})=>`<a href="${esc(url(f.path))}" target="_blank" rel="noopener"><img src="${esc(url(f.path))}" alt="${esc(altOf(c,f,b.caption,n))}" ${f.w?`width="${f.w}" height="${f.h}"`:''} loading="lazy" decoding="async"></a>`).join('')}${b.caption?`<figcaption>${esc(b.caption)}</figcaption>`:''}</figure>`}
   return '';}).join('');
  box.innerHTML=`<article class="post">
   <header class="wrap post-head"><a class="text-link back" href="/work/">← 진행 사례</a><h1>${esc(c.title)}</h1>${c.summary?`<p class="post-lead">${esc(c.summary)}</p>`:''}
    ${facts.length?`<dl class="case-facts">${facts.map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`:''}</header>
-  ${c.cover?`<div class="wrap case-hero"><img src="${esc(url(c.cover))}" alt="${esc(c.title)} 대표 사진" width="1400" height="900" decoding="async"></div>`:''}
-  <div class="wrap post-body">${body}</div></article>
-  ${lines.length?`<section class="wrap case-quote" aria-labelledby="case-quote-h"><div><h2 id="case-quote-h">이 행사 구성으로 견적 받기</h2><p>파란이 이 행사에서 맡은 ${lines.length}가지 구성을 그대로 장바구니에 담습니다. 담은 뒤 수량·사양을 바꿀 수 있습니다.</p>
-   <ul>${lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?` <span>${esc(l.q.label)}</span>`:''}<small>${esc(l.spec)}</small><em>${l.price?l.price.toLocaleString('ko-KR')+'원':'상담 후 확정'}</em></li>`).join('')}</ul>
-   <p class="case-total">${total?`참고 금액 <b>${total.toLocaleString('ko-KR')}원</b>${unpriced?' + 상담 항목':''} <small>부가세 포함 · 확정 금액은 담당자 검토 후 안내</small>`:'금액은 담당자 검토 후 안내합니다.'}</p></div>
-   <div class="case-actions"><a class="button primary" data-case-cart href="/cart/#add=${b64(JSON.stringify({from:c.slug,items:lines.map(l=>({serviceId:l.p.id,options:l.q.options,design:l.q.design||1,qty:l.q.qty||1}))}))}">이 구성으로 견적 담기 ${ARROW}</a><a class="button case-consult" href="/request/?mode=consult">이 행사처럼 상담하기</a></div></section>`:''}
+  ${c.cover?`<div class="wrap case-hero"><img src="${esc(url(c.cover))}" alt="${esc(String(c.cover_alt||'').trim()||c.title+' 대표 사진')}" width="1400" height="900" decoding="async"></div>`:''}
+  <div class="wrap post-body">${body}${faqs.length?`<section class="post-faq" aria-labelledby="post-faq-h"><h2 id="post-faq-h">자주 묻는 질문</h2>${faqs.join('')}</section>`:''}</div></article>
+  <div data-case-quote>${await quoteHtml(c)}</div>
   <section class="wrap"><div class="callout"><h2>비슷한 행사를 준비하고 계신가요?</h2><p>필요한 구성만 골라 맡기거나, 행사 전체를 상담할 수 있습니다.</p><a class="button primary" href="/request/?mode=consult">내 행사 상담하기 ${ARROW}</a></div></section>`;
 }
 

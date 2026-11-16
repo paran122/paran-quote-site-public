@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { supabase } from "@/lib/supabase";
 import storeRoutes from "../../store-routes.json";
+import { fetchCasePosts, postUrl } from "@/lib/store/casePosts";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl =
@@ -238,5 +239,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [...staticPages, ...storePages, ...blogPages, ...portfolioPages];
+  // 진행 사례 글(인트라넷에서 게시). 사진은 /sitemap-cases.xml 에 따로
+  const casePages: MetadataRoute.Sitemap = ((await fetchCasePosts(undefined, 600)) || []).map((p) => ({
+    url: postUrl(p.slug),
+    lastModified: new Date(p.updated || p.published || Date.now()),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...storePages, ...casePages, ...blogPages, ...portfolioPages];
 }
