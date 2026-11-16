@@ -191,7 +191,7 @@ export function renderPostHtml(post: CasePost) {
   const facts: [string, string][] = (
     [
       ["발주", esc(post.client)],
-      ["행사일", esc(post.date)],
+      ["일정", esc(post.date)],
       ["장소", esc(post.venue)],
       ["맡은 일", serviceLinks],
     ] as [string, string][]
@@ -243,8 +243,11 @@ export function renderPostHtml(post: CasePost) {
    ${facts.length ? `<dl class="case-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>` : ""}${dates}</header>
   ${cover ? `<div class="wrap case-hero">${imgTag(cover.path, cover.alt, cover.w, cover.h, "(min-width: 1000px) 720px, 100vw", true)}</div>` : ""}
   <div class="wrap post-body">${overview}${body}${timeline}${faqs.length ? `<section class="post-faq" aria-labelledby="post-faq-h"><h2 id="post-faq-h">자주 묻는 질문</h2>${faqs.join("")}</section>` : ""}</div></article>
-  <div data-case-quote></div>
-  <section class="wrap"><div class="callout"><h2>비슷한 행사를 준비하고 계신가요?</h2><p>필요한 구성만 골라 맡기거나, 행사 전체를 상담할 수 있습니다.</p><a class="button primary" href="/request/?mode=consult">내 행사 상담하기 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div></section>`;
+  <div data-case-quote></div>${
+    (post.quote || []).length
+      ? "" // 견적 담기 칸에 [이 행사처럼 상담하기]가 있으므로 상담 칸을 또 두지 않음
+      : `<section class="wrap"><div class="callout"><h2>비슷한 결과물이 필요하신가요?</h2><p>필요한 서비스만 골라 상담하세요. 사양과 수량을 정하면 견적을 안내합니다.</p><a class="button primary" href="/request/?mode=consult">상담 요청하기 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div></section>`
+  }`;
 }
 
 const ORG_ID = `${SITE_URL}/#organization`;
@@ -320,7 +323,7 @@ export function postMarkdown(post: CasePost) {
   if (post.summary) lines.push(`> ${oneLine(post.summary)}`, "");
   const facts = [
     ["발주", post.client],
-    ["행사일", post.date],
+    ["일정", post.date],
     ["장소", post.venue],
     ["맡은 일", postServices(post).join(", ")],
     ["게시", ymd(post.published)],

@@ -1,6 +1,6 @@
 /* 진행 사례 글(/work/p/)과 견적 담기 상자 (2026-11-14, 블로그형). 색·모서리는 theme.css 토큰 */
 .post .post-head{padding-top:56px;text-align:center}
-.post-head .back{display:inline-block;margin-bottom:18px;font-size:15px}
+.post-head .back{display:inline-flex;align-items:center;min-height:44px;margin-bottom:10px;font-size:15px}
 .post-head h1{margin-bottom:0;max-width:20em;margin:0 auto;font-size:clamp(30px,4.4vw,52px);line-height:1.2;letter-spacing:-.02em}
 .post-lead{max-width:40em;margin:18px auto 0;color:var(--muted);font-size:18px;line-height:1.7}
 .case-facts{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 40px;margin:28px 0 0;padding:0;text-align:center}
@@ -11,7 +11,7 @@
 .case-hero img{display:block;width:auto;max-width:100%;height:auto;max-height:80vh;margin:0 auto;object-fit:contain;border-radius:var(--radius)}
 
 .case-quote{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px 48px;align-items:end;margin-top:48px;padding:32px 36px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
-.case-quote h2{margin:0 0 8px;font-size:24px}
+.case-quote h2{margin:0 0 8px;font-size:26px;line-height:1.35}
 .case-quote>div>p{margin:0;color:var(--muted);line-height:1.6}
 .case-quote ul{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:0}
 .case-quote li{display:grid;grid-template-columns:auto 1fr auto;gap:2px 10px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line)}
@@ -101,3 +101,36 @@
 .post-timeline time,.post-tl-d{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
 .post-timeline li p{margin:0;font-size:16px;line-height:1.7;word-break:keep-all}
 @media (max-width:760px){.post-overview th{width:6.5em}.post-timeline li{grid-template-columns:1fr;gap:2px}}
+
+/* 2026-11-17 읽기 보정: 사이트 공통 설정(p 16px/24px, .paran-content p 회색)이 글 화면을 덮지 않게 */
+.paran-content .post .post-body>p,.paran-content .post-faq-item p,.paran-content .post-timeline li p{font-size:17px;line-height:1.8;color:var(--ink);letter-spacing:-.003em}
+.paran-content .post .post-body>h2,.paran-content .post-overview h2,.paran-content .post-timeline h2,.paran-content .post-faq>h2{font-size:26px;line-height:1.35;letter-spacing:-.01em;text-wrap:balance}
+.paran-content .post-faq-item h3{font-weight:700;font-size:18px;line-height:1.5;color:var(--ink);text-wrap:balance}
+.paran-content .post-overview th{color:var(--ink)}
+.paran-content .post-overview td{color:var(--ink)}
+.case-spec-note{margin:14px 0 0;font-size:14px;line-height:1.6;color:var(--muted)}
+.case-spec-note b{color:var(--ink);font-weight:600}
+@media (max-width:760px){
+ .paran-content .post .post-body>p,.paran-content .post-faq-item p,.paran-content .post-timeline li p{font-size:16px;line-height:1.75}
+ .paran-content .post .post-body>h2,.paran-content .post-overview h2,.paran-content .post-timeline h2,.paran-content .post-faq>h2,.case-quote h2{font-size:22px}
+ .paran-content .post-faq-item h3{font-size:17px}
+}
+
+/* 사진 크게 보기: 화면에 맞춰 전체 → [원본 크기]로 확대해 밀어 보기. 이전·다음·Esc·화살표 키 */
+.post-photos a{cursor:zoom-in}
+.post-lb{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:#0d0d10;color:#fff}
+.post-lb::backdrop{background:rgba(0,0,0,.85)}
+.post-lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+.post-lb-bar{display:flex;align-items:center;gap:8px;padding:10px 12px}
+.post-lb-n{margin-right:auto;font-size:14px;font-variant-numeric:tabular-nums;color:#c9c9d1}
+.post-lb button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;min-height:44px;padding:0 14px;border:1px solid rgba(255,255,255,.22);border-radius:999px;background:transparent;color:#fff;font:inherit;font-size:14px;cursor:pointer}
+.post-lb button:hover{background:rgba(255,255,255,.1)}
+.post-lb button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.post-lb button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.post-lb-stage{position:relative;overflow:auto;display:grid;place-items:center;overscroll-behavior:contain;touch-action:pan-x pan-y pinch-zoom}
+.post-lb-stage img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;cursor:zoom-in}
+.post-lb.is-zoom .post-lb-stage{place-items:start}
+.post-lb.is-zoom .post-lb-stage img{max-width:none;max-height:none;cursor:zoom-out}
+.post-lb-foot{display:flex;align-items:center;gap:10px;padding:10px 12px 14px}
+.post-lb-cap{flex:1;min-width:0;font-size:14px;line-height:1.5;color:#e4e4ea;text-align:center;word-break:keep-all}
+@media (prefers-reduced-motion:no-preference){.post-lb[open]{animation:post-lb-in .2s cubic-bezier(.2,.7,.3,1)}@keyframes post-lb-in{from{opacity:0}to{opacity:1}}}

@@ -96,6 +96,7 @@ async function quoteHtml(c){
  const total=lines.reduce((a,l)=>a+l.price,0),unpriced=lines.some(l=>!l.price);
  return `<section class="wrap case-quote" aria-labelledby="case-quote-h"><div><h2 id="case-quote-h">이 행사 구성으로 견적 받기</h2><p>파란이 이 행사에서 맡은 ${lines.length}가지 구성을 비슷한 사양으로 장바구니에 담습니다. 담은 뒤 수량·사양을 바꿀 수 있습니다.</p>
    <ul>${lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?` <span>${esc(l.q.label)}</span>`:''}<small>${esc(l.spec)}</small>${show?`<em>${l.price?l.price.toLocaleString('ko-KR')+'원':'상담 후 확정'}</em>`:''}</li>`).join('')}</ul>
+   ${(()=>{const sp=(c.overview||[]).find(r=>/^규격/.test(String(r?.k||'').trim()))?.v;return sp?`<p class="case-spec-note">홈페이지 선택지 중 이 사례와 가장 가까운 사양으로 담습니다. 실제 사례 규격은 <b>${esc(sp)}</b>입니다. 담은 뒤 바꾸거나 상담 때 말씀해 주세요.</p>`:''})()}
    <p class="case-total">${!show?'금액은 고르신 사양·수량으로 담당자가 검토해 안내합니다.':total?`참고 금액 <b>${total.toLocaleString('ko-KR')}원</b>${unpriced?' + 상담 항목':''} <small>부가세 포함 · 확정 금액은 담당자 검토 후 안내</small>`:'금액은 담당자 검토 후 안내합니다.'}</p></div>
    <div class="case-actions"><a class="button primary" data-case-cart href="/cart/#add=${b64(JSON.stringify({from:c.slug,items:lines.map(l=>({serviceId:l.p.id,options:l.q.options,design:l.q.design||1,qty:l.q.qty||1}))}))}">이 구성으로 견적 담기 ${ARROW}</a><a class="button case-consult" href="/request/?mode=consult">이 행사처럼 상담하기</a></div></section>`;
 }
@@ -111,7 +112,7 @@ async function postView(){
  if(!c){box.innerHTML=`<section class="page-intro wrap"><h1>사례를 찾을 수 없습니다.</h1><p>${list?'주소가 바뀌었거나 게시가 내려간 사례입니다.':'사례 정보를 불러오지 못했습니다. 잠시 후 다시 열어 주세요.'}</p><a class="button primary" href="/work/">진행 사례 전체 보기 ${ARROW}</a></section>`;return}
  document.title=c.title+' | 파란컴퍼니';
  const md=document.querySelector('meta[name="description"]');if(md&&c.summary)md.setAttribute('content',c.summary);
- const facts=[['발주',c.client],['행사일',c.date],['장소',c.venue]].filter(x=>x[1]);
+ const facts=[['발주',c.client],['일정',c.date],['장소',c.venue]].filter(x=>x[1]);
  const F=c.files||{},img=id=>F[id];let n=0;const faqs=[];
  const body=(c.body||[]).map(b=>{
   if(b.t==='h')return b.text?`<h2>${esc(b.text)}</h2>`:'';
@@ -126,7 +127,7 @@ async function postView(){
   ${c.cover?`<div class="wrap case-hero"><img src="${esc(url(c.cover))}" alt="${esc(String(c.cover_alt||'').trim()||c.title+' 대표 사진')}" width="1400" height="900" decoding="async"></div>`:''}
   <div class="wrap post-body">${body}${faqs.length?`<section class="post-faq" aria-labelledby="post-faq-h"><h2 id="post-faq-h">자주 묻는 질문</h2>${faqs.join('')}</section>`:''}</div></article>
   <div data-case-quote>${await quoteHtml(c)}</div>
-  <section class="wrap"><div class="callout"><h2>비슷한 행사를 준비하고 계신가요?</h2><p>필요한 구성만 골라 맡기거나, 행사 전체를 상담할 수 있습니다.</p><a class="button primary" href="/request/?mode=consult">내 행사 상담하기 ${ARROW}</a></div></section>`;
+  ${(c.quote||[]).length?'':`<section class="wrap"><div class="callout"><h2>비슷한 결과물이 필요하신가요?</h2><p>필요한 서비스만 골라 상담하세요. 사양과 수량을 정하면 견적을 안내합니다.</p><a class="button primary" href="/request/?mode=consult">상담 요청하기 ${ARROW}</a></div></section>`}`;
 }
 
 // ---- 서비스 상세: 이 서비스로 진행한 사례 글 (FAQ 앞) ----
@@ -141,5 +142,36 @@ function servicePosts(list){
 
 if(onWork)get('posts').then(list=>ready(()=>workList(list)));
 if(pageId)get('posts').then(list=>ready(()=>servicePosts(list)));
+// ---- 글 사진 크게 보기 ----
+const ICON={x:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',prev:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',next:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',zoom:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M11 8v6M8 11h6"/></svg>'};
+function lightbox(){
+ if(!window.HTMLDialogElement)return;
+ let d=null,list=[],i=0;
+ const items=()=>[...document.querySelectorAll('.post-photos a')].map(a=>{const img=a.querySelector('img'),fig=a.closest('figure');return{src:a.getAttribute('href'),alt:img?.alt||'',cap:fig?.querySelector('figcaption')?.textContent||''}});
+ function build(){
+  d=document.createElement('dialog');d.className='post-lb';d.setAttribute('aria-label','사진 크게 보기');
+  d.innerHTML=`<div class="post-lb-bar"><span class="post-lb-n" aria-live="polite"></span><button type="button" data-lb="zoom" aria-pressed="false">${ICON.zoom}<span>원본 크기</span></button><button type="button" data-lb="close" aria-label="닫기">${ICON.x}</button></div><div class="post-lb-stage"><img alt=""></div><div class="post-lb-foot"><button type="button" data-lb="prev" aria-label="이전 사진">${ICON.prev}</button><p class="post-lb-cap"></p><button type="button" data-lb="next" aria-label="다음 사진">${ICON.next}</button></div>`;
+  document.body.append(d);
+  d.addEventListener('click',e=>{const b=e.target.closest('[data-lb]');if(b){const k=b.dataset.lb;if(k==='close')d.close();else if(k==='zoom')zoom();else show(i+(k==='next'?1:-1))}else if(e.target.matches('.post-lb-stage img'))zoom()});
+  d.addEventListener('keydown',e=>{if(e.key==='ArrowRight')show(i+1);else if(e.key==='ArrowLeft')show(i-1)});
+  d.addEventListener('close',()=>{d.classList.remove('is-zoom');document.documentElement.style.overflow=''});
+ }
+ function zoom(){const on=!d.classList.contains('is-zoom');d.classList.toggle('is-zoom',on);d.querySelector('[data-lb="zoom"]').setAttribute('aria-pressed',on);d.querySelector('[data-lb="zoom"] span').textContent=on?'화면에 맞추기':'원본 크기'}
+ function show(n){
+  i=(n+list.length)%list.length;const it=list[i],img=d.querySelector('.post-lb-stage img');
+  d.classList.remove('is-zoom');d.querySelector('[data-lb="zoom"]').setAttribute('aria-pressed','false');d.querySelector('[data-lb="zoom"] span').textContent='원본 크기';
+  img.src=it.src;img.alt=it.alt;d.querySelector('.post-lb-cap').textContent=it.cap||it.alt;
+  d.querySelector('.post-lb-n').textContent=`${i+1} / ${list.length}`;
+  const many=list.length>1;d.querySelectorAll('[data-lb="prev"],[data-lb="next"]').forEach(b=>b.hidden=!many);
+  d.querySelector('.post-lb-stage').scrollTo(0,0);
+ }
+ document.addEventListener('click',e=>{
+  const a=e.target.closest('.post-photos a');if(!a||e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;
+  e.preventDefault();list=items();if(!d)build();
+  show(list.findIndex(x=>x.src===a.getAttribute('href')));document.documentElement.style.overflow='hidden';d.showModal();
+ });
+}
+
 if(onPost)ready(postView);
+if(onPost)ready(lightbox);
 })();
