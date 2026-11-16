@@ -91,10 +91,12 @@ async function quoteHtml(c){
   const spec=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음').slice(0,3).map(o=>options[o.key]).join(' · ');
   return {p,q:{...q,options},price,spec}});
  if(!lines.length)return '';
+ // 참고 금액은 글에서 켠 경우만(사례 규격이 홈페이지 선택지와 달라 금액이 실제와 다를 수 있음)
+ const show=!!c.show_price;
  const total=lines.reduce((a,l)=>a+l.price,0),unpriced=lines.some(l=>!l.price);
- return `<section class="wrap case-quote" aria-labelledby="case-quote-h"><div><h2 id="case-quote-h">이 행사 구성으로 견적 받기</h2><p>파란이 이 행사에서 맡은 ${lines.length}가지 구성을 그대로 장바구니에 담습니다. 담은 뒤 수량·사양을 바꿀 수 있습니다.</p>
-   <ul>${lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?` <span>${esc(l.q.label)}</span>`:''}<small>${esc(l.spec)}</small><em>${l.price?l.price.toLocaleString('ko-KR')+'원':'상담 후 확정'}</em></li>`).join('')}</ul>
-   <p class="case-total">${total?`참고 금액 <b>${total.toLocaleString('ko-KR')}원</b>${unpriced?' + 상담 항목':''} <small>부가세 포함 · 확정 금액은 담당자 검토 후 안내</small>`:'금액은 담당자 검토 후 안내합니다.'}</p></div>
+ return `<section class="wrap case-quote" aria-labelledby="case-quote-h"><div><h2 id="case-quote-h">이 행사 구성으로 견적 받기</h2><p>파란이 이 행사에서 맡은 ${lines.length}가지 구성을 비슷한 사양으로 장바구니에 담습니다. 담은 뒤 수량·사양을 바꿀 수 있습니다.</p>
+   <ul>${lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?` <span>${esc(l.q.label)}</span>`:''}<small>${esc(l.spec)}</small>${show?`<em>${l.price?l.price.toLocaleString('ko-KR')+'원':'상담 후 확정'}</em>`:''}</li>`).join('')}</ul>
+   <p class="case-total">${!show?'금액은 고르신 사양·수량으로 담당자가 검토해 안내합니다.':total?`참고 금액 <b>${total.toLocaleString('ko-KR')}원</b>${unpriced?' + 상담 항목':''} <small>부가세 포함 · 확정 금액은 담당자 검토 후 안내</small>`:'금액은 담당자 검토 후 안내합니다.'}</p></div>
    <div class="case-actions"><a class="button primary" data-case-cart href="/cart/#add=${b64(JSON.stringify({from:c.slug,items:lines.map(l=>({serviceId:l.p.id,options:l.q.options,design:l.q.design||1,qty:l.q.qty||1}))}))}">이 구성으로 견적 담기 ${ARROW}</a><a class="button case-consult" href="/request/?mode=consult">이 행사처럼 상담하기</a></div></section>`;
 }
 async function postView(){

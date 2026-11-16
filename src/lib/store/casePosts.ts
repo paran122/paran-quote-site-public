@@ -30,6 +30,10 @@ export type CasePost = {
   cover_w?: number | null;
   cover_h?: number | null;
   services?: string[];
+  overview?: { k?: string; v?: string }[];
+  timeline?: { d?: string; t?: string }[];
+  team?: string;
+  show_price?: boolean;
   published: string | null;
   updated?: string | null;
   body?: PostBlock[];
@@ -156,6 +160,14 @@ export function postFaqs(post: CasePost) {
     .filter((x) => x.q && x.a);
 }
 
+/** 한눈에 보기 표·진행 일정(빈 줄 뺌) */
+export const postOverview = (post: CasePost) =>
+  (post.overview || []).map((r) => ({ k: oneLine(r?.k), v: oneLine(r?.v) })).filter((r) => r.k && r.v);
+export const postTimeline = (post: CasePost) =>
+  (post.timeline || []).map((r) => ({ d: oneLine(r?.d), t: oneLine(r?.t) })).filter((r) => r.d && r.t);
+/** '2026.10.30' → '2026-10-30' (time datetime 용, 아니면 빈 값) */
+const isoDay = (d: string) => (/^\d{4}[.-]\d{1,2}[.-]\d{1,2}$/.test(d) ? d.split(/[.-]/).map((x, i) => (i ? x.padStart(2, "0") : x)).join("-") : "");
+
 /** 글이 맡은 서비스 id(견적 구성 순서, 중복 없이) */
 export function postServiceIds(post: CasePost) {
   return Array.from(new Set(post.services?.length ? post.services : (post.quote || []).map((q) => q.serviceId))).filter((id) => serviceName(id));
@@ -188,7 +200,19 @@ export function renderPostHtml(post: CasePost) {
   const dates = pub
     ? `<p class="post-dates"><span>게시 <time datetime="${esc(post.published)}">${pub}</time></span>${
         upd && upd > pub ? `<span>수정 <time datetime="${esc(post.updated)}">${upd}</time></span>` : ""
-      }<span>글 파란컴퍼니</span></p>`
+      }${post.team?.trim() ? `<span>담당 ${esc(oneLine(post.team))}</span>` : ""}<span>작성 파란컴퍼니</span></p>`
+    : "";
+  const ov = postOverview(post);
+  const overview = ov.length
+    ? `<section class="post-overview" aria-labelledby="post-ov-h"><h2 id="post-ov-h">한눈에 보기</h2><table><tbody>${ov
+        .map((r) => `<tr><th scope="row">${esc(r.k)}</th><td>${esc(r.v)}</td></tr>`)
+        .join("")}</tbody></table></section>`
+    : "";
+  const tl = postTimeline(post);
+  const timeline = tl.length
+    ? `<section class="post-timeline" aria-labelledby="post-tl-h"><h2 id="post-tl-h">진행 일정</h2><ol>${tl
+        .map((r) => `<li>${isoDay(r.d) ? `<time datetime="${isoDay(r.d)}">${esc(r.d)}</time>` : `<span class="post-tl-d">${esc(r.d)}</span>`}<p>${esc(r.t)}</p></li>`)
+        .join("")}</ol></section>`
     : "";
   let n = 0;
   const faqs: string[] = [];
@@ -218,7 +242,7 @@ export function renderPostHtml(post: CasePost) {
   }
    ${facts.length ? `<dl class="case-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>` : ""}${dates}</header>
   ${cover ? `<div class="wrap case-hero">${imgTag(cover.path, cover.alt, cover.w, cover.h, "(min-width: 1000px) 720px, 100vw", true)}</div>` : ""}
-  <div class="wrap post-body">${body}${faqs.length ? `<section class="post-faq" aria-labelledby="post-faq-h"><h2 id="post-faq-h">자주 묻는 질문</h2>${faqs.join("")}</section>` : ""}</div></article>
+  <div class="wrap post-body">${overview}${body}${timeline}${faqs.length ? `<section class="post-faq" aria-labelledby="post-faq-h"><h2 id="post-faq-h">자주 묻는 질문</h2>${faqs.join("")}</section>` : ""}</div></article>
   <div data-case-quote></div>
   <section class="wrap"><div class="callout"><h2>비슷한 행사를 준비하고 계신가요?</h2><p>필요한 구성만 골라 맡기거나, 행사 전체를 상담할 수 있습니다.</p><a class="button primary" href="/request/?mode=consult">내 행사 상담하기 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div></section>`;
 }
@@ -239,9 +263,11 @@ export function postJsonLd(post: CasePost) {
     creditText: "파란컴퍼니",
     copyrightNotice: "© 파란컴퍼니",
   }));
-  const text = (post.body || [])
-    .filter((b) => b.t === "p" || b.t === "h")
-    .map((b) => oneLine((b as { text?: string }).text))
+  const text = [
+    postOverview(post).map((r) => `${r.k}: ${r.v}.`).join(" "),
+    ...(post.body || []).filter((b) => b.t === "p" || b.t === "h").map((b) => oneLine((b as { text?: string }).text)),
+    postTimeline(post).map((r) => `${r.d} ${r.t}.`).join(" "),
+  ]
     .filter(Boolean)
     .join(" ");
   const services = postServiceIds(post);
@@ -299,10 +325,13 @@ export function postMarkdown(post: CasePost) {
     ["맡은 일", postServices(post).join(", ")],
     ["게시", ymd(post.published)],
     ["수정", ymd(post.updated) > ymd(post.published) ? ymd(post.updated) : ""],
+    ["담당", oneLine(post.team)],
     ["작성", "파란컴퍼니"],
     ["원문", postUrl(post.slug)],
   ].filter((x) => x[1]);
   lines.push(...facts.map(([k, v]) => `- ${k}: ${v}`), "");
+  const ov = postOverview(post);
+  if (ov.length) lines.push("## 한눈에 보기", "", "| 항목 | 내용 |", "| --- | --- |", ...ov.map((r) => `| ${r.k.replace(/\|/g, "/")} | ${r.v.replace(/\|/g, "/")} |`), "");
   let n = 0;
   const faqs = postFaqs(post);
   for (const b of post.body || []) {
@@ -318,6 +347,8 @@ export function postMarkdown(post: CasePost) {
       lines.push("");
     }
   }
+  const tl = postTimeline(post);
+  if (tl.length) lines.push("## 진행 일정", "", ...tl.map((r) => `- ${r.d}: ${r.t}`), "");
   if (faqs.length) {
     lines.push("## 자주 묻는 질문", "");
     for (const f of faqs) lines.push(`### ${f.q}`, "", md(f.a), "");

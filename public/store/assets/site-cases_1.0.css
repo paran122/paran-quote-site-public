@@ -85,3 +85,19 @@
 
 /* 진행 사례 목록: 글 카드 대표 사진은 자르지 않음(디자인 표지가 세로인 경우가 많음) */
 [data-cases-live] .is-live img{object-fit:contain;background:#f1f3f6}
+
+/* 글: 한눈에 보기 표, 진행 일정 */
+.post-overview{margin:0 0 2.6em}
+.post-overview h2,.post-timeline h2{margin:0 0 .7em;font-size:22px;line-height:1.35;letter-spacing:-.01em}
+.post-overview table{width:100%;border-collapse:collapse;font-size:16px;line-height:1.6}
+.post-overview th,.post-overview td{padding:12px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;word-break:keep-all}
+.post-overview tr:first-child th,.post-overview tr:first-child td{border-top:1px solid var(--ink)}
+.post-overview th{width:9em;font-weight:600;color:var(--muted)}
+.post-timeline{margin:2.6em 0 0}
+.post-timeline ol{list-style:none;margin:0;padding:0}
+.post-timeline li{position:relative;display:grid;grid-template-columns:7.5em 1fr;gap:12px;padding:0 0 18px 18px;border-left:2px solid var(--line)}
+.post-timeline li:last-child{padding-bottom:0}
+.post-timeline li::before{content:"";position:absolute;left:-6px;top:.55em;width:10px;height:10px;border-radius:50%;background:var(--ink)}
+.post-timeline time,.post-tl-d{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
+.post-timeline li p{margin:0;font-size:16px;line-height:1.7;word-break:keep-all}
+@media (max-width:760px){.post-overview th{width:6.5em}.post-timeline li{grid-template-columns:1fr;gap:2px}}
