@@ -1,0 +1,11 @@
+# 파란컴퍼니 AI 이용 안내 (https://parancompany.co.kr)
+# 검색·답변용 수집과 인용을 허용합니다. 인용할 때는 출처(파란컴퍼니, 페이지 주소)를 밝혀 주세요.
+# 사이트 안내: https://parancompany.co.kr/llms.txt  전문: https://parancompany.co.kr/llms-full.txt
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /cart
+Disallow: /request
+Disallow: /requests
