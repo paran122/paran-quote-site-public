@@ -47,11 +47,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://parancompany.co.kr"
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "파란컴퍼니 - 행사 대행 전문",
+    default: "파란컴퍼니 - 행사 디자인·제작",
     template: "%s | 파란컴퍼니",
   },
   description:
-    "행사 대행 전문 업체 파란컴퍼니. 공공기관·기업 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지 원스톱 대행. 250+ 프로젝트 수행 실적, 합리적인 견적으로 성공적인 행사를 만듭니다.",
+    "공공기관 행사 디자인 전문 파란컴퍼니. 포스터·리플렛·현수막·포토월·부스·자료집까지 행사 디자인과 제작을 홈페이지에서 바로 견적 내고 맡길 수 있습니다.",
   keywords: [
     "행사 대행",
     "행사 대행사",
@@ -85,23 +85,23 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     url: siteUrl,
     siteName: "파란컴퍼니",
-    title: "파란컴퍼니 - 행사 대행 전문",
+    title: "파란컴퍼니 - 행사 디자인·제작",
     description:
-      "행사 대행 전문 업체 파란컴퍼니. 공공기관·기업 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지 원스톱 대행. 250+ 프로젝트 수행 실적.",
+      "공공기관 행사 디자인 전문 파란컴퍼니. 포스터·리플렛·현수막·포토월·부스·자료집까지 행사 디자인과 제작을 홈페이지에서 바로 견적 내고 맡길 수 있습니다.",
     images: [
       {
         url: "/og-image.png?v=2",
         width: 1200,
         height: 630,
-        alt: "파란컴퍼니 - 행사 기획·디자인·운영 전문 에이전시",
+        alt: "파란컴퍼니 - 행사 디자인·제작",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "파란컴퍼니 - 행사 전문 에이전시",
+    title: "파란컴퍼니 - 행사 디자인·제작",
     description:
-      "공공기관·기업 행사 전문 에이전시. 세미나·컨퍼런스·포럼·축제 기획부터 디자인·운영까지.",
+      "공공기관 행사 디자인 전문 파란컴퍼니. 포스터·리플렛·현수막·포토월·부스·자료집까지 행사 디자인과 제작을 홈페이지에서 바로 견적 내고 맡길 수 있습니다.",
     images: ["/og-image.png?v=2"],
   },
   robots: {

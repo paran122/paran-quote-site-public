@@ -65,6 +65,9 @@ const nextConfig = {
       // 서비스 라우트 재편 (2026-06): 발주처축 → 행사 형식축 3그룹
       { source: "/services/seminar", destination: "/services/education", permanent: true },
       { source: "/services/corporate", destination: "/services/booth", permanent: true },
+      // 2026-11-17 옛 페이지 → 새 사이트(자주 묻는 질문은 홈 FAQ 칸, 회사 소개는 파란 소개)
+      { source: "/faq", destination: "/#faq", permanent: true },
+      { source: "/company", destination: "/about/", permanent: true },
     ];
   },
   async headers() {

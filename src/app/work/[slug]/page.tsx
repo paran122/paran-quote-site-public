@@ -20,10 +20,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
   if (!portfolio) return {};
 
-  const title = `${portfolio.title} | 포트폴리오`;
+  const title = `${portfolio.title} | 진행 사례`;
   const description =
     portfolio.description ||
-    `${portfolio.client ? portfolio.client + " | " : ""}${portfolio.title} - 파란컴퍼니 행사 대행 사례`;
+    `${portfolio.client ? portfolio.client + " | " : ""}${portfolio.title} - 파란컴퍼니 진행 사례`;
   const url = `${SITE_URL}/work/${portfolio.slug}`;
 
   return {
