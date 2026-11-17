@@ -93,8 +93,8 @@ async function quoteData(c){
   try{const e=Q?.estimate(p,options,q.design||1,q.qty||1);price=e?.total?Math.round(e.total):0}catch{}
   const picked=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음').slice(0,3);
   const spec=picked.map(o=>String(options[o.key])).join(' · ');
-  // 옆 칸용 짧은 사양: 크기 옵션은 빼고(사례 실제 크기와 다를 수 있어 오해), 의뢰 범위가 먼저
-  const short=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음'&&!/size|크기/i.test(o.key+' '+(o.label||''))).slice(0,3).map(o=>String(options[o.key]).split(' · ')[0]).join(' · ');
+  // 옆 칸용 짧은 사양: 크기·받는 방법은 빼고(사례 실제 크기와 다를 수 있어 오해), 의뢰 범위가 먼저
+  const short=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음'&&!/size|크기|delivery|받는/i.test(o.key+' '+(o.label||''))).slice(0,3).map(o=>String(options[o.key]).split(' · ')[0]).join(' · ');
   return {p,q:{...q,options},price,spec,short}});
  if(!lines.length)return null;
  // 참고 금액은 글에서 켠 경우만(사례 규격이 홈페이지 선택지와 달라 금액이 실제와 다를 수 있음)
