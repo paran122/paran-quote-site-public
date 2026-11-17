@@ -1632,6 +1632,6 @@ body.lm-open{overflow:hidden}
 .paran-content .lm-confirm .lm-keep{border:1px solid #15141a;background:#fff;color:#15141a}
 .paran-content .lm-confirm .lm-drop{border:1px solid #dcdbe2;background:#fff;color:#b42318}
 /* 수량 맞춤 안내 등 알림이 옵션 창 뒤에 가려지지 않게 */
-.toast{z-index:400}
+.toast,.paran-content .toast{z-index:400}
 /* PC: 창을 위쪽에 붙여 아래 칸이 커져도 머리가 움직이지 않게 */
 @media (min-width:601px){.lm{align-items:flex-start;padding-top:max(20px,6vh)}}
