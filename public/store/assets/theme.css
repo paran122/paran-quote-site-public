@@ -1612,3 +1612,4 @@ body.lm-open{overflow:hidden}
 .fj-footer-legal a{display:inline-block;padding:11px 0}
 /* 2026-11-13 양식 칸 아래 한 줄 설명 */
 .request-form .field-hint{margin:-4px 0 14px;font-size:13px;color:#5b5866;line-height:1.6}
+.config-form .qty-hint{display:block;margin-top:6px;font-size:12.5px;color:#55535e}
