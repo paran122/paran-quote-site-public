@@ -1495,7 +1495,7 @@ body.lm-open{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.lm-box{animation:none}}
 .lm-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 8px 8px 20px;border-bottom:1px solid #ececf0}
 .lm-head h2{margin:0;font-size:17px;font-weight:800;color:#15141a;letter-spacing:-.01em}
-.lm-x{display:grid;place-items:center;flex:none;width:44px;height:44px;border:0;border-radius:50%;background:none;color:#55535e;cursor:pointer}.lm-x:hover{background:#f2f2f5;color:#15141a}
+.lm .lm-x{display:grid;place-items:center;flex:none;width:44px;height:44px;border:0;box-shadow:none;padding:0;min-height:44px;border-radius:50%;background:none;color:#55535e;cursor:pointer}.lm .lm-x:hover{background:#f2f2f5;color:#15141a}
 .lm-body{flex:1;min-height:0;display:flex}
 .lm-body .config-form{display:flex;flex-direction:column;width:100%;min-height:0}
 .lm-scroll{flex:1;min-height:0;overflow:auto;padding:16px 20px 4px}
