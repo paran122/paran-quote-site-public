@@ -100,32 +100,39 @@ async function quoteData(c){
  const href='/cart/#add='+b64(JSON.stringify({from:c.slug,items:lines.map(l=>({serviceId:l.p.id,options:l.q.options,design:l.q.design||1,qty:l.q.qty||1}))}));
  return {lines,show,total,unpriced,caseSpec,href};
 }
-const priceLine=d=>!d.show?'금액은 고르신 사양·수량으로 담당자가 검토해 안내합니다.':d.total?`참고 금액 <b>${d.total.toLocaleString('ko-KR')}원</b>${d.unpriced?' + 상담 항목':''} <small>부가세 포함 · 확정 금액은 담당자 검토 후 안내</small>`:'금액은 담당자 검토 후 안내합니다.';
+// 금액: 글에서 '참고 금액 보이기'를 켠 경우만 금액. 아니면 장바구니에서 바로 확인한다고 안내(장바구니는 홈페이지 기준 금액을 보여 줌)
+const priceLine=d=>!d.show?'담으면 홈페이지 기준 금액이 바로 나옵니다. 사례와 다른 규격은 상담 때 조정합니다.':d.total?`참고 금액 <b>${d.total.toLocaleString('ko-KR')}원</b>${d.unpriced?' + 상담 항목':''} <small>부가세 포함 · 담으면 장바구니에서 바로 확인</small>`:'담으면 홈페이지 기준 금액이 바로 나옵니다.';
+// 담는 사양 한 줄: 홈페이지 선택지 사양 + 디자인 종류 수 + 제작 수량
+const qtyText=l=>[(l.q.design||1)>1?`디자인 ${l.q.design}종`:'',(l.q.qty||1)>1?`${Number(l.q.qty).toLocaleString('ko-KR')}부`:''].filter(Boolean).join(' · ');
+const putText=l=>[l.spec,qtyText(l)].filter(Boolean).join(' · ');
+const CONSULT=`<a class="text-link case-consult-link" href="/request/?mode=consult">이 행사처럼 상담하기 ${ARROW}</a>`;
 function quoteHtml(d){
  if(!d)return '';
- const {lines,show}=d;
- return `<section class="wrap case-quote" aria-labelledby="case-quote-h"><div><h2 id="case-quote-h">이 행사 구성으로 견적 받기</h2><p>파란이 이 행사에서 맡은 ${lines.length}가지 구성을 비슷한 사양으로 장바구니에 담습니다. 담은 뒤 수량·사양을 바꿀 수 있습니다.</p>
-   <ul>${lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?` <span>${esc(l.q.label)}</span>`:''}<small>${esc(l.spec)}</small>${show?`<em>${l.price?l.price.toLocaleString('ko-KR')+'원':'상담 후 확정'}</em>`:''}</li>`).join('')}</ul>
-   ${d.caseSpec?`<p class="case-spec-note">홈페이지 선택지 중 이 사례와 가장 가까운 사양으로 담습니다. 실제 사례 규격은 <b>${esc(d.caseSpec)}</b>입니다. 담은 뒤 바꾸거나 상담 때 말씀해 주세요.</p>`:''}
+ const {lines,show}=d,what=lines.length===1?`${lines[0].p.name} 구성을`:`${lines.length}가지 구성을`;
+ return `<section class="wrap case-quote" aria-labelledby="case-quote-h"><div><h2 id="case-quote-h">이 사례 구성으로 견적 받기</h2><p>파란이 이 사례에서 맡은 ${esc(what)} 홈페이지 선택지 중 가장 가까운 사양으로 장바구니에 담습니다. 담은 뒤 수량·사양을 바꿀 수 있습니다.</p>
+   <ul>${lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?` <span>${esc(l.q.label)}</span>`:''}<small>담는 사양 · ${esc(putText(l))}</small>${show?`<em>${l.price?l.price.toLocaleString('ko-KR')+'원':'상담 후 확정'}</em>`:''}</li>`).join('')}</ul>
+   ${d.caseSpec?`<p class="case-spec-note">실제 사례 규격은 <b>${esc(d.caseSpec)}</b>입니다. 같은 규격이 필요하면 담은 뒤 바꾸거나 상담 때 말씀해 주세요.</p>`:''}
    <p class="case-total">${priceLine(d)}</p></div>
-   <div class="case-actions"><a class="button primary" data-case-cart href="${esc(d.href)}">이 구성으로 견적 담기 ${ARROW}</a><a class="button case-consult" href="/request/?mode=consult">이 행사처럼 상담하기</a></div></section>`;
+   <div class="case-actions"><a class="button primary" data-case-cart href="${esc(d.href)}">장바구니 담기</a>${CONSULT}</div></section>`;
 }
-// 서비스 상세의 '견적 구성하기'처럼 늘 보이는 견적 칸: PC는 본문 오른쪽에 고정, 폰은 화면 아래 막대.
-// 글 끝의 큰 견적 칸이 화면에 들어오면 둘 다 숨김(같은 버튼이 두 번 보이지 않게)
+// 서비스 상세의 '견적 구성하기' 칸처럼 늘 보이는 견적 칸: PC는 오른쪽 고정, 폰은 화면 아래 막대.
+// 글 끝 큰 견적 칸이 화면에 들어오거나 지나가면 둘 다 숨김(같은 버튼 두 번 X). 숨길 때는 inert 로 키보드 초점도 막음
+function setOff(el,off){el.classList.toggle('is-off',off);if(off)el.setAttribute('inert','');else el.removeAttribute('inert')}
 function mountRail(d){
  const box=document.querySelector('[data-case-view]')||document.body;
  // 글 맨 위(제목)부터 따라다니게 글 전체를 왼쪽 칸으로 감쌈
  const art=document.querySelector('[data-case-view] article.post');if(!d||!art||document.querySelector('.post-layout'))return;
  const lay=document.createElement('div');lay.className='post-layout';art.before(lay);lay.append(art);
- const aside=document.createElement('aside');aside.className='case-rail';aside.setAttribute('aria-label','이 사례 구성으로 견적');
- aside.innerHTML=`<p class="case-rail-h">이 사례 구성으로 견적</p><ul>${d.lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?`<span>${esc(l.q.label)}</span>`:''}</li>`).join('')}</ul>${d.caseSpec?`<p class="case-rail-spec"><span>실제 사례 규격</span>${esc(d.caseSpec)}</p>`:''}<p class="case-rail-price">${priceLine(d)}</p><a class="button primary" href="${esc(d.href)}">이 구성으로 견적 담기 ${ARROW}</a><a class="button case-consult" href="/request/?mode=consult">이 행사처럼 상담하기</a>`;
+ const aside=document.createElement('aside');aside.className='case-rail';aside.setAttribute('aria-labelledby','case-rail-h');
+ aside.innerHTML=`<h2 class="case-rail-h" id="case-rail-h">이 사례 구성</h2><ul>${d.lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?`<span>${esc(l.q.label)}</span>`:''}<small class="case-rail-put">담는 사양 · ${esc(putText(l))}</small></li>`).join('')}</ul>${d.caseSpec?`<p class="case-rail-spec">실제 사례는 ${esc(d.caseSpec)}</p>`:''}<p class="case-rail-price">${priceLine(d)}</p><a class="button primary" href="${esc(d.href)}">장바구니 담기</a>${CONSULT}`;
  lay.append(aside);
- const bar=document.createElement('div');bar.className='case-bar';
- bar.innerHTML=`<span><b>${esc(d.lines[0].p.name)}${d.lines.length>1?` 외 ${d.lines.length-1}개`:''}</b><small>이 사례 구성으로 견적</small></span><a class="button primary" href="${esc(d.href)}">견적 담기 ${ARROW}</a>`;
+ const bar=document.createElement('aside');bar.className='case-bar';bar.setAttribute('aria-label','이 사례 구성 담기');
+ const first=d.lines[0],sub=[d.lines.length>1?`${d.lines.length}개 구성`:'',qtyText(first)].filter(Boolean).join(' · ')||'이 사례 구성';
+ bar.innerHTML=`<span><b>${esc(first.p.name)}${d.lines.length>1?` 외 ${d.lines.length-1}개`:''}</b><small>${esc(sub)}</small></span><a class="button primary" href="${esc(d.href)}">장바구니 담기</a>`;
  // 사이트 버튼 모양이 .paran-content 안에서만 적용되므로 그 안에 붙임(position:fixed 라 위치는 화면 기준)
  (box.closest('.paran-content')||document.body).append(bar);document.body.classList.add('has-case-bar');
  const big=document.querySelector('[data-case-quote] .case-quote');
- if(big&&'IntersectionObserver' in window)new IntersectionObserver(es=>{const on=es[0].isIntersecting;bar.classList.toggle('is-off',on);aside.classList.toggle('is-off',on)},{rootMargin:'0px 0px -20% 0px'}).observe(big);
+ if(big&&'IntersectionObserver' in window)new IntersectionObserver(es=>{const e=es[0],off=e.isIntersecting||e.boundingClientRect.top<0;setOff(bar,off);setOff(aside,off)},{rootMargin:'0px 0px -20% 0px'}).observe(big);
 }
 async function postView(){
  const box=document.querySelector('[data-case-view]');if(!box)return;
