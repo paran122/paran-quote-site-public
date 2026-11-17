@@ -1650,3 +1650,10 @@ a.escHCg[href^="/request/"]:hover{background:#b3ef00!important;color:#15141a!imp
  body[data-page=home] .hd-go{min-width:44px;min-height:44px}
  body[data-page=home] .fj-hero-secondary,body[data-page=home] .AVtdp{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
 }
+/* 2026-11-17 폰 메뉴: 줄·장바구니·닫기 누르기 쉽게 44px, '(전체 보기)'도 사이트 색 */
+@media (max-width:1023px){
+ #paran-header li>a,#paran-header .nav-item>a{min-height:44px;display:flex;align-items:center}
+ #paran-header .paran-cart{min-height:44px;display:inline-flex;align-items:center}
+ #paran-header .open,#paran-header .close{min-width:44px;min-height:44px}
+ #paran-header .sc-96a8d10a-2{color:#c3ff00!important}
+}
