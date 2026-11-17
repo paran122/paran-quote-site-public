@@ -1620,13 +1620,18 @@ body.lm-open{overflow:hidden}
 .lm-box{max-width:100%}
 .lm .lm-foot .commit{transition:none}
 .paran-content .lm .lm-field-err.is-hint{color:#55535e}
-.lm .config-info ul{max-height:150px;overflow:auto}
+.lm .config-info ul{max-height:110px;overflow:auto}
 .option-chips .c-orig{display:none}
 .lm .option-chips .chip.is-orig:not([aria-selected=true]) .c-orig{display:block;position:absolute;right:8px;top:50%;transform:translateY(-50%);padding:1px 6px;border-radius:6px;background:#f1f1f4;font-size:11px;font-weight:600;color:#55535e;line-height:1.5}
 .paran-content .lm .lm-reset{min-height:24px;margin-left:6px;padding:0;border:0;background:none;font-size:12.5px;color:#15141a;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-.lm-confirm{margin-top:12px;padding:12px;border-radius:12px;background:#f6f6f8}
+.lm-foot{position:relative}
+.lm-confirm{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:14px 20px calc(16px + env(safe-area-inset-bottom));border-radius:16px 16px 0 0;background:#f6f6f8;box-shadow:0 -8px 20px rgba(20,20,30,.08)}
 .paran-content .lm-confirm p{margin:0 0 10px;font-size:14px;font-weight:700;color:#15141a}
 .lm-confirm div{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .paran-content .lm-confirm button{min-height:44px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer}
 .paran-content .lm-confirm .lm-keep{border:1px solid #15141a;background:#fff;color:#15141a}
 .paran-content .lm-confirm .lm-drop{border:1px solid #dcdbe2;background:#fff;color:#b42318}
+/* 수량 맞춤 안내 등 알림이 옵션 창 뒤에 가려지지 않게 */
+.toast{z-index:400}
+/* PC: 창을 위쪽에 붙여 아래 칸이 커져도 머리가 움직이지 않게 */
+@media (min-width:601px){.lm{align-items:flex-start;padding-top:max(20px,6vh)}}
