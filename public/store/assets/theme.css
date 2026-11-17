@@ -1638,3 +1638,4 @@ body.lm-open{overflow:hidden}
 .toast,.paran-content .toast{z-index:400}
 /* PC: 창을 위쪽에 붙여 아래 칸이 커져도 머리가 움직이지 않게 */
 @media (min-width:601px){.lm{align-items:flex-start;padding-top:max(20px,6vh)}}
+.lm .lm-diff .lm-note{margin-left:6px;color:#3b3a44;font-weight:600}
