@@ -107,8 +107,11 @@ async function postView(){
  if(!seg&&qs&&!local&&!test){location.replace(postHref(qs));return}
  const slug=seg||qs,ssr=box.dataset.ssr;
  if(ssr==='missing')return;
+ // 서버가 넣어 둔 글 데이터(#case-data)가 있으면 그것으로 견적 칸만 그림(미리보기 초안 포함)
+ if(ssr&&ssr===slug){let c=null;try{c=JSON.parse(document.getElementById('case-data')?.textContent||'null')}catch{}
+  if(!c){const l=await get('post',slug);c=l?.[0]}
+  if(c){const q=box.querySelector('[data-case-quote]');if(q)q.innerHTML=await quoteHtml(c)}return}
  const list=slug?await get('post',slug):null,c=list?.[0];
- if(ssr&&ssr===slug){if(c){const q=box.querySelector('[data-case-quote]');if(q)q.innerHTML=await quoteHtml(c)}return}
  if(!c){box.innerHTML=`<section class="page-intro wrap"><h1>사례를 찾을 수 없습니다.</h1><p>${list?'주소가 바뀌었거나 게시가 내려간 사례입니다.':'사례 정보를 불러오지 못했습니다. 잠시 후 다시 열어 주세요.'}</p><a class="button primary" href="/work/">진행 사례 전체 보기 ${ARROW}</a></section>`;return}
  document.title=c.title+' | 파란컴퍼니';
  const md=document.querySelector('meta[name="description"]');if(md&&c.summary)md.setAttribute('content',c.summary);

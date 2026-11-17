@@ -36,6 +36,7 @@ export type CasePost = {
   show_price?: boolean;
   published: string | null;
   updated?: string | null;
+  draft?: boolean;
   body?: PostBlock[];
   quote?: QuoteItem[];
   files?: Record<string, PostFile>;
@@ -61,6 +62,30 @@ export async function fetchCasePosts(slug?: string, revalidate = 60): Promise<Ca
   } catch (err) {
     console.error("[casePosts]", err instanceof Error ? err.message : err);
     return null;
+  }
+}
+
+/** 게시 전 미리보기: 주소 이름 + 글마다 정해진 토큰(인트라넷만 앎)이 맞으면 초안도 돌려줌. 캐시 없음 */
+export const TOKEN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+export async function fetchPreviewPost(slug: string, token: string): Promise<CasePost | null | undefined> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return undefined;
+  if (!SLUG.test(slug) || slug.length > 80 || !TOKEN.test(token)) return null;
+  try {
+    const res = await fetch(`${url}/rest/v1/rpc/site_preview_post`, {
+      method: "POST",
+      headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ p_slug: slug, p_token: token }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) throw new Error(`rpc ${res.status}`);
+    const items = await res.json();
+    return Array.isArray(items) && items[0] ? items[0] : null;
+  } catch (err) {
+    console.error("[casePosts preview]", err instanceof Error ? err.message : err);
+    return undefined;
   }
 }
 
@@ -368,7 +393,7 @@ const setMeta = (html: string, attr: string, name: string, value: string) => {
 };
 
 /** 서비스 사이트 글 틀(public/store/work/p/index.html)에 머리 정보와 본문을 넣는다 */
-export function fillTemplate(tpl: string, post: CasePost | null) {
+export function fillTemplate(tpl: string, post: CasePost | null, opts: { preview?: boolean } = {}) {
   if (!post) {
     let html = tpl.replace(/<title>[^<]*<\/title>/, "<title>사례를 찾을 수 없습니다 | 파란컴퍼니</title>");
     html = html.replace(/<meta name="robots" content="[^"]*">/, '<meta name="robots" content="noindex,follow">');
@@ -398,8 +423,22 @@ export function fillTemplate(tpl: string, post: CasePost | null) {
   }
   if (post.published) html = setMeta(html, "property", "article:published_time", post.published);
   if (post.updated) html = setMeta(html, "property", "article:modified_time", post.updated);
-  html = html.replace("</head>", `<script type="application/ld+json">${postJsonLd(post)}</script></head>`);
-  return html.replace(/<div data-case-view>[\s\S]*?<\/noscript>/, `<div data-case-view data-ssr="${esc(post.slug)}">${renderPostHtml(post)}</div>`);
+  if (opts.preview) {
+    // 미리보기는 검색에 나오지 않게, 구조화 데이터도 넣지 않음
+    html = html.replace(/<meta name="robots" content="[^"]*">/, '<meta name="robots" content="noindex,nofollow">');
+    html = html.replace(/<title>/, "<title>[미리보기] ");
+  } else {
+    html = html.replace("</head>", `<script type="application/ld+json">${postJsonLd(post)}</script></head>`);
+  }
+  // 견적 칸을 그리는 화면 스크립트용 데이터(다시 불러오지 않게, 미리보기 초안도 그릴 수 있게)
+  const data = JSON.stringify({ slug: post.slug, quote: post.quote || [], overview: post.overview || [], show_price: !!post.show_price }).replace(/</g, "\\u003c");
+  const bar = opts.preview
+    ? `<p class="post-preview-bar" role="status"><b>미리보기</b> ${post.draft ? "아직 게시 전인 글입니다." : "게시된 글입니다."} 이 주소는 검색에 나오지 않으며, 인트라넷에서 저장하면 새로고침할 때 바로 바뀝니다.</p>`
+    : "";
+  return html.replace(
+    /<div data-case-view>[\s\S]*?<\/noscript>/,
+    `<div data-case-view data-ssr="${esc(post.slug)}">${bar}${renderPostHtml(post)}<script type="application/json" id="case-data">${data}</script></div>`
+  );
 }
 
 /** /work 목록 틀에 게시된 글 카드를 서버에서 넣는다. 카드 모양은 틀의 첫 카드에서 class 를 읽어 같게 만든다.

@@ -1,4 +1,4 @@
-import { fetchCasePosts, fillTemplate, postMarkdown, postUrl, SLUG } from "@/lib/store/casePosts";
+import { fetchCasePosts, fetchPreviewPost, fillTemplate, postMarkdown, postUrl, SLUG } from "@/lib/store/casePosts";
 
 // 진행 사례 글 하나: /work/p/<주소이름>   (AI 도구용 마크다운 원문: /work/p/<주소이름>.md)
 // 서비스 사이트 글 틀(public/store/work/p/index.html)에 제목·설명·구조화 데이터와 본문을 서버에서 넣어 돌려준다.
@@ -10,6 +10,8 @@ export const dynamic = "force-dynamic";
 const CACHE = {
   "Cache-Control": "public, max-age=0, must-revalidate",
   "Netlify-CDN-Cache-Control": "public, s-maxage=60, stale-while-revalidate=600",
+  // 캐시 구분에 ?preview= 를 넣어, 미리보기 주소가 공개 글 캐시를 받지 않게
+  "Netlify-Vary": "query=preview",
 };
 
 async function template(origin: string) {
@@ -42,6 +44,16 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
   } catch (err) {
     console.error("[work/p]", err instanceof Error ? err.message : err);
     return new Response("잠시 후 다시 시도해 주세요.", { status: 503, headers: { "Content-Type": "text/plain; charset=utf-8", "Retry-After": "30" } });
+  }
+  // 게시 전 미리보기: ?preview=<토큰> (인트라넷 [미리보기] 버튼). 캐시 없음·검색 제외
+  const token = new URL(req.url).searchParams.get("preview");
+  if (token) {
+    const post = await fetchPreviewPost(slug, token);
+    if (post === undefined) return new Response(tpl, { status: 503, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
+    return new Response(fillTemplate(tpl, post, { preview: true }), {
+      status: post ? 200 : 404,
+      headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "private, no-store", "X-Robots-Tag": "noindex, nofollow" },
+    });
   }
   const list = ok ? await fetchCasePosts(slug) : [];
   if (list === null) {
