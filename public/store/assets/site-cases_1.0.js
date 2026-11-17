@@ -113,6 +113,7 @@ function quoteHtml(d){
 // 서비스 상세의 '견적 구성하기'처럼 늘 보이는 견적 칸: PC는 본문 오른쪽에 고정, 폰은 화면 아래 막대.
 // 글 끝의 큰 견적 칸이 화면에 들어오면 둘 다 숨김(같은 버튼이 두 번 보이지 않게)
 function mountRail(d){
+ const box=document.querySelector('[data-case-view]')||document.body;
  const body=document.querySelector('.post .post-body');if(!d||!body||document.querySelector('.post-layout'))return;
  const lay=document.createElement('div');lay.className='post-layout';body.before(lay);lay.append(body);
  const aside=document.createElement('aside');aside.className='case-rail';aside.setAttribute('aria-label','이 사례 구성으로 견적');
@@ -120,7 +121,8 @@ function mountRail(d){
  lay.append(aside);
  const bar=document.createElement('div');bar.className='case-bar';
  bar.innerHTML=`<span><b>${esc(d.lines[0].p.name)}${d.lines.length>1?` 외 ${d.lines.length-1}개`:''}</b><small>이 사례 구성으로 견적</small></span><a class="button primary" href="${esc(d.href)}">견적 담기 ${ARROW}</a>`;
- document.body.append(bar);document.body.classList.add('has-case-bar');
+ // 사이트 버튼 모양이 .paran-content 안에서만 적용되므로 그 안에 붙임(position:fixed 라 위치는 화면 기준)
+ (box.closest('.paran-content')||document.body).append(bar);document.body.classList.add('has-case-bar');
  const big=document.querySelector('[data-case-quote] .case-quote');
  if(big&&'IntersectionObserver' in window)new IntersectionObserver(es=>{const on=es[0].isIntersecting;bar.classList.toggle('is-off',on);aside.classList.toggle('is-off',on)},{rootMargin:'0px 0px -20% 0px'}).observe(big);
 }
