@@ -114,8 +114,9 @@ function quoteHtml(d){
 // 글 끝의 큰 견적 칸이 화면에 들어오면 둘 다 숨김(같은 버튼이 두 번 보이지 않게)
 function mountRail(d){
  const box=document.querySelector('[data-case-view]')||document.body;
- const body=document.querySelector('.post .post-body');if(!d||!body||document.querySelector('.post-layout'))return;
- const lay=document.createElement('div');lay.className='post-layout';body.before(lay);lay.append(body);
+ // 글 맨 위(제목)부터 따라다니게 글 전체를 왼쪽 칸으로 감쌈
+ const art=document.querySelector('[data-case-view] article.post');if(!d||!art||document.querySelector('.post-layout'))return;
+ const lay=document.createElement('div');lay.className='post-layout';art.before(lay);lay.append(art);
  const aside=document.createElement('aside');aside.className='case-rail';aside.setAttribute('aria-label','이 사례 구성으로 견적');
  aside.innerHTML=`<p class="case-rail-h">이 사례 구성으로 견적</p><ul>${d.lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?`<span>${esc(l.q.label)}</span>`:''}</li>`).join('')}</ul>${d.caseSpec?`<p class="case-rail-spec"><span>실제 사례 규격</span>${esc(d.caseSpec)}</p>`:''}<p class="case-rail-price">${priceLine(d)}</p><a class="button primary" href="${esc(d.href)}">이 구성으로 견적 담기 ${ARROW}</a><a class="button case-consult" href="/request/?mode=consult">이 행사처럼 상담하기</a>`;
  lay.append(aside);
