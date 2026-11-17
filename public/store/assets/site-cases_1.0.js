@@ -91,8 +91,9 @@ async function quoteData(c){
  // 빠진 옵션은 장바구니와 같은 기본값으로 채워 계산(장바구니 금액과 같게)
  const lines=(c.quote||[]).filter(q=>P(q.serviceId)).map(q=>{const p=P(q.serviceId),options=Object.fromEntries(p.options.map(o=>[o.key,q.options?.[o.key]??o.defaultValue??o.values?.[0]??'']));let price=0;
   try{const e=Q?.estimate(p,options,q.design||1,q.qty||1);price=e?.total?Math.round(e.total):0}catch{}
-  const spec=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음').slice(0,3).map(o=>options[o.key]).join(' · ');
-  return {p,q:{...q,options},price,spec}});
+  const vals=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음').slice(0,3).map(o=>String(options[o.key]));
+  const spec=vals.join(' · '),short=vals.map(v=>v.split(' · ')[0]).reverse().join(' · ');
+  return {p,q:{...q,options},price,spec,short}});
  if(!lines.length)return null;
  // 참고 금액은 글에서 켠 경우만(사례 규격이 홈페이지 선택지와 달라 금액이 실제와 다를 수 있음)
  const show=!!c.show_price,total=lines.reduce((a,l)=>a+l.price,0),unpriced=lines.some(l=>!l.price);
@@ -124,7 +125,8 @@ function mountRail(d){
  const art=document.querySelector('[data-case-view] article.post');if(!d||!art||document.querySelector('.post-layout'))return;
  const lay=document.createElement('div');lay.className='post-layout';art.before(lay);lay.append(art);
  const aside=document.createElement('aside');aside.className='case-rail';aside.setAttribute('aria-labelledby','case-rail-h');
- aside.innerHTML=`<h2 class="case-rail-h" id="case-rail-h">이 사례 구성</h2><ul>${d.lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?`<span>${esc(l.q.label)}</span>`:''}<small class="case-rail-put">담는 사양 · ${esc(putText(l))}</small></li>`).join('')}</ul>${d.caseSpec?`<p class="case-rail-spec">실제 사례는 ${esc(d.caseSpec)}</p>`:''}<p class="case-rail-price">${priceLine(d)}</p><a class="button primary" href="${esc(d.href)}">장바구니 담기</a>${CONSULT}`;
+ // 짧게: 서비스·수량, 사양 한 줄, 버튼. 실제 사례 규격·긴 설명은 글 끝 큰 칸에
+ aside.innerHTML=`<h2 class="case-rail-h" id="case-rail-h">이 사례 구성</h2><ul>${d.lines.map(l=>`<li><p class="case-rail-row"><b>${esc(l.p.name)}</b><span>${esc(qtyText(l))}</span></p><small>${esc(l.short)}</small></li>`).join('')}</ul><a class="button primary" href="${esc(d.href)}">장바구니 담기</a><p class="case-rail-note">${d.show&&d.total?`참고 금액 ${d.total.toLocaleString('ko-KR')}원`:'가장 가까운 사양으로 담기며, 금액은 담은 뒤 바로 확인됩니다.'}</p>${CONSULT}`;
  lay.append(aside);
  const bar=document.createElement('aside');bar.className='case-bar';bar.setAttribute('aria-label','이 사례 구성 담기');
  const first=d.lines[0],sub=[d.lines.length>1?`${d.lines.length}개 구성`:'',qtyText(first)].filter(Boolean).join(' · ')||'이 사례 구성';

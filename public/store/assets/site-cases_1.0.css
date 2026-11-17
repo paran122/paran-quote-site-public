@@ -178,3 +178,11 @@
 .case-quote .case-actions{align-items:stretch}
 .paran-content .case-quote .case-total{border-top:1px solid var(--line)}
 .case-quote li small{grid-column:1/3}
+
+/* 오른쪽 칸 간소화(2026-11-17): 서비스·수량 한 줄, 사양 한 줄, 버튼, 짧은 안내 */
+.case-rail ul{gap:10px}
+.case-rail li{gap:4px;padding-bottom:12px}
+.paran-content .case-rail-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0;font-size:16px;color:var(--ink)}
+.case-rail-row span{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.case-rail li small{font-size:13px;line-height:1.5;color:var(--muted)}
+.paran-content .case-rail-note{margin:-2px 0 0;font-size:12.5px;line-height:1.5;color:var(--muted);text-align:center}
