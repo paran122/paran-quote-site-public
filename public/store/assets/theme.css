@@ -1523,7 +1523,10 @@ body.lm-open{overflow:hidden}
 .lm .lm-foot .config-price span{font-size:14px;color:#3b3a44}.lm .lm-foot .config-price strong{font-size:20px;font-weight:800;color:#15141a}
 .lm .lm-foot .config-basis{margin:2px 0 0;text-align:left;font-size:12.5px;color:#55535e}
 .lm .lm-foot .config-error{margin:8px 0 0}
-.lm .lm-diff{margin:0;text-align:right;font-size:12.5px;color:#55535e;text-decoration:line-through;text-decoration-color:#b9b8c0}
+.lm .lm-diff{margin:0;text-align:right;font-size:12.5px;color:#55535e}.lm .lm-diff s{text-decoration-color:#b9b8c0}.lm .lm-diff b{margin-left:6px;color:#15141a;font-weight:700}
+.lm-field-err{margin:6px 0 0;font-size:13px;color:#b42318}.lm .option-custom[aria-invalid=true]{border-color:#b42318}
+.lm .config-info .config-basis,.lm .config-info .config-ref{margin:8px 0 0;font-size:13px;color:#3b3a44;text-align:left;background:none;padding:0}
+.lm .lm-scroll .option-field{margin-bottom:16px}.lm-scroll{padding-top:12px}
 .lm .lm-foot .commit:disabled{background:#ececf0;border-color:#ececf0;color:#55535e;opacity:1;cursor:default}
 .lm .lm-foot .config-info{margin:0}.lm .lm-foot .config-info summary{min-height:24px}.lm .lm-foot .config-ref{margin:4px 0 0;font-size:12.5px;color:#55535e}
 .lm .lm-foot .commit{display:flex;justify-content:center;width:100%;min-width:0;min-height:48px;margin:12px 0 0}
