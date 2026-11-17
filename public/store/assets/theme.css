@@ -1620,7 +1620,10 @@ body.lm-open{overflow:hidden}
 .lm-box{max-width:100%}
 .lm .lm-foot .commit{transition:none}
 .paran-content .lm .lm-field-err.is-hint{color:#55535e}
-.lm .config-info ul{max-height:110px;overflow:auto}
+/* 자세히를 열면 창 전체가 한 번에 스크롤 */
+.lm-box.is-info{overflow:auto}.lm-box.is-info .lm-body,.lm-box.is-info .lm-body .config-form,.lm-box.is-info .lm-scroll{flex:none;overflow:visible}
+.lm .config-info ul{font-size:13px}
+.paran-content .lm .lm-field-err a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 .option-chips .c-orig{display:none}
 .lm .option-chips .chip.is-orig:not([aria-selected=true]) .c-orig{display:block;position:absolute;right:8px;top:50%;transform:translateY(-50%);padding:1px 6px;border-radius:6px;background:#f1f1f4;font-size:11px;font-weight:600;color:#55535e;line-height:1.5}
 .paran-content .lm .lm-reset{min-height:24px;margin-left:6px;padding:0;border:0;background:none;font-size:12.5px;color:#15141a;text-decoration:underline;text-underline-offset:3px;cursor:pointer}

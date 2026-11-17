@@ -21,7 +21,7 @@ function snapQty(q,n){const P=q&&q.print;if(!P||!(n>P.base))return P?Math.max(P.
 const LIMIT_M=100,LIMIT_PAGES=2000;
 function specProblem(p,v,hid=()=>false){const q=p.prices&&p.quote;if(!q)return '';const opt=k=>p.options.find(o=>o.key===k),typed=k=>{const o=opt(k);return o&&!hid(k)&&!(o.values||[]).includes(String(v[k]||''))?o:null};
  // 2026-11-17 직접 입력 크기가 비었거나 가로 × 세로가 아니면 안내
- for(const r of q.refs||[]){if(!r.ok)continue;const o=typed(r.opt);if(o&&sides(v[o.key],'mm').length<2)return `${o.label}를 가로 × 세로로 입력해 주세요. 예: 600 × 300mm`}
+ for(const r of q.refs||[]){if(!r.ok)continue;const o=typed(r.opt);if(o&&sides(v[o.key],'mm').length<2)return `${o.label}를 가로 × 세로로 입력해 주세요. 예: 400 × 300mm`}
  if(q.maxSize){const o=typed(q.maxSize.opt);if(o){const a=sides(v[o.key],q.banner?'':'mm').map(x=>Math.round(x*1000)).sort((x,y)=>y-x);if(a.length>1&&(a[0]>q.maxSize.mm[0]||a[1]>q.maxSize.mm[1]))return q.maxSize.msg||`${o.label}는 ${q.maxSize.mm[0]} × ${q.maxSize.mm[1]}mm 이하로 입력해 주세요. 더 큰 크기는 상담으로 문의해 주세요.`}}
  for(const k of [q.len&&q.len.opt,q.banner&&'size',q.banner&&'bigSize',q.crew&&q.crew.wall.opt].filter(Boolean)){const o=typed(k);if(!o)continue;const a=sides(v[k]);if(!a.length||a.some(x=>!(x>0)))return `${o.label}를 숫자와 단위로 입력해 주세요. 예: ${q.crew?'9m':'5m × 0.9m'}`;if(Math.max(...a)>LIMIT_M)return `${o.label}는 ${LIMIT_M}m까지 입력할 수 있습니다. 더 큰 크기는 상담으로 문의해 주세요.`}
  if(q.crew){const c=q.crew,po=typed(c.people),dO=typed(c.days);if(po){const n=num(v[po.key]);if(!(n>=c.min))return `${po.label}은 ${c.min}명부터 선택할 수 있습니다.`;if(n>c.maxPeople)return `${po.label}이 ${c.maxPeople}명을 넘으면 상담으로 문의해 주세요.`}if(dO){const n=num(v[dO.key]);if(!(n>=1))return `${dO.label}를 1 이상의 숫자로 입력해 주세요.`;if(n>c.maxDays)return `${dO.label}가 ${c.maxDays}일을 넘으면 상담으로 문의해 주세요.`}}
