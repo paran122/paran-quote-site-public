@@ -1493,24 +1493,23 @@ body.lm-open{overflow:hidden}
 .lm-box{position:relative;display:flex;flex-direction:column;width:min(480px,100%);max-height:min(86vh,720px);background:#fff;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.2);overflow:hidden;animation:lm-in .22s cubic-bezier(.22,1,.36,1)}
 @keyframes lm-in{from{opacity:0;transform:translateY(12px)}}
 @media (prefers-reduced-motion:reduce){.lm-box{animation:none}}
-.lm-head{display:flex;align-items:center;justify-content:space-between;padding:14px 12px 14px 22px;border-bottom:1px solid #ececf0}
-.lm-head h2{margin:0;font-size:17px;font-weight:800;color:#15141a}
-.lm-x{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:8px;background:none;color:#3b3a44;cursor:pointer}.lm-x:hover{background:#f6f6f8}
-.lm-item{display:flex;align-items:center;gap:12px;padding:14px 22px;background:#f6f6f8}
-.lm-item b{display:block;font-size:15px}.lm-item small{display:block;margin-top:2px;font-size:12.5px;color:#55535e}
+.lm-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 8px 8px 20px;border-bottom:1px solid #ececf0}
+.lm-head h2{margin:0;font-size:17px;font-weight:800;color:#15141a;letter-spacing:-.01em}
+.lm-x{display:grid;place-items:center;flex:none;width:44px;height:44px;border:0;border-radius:50%;background:none;color:#55535e;cursor:pointer}.lm-x:hover{background:#f2f2f5;color:#15141a}
 .lm-body{flex:1;min-height:0;display:flex}
 .lm-body .config-form{display:flex;flex-direction:column;width:100%;min-height:0}
-.lm-scroll{flex:1;min-height:0;overflow:auto;padding:18px 22px 6px}
-.lm-foot{padding:14px 22px 18px;border-top:1px solid #ececf0;background:#fff}
-.lm-foot .config-price{display:flex;justify-content:space-between;align-items:baseline;margin:0;padding:0;border:0}
-.lm-foot .config-price span{font-size:14px;color:#3b3a44}.lm-foot .config-price strong{font-size:22px;font-weight:800;color:#15141a}
-.lm-foot .config-basis{margin:2px 0 0;text-align:right;font-size:12.5px;color:#55535e}
-.lm-foot .config-error{margin:8px 0 0}
-.lm-btns{display:grid;grid-template-columns:1fr 2fr;gap:8px;margin-top:14px}
-.lm-btns button{min-height:50px;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer}
-.lm-cancel{border:1px solid #d9d8de;background:#fff;color:#15141a}
-.lm-btns .commit{width:auto;margin:0;border:0;background:#15141a;color:#fff}
-@media (max-width:600px){.lm{align-items:flex-end;padding:0}.lm-box{width:100%;max-height:90vh;border-radius:16px 16px 0 0;animation-name:lm-up}@keyframes lm-up{from{transform:translateY(100%)}}}
+.lm-scroll{flex:1;min-height:0;overflow:auto;padding:16px 20px 4px}
+/* 창 안은 촘촘하게: 숨긴 소제목의 위아래 여백·선 제거, 묶음 사이 18px */
+.lm .lm-scroll .option-section{padding:0;border:0}
+.lm .lm-scroll .option-field{margin-bottom:18px}
+.lm-foot{padding:12px 20px 16px;border-top:1px solid #ececf0;background:#fff}
+/* .paran-content 안 서비스 상세 규칙(세로 금액·가운데 160px 버튼)을 이기도록 .lm 붙임 */
+.lm .lm-foot .config-price{flex-direction:row;justify-content:space-between;align-items:baseline;gap:8px;margin:0;padding:0;border:0}
+.lm .lm-foot .config-price span{font-size:14px;color:#3b3a44}.lm .lm-foot .config-price strong{font-size:20px;font-weight:800;color:#15141a}
+.lm .lm-foot .config-basis{margin:2px 0 0;text-align:left;font-size:12.5px;color:#55535e}
+.lm .lm-foot .config-error{margin:8px 0 0}
+.lm .lm-foot .commit{display:flex;justify-content:center;width:100%;min-width:0;min-height:48px;margin:12px 0 0}
+@media (max-width:600px){.lm{align-items:flex-end;padding:0}.lm-foot{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.lm-box{width:100%;max-height:88dvh;border-radius:16px 16px 0 0;animation-name:lm-up}@keyframes lm-up{from{transform:translateY(100%)}}}
 .pk-ic svg,.ct-ic svg{overflow:visible}.pk-ic svg{width:32px;height:32px}.ct-ic svg{width:26px;height:26px}
 /* 2026-11-09 체크리스트가 있어 아래 '더 담기' 상자는 빼 */
 .paran-content #basket-actions{display:none!important}
