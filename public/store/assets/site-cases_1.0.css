@@ -138,3 +138,33 @@
 /* 게시 전 미리보기 안내 띠 */
 .post-preview-bar{margin:0;padding:12px 16px;background:#fff8e1;border-bottom:1px solid #f0d58c;font-size:14px;line-height:1.5;text-align:center;color:#5c4400;word-break:keep-all}
 .post-preview-bar b{margin-right:6px}
+
+/* 늘 보이는 견적 칸: PC 본문 오른쪽 고정(.case-rail), 폰 아래 막대(.case-bar) */
+.case-rail,.case-bar{display:none}
+@media (min-width:1100px){
+ .post-layout{display:grid;grid-template-columns:minmax(0,760px) 288px;gap:56px;justify-content:center;align-items:start;width:min(1160px,calc(100% - 64px));margin:48px auto 0}
+ .post .post-layout>.post-body{width:auto;max-width:none;margin:0}
+ .post-layout .post-photos{margin-inline:0}
+ .case-rail{display:grid;gap:12px;position:sticky;top:104px;padding:22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);transition:opacity .2s}
+ .case-rail.is-off{opacity:0;pointer-events:none}
+}
+.case-rail-h{margin:0;font-size:17px;font-weight:700;color:var(--ink)}
+.case-rail ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.case-rail li{display:grid;gap:2px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.case-rail li b{font-size:15px;color:var(--ink)}
+.case-rail li span{font-size:13px;line-height:1.5;color:var(--muted)}
+.case-rail-spec{margin:0;font-size:13px;line-height:1.55;color:var(--ink)}
+.case-rail-spec span{display:block;color:var(--muted)}
+.case-rail-price{margin:0;font-size:13px;line-height:1.55;color:var(--muted)}
+.case-rail-price small{display:block}
+.case-rail .button{width:100%;justify-content:center}
+@media (max-width:1099px){
+ .case-bar{display:flex;align-items:center;gap:12px;position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 18px rgb(20 20 30 / 8%);transition:transform .25s cubic-bezier(.2,.7,.3,1)}
+ .case-bar.is-off{transform:translateY(110%)}
+ .case-bar span{display:grid;flex:1;min-width:0}
+ .case-bar b{font-size:15px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .case-bar small{font-size:12px;color:var(--muted)}
+ .case-bar .button{flex:none;min-height:44px}
+ body.has-case-bar{padding-bottom:76px}
+}
+@media (prefers-reduced-motion:reduce){.case-bar,.case-rail{transition:none}}

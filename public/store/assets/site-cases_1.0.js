@@ -83,22 +83,46 @@ function b64(json){return btoa(String.fromCharCode(...new TextEncoder().encode(j
 const paras=t=>String(t||'').trim().split(/\n{2,}/).map(x=>`<p>${esc(x).replace(/\n/g,'<br>')}</p>`).join('');
 // 사진 대체 문구: 사진마다 쓴 alt → 묶음 설명 → 제목 + 순번 (서버 casePosts.ts altOf 와 같게)
 const altOf=(c,f,cap,n)=>String(f?.alt||'').trim()||String(cap||'').trim()||`${c.title} 사진 ${n}`;
-async function quoteHtml(c){
- const cat=await fetch('/assets/catalog.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]),P=id=>cat.find(p=>p.id===id),Q=window.ParanQuote;
+// 견적 구성 계산(아래 큰 칸·옆 고정 칸·폰 아래 막대가 함께 씀). 카탈로그는 한 번만 받음
+let CAT=null;
+async function quoteData(c){
+ CAT=CAT||fetch('/assets/catalog.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]);
+ const cat=await CAT,P=id=>cat.find(p=>p.id===id),Q=window.ParanQuote;
  // 빠진 옵션은 장바구니와 같은 기본값으로 채워 계산(장바구니 금액과 같게)
  const lines=(c.quote||[]).filter(q=>P(q.serviceId)).map(q=>{const p=P(q.serviceId),options=Object.fromEntries(p.options.map(o=>[o.key,q.options?.[o.key]??o.defaultValue??o.values?.[0]??'']));let price=0;
   try{const e=Q?.estimate(p,options,q.design||1,q.qty||1);price=e?.total?Math.round(e.total):0}catch{}
   const spec=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음').slice(0,3).map(o=>options[o.key]).join(' · ');
   return {p,q:{...q,options},price,spec}});
- if(!lines.length)return '';
+ if(!lines.length)return null;
  // 참고 금액은 글에서 켠 경우만(사례 규격이 홈페이지 선택지와 달라 금액이 실제와 다를 수 있음)
- const show=!!c.show_price;
- const total=lines.reduce((a,l)=>a+l.price,0),unpriced=lines.some(l=>!l.price);
+ const show=!!c.show_price,total=lines.reduce((a,l)=>a+l.price,0),unpriced=lines.some(l=>!l.price);
+ const caseSpec=(c.overview||[]).find(r=>/^규격/.test(String(r?.k||'').trim()))?.v||'';
+ const href='/cart/#add='+b64(JSON.stringify({from:c.slug,items:lines.map(l=>({serviceId:l.p.id,options:l.q.options,design:l.q.design||1,qty:l.q.qty||1}))}));
+ return {lines,show,total,unpriced,caseSpec,href};
+}
+const priceLine=d=>!d.show?'금액은 고르신 사양·수량으로 담당자가 검토해 안내합니다.':d.total?`참고 금액 <b>${d.total.toLocaleString('ko-KR')}원</b>${d.unpriced?' + 상담 항목':''} <small>부가세 포함 · 확정 금액은 담당자 검토 후 안내</small>`:'금액은 담당자 검토 후 안내합니다.';
+function quoteHtml(d){
+ if(!d)return '';
+ const {lines,show}=d;
  return `<section class="wrap case-quote" aria-labelledby="case-quote-h"><div><h2 id="case-quote-h">이 행사 구성으로 견적 받기</h2><p>파란이 이 행사에서 맡은 ${lines.length}가지 구성을 비슷한 사양으로 장바구니에 담습니다. 담은 뒤 수량·사양을 바꿀 수 있습니다.</p>
    <ul>${lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?` <span>${esc(l.q.label)}</span>`:''}<small>${esc(l.spec)}</small>${show?`<em>${l.price?l.price.toLocaleString('ko-KR')+'원':'상담 후 확정'}</em>`:''}</li>`).join('')}</ul>
-   ${(()=>{const sp=(c.overview||[]).find(r=>/^규격/.test(String(r?.k||'').trim()))?.v;return sp?`<p class="case-spec-note">홈페이지 선택지 중 이 사례와 가장 가까운 사양으로 담습니다. 실제 사례 규격은 <b>${esc(sp)}</b>입니다. 담은 뒤 바꾸거나 상담 때 말씀해 주세요.</p>`:''})()}
-   <p class="case-total">${!show?'금액은 고르신 사양·수량으로 담당자가 검토해 안내합니다.':total?`참고 금액 <b>${total.toLocaleString('ko-KR')}원</b>${unpriced?' + 상담 항목':''} <small>부가세 포함 · 확정 금액은 담당자 검토 후 안내</small>`:'금액은 담당자 검토 후 안내합니다.'}</p></div>
-   <div class="case-actions"><a class="button primary" data-case-cart href="/cart/#add=${b64(JSON.stringify({from:c.slug,items:lines.map(l=>({serviceId:l.p.id,options:l.q.options,design:l.q.design||1,qty:l.q.qty||1}))}))}">이 구성으로 견적 담기 ${ARROW}</a><a class="button case-consult" href="/request/?mode=consult">이 행사처럼 상담하기</a></div></section>`;
+   ${d.caseSpec?`<p class="case-spec-note">홈페이지 선택지 중 이 사례와 가장 가까운 사양으로 담습니다. 실제 사례 규격은 <b>${esc(d.caseSpec)}</b>입니다. 담은 뒤 바꾸거나 상담 때 말씀해 주세요.</p>`:''}
+   <p class="case-total">${priceLine(d)}</p></div>
+   <div class="case-actions"><a class="button primary" data-case-cart href="${esc(d.href)}">이 구성으로 견적 담기 ${ARROW}</a><a class="button case-consult" href="/request/?mode=consult">이 행사처럼 상담하기</a></div></section>`;
+}
+// 서비스 상세의 '견적 구성하기'처럼 늘 보이는 견적 칸: PC는 본문 오른쪽에 고정, 폰은 화면 아래 막대.
+// 글 끝의 큰 견적 칸이 화면에 들어오면 둘 다 숨김(같은 버튼이 두 번 보이지 않게)
+function mountRail(d){
+ const body=document.querySelector('.post .post-body');if(!d||!body||document.querySelector('.post-layout'))return;
+ const lay=document.createElement('div');lay.className='post-layout';body.before(lay);lay.append(body);
+ const aside=document.createElement('aside');aside.className='case-rail';aside.setAttribute('aria-label','이 사례 구성으로 견적');
+ aside.innerHTML=`<p class="case-rail-h">이 사례 구성으로 견적</p><ul>${d.lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?`<span>${esc(l.q.label)}</span>`:''}</li>`).join('')}</ul>${d.caseSpec?`<p class="case-rail-spec"><span>실제 사례 규격</span>${esc(d.caseSpec)}</p>`:''}<p class="case-rail-price">${priceLine(d)}</p><a class="button primary" href="${esc(d.href)}">이 구성으로 견적 담기 ${ARROW}</a><a class="button case-consult" href="/request/?mode=consult">이 행사처럼 상담하기</a>`;
+ lay.append(aside);
+ const bar=document.createElement('div');bar.className='case-bar';
+ bar.innerHTML=`<span><b>${esc(d.lines[0].p.name)}${d.lines.length>1?` 외 ${d.lines.length-1}개`:''}</b><small>이 사례 구성으로 견적</small></span><a class="button primary" href="${esc(d.href)}">견적 담기 ${ARROW}</a>`;
+ document.body.append(bar);document.body.classList.add('has-case-bar');
+ const big=document.querySelector('[data-case-quote] .case-quote');
+ if(big&&'IntersectionObserver' in window)new IntersectionObserver(es=>{const on=es[0].isIntersecting;bar.classList.toggle('is-off',on);aside.classList.toggle('is-off',on)},{rootMargin:'0px 0px -20% 0px'}).observe(big);
 }
 async function postView(){
  const box=document.querySelector('[data-case-view]');if(!box)return;
@@ -110,12 +134,12 @@ async function postView(){
  // 서버가 넣어 둔 글 데이터(#case-data)가 있으면 그것으로 견적 칸만 그림(미리보기 초안 포함)
  if(ssr&&ssr===slug){let c=null;try{c=JSON.parse(document.getElementById('case-data')?.textContent||'null')}catch{}
   if(!c){const l=await get('post',slug);c=l?.[0]}
-  if(c){const q=box.querySelector('[data-case-quote]');if(q)q.innerHTML=await quoteHtml(c)}return}
+  if(c){const d=await quoteData(c),q=box.querySelector('[data-case-quote]');if(q)q.innerHTML=quoteHtml(d);mountRail(d)}return}
  const list=slug?await get('post',slug):null,c=list?.[0];
  if(!c){box.innerHTML=`<section class="page-intro wrap"><h1>사례를 찾을 수 없습니다.</h1><p>${list?'주소가 바뀌었거나 게시가 내려간 사례입니다.':'사례 정보를 불러오지 못했습니다. 잠시 후 다시 열어 주세요.'}</p><a class="button primary" href="/work/">진행 사례 전체 보기 ${ARROW}</a></section>`;return}
  document.title=c.title+' | 파란컴퍼니';
  const md=document.querySelector('meta[name="description"]');if(md&&c.summary)md.setAttribute('content',c.summary);
- const facts=[['발주',c.client],['일정',c.date],['장소',c.venue]].filter(x=>x[1]);
+ const facts=[['발주',c.client],['일정',c.date],['장소',c.venue]].filter(x=>x[1]),qd=await quoteData(c);
  const F=c.files||{},img=id=>F[id];let n=0;const faqs=[];
  const body=(c.body||[]).map(b=>{
   if(b.t==='h')return b.text?`<h2>${esc(b.text)}</h2>`:'';
@@ -129,8 +153,9 @@ async function postView(){
    ${facts.length?`<dl class="case-facts">${facts.map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`:''}</header>
   ${c.cover?`<div class="wrap case-hero"><img src="${esc(url(c.cover))}" alt="${esc(String(c.cover_alt||'').trim()||c.title+' 대표 사진')}" width="1400" height="900" decoding="async"></div>`:''}
   <div class="wrap post-body">${body}${faqs.length?`<section class="post-faq" aria-labelledby="post-faq-h"><h2 id="post-faq-h">자주 묻는 질문</h2>${faqs.join('')}</section>`:''}</div></article>
-  <div data-case-quote>${await quoteHtml(c)}</div>
+  <div data-case-quote>${quoteHtml(qd)}</div>
   ${(c.quote||[]).length?'':`<section class="wrap"><div class="callout"><h2>비슷한 결과물이 필요하신가요?</h2><p>필요한 서비스만 골라 상담하세요. 사양과 수량을 정하면 견적을 안내합니다.</p><a class="button primary" href="/request/?mode=consult">상담 요청하기 ${ARROW}</a></div></section>`}`;
+ mountRail(qd);
 }
 
 // ---- 서비스 상세: 이 서비스로 진행한 사례 글 (FAQ 앞) ----
