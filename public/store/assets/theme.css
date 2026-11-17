@@ -1655,5 +1655,7 @@ a.escHCg[href^="/request/"]:hover{background:#b3ef00!important;color:#15141a!imp
  #paran-header li>a,#paran-header .nav-item>a{min-height:44px;display:flex;align-items:center}
  #paran-header .paran-cart{min-height:44px;display:inline-flex;align-items:center}
  #paran-header .open,#paran-header .close{min-width:44px;min-height:44px}
- #paran-header .sc-96a8d10a-2{color:#c3ff00!important}
+ #paran-header .sc-96a8d10a-2{color:#15141a!important;text-decoration:underline;text-decoration-color:#c3ff00;text-decoration-thickness:3px;text-underline-offset:4px}
 }
+/* 밝은 머리 줄(서비스 목록 등)에서는 장바구니 아이콘을 어둡게 */
+#paran-header.fj-header-light .paran-cart-m{color:#15141a}
