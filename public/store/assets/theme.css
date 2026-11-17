@@ -1386,8 +1386,14 @@ html{scroll-padding-top:0}
 .option-chips .c-sub i{font-style:normal}
 @media (max-width:600px){.option-chips .chip{flex-direction:column;align-items:flex-start;justify-content:center}.option-chips .c-sub{font-size:12.5px;font-weight:500;color:#55535e}.option-chips.is-wide{grid-template-columns:1fr}.option-chips .c-sub i{display:none}}
 /* 드롭다운·수량 칸도 같은 모서리·테두리 */
-.config-form .option-trigger{min-height:42px;border-color:#dcdbe2;border-radius:10px}
-.config-form .stepper{border-color:#dcdbe2;border-radius:10px}
+.config-form .option-trigger{min-height:44px;border-color:#dcdbe2;border-radius:10px}
+/* 수량 칸: 모서리 안 깨지게, 높이 44(칩과 같게), − + 굵게. 디자인 수량 칸이 숨으면 전체 폭 */
+.config-form .stepper{border-color:#dcdbe2;border-radius:10px;overflow:hidden;grid-template-columns:44px minmax(0,1fr) 44px}
+.config-form .stepper button{min-height:42px;border-radius:0;background:transparent;font-size:19px;font-weight:600;color:#3b3a44}
+.config-form .stepper button:hover{background:#f6f6f8}
+.config-form .stepper input{min-height:42px;font-weight:600}
+.config-form .quantity-row:has(>.quantity-field[hidden]){grid-template-columns:1fr}
+.option-chips .c-sub i{white-space:pre}
 .option-chips .chip:focus-visible{outline:2px solid #2357d7;outline-offset:2px}
 .is-chips .option-custom{margin-top:8px}
 .extra-options summary small{font-size:12px;font-weight:500;color:#55535e;margin-left:6px}
@@ -1403,11 +1409,12 @@ html{scroll-padding-top:0}
 .config-form.is-quote .option-chips{margin-top:0}
 .config-form.is-quote .option-chips .chip:not([aria-selected=true]){font-weight:500}
 /* 2026-11-08 견적 상자 안내사항: 접어 두는 작은 칩 */
-.config-info{margin:10px 0 16px}
-.config-info summary{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:4px 12px;border:1px solid #e3e2e8;border-radius:999px;font-size:13px;font-weight:600;color:#55535e;cursor:pointer;list-style:none}
+/* 2026-11-17 안내사항: 떠 있는 알약 대신 금액 아래 한 줄 글자(부가세 포함 · 이 금액으로 계약 · 자세히) */
+.config-info{margin:4px 0 0}
+.config-info summary{display:inline-flex;align-items:center;min-height:32px;font-size:12.5px;font-weight:500;color:#55535e;cursor:pointer;list-style:none}
 .config-info summary::-webkit-details-marker{display:none}
-.config-info summary::before{content:"i";display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#55535e;color:#fff;font-size:11px;font-weight:800;font-style:italic}
-.config-info[open] summary{color:#15141a;border-color:#15141a}
+.config-info summary u{margin-left:.25em;text-underline-offset:3px;color:#15141a}
+.config-info[open] summary u{text-decoration:none}
 .config-info ul{margin:10px 0 0;padding:12px 14px 12px 30px;background:#f6f6f8;border-radius:10px;font-size:13px;line-height:1.6;color:#3b3a44}
 .config-info li+li{margin-top:4px}
 /* 2026-11-08 헤더 고정(장바구니 개수가 늘 보이게), 모바일 장바구니 아이콘, 메뉴 버튼 터치 영역 */
@@ -1496,6 +1503,7 @@ html{scroll-padding-top:0}
 body.lm-open{overflow:hidden}
 .lm{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:20px}
 .lm[hidden]{display:none}
+.lm-box:focus{outline:none}
 .lm-back{position:absolute;inset:0;background:rgba(0,0,0,.5)}
 .lm-box{position:relative;display:flex;flex-direction:column;width:min(480px,100%);max-height:min(86vh,720px);background:#fff;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.2);overflow:hidden;animation:lm-in .22s cubic-bezier(.22,1,.36,1)}
 @keyframes lm-in{from{opacity:0;transform:translateY(12px)}}
@@ -1505,7 +1513,7 @@ body.lm-open{overflow:hidden}
 .lm .lm-x{display:grid;place-items:center;flex:none;width:44px;height:44px;border:0;box-shadow:none;padding:0;min-height:44px;border-radius:50%;background:none;color:#55535e;cursor:pointer}.lm .lm-x:hover{background:#f2f2f5;color:#15141a}
 .lm-body{flex:1;min-height:0;display:flex}
 .lm-body .config-form{display:flex;flex-direction:column;width:100%;min-height:0}
-.lm-scroll{flex:1;min-height:0;overflow:auto;padding:16px 20px 4px}
+.lm-scroll{flex:1;min-height:0;overflow:auto;scrollbar-gutter:stable;padding:16px 20px 4px}
 /* 창 안은 촘촘하게: 숨긴 소제목의 위아래 여백·선 제거, 묶음 사이 18px */
 .lm .lm-scroll .option-section{padding:0;border:0}
 .lm .lm-scroll .option-field{margin-bottom:18px}

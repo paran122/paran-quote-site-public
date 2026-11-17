@@ -27,7 +27,9 @@ function specProblem(p,v,hid=()=>false){const q=p.prices&&p.quote;if(!q)return '
  if(q.pages){const o=typed(q.pages.opt);if(o){const n=num(v[o.key]);if(!(n>=1))return `${o.label}를 1 이상의 숫자로 입력해 주세요.`;if(n>LIMIT_PAGES)return `${o.label}는 ${LIMIT_PAGES.toLocaleString('ko-KR')}까지 입력할 수 있습니다. 더 많으면 상담으로 문의해 주세요.`}}
  return ''}
 function isMake(p,v){const s=p.prices?.[v.scope];return Boolean(s&&s.addon)}
-function estimateBase(p,v,count=1,qty=1,raw=false){const q=p.quote,pr=p.prices;if(!q||!pr)return null;if(v.scope!==undefined&&!pr[v.scope])return null;const all=Object.values(pr),d=all[0],s=pr[v.scope]||d,make=Boolean(s.addon);
+function estimateBase(p,v,count=1,qty=1,raw=false){const q=p.quote,pr=p.prices;if(!q||!pr)return null;
+ // 2026-11-17 크기를 직접 입력하면(정해진 규격 밖) 금액을 내지 않음 = 상담 후 확정. 예전엔 A4 금액으로 계산돼 A3·더 큰 크기도 싸게 보였음
+ if((q.refs||[]).some(r=>r.ok&&v[r.opt]&&(!r.when||Object.entries(r.when).every(([k,x])=>v[k]===x))&&!r.ok.some(b=>String(v[r.opt]).startsWith(b))))return null;if(v.scope!==undefined&&!pr[v.scope])return null;const all=Object.values(pr),d=all[0],s=pr[v.scope]||d,make=Boolean(s.addon);
  // raw=true: 공급가(견적서용, 부가세 별도) / false: 사이트 표시가(부가세 포함)
  const own=x=>raw?x.own_s:x.own,ex_=x=>(raw?x.own_extra_s:x.own_extra)||0,B=raw&&q.banner_s?q.banner_s:q.banner;let dU=own(d),mU=make?own(s):0,mX=make?ex_(s):0,crew=null;
  if(B){const x=v.kind==='X배너';dU=x?B.x.design:B.h.design;if(make){const g=v.kind==='대형 현수막'&&B.big;if(x)mU=B.x.make+(v.stand==='실내 거치대'?B.x.stand:0);else if(g){/* 폭 3m 통천: 두 변이 모두 폭 이내면 짧은 변이 길이, 아니면 긴 변 */const a=sides(v.bigSize),hi=a.length?Math.max(...a):g.tiers[0][0],L=a.length>1&&hi<=g.width+1e-9?Math.min(...a):hi,t=g.tiers,k=t.find(y=>L<=y[0]+1e-9),z=t[t.length-1];mU=k?k[1]:z[1]+Math.ceil((L-z[0])*2-1e-9)*g.overHalf}else mU=Math.ceil((meters(v.size,true)||1)-1e-9)*B.h.perM;mU*=qty}}
