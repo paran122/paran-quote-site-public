@@ -152,14 +152,8 @@
  .case-rail.is-off{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,visibility 0s .2s}
 }
 .paran-content .case-rail-h{margin:0;font-size:20px;line-height:1.35;font-weight:700;color:var(--ink);letter-spacing:-.01em}
-.case-rail ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.case-rail li{display:grid;gap:2px;padding-bottom:8px;border-bottom:1px solid var(--line)}
-.case-rail li b{font-size:15px;color:var(--ink)}
-.case-rail li span{font-size:13px;line-height:1.5;color:var(--muted)}
-.case-rail-put{font-size:13px;line-height:1.5;color:var(--ink)}
-.paran-content .case-rail-spec{margin:0;font-size:12.5px;line-height:1.55;color:var(--muted)}
-.case-rail-price{margin:0;font-size:13px;line-height:1.55;color:var(--muted)}
-.case-rail-price small{display:block}
+.case-rail ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.case-rail li{display:grid;gap:4px;padding-bottom:12px;border-bottom:1px solid var(--line)}
 .case-rail .button{width:100%;justify-content:center}
 @media (max-width:1099px){
  .case-bar{display:flex;align-items:center;gap:12px;position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 18px rgb(20 20 30 / 8%);transition:transform .25s cubic-bezier(.2,.7,.3,1)}
@@ -180,9 +174,14 @@
 .case-quote li small{grid-column:1/3}
 
 /* 오른쪽 칸 간소화(2026-11-17): 서비스·수량 한 줄, 사양 한 줄, 버튼, 짧은 안내 */
-.case-rail ul{gap:10px}
-.case-rail li{gap:4px;padding-bottom:12px}
 .paran-content .case-rail-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0;font-size:16px;color:var(--ink)}
 .case-rail-row span{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .case-rail li small{font-size:13px;line-height:1.5;color:var(--muted)}
 .paran-content .case-rail-note{margin:-2px 0 0;font-size:12.5px;line-height:1.5;color:var(--muted);text-align:center}
+
+/* 오른쪽 칸 다듬기(임펙커블 재검토): 서비스 상세 칸과 제목 굵기·링크 크기 맞춤, 안내는 왼쪽 정렬 한 줄, 위아래 여백 균형 */
+.paran-content .case-rail-h{font-weight:740;letter-spacing:-.02em}
+.case-rail-row b{font-size:16px;font-weight:700;color:var(--ink)}
+.paran-content .case-rail-note{margin:-2px 0 0;text-align:left}
+@media (min-width:1100px){.case-rail{padding:22px 22px 12px}}
+.case-rail .case-consult-link{font-size:13px;justify-content:flex-start;min-height:44px}

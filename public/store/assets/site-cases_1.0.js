@@ -91,8 +91,10 @@ async function quoteData(c){
  // 빠진 옵션은 장바구니와 같은 기본값으로 채워 계산(장바구니 금액과 같게)
  const lines=(c.quote||[]).filter(q=>P(q.serviceId)).map(q=>{const p=P(q.serviceId),options=Object.fromEntries(p.options.map(o=>[o.key,q.options?.[o.key]??o.defaultValue??o.values?.[0]??'']));let price=0;
   try{const e=Q?.estimate(p,options,q.design||1,q.qty||1);price=e?.total?Math.round(e.total):0}catch{}
-  const vals=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음').slice(0,3).map(o=>String(options[o.key]));
-  const spec=vals.join(' · '),short=vals.map(v=>v.split(' · ')[0]).reverse().join(' · ');
+  const picked=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음').slice(0,3);
+  const spec=picked.map(o=>String(options[o.key])).join(' · ');
+  // 옆 칸용 짧은 사양: 크기 옵션은 빼고(사례 실제 크기와 다를 수 있어 오해), 의뢰 범위가 먼저
+  const short=p.options.filter(o=>options[o.key]&&options[o.key]!=='해당 없음'&&!/size|크기/i.test(o.key+' '+(o.label||''))).slice(0,3).map(o=>String(options[o.key]).split(' · ')[0]).join(' · ');
   return {p,q:{...q,options},price,spec,short}});
  if(!lines.length)return null;
  // 참고 금액은 글에서 켠 경우만(사례 규격이 홈페이지 선택지와 달라 금액이 실제와 다를 수 있음)
@@ -106,7 +108,7 @@ const priceLine=d=>!d.show?'담으면 홈페이지 기준 금액이 바로 나�
 // 담는 사양 한 줄: 홈페이지 선택지 사양 + 디자인 종류 수 + 제작 수량
 const qtyText=l=>[(l.q.design||1)>1?`디자인 ${l.q.design}종`:'',(l.q.qty||1)>1?`${Number(l.q.qty).toLocaleString('ko-KR')}부`:''].filter(Boolean).join(' · ');
 const putText=l=>[l.spec,qtyText(l)].filter(Boolean).join(' · ');
-const CONSULT=`<a class="text-link case-consult-link" href="/request/?mode=consult">이 행사처럼 상담하기 ${ARROW}</a>`;
+const CONSULT=`<a class="text-link case-consult-link" href="/request/?mode=consult">다른 사양으로 상담하기 ${ARROW}</a>`;
 function quoteHtml(d){
  if(!d)return '';
  const {lines,show}=d,what=lines.length===1?`${lines[0].p.name} 구성을`:`${lines.length}가지 구성을`;
@@ -126,15 +128,16 @@ function mountRail(d){
  const lay=document.createElement('div');lay.className='post-layout';art.before(lay);lay.append(art);
  const aside=document.createElement('aside');aside.className='case-rail';aside.setAttribute('aria-labelledby','case-rail-h');
  // 짧게: 서비스·수량, 사양 한 줄, 버튼. 실제 사례 규격·긴 설명은 글 끝 큰 칸에
- aside.innerHTML=`<h2 class="case-rail-h" id="case-rail-h">이 사례 구성</h2><ul>${d.lines.map(l=>`<li><p class="case-rail-row"><b>${esc(l.p.name)}</b><span>${esc(qtyText(l))}</span></p><small>${esc(l.short)}</small></li>`).join('')}</ul><a class="button primary" href="${esc(d.href)}">장바구니 담기</a><p class="case-rail-note">${d.show&&d.total?`참고 금액 ${d.total.toLocaleString('ko-KR')}원`:'가장 가까운 사양으로 담기며, 금액은 담은 뒤 바로 확인됩니다.'}</p>${CONSULT}`;
+ aside.innerHTML=`<h2 class="case-rail-h" id="case-rail-h">이 사례 구성</h2><ul>${d.lines.map(l=>`<li><p class="case-rail-row"><b>${esc(l.p.name)}</b><span>${esc(qtyText(l))}</span></p><small>${esc(l.short)}</small></li>`).join('')}</ul><a class="button primary" href="${esc(d.href)}">장바구니 담기</a><p class="case-rail-note">${d.show&&d.total?`참고 금액 ${d.total.toLocaleString('ko-KR')}원`:'담은 뒤 금액이 바로 나옵니다.'}</p>${CONSULT}`;
  lay.append(aside);
  const bar=document.createElement('aside');bar.className='case-bar';bar.setAttribute('aria-label','이 사례 구성 담기');
- const first=d.lines[0],sub=[d.lines.length>1?`${d.lines.length}개 구성`:'',qtyText(first)].filter(Boolean).join(' · ')||'이 사례 구성';
+ const first=d.lines[0],sub=['이 사례처럼',d.lines.length>1?`${d.lines.length}개 구성`:'',qtyText(first)].filter(Boolean).join(' · ');
  bar.innerHTML=`<span><b>${esc(first.p.name)}${d.lines.length>1?` 외 ${d.lines.length-1}개`:''}</b><small>${esc(sub)}</small></span><a class="button primary" href="${esc(d.href)}">장바구니 담기</a>`;
  // 사이트 버튼 모양이 .paran-content 안에서만 적용되므로 그 안에 붙임(position:fixed 라 위치는 화면 기준)
  (box.closest('.paran-content')||document.body).append(bar);document.body.classList.add('has-case-bar');
  const big=document.querySelector('[data-case-quote] .case-quote');
- if(big&&'IntersectionObserver' in window)new IntersectionObserver(es=>{const e=es[0],off=e.isIntersecting||e.boundingClientRect.top<0;setOff(bar,off);setOff(aside,off)},{rootMargin:'0px 0px -20% 0px'}).observe(big);
+ if(big){let t=0;const check=()=>{t=0;const off=big.getBoundingClientRect().top<innerHeight*.8;if(bar.classList.contains('is-off')!==off){setOff(bar,off);setOff(aside,off)}};
+  const on=()=>{if(!t)t=requestAnimationFrame(check)};addEventListener('scroll',on,{passive:true});addEventListener('resize',on);check()}
 }
 async function postView(){
  const box=document.querySelector('[data-case-view]');if(!box)return;
