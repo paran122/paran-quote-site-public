@@ -40,6 +40,10 @@ export type CasePost = {
   body?: PostBlock[];
   quote?: QuoteItem[];
   files?: Record<string, PostFile>;
+  /** 예전 사례(/work/<주소이름>)처럼 글 주소가 /work/p/ 가 아닐 때의 경로 */
+  path?: string;
+  /** 현장 영상(예전 사례에서 옮겨 온 것) */
+  videos?: { src: string; label?: string }[];
 };
 
 /** site_public_posts 호출. slug 가 있으면 그 글 하나(본문 포함), 없으면 목록. 실패하면 null */
@@ -91,6 +95,9 @@ export async function fetchPreviewPost(slug: string, token: string): Promise<Cas
 
 export const postPath = (slug: string) => `/work/p/${slug}`;
 export const postUrl = (slug: string) => SITE_URL + postPath(slug);
+/** 글의 대표 주소(예전 사례는 /work/<주소이름> 그대로) */
+export const pathOf = (post: CasePost) => post.path || postPath(post.slug);
+export const urlOf = (post: CasePost) => SITE_URL + pathOf(post);
 
 // ---------- 사진 주소 ----------
 const encPath = (path: string) => path.split("/").map(encodeURIComponent).join("/");
@@ -261,13 +268,20 @@ export function renderPostHtml(post: CasePost) {
     })
     .join("");
   const cover = post.cover ? postImages(post)[0] : null;
+  const videos = (post.videos || [])
+    .filter((v) => /^https:\/\//.test(v.src))
+    .map(
+      (v) =>
+        `<figure class="post-video"><video controls preload="none" playsinline${cover ? ` poster="${esc(mediaPath(cover.path))}"` : ""} aria-label="${esc(v.label || post.title + " 현장 영상")}"><source src="${esc(v.src)}"></video>${v.label ? `<figcaption>${esc(v.label)}</figcaption>` : ""}</figure>`
+    )
+    .join("");
   return `<article class="post">
   <header class="wrap post-head"><nav class="post-crumbs" aria-label="현재 위치"><a class="text-link back" href="/work/">← 진행 사례</a></nav><h1>${esc(post.title)}</h1>${
     post.summary ? `<p class="post-lead">${esc(post.summary)}</p>` : ""
   }
    ${facts.length ? `<dl class="case-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>` : ""}${dates}</header>
   ${cover ? `<div class="wrap case-hero">${imgTag(cover.path, cover.alt, cover.w, cover.h, "(min-width: 1000px) 720px, 100vw", true)}</div>` : ""}
-  <div class="wrap post-body">${overview}${body}${timeline}${faqs.length ? `<section class="post-faq" aria-labelledby="post-faq-h"><h2 id="post-faq-h">자주 묻는 질문</h2>${faqs.join("")}</section>` : ""}</div></article>
+  <div class="wrap post-body">${overview}${body}${videos ? `<h2>현장 영상</h2>${videos}` : ""}${timeline}${faqs.length ? `<section class="post-faq" aria-labelledby="post-faq-h"><h2 id="post-faq-h">자주 묻는 질문</h2>${faqs.join("")}</section>` : ""}</div></article>
   <div data-case-quote></div>${
     (post.quote || []).length
       ? "" // 견적 담기 칸에 [이 행사처럼 상담하기]가 있으므로 상담 칸을 또 두지 않음
@@ -279,7 +293,7 @@ const ORG_ID = `${SITE_URL}/#organization`;
 
 /** 구조화 데이터(JSON-LD): 글(Article) + 사진(ImageObject) + 위치(BreadcrumbList) + 자주 묻는 질문(FAQPage). 회사(Organization)는 틀 머리에 있음 */
 export function postJsonLd(post: CasePost) {
-  const url = postUrl(post.slug);
+  const url = urlOf(post);
   const images = postImages(post).map((im) => ({
     "@type": "ImageObject",
     contentUrl: im.url,
@@ -402,12 +416,12 @@ export function fillTemplate(tpl: string, post: CasePost | null, opts: { preview
       `<div data-case-view data-ssr="missing"><section class="page-intro wrap"><h1>사례를 찾을 수 없습니다.</h1><p>주소가 바뀌었거나 게시가 내려간 사례입니다.</p><a class="button primary" href="/work/">진행 사례 전체 보기</a></section></div>`
     );
   }
-  const url = postUrl(post.slug);
+  const url = urlOf(post);
   const title = `${post.title} | 파란컴퍼니 진행 사례`;
   const desc = postDescription(post);
   const share = shareImage(post);
   let html = tpl.replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`);
-  html = html.replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${url}"><link rel="alternate" type="text/markdown" href="${postPath(post.slug)}.md">`);
+  html = html.replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${url}">${post.path ? "" : `<link rel="alternate" type="text/markdown" href="${postPath(post.slug)}.md">`}`);
   html = setMeta(html, "name", "description", desc);
   html = setMeta(html, "property", "og:type", "article");
   html = setMeta(html, "property", "og:title", title);

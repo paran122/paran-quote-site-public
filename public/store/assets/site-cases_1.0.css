@@ -185,3 +185,6 @@
 .paran-content .case-rail-note{margin:-2px 0 0;text-align:left}
 @media (min-width:1100px){.case-rail{padding:22px 22px 12px}}
 .case-rail .case-consult-link{font-size:13px;justify-content:flex-start;min-height:44px}
+
+/* 2026-11-18 예전 사례에서 옮겨 온 현장 영상 */
+.post-video{margin:24px 0}.post-video video{display:block;width:100%;aspect-ratio:16/9;border-radius:12px;background:#000}.post-video figcaption{margin-top:8px;font-size:14px;color:var(--muted)}
