@@ -1728,3 +1728,8 @@ body[data-page=catalog] .fj-cta h2,body[data-page=catalog] .fj-cta .fj-cta-steps
 /* 2026-11-19 소개·이용 안내: 하단 요청 칸은 바로 보이게(버튼이 2초 뒤에 나타나지 않게) */
 body[data-page=about] .fj-cta h2,body[data-page=about] .fj-cta .fj-cta-steps .st,body[data-page=about] .fj-cta .fj-cta-steps .ar,body[data-page=about] .fj-cta .sc-fba22d56-6,body[data-page=about] .fj-cta .fj-cta-note,
 body[data-page=guide] .fj-cta h2,body[data-page=guide] .fj-cta .fj-cta-steps .st,body[data-page=guide] .fj-cta .fj-cta-steps .ar,body[data-page=guide] .fj-cta .sc-fba22d56-6,body[data-page=guide] .fj-cta .fj-cta-note{opacity:1!important;transform:none!important;transition:none!important}
+/* 2026-11-19 작은 글자 키움(하단 요청 칸 버튼 12→15px, 소개 원 설명·하단 줄 13px), 이용 안내 단계 링크 누르는 높이 */
+.fj-cta .sc-fba22d56-6 a{font-size:15px!important}
+body[data-page=about] span>small{font-size:13px!important}
+.fj-footer-legal,.fj-footer-legal a,.fj-footer-legal span{font-size:13px!important}
+.paran-content .guide-steps a{min-height:44px;display:inline-flex;align-items:center}
