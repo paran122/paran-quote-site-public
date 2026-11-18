@@ -1692,3 +1692,11 @@ body[data-page=catalog] .fj-cta h2,body[data-page=catalog] .fj-cta .fj-cta-steps
 /* 폰 카드: 사진 위 분류 표시가 숨겨져서 이름 위에 작은 글자로 */
 .fj-source-card .cat-m{display:none}
 @media (max-width:767px){.fj-source-card .cat-m{display:block;margin-bottom:2px;font-size:12px;font-weight:600;color:#9a99a4}}
+/* 2026-11-18 서비스 상세 견적 칸: 금액이 담기 버튼에 가리지 않게 금액도 버튼 위에 함께 붙고, 스크롤 막대 자리 확보, 크기 칩은 이름·치수 두 줄 */
+@media(min-width:1100px){.booklet-sales .booklet-quote-sticky{scrollbar-gutter:stable}
+.booklet-sales .booklet-quote-sticky .config-price{position:sticky;bottom:66px;z-index:2;background:#fff;box-shadow:0 -10px 10px #fff}
+.booklet-sales .booklet-quote-sticky .commit{z-index:3;box-shadow:0 -4px 0 4px #fff,0 14px 0 4px #fff}}
+.booklet-sales .option-chips .chip{flex-direction:column;align-items:flex-start;justify-content:center}
+.booklet-sales .option-chips .c-sub{font-size:12.5px;font-weight:500;color:#55535e}
+.booklet-sales .option-chips .c-sub i{display:none}
+.paran-content .config-form .field-err{margin:6px 0 0;font-size:13px;color:#b42318}.paran-content .config-form .option-custom[aria-invalid=true]{border-color:#b42318}

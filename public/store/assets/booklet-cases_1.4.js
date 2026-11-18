@@ -49,7 +49,7 @@
   book=(i+books.length)%books.length;const b=books[book];
   dialog.toggleAttribute('data-single',narrow.matches);views=build(b);
   $('#case-viewer-kind').textContent=b.kind;$('#case-viewer-title').textContent=b.title;
-  for(const k of ['size','pages','year']){const dd=$(`[data-fact=${k}]`),v=b[k];dd.textContent=v?(k==='pages'?`${v}쪽`:v):'확인 중';dd.classList.toggle('is-empty',!v);}
+  for(const k of ['size','pages','year']){const dd=$(`[data-fact=${k}]`),v=b[k];dd.textContent=v?(k==='pages'?`${v}쪽`:v):'';dd.classList.toggle('is-empty',!v);{const row=dd.closest('div,li')||dd;const dt=dd.previousElementSibling;if(row!==dd&&row.children.length<=2)row.hidden=!v;else{dd.hidden=!v;if(dt&&dt.tagName==='DT')dt.hidden=!v}}}
   thumbs.replaceChildren(...views.map((v,n)=>{const li=document.createElement('li'),bt=document.createElement('button');bt.type='button';bt.setAttribute('aria-label',v.label);
    for(const src of v.slots.filter(Boolean)){const im=document.createElement('img');im.src=src;im.alt='';im.loading='lazy';bt.append(im);}
    bt.addEventListener('click',()=>go(n));li.append(bt);return li;}));

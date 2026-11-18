@@ -9,7 +9,7 @@
    글자는 모두 escape/textContent 로만 넣는다(HTML 실행 없음).
    다른 스크립트(service-detail·booklet-cases)는 window.paranCasesReady 가 끝난 뒤 사례 줄을 묶는다. */
 (()=>{'use strict';
-const API='/api/store/cases?kind=',WAIT=1800;
+const API='/api/store/cases?kind=',WAIT=5000;
 // 이 스크립트와 같은 판(?v=)의 CSS. 서비스 상세는 CSS 를 안 불러 두므로 필요할 때 붙임
 const VER=((document.currentScript&&document.currentScript.src)||'').match(/\?v=[\w]+/)?.[0]||'';
 const STORE='https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/object/public/site-cases/';
