@@ -1723,3 +1723,5 @@ body[data-page=catalog] .fj-cta h2,body[data-page=catalog] .fj-cta .fj-cta-steps
 @media (max-width:767px){.paran-content textarea,.paran-content .request-form textarea{font-size:16px!important}}
 .paran-content #request-summary.is-folded .summary-line:nth-of-type(n+2){display:none}
 .paran-content .summary-toggle{width:100%;min-height:44px;margin:8px 0 0;border:1px solid #dcdbe2;border-radius:99px;background:#fff;font-size:14px;font-weight:700;color:#15141a;cursor:pointer}
+.paran-content .ref-total dd{white-space:nowrap}
+.paran-content #request-summary .summary-toggle{margin:8px 0 12px}
