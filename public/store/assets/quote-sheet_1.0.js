@@ -19,9 +19,9 @@
  function rows(t){
   const groups={'디자인':[],'제작물(출력)':[],'공간 조성':[]};let ship=0,shipN=0;
   for(const {x,p,e} of t.lines){if(!p)continue;const hide=p.quote?.hide||{},opts=(p.options||[]).filter(o=>x.options?.[o.key]&&x.options[o.key]!=='해당 없음'&&o.key!=='scope'&&o.key!=='delivery'&&o.key!==p.quote?.install?.opt&&!Object.entries(hide[o.key]||{}).some(([k,v])=>Array.isArray(v)?v.includes(x.options[k]):x.options[k]===v)).map(o=>x.options[o.key]).join(' / ');
-   if(!e){groups['디자인'].push({item:p.name,spec:opts||'사양 확인',qty:1,unit:'식',price:null,note:'담당자 확인 후 견적'});continue}
+   if(!e){groups['디자인'].push({item:p.name,spec:[x.options?.scope,opts,p.quote?.print&&x.qty>1?`${x.qty}${p.quote.print.unit}`:'',x.options?.delivery].filter(Boolean).join(' / ')||'사양 확인',qty:1,unit:'식',price:null,note:'담당자 확인 후 견적'});continue}
    const n=e.n||1,scope=x.options?.scope||'';
-   groups['디자인'].push({item:p.name+' 디자인',spec:[opts,'시안 1개','수정 2회'].filter(Boolean).join(' / '),qty:n,unit:'식',price:Math.round(e.dU),note:''});
+   if(p.quote?.crew)groups['공간 조성'].push({item:p.name,spec:[scope,opts].filter(Boolean).join(' / '),qty:n,unit:'식',price:Math.round(e.dU),note:''});else groups['디자인'].push({item:p.name+' 디자인',spec:[opts,'시안 1개','수정 2회'].filter(Boolean).join(' / '),qty:n,unit:'식',price:Math.round(e.dU),note:''});
    if(e.make){const g=SPACE.has(p.id)?'공간 조성':p.category==='디지털 콘텐츠'?'디자인':'제작물(출력)';const q=p.quote?.print&&x.qty?`${x.qty}${p.quote.print.unit}`:'';
     const ins=e.inst||0;groups[g].push({item:p.name+' '+(p.quote?.install?'제작':e.part||'제작'),spec:[opts,q].filter(Boolean).join(' / '),qty:n,unit:'식',price:Math.round(e.mU-ins),note:''});
     if(ins)groups[g].push({item:p.name+' 설치·철거 출장',spec:x.options[p.quote.install.opt]||'',qty:1,unit:'식',price:Math.round(ins),note:'수도권 기준'})}
@@ -37,10 +37,10 @@
    const sum=list.reduce((a,r)=>a+(r.price||0)*r.qty,0);body+=`<tr class="sub"><td colspan="7">${esc(g)} 소계</td><td style="text-align:right">${n0(sum)}</td><td></td></tr>`}
   if(ship)body+=`<tr><td class="g">배송 (실비)</td><td style="text-align:left">택배 배송</td><td style="text-align:left">인쇄물 택배</td><td style="text-align:right">${shipN}</td><td>건</td><td style="text-align:right">${n0(ship/shipN)}</td><td style="text-align:right">1</td><td style="text-align:right">${n0(ship)}</td><td style="text-align:left;font-size:9pt;color:${C.note}">실비 정산(부가세 제외)</td></tr>`;
   const sum=(l,v,cls,note='')=>`<tr class="${cls}"><td colspan="7">${l}</td><td style="text-align:right">${v}</td><td style="text-align:left;font-size:9pt">${note}</td></tr>`;
-  body+=sum('소계',n0(t.sub),'tot')+sum('부가세 (10%)',n0(t.vat),'plain')+(ship?sum('배송비 (실비)',n0(ship),'plain','부가세 산정 제외'):'')+sum('합계금액',n0(t.total),'grand');
+  body+=sum('소계',n0(t.sub),'tot')+sum('부가세 (10%)',n0(t.vat),'plain')+(ship?sum('배송비 (택배)',n0(ship),'plain','부가세 산정 제외'):'')+sum('합계금액',n0(t.total),'grand');
   const meta=(l,v)=>`<tr><th>${l}</th><td colspan="8" style="text-align:left">${v}</td></tr>`;
   return `<div class="qs"><h1>산 출 내 역 서</h1><table class="meta">
-   ${meta('수신',esc(o.to||'귀하'))}${meta('견적명',esc(o.title||'행사 디자인 서비스'))}
+   ${meta('수신',esc(String(o.to||'').trim()||'귀하'))}${meta('견적명',esc(o.title||'행사 디자인 서비스'))}
    <tr><th>작성일</th><td colspan="2" style="text-align:left">${ymd(today)}</td><th>유효기간</th><td colspan="5" style="text-align:left">작성일로부터 30일 (${ymd(until)}까지)</td></tr>
    <tr><th>견적업체</th><td colspan="3" style="text-align:left;position:relative">${SELLER.name}</td><th>연락처</th><td colspan="4" style="text-align:left">${SELLER.tel}</td></tr>
    ${meta('담당자',SELLER.person)}
@@ -85,7 +85,7 @@
   const host=document.createElement('div');host.style.cssText='position:fixed;left:-10000px;top:0;z-index:-1';host.innerHTML=`<style>${CSS}</style><div class="qs-doc">`+sheet(o)+'</div>';document.body.append(host);paginate(host.querySelector('.qs'));
   const img=host.querySelector('.seal');if(img&&!img.complete)await new Promise(r=>{img.onload=img.onerror=r});
   const d=new Date(),name=`견적서_파란컴퍼니_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}.pdf`;
-  try{await window.html2pdf().set({margin:[8,8,8,8],filename:name,image:{type:'jpeg',quality:0.96},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',scrollX:0,scrollY:0},jsPDF:{unit:'mm',format:'a4',orientation:'landscape'},pagebreak:{mode:['css'],before:'.qs-cont'}}).from(host.querySelector('.qs-doc')).save()}
+  try{await window.html2pdf().set({margin:[8,8,8,8],filename:name,image:{type:'jpeg',quality:0.96},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',scrollX:0,scrollY:0,logging:false},jsPDF:{unit:'mm',format:'a4',orientation:'landscape'},pagebreak:{mode:['css'],before:'.qs-cont'}}).from(host.querySelector('.qs-doc')).save()}
   finally{host.remove()}
  };
 })();
