@@ -1659,3 +1659,12 @@ a.escHCg[href^="/request/"]:hover{background:#b3ef00!important;color:#15141a!imp
 }
 /* 밝은 머리 줄(서비스 목록 등)에서는 장바구니 아이콘을 어둡게 */
 #paran-header.fj-header-light .paran-cart-m{color:#15141a}
+/* 2026-11-18 서비스 목록: 카드 금액 두 줄(기본 범위 + 제작 포함), 폰은 위 사진 빼서 첫 화면에 카드, 누르기 쉬운 버튼 높이 */
+.price-alt{display:block;margin-top:2px;font-size:13px;font-weight:600;color:#55535e}
+.fj-source-card .price-alt{color:#9a99a4}
+@media (max-width:767px){.fj-intro-photo,.fj-intro-photo+p{display:none!important}}
+.header-buttons a,.fj-hero-secondary{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+#no-results-cat button{margin-left:6px;padding:4px 12px;min-height:36px;border:1px solid #15141a;border-radius:99px;background:#fff;font-weight:700;cursor:pointer}
+/* 2026-11-18 분류 버튼 개수 글자 대비 */
+.paran-content .filter-buttons button span{color:#4b5563}
+.paran-content .filter-buttons button[aria-pressed=true] span{color:#c9c8d2}
