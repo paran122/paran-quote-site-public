@@ -190,8 +190,9 @@
 .post-video{margin:24px 0}.post-video video{display:block;width:100%;aspect-ratio:16/9;border-radius:12px;background:#000}.post-video figcaption{margin-top:8px;font-size:14px;color:var(--muted)}
 
 /* 2026-11-18 진행 사례 목록: 대표 카드는 카드 전체가 눌리게, '사례 더 보기'는 작은 사진·유형 카드 + 유형 고르기 */
-[data-cases-live]>div{position:relative}
-[data-cases-live]>div a.sc-a6a294d0-5::after{content:"";position:absolute;inset:0}
+[data-cases-live]>div{position:relative!important;cursor:pointer}
+[data-cases-live]>div *{position:static!important}
+[data-cases-live]>div a.sc-a6a294d0-5::after{content:"";position:absolute;inset:0;z-index:1}
 .case-more.is-cards h2{display:flex;align-items:baseline;gap:10px}
 .case-more .cm-count{font-size:15px;font-weight:500;color:var(--muted)}
 .case-more .cm-filter{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 24px}

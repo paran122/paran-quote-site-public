@@ -133,7 +133,8 @@ export function fillOldCases(html: string, portfolios: Portfolio[], media: Portf
   const cards = links
     .map(({ slug, title }) => {
       const p = bySlug.get(slug) || bySlug.get(decodeURIComponent(slug));
-      const type = (p?.eventType || p?.tags?.[0] || "").trim();
+      const raw = (p?.eventType || p?.tags?.[0] || "").trim();
+      const type = /전시|부스|포토존/.test(raw) ? "전시·부스·포토존" : raw; // 비슷한 유형 이름은 하나로
       if (type && !types.includes(type)) types.push(type);
       const img = p ? p.imageUrl || firstPhoto.get(p.id) || "" : "";
       const meta = [type, p?.year ? `${p.year}` : ""].filter(Boolean).join(" · ");
@@ -149,7 +150,7 @@ export function fillOldCases(html: string, portfolios: Portfolio[], media: Portf
           .join("")}</div>`
       : "";
   const script = filter
-    ? `<script>(()=>{const box=document.currentScript.closest('.case-more');if(!box)return;const bs=[...box.querySelectorAll('[data-cm]')],lis=[...box.querySelectorAll('.cm-grid li')],out=box.querySelector('.cm-count');box.addEventListener('click',e=>{const b=e.target.closest('[data-cm]');if(!b)return;let n=0;bs.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));lis.forEach(li=>{const show=!b.dataset.cm||li.dataset.type===b.dataset.cm;li.hidden=!show;if(show)n++});if(out)out.textContent=n+'건'})})()</script>`
+    ? `<script>(()=>{const box=document.currentScript.closest('.case-more');if(!box)return;const bs=[...box.querySelectorAll('[data-cm]')],lis=[...box.querySelectorAll('.cm-grid li')],out=box.querySelector('.cm-count');const apply=(t,push)=>{const b=bs.find(x=>x.dataset.cm===t)||bs[0];let n=0;bs.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));lis.forEach(li=>{const show=!b.dataset.cm||li.dataset.type===b.dataset.cm;li.hidden=!show;if(show)n++});if(out)out.textContent=n+'건';const u=new URL(location.href);b.dataset.cm?u.searchParams.set('type',b.dataset.cm):u.searchParams.delete('type');if(u.href!==location.href)push?history.pushState(null,'',u):history.replaceState(null,'',u)};const cur=()=>new URLSearchParams(location.search).get('type')||'';box.addEventListener('click',e=>{const b=e.target.closest('[data-cm]');if(b)apply(b.dataset.cm,true)});addEventListener('popstate',()=>apply(cur(),false));addEventListener('pageshow',()=>apply(cur(),false));apply(cur(),false)})()</script>`
     : "";
   const block = `<div class="case-more is-cards"><h2>${m[1]} <span class="cm-count" aria-live="polite">${links.length}건</span></h2>${filter}<ul class="cm-grid">${cards}</ul>${script}</div>`;
   return html.replace(m[0], block);
