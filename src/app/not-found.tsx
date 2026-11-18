@@ -1,157 +1,66 @@
 "use client";
 
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { SearchX } from "lucide-react";
-import { Particles } from "@/components/ui/particles";
-import { PulsatingButton } from "@/components/ui/pulsating-button";
-import GNB from "@/components/layout/GNB";
-import Footer from "@/components/layout/Footer";
+import { useEffect, useRef } from "react";
 
-const ease = [0.43, 0.13, 0.23, 0.96] as const;
-
-const containerVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease, delayChildren: 0.1, staggerChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease },
-  },
-};
-
-const numberVariants = {
-  hidden: (direction: number) => ({
-    opacity: 0,
-    x: direction * 40,
-    y: 15,
-    rotate: direction * 5,
-  }),
-  visible: {
-    opacity: 0.7,
-    x: 0,
-    y: 0,
-    rotate: 0,
-    transition: { duration: 0.8, ease },
-  },
-};
-
-const iconVariants = {
-  hidden: { scale: 0.8, opacity: 0, y: 15, rotate: -5 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    y: 0,
-    rotate: 0,
-    transition: { duration: 0.6, ease },
-  },
-  floating: {
-    y: [-5, 5],
-    transition: {
-      y: { duration: 2, ease: "easeInOut" as const, repeat: Infinity, repeatType: "reverse" as const },
-    },
-  },
-} satisfies import("framer-motion").Variants;
-
+// 없는 주소 안내. 새 서비스 사이트와 같은 모양(어두운 머리 줄 · 연두 주 버튼)으로 화면 전체를 덮는다.
+// 예전에는 옛 사이트 메뉴(포트폴리오·비용 가이드 등)와 함께 떠서, 새 사이트에서 길을 잃은 방문자가 옛 사이트로 빠졌다(2026-11-19).
+// 뿌리 틀(layout)의 옛 메뉴·하단은 화면낭독기와 키보드가 닿지 않게 inert 로 막는다.
 export default function NotFound() {
+  const box = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.title = "페이지를 찾을 수 없습니다 | 파란컴퍼니";
+    const el = box.current;
+    const blocked: Element[] = [];
+    if (el) {
+      let node: Element | null = el;
+      while (node && node !== document.body) {
+        const parent: Element | null = node.parentElement;
+        if (parent) for (const sib of Array.from(parent.children)) if (sib !== node && !sib.hasAttribute("inert")) { sib.setAttribute("inert", ""); blocked.push(sib); }
+        node = parent;
+      }
+    }
+    const prev = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      blocked.forEach((x) => x.removeAttribute("inert"));
+      document.documentElement.style.overflow = prev;
+    };
+  }, []);
+
+  const btn: React.CSSProperties = {
+    display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: 48, padding: "12px 24px", borderRadius: 100,
+    fontWeight: 700, fontSize: 16, textDecoration: "none", border: "1px solid #dcdbe2", color: "#15141a", background: "#fff",
+  };
+
   return (
-    <>
-      <GNB />
-      <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#091041] px-4">
-        {/* Particles */}
-        <Particles quantity={80} staticity={15} ease={30} color="#60a5fa" className="opacity-70" />
-        <Particles quantity={30} staticity={10} ease={20} color="#22d3ee" className="opacity-40" />
-
-        {/* Glow orbs */}
-        <div className="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-blue-600/20 blur-[120px]" />
-        <div className="pointer-events-none absolute -right-40 bottom-1/4 h-96 w-96 rounded-full bg-indigo-600/15 blur-[120px]" />
-
-        {/* Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            className="relative z-10 text-center"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-          >
-            {/* 4 [icon] 4 */}
-            <div className="mb-8 flex items-center justify-center gap-4 md:mb-12 md:gap-6">
-              <motion.span
-                className="select-none font-num text-[80px] font-bold text-white/70 md:text-[120px]"
-                variants={numberVariants}
-                custom={-1}
-              >
-                4
-              </motion.span>
-              <motion.div variants={iconVariants} animate={["visible", "floating"]}>
-                <SearchX className="h-[72px] w-[72px] text-primary-400 md:h-[100px] md:w-[100px]" strokeWidth={1.5} />
-              </motion.div>
-              <motion.span
-                className="select-none font-num text-[80px] font-bold text-white/70 md:text-[120px]"
-                variants={numberVariants}
-                custom={1}
-              >
-                4
-              </motion.span>
-            </div>
-
-            {/* Title */}
-            <motion.h1
-              className="mb-4 select-none font-display text-2xl font-bold text-white/80 md:mb-6 md:text-4xl"
-              variants={itemVariants}
-            >
-              페이지를 찾을 수 없습니다
-            </motion.h1>
-
-            {/* Description */}
-            <motion.p
-              className="mb-8 select-none text-sm text-white/50 md:mb-12 md:text-base"
-              variants={itemVariants}
-            >
-              요청하신 페이지가 존재하지 않거나 이동되었을 수 있습니다
-            </motion.p>
-
-            {/* CTA Button */}
-            <motion.div className="flex justify-center" variants={itemVariants}>
-              <Link href="/">
-                <PulsatingButton className="px-8 py-3 text-sm font-semibold md:text-base">
-                  홈으로 돌아가기
-                </PulsatingButton>
-              </Link>
-            </motion.div>
-
-            {/* Sub links */}
-            <motion.div
-              className="mt-10 flex items-center justify-center gap-6 text-sm md:mt-12"
-              variants={itemVariants}
-            >
-              <Link
-                href="/work"
-                className="select-none text-white/40 underline underline-offset-4 transition-colors hover:text-white/70"
-              >
-                포트폴리오 보기
-              </Link>
-              <span className="text-white/20">|</span>
-              <Link
-                href="/?scrollTo=contact"
-                className="select-none text-white/40 underline underline-offset-4 transition-colors hover:text-white/70"
-              >
-                견적 문의하기
-              </Link>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-      <Footer />
-    </>
+    <div ref={box} style={{ position: "fixed", inset: 0, zIndex: 2147483000, overflow: "auto", background: "#fff", color: "#15141a", fontFamily: "Pretendard, 'Noto Sans KR', sans-serif", wordBreak: "keep-all" }}>
+      <header style={{ background: "#15141a", padding: "0 24px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", minHeight: 72, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+          <a href="/" aria-label="파란컴퍼니 홈" style={{ display: "inline-flex", alignItems: "center", minHeight: 44 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/logo-white-sm.png" alt="파란컴퍼니" width={115} height={40} />
+          </a>
+          <nav aria-label="주요 메뉴" style={{ display: "flex", gap: 20, fontSize: 15, fontWeight: 600 }}>
+            <a href="/services/" style={{ color: "#fff", textDecoration: "none", padding: "12px 0" }}>서비스</a>
+            <a href="/work/" style={{ color: "#fff", textDecoration: "none", padding: "12px 0" }}>진행 사례</a>
+            <a href="/cart/" style={{ color: "#fff", textDecoration: "none", padding: "12px 0" }}>장바구니</a>
+          </nav>
+        </div>
+      </header>
+      <main style={{ maxWidth: 720, margin: "0 auto", padding: "96px 24px 120px", textAlign: "center" }}>
+        <p style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#55535e" }}>404</p>
+        <h1 style={{ margin: "12px 0 16px", fontSize: "clamp(30px, 5vw, 44px)", lineHeight: 1.25, fontWeight: 760, letterSpacing: "-0.03em" }}>페이지를 찾을 수 없습니다.</h1>
+        <p style={{ margin: "0 0 32px", fontSize: 17, lineHeight: 1.7, color: "#55535e" }}>주소가 바뀌었거나 없는 페이지입니다. 아래에서 다시 찾아 주세요.</p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+          <a href="/services/" style={{ ...btn, background: "#c3ff00", borderColor: "#c3ff00" }}>서비스 둘러보기</a>
+          <a href="/work/" style={btn}>진행 사례</a>
+          <a href="/request/?mode=consult" style={btn}>행사 상담하기</a>
+        </div>
+        <p style={{ margin: "32px 0 0", fontSize: 14, color: "#55535e" }}>
+          전화 <a href="tel:0263422800" style={{ color: "#15141a", fontWeight: 700 }}>02-6342-2800</a> · 평일 9:00–18:00
+        </p>
+      </main>
+    </div>
   );
 }
