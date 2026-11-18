@@ -1702,3 +1702,5 @@ body[data-page=catalog] .fj-cta h2,body[data-page=catalog] .fj-cta .fj-cta-steps
 .booklet-sales .option-chips .c-sub{font-size:12.5px;font-weight:500;color:#55535e}
 .booklet-sales .option-chips .c-sub i{display:none}
 .paran-content .config-form .field-err{margin:6px 0 0;font-size:13px;color:#b42318}.paran-content .config-form .option-custom[aria-invalid=true]{border-color:#b42318}
+/* 폰 서비스 상세: 알림이 아래 견적 막대를 가리지 않게 위로 */
+@media (max-width:1099px){body:has(.booklet-mobile-quote) .toast{bottom:calc(92px + env(safe-area-inset-bottom))}}
