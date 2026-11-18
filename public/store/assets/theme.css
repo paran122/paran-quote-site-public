@@ -1733,3 +1733,6 @@ body[data-page=guide] .fj-cta h2,body[data-page=guide] .fj-cta .fj-cta-steps .st
 body[data-page=about] span>small{font-size:13px!important}
 .fj-footer-legal,.fj-footer-legal a,.fj-footer-legal span{font-size:13px!important}
 .paran-content .guide-steps a{min-height:44px;display:inline-flex;align-items:center}
+/* 하단 사례 카드 글자 13px, 요청 칸 버튼 높이 44px */
+#paran-footer p,#paran-footer b,footer .fj-footer-case p,footer .fj-footer-case b{font-size:max(13px,1em)}
+.fj-cta .sc-fba22d56-6 a{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
