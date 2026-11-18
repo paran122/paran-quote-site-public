@@ -1668,3 +1668,12 @@ a.escHCg[href^="/request/"]:hover{background:#b3ef00!important;color:#15141a!imp
 /* 2026-11-18 분류 버튼 개수 글자 대비 */
 .paran-content .filter-buttons button span{color:#4b5563}
 .paran-content .filter-buttons button[aria-pressed=true] span{color:#c9c8d2}
+/* 2026-11-18 서비스 목록 폰: 제목 줄이고 장점 4줄을 2칸씩, 두 버튼 나란히 → 첫 화면 가까이 카드 */
+@media (max-width:767px){
+ body[data-page=catalog] h1{font-size:34px!important;line-height:1.25!important}
+ body[data-page=catalog] .usps-container{display:grid!important;grid-template-columns:1fr 1fr;gap:6px 12px}
+ body[data-page=catalog] .usps-container .sc-56f9339a-1{border:0!important;padding:6px 0!important;margin:0!important}
+ body[data-page=catalog] .usps-item-content{font-size:14px}
+ body[data-page=catalog] .header-buttons{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
+ body[data-page=catalog] .header-buttons a{margin:0!important;width:auto!important;font-size:14px}
+}
