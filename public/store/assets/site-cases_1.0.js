@@ -216,5 +216,5 @@ function lightbox(){
 }
 
 if(onPost)ready(postView);
-if(onPost)ready(lightbox);
+ready(()=>{if(onPost||document.querySelector('.post-photos'))lightbox()});
 })();

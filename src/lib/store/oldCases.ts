@@ -6,10 +6,24 @@ import type { Portfolio, PortfolioMedia } from "@/types";
 import type { CasePost, PostBlock, PostFile } from "./casePosts";
 
 const SKIP_SECTION = /(주요 담당 영역|함께 보면 좋은|자주 묻는 질문|FAQ|한눈에 보는 행사|관련 (서비스|페이지)|문의)/i;
-const BOILER = /(대행 사례입니다|전 과정을 파란컴퍼니가 대행|대표 .*대행 사례|성공적으로 진행했습니다\.?$)/;
+const BOILER = /(대행 사례입니다|전 과정을 파란컴퍼니가 대행|대표 .*대행 사례|대행한 사례입니다|성공적으로 진행했습니다\.?$|무료 (상담|견적)|대행이 필요하시면|문의를 남겨)/;
+
+/** '결과공유회을(를)' 처럼 자동으로 붙은 조사를 앞 글자 받침에 맞게 */
+const JOSA: Record<string, [string, string]> = { "을(를)": ["을", "를"], "이(가)": ["이", "가"], "은(는)": ["은", "는"], "과(와)": ["과", "와"], "와(과)": ["과", "와"], "으로(로)": ["으로", "로"] };
+const josa = (t: string) =>
+  t.replace(/(.)\s?(을\(를\)|이\(가\)|은\(는\)|과\(와\)|와\(과\)|으로\(로\))/g, (_m, ch: string, j: string) => {
+    const code = ch.charCodeAt(0);
+    const hangul = code >= 0xac00 && code <= 0xd7a3;
+    const batchim = hangul ? (code - 0xac00) % 28 : 0;
+    const [withB, noB] = JOSA[j];
+    const pick = j === "으로(로)" ? (batchim && batchim !== 8 ? withB : noB) : batchim ? withB : noB;
+    return ch + pick;
+  });
 
 const clean = (t: string) =>
-  t
+  josa(t)
+    .replace(/\\([.~*_>#()\-+!\[\]])/g, "$1")
+    .replace(/^(?:&gt;|>)+\s*/, "")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
     .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
     .replace(/[*_`]{1,3}/g, "")
@@ -73,10 +87,8 @@ export function portfolioToPost(p: Portfolio, media: PortfolioMedia[]): CasePost
     body.push({ t: "h", text: "현장 사진" });
     for (let i = 0; i < photos.length; i += 3) body.push({ t: "img", files: photos.slice(i, i + 3).map((_, k) => `f${i + k}`) });
   }
+  // 발주·일시·장소는 제목 아래에 이미 나오므로 표에는 넣지 않음
   const overview = [
-    { k: "발주", v: p.client || "" },
-    { k: "일시", v: dateText(p) },
-    { k: "장소", v: p.venue || "" },
     { k: "행사 유형", v: p.eventType || p.tags?.[0] || "" },
     { k: "참여 인원", v: p.attendees || "" },
     { k: "제작물", v: (p.deliverables || []).join(", ") },
