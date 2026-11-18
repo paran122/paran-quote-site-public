@@ -1713,6 +1713,13 @@ body[data-page=catalog] .fj-cta h2,body[data-page=catalog] .fj-cta .fj-cta-steps
 @media (max-width:767px){.paran-content input:not([type=checkbox]):not([type=radio]),.paran-content select,.paran-content textarea{font-size:16px}}
 .paran-content .request-empty{margin:0 0 12px;padding:14px 16px;border-radius:12px;background:#f6f6f8;font-size:15px;color:#3b3a44}
 .paran-content .request-empty a{color:#15141a;font-weight:700;text-decoration:underline;text-underline-offset:3px}
-.paran-content .date-warn{color:#8a5a00}
+.paran-content .date-warn{margin-top:6px!important;color:#8a5a00}
 .paran-content .request-form .req-error{margin:6px 0 0;font-size:13px;color:#b42318}
 .paran-content .request-form [aria-invalid=true]{border-color:#b42318}
+/* 2026-11-19 폰 알림은 화면 폭에 맞추고 아래 견적 막대 위로, 체크리스트 이름은 줄바꿈 허용, 폰 입력 칸 16px 확실히, 요청 구성 접기 */
+@media (max-width:760px){.toast,.paran-content .toast{left:16px!important;right:16px!important;transform:none!important;max-width:none!important;width:auto!important;word-break:keep-all}
+ body:has(#cart-mbar:not([hidden])) .toast{bottom:calc(84px + env(safe-area-inset-bottom))!important}}
+.paran-content #cart-checklist label b{white-space:normal;overflow:visible;text-overflow:clip;word-break:keep-all}
+@media (max-width:767px){.paran-content textarea,.paran-content .request-form textarea{font-size:16px!important}}
+.paran-content #request-summary.is-folded .summary-line:nth-of-type(n+2){display:none}
+.paran-content .summary-toggle{width:100%;min-height:44px;margin:8px 0 0;border:1px solid #dcdbe2;border-radius:99px;background:#fff;font-size:14px;font-weight:700;color:#15141a;cursor:pointer}
