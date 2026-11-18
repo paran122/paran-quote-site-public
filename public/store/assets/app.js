@@ -103,7 +103,7 @@ function initCatalog(){const input=$('#service-search');if(!input)return;const P
  const tokens=q=>q.split(/[\s,·]+/).map(x=>x.trim()).filter(Boolean);
  const termsOf=w=>{const out=[norm(w)];for(const [re,to] of SEARCH_ALIAS)if(re.test(w))out.push(...to.map(norm));return [...new Set(out.filter(Boolean))]};
  const keyOf=c=>norm((c.querySelector('h3')?.textContent||'')+' '+(c.dataset.category||''));
- const BROAD=/^(행사|디자인|제작|서비스|시안|시안물|전체)$/;const match=(c,q)=>{const ts=tokens(q);if(!ts.length)return true;const hay=keyOf(c);return ts.some(w=>BROAD.test(w)||termsOf(w).some(t=>hay.includes(t)))};
+ const BROAD=/^(행사|디자인|제작|서비스|시안|시안물|전체)$/;const match=(c,q)=>{const all=tokens(q);if(!all.length)return true;const ts=all.filter(w=>!BROAD.test(w));if(!ts.length)return true;/* 넓은 말만 있으면 전체, 구체적인 말이 같이 있으면 그 말로만 찾음 */const hay=keyOf(c);return ts.some(w=>termsOf(w).some(t=>hay.includes(t)))};
  const cartEmpty=()=>{try{return !(JSON.parse(localStorage.getItem('paran.services.cart.v1')||'[]')||[]).length}catch{return true}};
  // 장바구니가 비었으면 아래 '장바구니 보기'는 '서비스 고르기'(목록으로)로
  {const cta=$$('.fj-cta a').find(a=>a.getAttribute('href')==='/cart/'&&!a.classList.contains('fj-hero-secondary'));if(cta&&cartEmpty()){cta.textContent='서비스 고르기';cta.href='#services-grid';cta.addEventListener('click',e=>{e.preventDefault();$('#service-search')?.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>input.focus({preventScroll:true}),400)})}}
