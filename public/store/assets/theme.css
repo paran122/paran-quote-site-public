@@ -1677,3 +1677,10 @@ a.escHCg[href^="/request/"]:hover{background:#b3ef00!important;color:#15141a!imp
 }
 /* 2026-11-18 빈 결과의 상담 링크가 링크로 보이게 */
 .paran-content #no-results a{color:#15141a;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+/* 2026-11-18 서비스 목록: 정렬 고르기, 목록 아래 상담 안내, 하단 칸은 빨리 나타나게 */
+.paran-content .result-head{flex-wrap:wrap}
+.paran-content .service-sort{margin-left:auto}
+.paran-content .service-sort select{width:auto;min-height:40px;padding:6px 30px 6px 12px;border:1px solid #dcdbe2;border-radius:10px;font-size:14px;background-color:#fff}
+.paran-content .catalog-help{margin:28px 0 0;padding:16px 18px;border-radius:12px;background:#f6f6f8;font-size:15px;color:#3b3a44}
+.paran-content .catalog-help a{color:#15141a;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+body[data-page=catalog] .fj-cta h2,body[data-page=catalog] .fj-cta .fj-cta-steps .st,body[data-page=catalog] .fj-cta .fj-cta-steps .ar,body[data-page=catalog] .fj-cta .sc-fba22d56-6,body[data-page=catalog] .fj-cta .fj-cta-note{transition-duration:.3s!important;transition-delay:0s!important}
