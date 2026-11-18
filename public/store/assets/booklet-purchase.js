@@ -6,6 +6,8 @@
  // 2026-11-11 좁은 화면: 옵션 폼을 페이지 맨 아래 대신 아래에서 올라오는 창으로. 하단 바 금액은 고른 옵션대로 바뀜
  const backdrop=document.createElement('div');backdrop.className='bq-backdrop';document.body.append(backdrop);
  const closeBtn=document.createElement('button');closeBtn.type='button';closeBtn.className='bq-close';closeBtn.setAttribute('aria-label','옵션 창 닫기');closeBtn.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';panel.prepend(closeBtn);
+ // 2026-11-18 금액·내역·오류·담기 버튼을 한 덩어리(.config-foot)로 묶어 칸 아래에 붙임(금액이나 내역이 버튼에 가리지 않게)
+ {let n=0;const wrap=()=>{const f=panel.querySelector('form.config-form');if(!f)return false;if(f.querySelector('.config-foot'))return true;const pr=f.querySelector('.config-price'),cm=f.querySelector('.commit');if(!pr||!cm)return true;const d=document.createElement('div');d.className='config-foot';f.append(d);d.append(pr);for(const s of ['.config-basis','.config-error'])f.querySelectorAll(s).forEach(x=>d.append(x));d.append(cm);return true};const iv=setInterval(()=>{if(wrap()||++n>50)clearInterval(iv)},100);wrap()}
  let opener=null;
  const isOpen=()=>root.classList.contains('bq-open');
  function open(from){opener=from||null;panel.scrollTop=0;root.classList.add('bq-open');panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','요청할 구성 선택');closeBtn.focus({preventScroll:true})}

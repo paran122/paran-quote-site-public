@@ -1694,8 +1694,10 @@ body[data-page=catalog] .fj-cta h2,body[data-page=catalog] .fj-cta .fj-cta-steps
 @media (max-width:767px){.fj-source-card .cat-m{display:block;margin-bottom:2px;font-size:12px;font-weight:600;color:#9a99a4}}
 /* 2026-11-18 서비스 상세 견적 칸: 금액이 담기 버튼에 가리지 않게 금액도 버튼 위에 함께 붙고, 스크롤 막대 자리 확보, 크기 칩은 이름·치수 두 줄 */
 @media(min-width:1100px){.booklet-sales .booklet-quote-sticky{scrollbar-gutter:stable}
-.booklet-sales .booklet-quote-sticky .config-price{position:sticky;bottom:66px;z-index:2;background:#fff;box-shadow:0 -10px 10px #fff}
-.booklet-sales .booklet-quote-sticky .commit{z-index:3;box-shadow:0 -4px 0 4px #fff,0 14px 0 4px #fff}}
+.booklet-sales .booklet-quote-sticky{max-height:calc(100dvh - 140px)}
+.booklet-sales .booklet-quote-sticky .config-foot{position:sticky;bottom:0;z-index:3;margin-top:8px;padding:10px 0 12px;background:#fff;box-shadow:0 -12px 12px -2px #fff}
+.booklet-sales .booklet-quote-sticky .config-foot .config-price{padding-top:0}
+.booklet-sales .booklet-quote-sticky .config-foot .commit{position:static;box-shadow:none;margin:10px 0 0}}
 .booklet-sales .option-chips .chip{flex-direction:column;align-items:flex-start;justify-content:center}
 .booklet-sales .option-chips .c-sub{font-size:12.5px;font-weight:500;color:#55535e}
 .booklet-sales .option-chips .c-sub i{display:none}
