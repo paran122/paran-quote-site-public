@@ -97,7 +97,7 @@ export function portfolioToPost(p: Portfolio, media: PortfolioMedia[]): CasePost
   return {
     slug,
     path: `/work/${slug}`,
-    title: p.title,
+    title: p.title.replace(/_/g, " "),
     client: p.client || "",
     date: dateText(p),
     venue: p.venue || "",
@@ -111,4 +111,46 @@ export function portfolioToPost(p: Portfolio, media: PortfolioMedia[]): CasePost
     quote: [],
     videos: videos.map((v) => ({ src: v.url, label: (v.label || "").trim() || `${p.title} 현장 영상` })),
   };
+}
+
+const escHtml = (v: unknown) =>
+  String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
+/** Supabase 공개 사진 주소 → 폭 w 로 줄인 주소(목록 작은 사진용) */
+const thumb = (url: string, w: number) =>
+  /\/storage\/v1\/object\/public\//.test(url) ? url.replace("/storage/v1/object/public/", "/storage/v1/render/image/public/") + `?width=${w}&resize=contain&quality=75` : url;
+
+/** 목록 아래 '사례 더 보기': 글자 링크 대신 작은 사진·유형·연도가 있는 카드 + 유형 고르기.
+ *  틀에 이미 있는 링크(빌드가 고른 사례)만 대상으로 하고, 표에서 못 찾은 것은 글자 링크로 남긴다 */
+export function fillOldCases(html: string, portfolios: Portfolio[], media: PortfolioMedia[]) {
+  const m = html.match(/<div class="case-more"><h2>([^<]*)<\/h2><ul>([\s\S]*?)<\/ul><\/div>/);
+  if (!m) return html;
+  const links = Array.from(m[2].matchAll(/<li><a href="\/work\/([^"]+)">([\s\S]*?)<\/a><\/li>/g)).map((x) => ({ slug: x[1], title: x[2] }));
+  if (!links.length) return html;
+  const bySlug = new Map(portfolios.filter((p) => p.isVisible).map((p) => [p.slug || p.id, p]));
+  const firstPhoto = new Map<string, string>();
+  for (const x of media) if ((x.type === "photo" || x.type === "gallery") && !firstPhoto.has(x.portfolioId)) firstPhoto.set(x.portfolioId, x.url);
+  const types: string[] = [];
+  const cards = links
+    .map(({ slug, title }) => {
+      const p = bySlug.get(slug) || bySlug.get(decodeURIComponent(slug));
+      const type = (p?.eventType || p?.tags?.[0] || "").trim();
+      if (type && !types.includes(type)) types.push(type);
+      const img = p ? p.imageUrl || firstPhoto.get(p.id) || "" : "";
+      const meta = [type, p?.year ? `${p.year}` : ""].filter(Boolean).join(" · ");
+      return `<li data-type="${escHtml(type)}"><a href="/work/${slug}">${
+        img ? `<img src="${escHtml(thumb(img, 480))}" alt="" loading="lazy" decoding="async" width="480" height="320">` : `<span class="cm-noimg" aria-hidden="true"></span>`
+      }<span class="cm-text">${meta ? `<span class="cm-meta">${escHtml(meta)}</span>` : ""}<b>${title}</b></span></a></li>`;
+    })
+    .join("");
+  const filter =
+    types.length > 1
+      ? `<div class="cm-filter" role="group" aria-label="행사 유형으로 고르기"><button type="button" aria-pressed="true" data-cm="">전체 <span>${links.length}</span></button>${types
+          .map((t) => `<button type="button" aria-pressed="false" data-cm="${escHtml(t)}">${escHtml(t)}</button>`)
+          .join("")}</div>`
+      : "";
+  const script = filter
+    ? `<script>(()=>{const box=document.currentScript.closest('.case-more');if(!box)return;const bs=[...box.querySelectorAll('[data-cm]')],lis=[...box.querySelectorAll('.cm-grid li')],out=box.querySelector('.cm-count');box.addEventListener('click',e=>{const b=e.target.closest('[data-cm]');if(!b)return;let n=0;bs.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));lis.forEach(li=>{const show=!b.dataset.cm||li.dataset.type===b.dataset.cm;li.hidden=!show;if(show)n++});if(out)out.textContent=n+'건'})})()</script>`
+    : "";
+  const block = `<div class="case-more is-cards"><h2>${m[1]} <span class="cm-count" aria-live="polite">${links.length}건</span></h2>${filter}<ul class="cm-grid">${cards}</ul>${script}</div>`;
+  return html.replace(m[0], block);
 }

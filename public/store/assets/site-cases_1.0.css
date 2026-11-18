@@ -188,3 +188,24 @@
 
 /* 2026-11-18 예전 사례에서 옮겨 온 현장 영상 */
 .post-video{margin:24px 0}.post-video video{display:block;width:100%;aspect-ratio:16/9;border-radius:12px;background:#000}.post-video figcaption{margin-top:8px;font-size:14px;color:var(--muted)}
+
+/* 2026-11-18 진행 사례 목록: 대표 카드는 카드 전체가 눌리게, '사례 더 보기'는 작은 사진·유형 카드 + 유형 고르기 */
+[data-cases-live]>div{position:relative}
+[data-cases-live]>div a.sc-a6a294d0-5::after{content:"";position:absolute;inset:0}
+.case-more.is-cards h2{display:flex;align-items:baseline;gap:10px}
+.case-more .cm-count{font-size:15px;font-weight:500;color:var(--muted)}
+.case-more .cm-filter{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 24px}
+.paran-content .case-more .cm-filter button{min-height:44px;padding:8px 16px;border:1px solid #dcdbe2;border-radius:99px;background:#fff;font-size:15px;font-weight:500;color:#3b3a44;cursor:pointer}
+.paran-content .case-more .cm-filter button[aria-pressed=true]{border-color:#15141a;box-shadow:inset 0 0 0 1px #15141a;color:#15141a;font-weight:700}
+.paran-content .case-more .cm-filter button span{margin-left:4px;font-size:13px;color:var(--muted)}
+.case-more.is-cards ul.cm-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px 20px;columns:auto}
+.case-more.is-cards .cm-grid li{margin:0;padding:0;border:0;break-inside:auto}
+.case-more.is-cards .cm-grid li[hidden]{display:none}
+.case-more.is-cards .cm-grid a{display:grid;gap:10px;text-decoration:none;color:var(--ink)}
+.case-more.is-cards .cm-grid img,.case-more.is-cards .cm-noimg{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:10px;background:#f1f1f4}
+.case-more.is-cards .cm-text{display:grid;gap:4px}
+.case-more.is-cards .cm-meta{font-size:13px;color:var(--muted)}
+.case-more.is-cards .cm-grid b{font-size:16px;line-height:1.45;font-weight:650}
+.case-more.is-cards .cm-grid a:hover b{text-decoration:underline;text-underline-offset:4px}
+@media (max-width:1000px){.case-more.is-cards ul.cm-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:700px){.case-more.is-cards ul.cm-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px}.case-more.is-cards .cm-grid b{font-size:15px}}
