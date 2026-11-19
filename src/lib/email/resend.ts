@@ -4,7 +4,7 @@ export const FROM_EMAIL =
   process.env.RESEND_FROM_EMAIL || "noreply@parancompany.co.kr";
 
 export const ADMIN_EMAIL =
-  process.env.RESEND_ADMIN_EMAIL || "info@parancompany.co.kr";
+  process.env.RESEND_ADMIN_EMAIL || "cs@parancompany.co.kr";
 
 /** 시험 접수(행사명이 [TEST]로 시작)는 단체 메일함 대신 이 주소로만 알린다 */
 export const TEST_ADMIN_EMAIL = "kds@parancompany.co.kr";
