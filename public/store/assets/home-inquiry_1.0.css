@@ -1,17 +1,18 @@
-/* 홈 '견적·문의' 칸 (2026-11-19). 차분하게: 밝은 바탕, 흰 카드, 연두는 주 버튼과 선택 체크에만.
+/* 홈 '견적·문의' 칸 (2026-11-19). 차분하게: 흰 바탕, 옅은 회색 카드, 연두는 주 버튼과 선택 체크에만.
    먼저 필요한 일을 고르면 오른쪽이 바뀐다: 디자인·제작물 → 서비스 고르기(금액 바로), 그 외 → 짧은 문의 양식. */
-.hqi{background:#f4f4f6;color:#15141a;padding:96px 20px;font-family:'__Poppins_9808a3',Pretendard,sans-serif;word-break:keep-all;scroll-margin-top:90px}
-.hqi-wrap{max-width:1210px;margin:0 auto;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:56px;align-items:start}
+.hqi{background:#fff;color:#15141a;padding:96px 20px;font-family:'__Poppins_9808a3',Pretendard,sans-serif;word-break:keep-all;scroll-margin-top:90px;border-top:1px solid #ececf0}
+.hqi-wrap{max-width:1210px;margin:0 auto;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);grid-template-areas:"copy side" "direct side";grid-template-rows:auto 1fr;column-gap:56px;row-gap:0;align-items:start}
+.hqi-copy{grid-area:copy}.hqi-side{grid-area:side;min-width:0}.hqi-direct{grid-area:direct}
 .hqi-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .hqi-copy h2{margin:0 0 12px;font-size:clamp(28px,3.1vw,42px);line-height:1.25;font-weight:700;letter-spacing:-.02em}
-.hqi-copy>p{margin:0 0 24px;font-size:17px;line-height:1.7;color:#4a4954}
+.hqi-copy>p{margin:0 0 24px;font-size:17px;line-height:1.7;color:#4a4954;max-width:34em}
 .hqi a{color:#15141a;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 
 /* 필요한 일 고르기: 사이트 옵션 칩과 같은 규칙(검정 테두리 + 연두 체크) */
 .hqi-need{border:0;margin:0 0 28px;padding:0;display:grid;gap:10px;min-width:0}
 .hqi-opt{display:block;cursor:pointer}
 .hqi-opt input{position:absolute;opacity:0;width:1px;height:1px}
-.hqi-opt-box{position:relative;display:grid;gap:4px;padding:16px 52px 16px 18px;background:#fff;border:1px solid #d5d5dc;border-radius:14px;transition:border-color .15s}
+.hqi-opt-box{position:relative;display:grid;gap:4px;padding:16px 52px 16px 18px;background:#fff;border:1px solid #cfcfd7;border-radius:14px;transition:border-color .15s}
 .hqi-opt-box b{font-size:17px;font-weight:700;line-height:1.4}
 .hqi-opt-box small{font-size:14px;line-height:1.55;color:#5c5b66}
 .hqi-ck{position:absolute;right:16px;top:50%;width:22px;height:22px;margin-top:-11px;opacity:0;transition:opacity .15s}
@@ -21,72 +22,75 @@
 .hqi-opt input:checked+.hqi-opt-box .hqi-ck{opacity:1}
 .hqi-opt input:focus-visible+.hqi-opt-box{outline:3px solid #15141a;outline-offset:2px}
 
-.hqi-direct{margin:0;padding-top:22px;border-top:1px solid #dcdce2;font-size:15px;line-height:1.8;color:#15141a}
+.hqi-direct{margin:0;padding-top:22px;border-top:1px solid #dcdce2;font-size:15px;line-height:1.8;color:#15141a;display:flex;flex-wrap:wrap;gap:0 18px}
+.hqi-direct span{white-space:nowrap}
 .hqi-direct a{font-weight:600;text-decoration:none}
 .hqi-direct a:hover{text-decoration:underline}
-.hqi-direct span{color:#6b6a75;font-size:14px}
+.hqi-direct .hqi-hours{flex-basis:100%;color:#6b6a75;font-size:14px}
 
 /* 오른쪽 칸: 고른 것에 따라 하나만 보인다 */
-.hqi-panel{background:#fff;border:1px solid #e3e3e8;border-radius:20px;padding:32px;display:grid;gap:16px;align-content:start}
+.hqi-panel{background:#f6f6f8;border:1px solid #e3e3e8;border-radius:20px;padding:32px;display:grid;gap:16px;align-content:start;scroll-margin-top:96px}
+.hqi-panel h3{margin:0;font-size:24px;line-height:1.35;font-weight:700;letter-spacing:-.01em}
+.hqi-lead-on{margin:0;font-size:15px;line-height:1.65;color:#4a4954}
 .hqi-form{display:none}
 .hqi:has(#hqi-need-agency:checked) .hqi-form,.hqi:has(#hqi-need-unsure:checked) .hqi-form{display:grid}
 .hqi:has(#hqi-need-agency:checked) .hqi-quote,.hqi:has(#hqi-need-unsure:checked) .hqi-quote{display:none}
-.hqi-lead{margin:0;font-size:15px;line-height:1.65;color:#4a4954;display:none}
-.hqi:has(#hqi-need-agency:checked) .hqi-lead-agency,.hqi:has(#hqi-need-unsure:checked) .hqi-lead-unsure{display:block}
+.hqi-t-agency,.hqi-t-unsure{display:none}
+.hqi:has(#hqi-need-agency:checked) .hqi-t-agency,.hqi:has(#hqi-need-unsure:checked) .hqi-t-unsure{display:inline}
 
-.hqi-quote h3{margin:0;font-size:24px;line-height:1.35;font-weight:700;letter-spacing:-.01em}
-.hqi-steps{list-style:none;counter-reset:hqi;margin:4px 0 0;padding:0;display:grid;gap:12px}
-.hqi-steps li{counter-increment:hqi;position:relative;padding-left:40px;display:grid;gap:2px}
-.hqi-steps li::before{content:counter(hqi);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:#15141a;color:#fff;font-size:14px;font-weight:700;display:grid;place-items:center}
-.hqi-steps b{font-size:16px;line-height:1.75}
-.hqi-steps span{font-size:14px;line-height:1.55;color:#5c5b66}
-.hqi-chips{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.hqi-chips a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid #d5d5dc;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;background:#fff}
+.hqi-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.hqi-chips a{display:inline-flex;align-items:center;min-height:44px;padding:0 15px;border:1px solid #cfcfd7;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;background:#fff}
 .hqi-chips a:hover{border-color:#15141a}
 .hqi-go,.hqi-submit{appearance:none;border:0;border-radius:999px;background:#c3ff00;color:#15141a;font:inherit;font-size:17px;font-weight:700;min-height:56px;padding:0 28px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:filter .15s}
 .hqi a.hqi-go{text-decoration:none}
 .hqi-go:hover,.hqi-submit:hover{filter:brightness(.94)}
 .hqi-submit:disabled{cursor:progress;filter:grayscale(.4);opacity:.75}
-.hqi-fine{margin:0;font-size:14px;line-height:1.6;color:#5c5b66}
+.hqi-fine{margin:0;font-size:14px;line-height:1.75;color:#5c5b66}
+.hqi-link{appearance:none;border:0;background:none;padding:0;font:inherit;font-weight:600;color:#15141a;text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:24px}
 
 .hqi-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .hqi-field{display:grid;gap:6px;min-width:0}
 .hqi-field label{font-size:14px;font-weight:600;color:#15141a}
-.hqi-field label span{margin-left:4px;font-size:12px;font-weight:500;color:#6b6a75}
-.hqi-field input,.hqi-field textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;line-height:1.5;color:#15141a;background:#fff;border:1px solid #c9c9d1;border-radius:10px;padding:12px 14px;min-height:48px}
+.hqi-field label span{margin-left:4px;font-size:12px;font-weight:500;color:#5c5b66}
+.hqi-field input,.hqi-field textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;line-height:1.5;color:#15141a;background:#fff;border:1px solid #b9b9c3;border-radius:10px;padding:12px 14px;min-height:48px}
 .hqi-field textarea{resize:vertical;min-height:112px}
-.hqi-field input::placeholder,.hqi-field textarea::placeholder{color:#8a8994}
-.hqi-field input:focus-visible,.hqi-field textarea:focus-visible,.hqi-consent input:focus-visible,.hqi-submit:focus-visible,.hqi-go:focus-visible,.hqi a:focus-visible{outline:3px solid #15141a;outline-offset:2px}
+.hqi-field input::placeholder,.hqi-field textarea::placeholder{color:#6f6e7a}
+.hqi-hint{margin:0;font-size:13px;line-height:1.55;color:#5c5b66}
+.hqi-field input:focus-visible,.hqi-field textarea:focus-visible,.hqi-consent input:focus-visible,.hqi-submit:focus-visible,.hqi-go:focus-visible,.hqi a:focus-visible,.hqi-link:focus-visible{outline:3px solid #15141a;outline-offset:2px}
 .hqi-field [aria-invalid=true]{border-color:#b3261e}
 .hqi-note,.hqi-error{margin:0;font-size:14px;line-height:1.5;color:#b3261e}
 .hqi-error{padding:12px 14px;border:1px solid #b3261e;border-radius:10px;background:#fff5f4}
 .hqi-honey{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .hqi-consent{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-size:14px;line-height:1.6;color:#4a4954;cursor:pointer}
 .hqi-consent input{width:20px;height:20px;margin:2px 0 0;accent-color:#15141a}
-@media (max-width:900px){
- .hqi{padding:64px 16px}
- .hqi-wrap{grid-template-columns:1fr;gap:28px}
- .hqi-panel{padding:22px 18px;border-radius:16px}
- .hqi-row{grid-template-columns:1fr}
- .hqi-direct{order:3}
-}
-@media (prefers-reduced-motion:reduce){.hqi-go,.hqi-submit,.hqi-opt-box,.hqi-ck{transition:none}}
+
 /* 첨부: 끌어다 놓거나 눌러서 고름. 파일 고르기 입력을 칸 전체에 투명하게 덮어 키보드·화면낭독기로도 그대로 쓴다 */
-.hqi-drop{position:relative;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:16px 18px;border:1.5px dashed #b5b5bf;border-radius:12px;background:#fafafb;transition:border-color .15s,background .15s}
+.hqi-drop{position:relative;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:16px 18px;border:1.5px dashed #9c9ba7;border-radius:12px;background:#fff;transition:border-color .15s,background .15s}
 .hqi-drop input{position:absolute;inset:0;width:100%;height:100%;min-height:0;opacity:0;cursor:pointer;padding:0;border:0}
 .hqi-drop svg{width:28px;height:28px;fill:none;stroke:#15141a;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .hqi-drop p{margin:0;display:grid;gap:2px}
 .hqi-drop b{font-size:15px;font-weight:600;line-height:1.5}
-.hqi-drop p span{font-size:13px;line-height:1.5;color:#5c5b66}
+.hqi-drop p>span{font-size:13px;line-height:1.5;color:#5c5b66}
+.hqi-coarse-pointer{display:none}
+@media (hover:none) and (pointer:coarse){.hqi-fine-pointer{display:none}.hqi-coarse-pointer{display:inline}}
 .hqi-drop:hover{border-color:#15141a}
 .hqi-drop.is-over{border-color:#15141a;border-style:solid;background:#f3ffd1}
 .hqi-drop:has(input:focus-visible){outline:3px solid #15141a;outline-offset:2px}
 .hqi-filelist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .hqi-filelist:empty{display:none}
-.hqi-filelist li{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:8px 8px 8px 12px;border:1px solid #e3e3e8;border-radius:10px;font-size:14px;line-height:1.4}
+.hqi-filelist li{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:6px 6px 6px 12px;border:1px solid #e3e3e8;border-radius:10px;background:#fff;font-size:14px;line-height:1.4}
 .hqi-filelist .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.hqi-filelist .sz{color:#6b6a75;font-size:13px;white-space:nowrap}
-.hqi-filelist button{appearance:none;border:0;background:none;font:inherit;font-size:13px;font-weight:600;color:#15141a;min-width:44px;min-height:36px;border-radius:8px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.hqi-filelist .sz{color:#5c5b66;font-size:13px;white-space:nowrap}
+.hqi-filelist button{appearance:none;border:0;background:none;font:inherit;font-size:13px;font-weight:600;color:#15141a;min-width:44px;min-height:44px;border-radius:8px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .hqi-filelist button:hover{background:#f0f0f3}
 .hqi-filelist button:focus-visible{outline:3px solid #15141a;outline-offset:1px}
-@media (prefers-reduced-motion:reduce){.hqi-drop{transition:none}}
+
+@media (max-width:900px){
+ .hqi{padding:64px 16px}
+ .hqi-wrap{grid-template-columns:1fr;grid-template-areas:"copy" "side" "direct";grid-template-rows:auto;row-gap:24px}
+ .hqi-need{margin-bottom:0}
+ .hqi-panel{padding:22px 18px;border-radius:16px}
+ .hqi-row{grid-template-columns:1fr}
+ .hqi-direct{padding-top:20px;flex-direction:column;gap:0}
+}
+@media (prefers-reduced-motion:reduce){.hqi-go,.hqi-submit,.hqi-opt-box,.hqi-ck,.hqi-drop{transition:none}}
