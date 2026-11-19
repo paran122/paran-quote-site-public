@@ -1780,3 +1780,5 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .request-form.is-empty>:not(.request-empty-top){display:none}
 /* 휴대폰에서 누르는 영역 44px */
 @media (max-width:767px){.fj-source-footer a[href^='tel:'],.fj-source-footer a[href^='mailto:']{display:inline-flex;align-items:center;min-height:44px}.paran-content .config-info summary{min-height:44px;display:flex;align-items:center;flex-wrap:wrap}}
+/* 2026-11-20 6차 채점: 견적 요청 화면의 글 속 링크가 링크로 보이게 */
+.request-summary>a[href="/cart/"],.request-form .consent a{text-decoration:underline;text-underline-offset:3px;color:#173eb8}.request-summary>a[href="/cart/"]{display:inline-flex;align-items:center;min-height:44px}
