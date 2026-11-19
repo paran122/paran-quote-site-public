@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase, supabaseAdmin } from "@/lib/supabase";
 import { isQuoteAdminRequest, preflight, withCors } from "@/lib/intranet-auth";
 import { quoteLinkKey } from "@/lib/quote/link";
+import { editableQuote, toPublicQuote, totalWon, type QuoteRow } from "@/lib/quote/view";
 
 export function OPTIONS(request: NextRequest) {
   return preflight(request);
@@ -36,7 +37,30 @@ export async function GET(request: NextRequest) {
     // 번호가 겹친 예전 접수는 링크를 만들지 않는다(조회도 거절함)
     const unique = row.quote_number ? seen.get(row.quote_number) === 1 : false;
     const linkKey = unique && row.quote_number ? quoteLinkKey(row.quote_number) : null;
-    return { ...row, link_path: linkKey ? `/q/${linkKey}` : null };
+    // 금액·수정 화면 첫 값·고객 화면 모양은 여기서 계산해 준다(인트라넷이 계산식을 따로 갖지 않게).
+    // 한 건이 깨져 있어도 목록 전체가 막히지 않도록 그 건만 비우고 이유를 적는다.
+    let total_won: number | null = null;
+    let editable: ReturnType<typeof editableQuote> | null = null;
+    let view: ReturnType<typeof toPublicQuote> | null = null;
+    let view_error: string | null = null;
+    try {
+      const full = row as unknown as QuoteRow;
+      total_won = totalWon(full);
+      editable = editableQuote(full);
+      view = toPublicQuote(full);
+    } catch (e) {
+      editable = null;
+      view = null;
+      view_error = e instanceof Error ? e.message : String(e);
+    }
+    return {
+      ...row,
+      link_path: linkKey ? `/q/${linkKey}` : null,
+      total_won,
+      editable,
+      view,
+      view_error,
+    };
   });
 
   return withCors(request, NextResponse.json(rows));

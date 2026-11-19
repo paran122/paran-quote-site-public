@@ -77,6 +77,8 @@ const RevisionSchema = z.object({
   ship: z.number().int().min(0).max(100_000_000),
   notice: z.string().trim().max(2000),
   notify: z.boolean(),
+  /** true 면 저장도 알림도 하지 않고, 같은 검사와 계산 결과만 돌려준다(수정 중 합계 미리보기) */
+  dryRun: z.boolean().optional(),
 });
 
 const MISSING_COLUMN_MESSAGE =
@@ -124,7 +126,7 @@ export async function PUT(
   const input = parsed.data;
 
   const notifyBlocked = (eventName: string) =>
-    input.notify && !isProductionHost(request) && !eventName.trim().toUpperCase().startsWith("[TEST]");
+    input.notify && !input.dryRun && !isProductionHost(request) && !eventName.trim().toUpperCase().startsWith("[TEST]");
 
   const { data: found, error: loadError } = await supabaseAdmin
     .from("quotes")
@@ -167,6 +169,15 @@ export async function PUT(
     vat: totals.vat,
     total: totals.total,
   };
+
+  if (input.dryRun) {
+    return withCors(request, NextResponse.json({
+      success: true,
+      dryRun: true,
+      revision,
+      total_amount: totals.total,
+    }));
+  }
 
   const { error: saveError } = await supabaseAdmin
     .from("quotes")
