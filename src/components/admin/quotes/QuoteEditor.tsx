@@ -30,6 +30,7 @@ interface DraftLine {
   qty: string;
   unit: string;
   unitPrice: string;
+  tbd?: boolean;
 }
 
 const toDraft = (line: QuoteLine): DraftLine => ({
@@ -38,6 +39,7 @@ const toDraft = (line: QuoteLine): DraftLine => ({
   qty: String(line.qty),
   unit: line.unit,
   unitPrice: String(line.unitPrice),
+  ...(line.tbd ? { tbd: true } : {}),
 });
 
 const EMPTY_LINE: DraftLine = { name: "", detail: "", qty: "1", unit: "식", unitPrice: "0" };
@@ -168,6 +170,7 @@ function QuoteEditor({
     qty: toNumber(line.qty),
     unit: line.unit.trim(),
     unitPrice: Math.round(toNumber(line.unitPrice)),
+    ...(line.tbd && Math.round(toNumber(line.unitPrice)) === 0 ? { tbd: true } : {}),
   }));
   const totals = computeTotals(parsedLines, Math.max(0, Math.round(toNumber(ship))));
 
@@ -265,7 +268,7 @@ function QuoteEditor({
               aria-label={`${i + 1}번 단가`}
             />
             <div className="col-span-10 sm:col-span-2 text-right text-sm text-slate-900 py-1.5">
-              {won(parsedLines[i].unitPrice * parsedLines[i].qty)}
+              {parsedLines[i].tbd ? "상담 후 확정" : won(parsedLines[i].unitPrice * parsedLines[i].qty)}
             </div>
             <button
               type="button"

@@ -44,7 +44,7 @@ export function quoteUpdatedHtml(data: QuoteUpdatedEmailData): string {
         name: line.name,
         detail: line.detail,
         qty: `${line.qty}${line.unit}`,
-        amount: won(line.unitPrice * line.qty),
+        amount: line.tbd ? "상담 후 확정" : won(line.unitPrice * line.qty),
       })),
       "공급가"
     ),

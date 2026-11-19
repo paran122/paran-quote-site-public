@@ -70,6 +70,8 @@ const RevisionSchema = z.object({
         unit: z.string().trim().max(10),
         // 할인 줄은 음수 단가로 넣는다
         unitPrice: z.number().int().min(-MAX_AMOUNT).max(MAX_AMOUNT),
+        // 금액이 아직 정해지지 않은 줄(상담 후 확정). 0원 줄과 구분해 고객 화면에 글로 보인다.
+        tbd: z.boolean().optional(),
       })
     )
     .min(1)
@@ -123,7 +125,12 @@ export async function PUT(
       { status: 400 }
     ));
   }
-  const input = parsed.data;
+  const input = {
+    ...parsed.data,
+    lines: parsed.data.lines.map(({ tbd, ...line }) =>
+      tbd && line.unitPrice === 0 ? { ...line, tbd: true } : line
+    ),
+  };
 
   const notifyBlocked = (eventName: string) =>
     input.notify && !input.dryRun && !isProductionHost(request) && !eventName.trim().toUpperCase().startsWith("[TEST]");
