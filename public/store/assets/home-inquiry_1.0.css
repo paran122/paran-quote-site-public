@@ -108,3 +108,14 @@
 .hqi .hqi-direct a{color:#fff}
 .hqi-direct .hqi-hours{color:#a9a7b3}
 .hqi-drop{background:#fafafb}
+/* 2026-11-20 셋 중 하나를 고르는 칸이라는 게 보이게: 칸마다 왼쪽에 고르는 동그라미(안 고른 칸은 빈 동그라미, 고른 칸은 연두 체크), 안 고른 칸은 한 단계 물러나게 */
+.hqi-need legend span{margin-left:8px;font-size:14px;font-weight:500;color:#a9a7b3}
+.hqi-opt-box{padding:16px 18px 16px 56px;background:#eeeef2}
+.hqi-opt-box b{color:#3f3e48}
+.hqi-dot{position:absolute;left:18px;top:50%;width:24px;height:24px;margin-top:-12px;border-radius:50%;border:2px solid #8a8994;background:#fff;box-sizing:border-box;transition:border-color .15s}
+.hqi-dot .hqi-ck{position:absolute;right:auto;left:-2px;top:-2px;margin:0;width:24px;height:24px}
+.hqi-opt:hover .hqi-dot{border-color:#15141a}
+.hqi-opt input:checked+.hqi-opt-box{background:#fff}
+.hqi-opt input:checked+.hqi-opt-box b{color:#15141a}
+.hqi-opt input:checked+.hqi-opt-box .hqi-dot{border-color:#c3ff00}
+@media (prefers-reduced-motion:reduce){.hqi-dot{transition:none}}
