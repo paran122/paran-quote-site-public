@@ -61,7 +61,7 @@ export function withCors<T extends NextResponse>(request: Request, response: T):
   response.headers.append("Vary", "Origin");
   if (origin) {
     response.headers.set("Access-Control-Allow-Origin", origin);
-    response.headers.set("Access-Control-Allow-Methods", "GET, PATCH, PUT, OPTIONS");
+    response.headers.set("Access-Control-Allow-Methods", "GET, PATCH, PUT, POST, OPTIONS");
     response.headers.set("Access-Control-Allow-Headers", "Authorization, Content-Type");
     response.headers.set("Access-Control-Max-Age", "600");
   }

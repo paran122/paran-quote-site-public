@@ -133,7 +133,11 @@ export async function middleware(request: NextRequest) {
     if (
       pathname.startsWith("/api/admin/quotes") &&
       (request.method === "OPTIONS" ||
-        ((request.method === "GET" || request.method === "PATCH" || request.method === "PUT") &&
+        ((request.method === "GET" ||
+          request.method === "PATCH" ||
+          request.method === "PUT" ||
+          // 나중에 보내기(/send)만 POST 를 받는다
+          (request.method === "POST" && /^\/api\/admin\/quotes\/[^/]+\/send\/?$/.test(pathname))) &&
           (request.headers.get("authorization") || "").startsWith("Bearer ")))
     ) {
       return NextResponse.next();

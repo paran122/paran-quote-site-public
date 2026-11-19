@@ -6,14 +6,11 @@ import { isProductionHost, isQuoteAdminRequest, preflight, withCors } from "@/li
 import { quoteLinkUrl, siteUrlFromRequest } from "@/lib/quote/link";
 import {
   computeTotals,
-  manFromWon,
   readRevisions,
   type QuoteRevision,
   type QuoteRow,
 } from "@/lib/quote/view";
-import { sendEmail, RESEND_API_KEY, FROM_EMAIL } from "@/lib/email/resend";
-import { quoteUpdatedHtml, quoteUpdatedSubject } from "@/lib/email/templates/quote-updated";
-import { sendQuoteUpdatedAlimtalk } from "@/lib/alimtalk";
+import { markRevisionSent, sendRevisionNotice, type RevisionSent } from "@/lib/quote/notify-revision";
 
 export function OPTIONS(request: NextRequest) {
   return preflight(request);
@@ -212,46 +209,17 @@ export async function PUT(
   }
 
   const link = quoteLinkUrl(siteUrlFromRequest(request), row.quote_number);
-  const notified = { email: false, alimtalk: false };
+  let notified = { email: false, alimtalk: false };
+  let sent: RevisionSent | null = null;
   if (input.notify && link) {
-    const [mail, talk] = await Promise.allSettled([
-      RESEND_API_KEY
-        ? sendEmail({
-            from: FROM_EMAIL,
-            to: row.email,
-            subject: quoteUpdatedSubject({
-              contactName: row.contact_name,
-              quoteNumber: row.quote_number,
-              eventName: row.event_name,
-              revision,
-              linkUrl: link,
-            }),
-            html: quoteUpdatedHtml({
-              contactName: row.contact_name,
-              quoteNumber: row.quote_number,
-              eventName: row.event_name,
-              revision,
-              linkUrl: link,
-            }),
-          })
-        : Promise.resolve({ success: false }),
-      sendQuoteUpdatedAlimtalk({
-        phone: row.phone,
-        contactName: row.contact_name,
-        quoteNumber: row.quote_number,
-        rev: revision.rev,
-        totalAmount: manFromWon(totals.total),
-        linkUrl: link,
-        eventName: row.event_name,
-      }),
-    ]);
-    notified.email = mail.status === "fulfilled" && mail.value.success;
-    notified.alimtalk = talk.status === "fulfilled" && talk.value.success;
+    notified = await sendRevisionNotice(row, revision, link);
+    // 실제로 나간 알림만 그 차수에 기록한다(내부용)
+    sent = await markRevisionSent(supabaseAdmin, id, revision.rev, notified);
   }
 
   return withCors(request, NextResponse.json({
     success: true,
-    revision: revisionOut,
+    revision: sent ? { ...revisionOut, sent } : revisionOut,
     total_amount: totals.total,
     notified,
   }));
