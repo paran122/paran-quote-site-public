@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase, supabaseAdmin } from "@/lib/supabase";
-import { isQuoteAdminRequest, preflight, withCors } from "@/lib/intranet-auth";
+import { STATUS_REASON_MARK, isQuoteAdminRequest, preflight, withCors } from "@/lib/intranet-auth";
 import { quoteLinkKey } from "@/lib/quote/link";
 import { editableQuote, originalQuote, toPublicQuote, totalWon, type QuoteRow } from "@/lib/quote/view";
 
@@ -26,6 +26,23 @@ export async function GET(request: NextRequest) {
 
   if (error) {
     return withCors(request, NextResponse.json({ error: error.message }, { status: 500 }));
+  }
+
+  // 상태를 바꾼 이유(내부 메모 표에 표시를 붙여 남긴 것). 못 읽어도 목록은 그대로 준다.
+  const reasons = new Map<string, string>();
+  try {
+    const { data: marks } = await db
+      .from("quote_notes")
+      .select("quote_id, content, created_at")
+      .like("content", `${STATUS_REASON_MARK}%`)
+      .order("created_at", { ascending: true });
+    for (const m of (marks ?? []) as Array<{ quote_id: string; content: string }>) {
+      const text = m.content.slice(STATUS_REASON_MARK.length);
+      const cut = text.indexOf(": ");
+      reasons.set(m.quote_id, cut >= 0 ? text.slice(cut + 2) : text);
+    }
+  } catch {
+    /* 메모 표를 못 읽으면 이유 없이 준다 */
   }
 
   // 고객에게 보내는 견적 바로보기 주소(사이트 주소를 뺀 경로)
@@ -59,6 +76,7 @@ export async function GET(request: NextRequest) {
     return {
       ...row,
       link_path: linkKey ? `/q/${linkKey}` : null,
+      status_reason: reasons.get((row as { id?: string }).id ?? "") ?? null,
       total_won,
       editable,
       view,

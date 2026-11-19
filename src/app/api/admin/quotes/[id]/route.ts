@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod/v4";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isAuthenticated } from "@/lib/admin-auth";
-import { isProductionHost, isQuoteAdminRequest, preflight, withCors } from "@/lib/intranet-auth";
+import {
+  STATUS_REASON_MARK,
+  isProductionHost,
+  isQuoteAdminRequest,
+  preflight,
+  withCors,
+} from "@/lib/intranet-auth";
 import { quoteLinkUrl, siteUrlFromRequest } from "@/lib/quote/link";
 import {
   computeTotals,
@@ -31,6 +37,10 @@ export async function PATCH(
   const { id } = await params;
   const body = await request.json();
   const status = body.status as string;
+  const reasonRaw = typeof body.status_reason === "string" ? body.status_reason.trim() : "";
+  if (reasonRaw.length > 200) {
+    return withCors(request, NextResponse.json({ error: "이유는 200자 이하로 적어 주세요" }, { status: 400 }));
+  }
 
   const VALID_STATUSES = ["접수대기", "진행중", "완료", "취소"];
   if (!VALID_STATUSES.includes(status)) {
@@ -46,7 +56,21 @@ export async function PATCH(
     return withCors(request, NextResponse.json({ error: error.message }, { status: 500 }));
   }
 
-  return withCors(request, NextResponse.json({ success: true }));
+  // 상태 이유(내부용): 예전 이유는 지우고, 이번에 온 것이 있으면 새로 남긴다. 실패해도 상태 변경은 된 것으로 둔다.
+  let status_reason: string | null = null;
+  try {
+    await supabaseAdmin.from("quote_notes").delete().eq("quote_id", id).like("content", `${STATUS_REASON_MARK}%`);
+    if (reasonRaw) {
+      const { error: noteError } = await supabaseAdmin
+        .from("quote_notes")
+        .insert({ quote_id: id, content: `${STATUS_REASON_MARK}${status}: ${reasonRaw}` });
+      if (!noteError) status_reason = reasonRaw;
+    }
+  } catch (e) {
+    console.error("[quote] 상태 이유 기록 실패:", e);
+  }
+
+  return withCors(request, NextResponse.json({ success: true, status_reason }));
 }
 
 /* ── 견적 수정: 새 차수를 이력에 덧붙인다 ── */

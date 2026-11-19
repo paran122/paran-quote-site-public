@@ -74,6 +74,9 @@ export function preflight(request: Request): NextResponse {
   return withCors(request, new NextResponse(null, { status }));
 }
 
+/** 상태를 바꾼 이유를 내부 메모(quote_notes)에 남길 때 붙이는 표시. 고객 화면에는 나가지 않는다. */
+export const STATUS_REASON_MARK = "[상태 이유] ";
+
 /** 운영 주소가 아닌 곳(개발·미리보기)에서는 시험 접수에만 고객 알림을 보낸다 */
 export function isProductionHost(request: Request): boolean {
   const host = (request.headers.get("host") || "").toLowerCase().split(":")[0];
