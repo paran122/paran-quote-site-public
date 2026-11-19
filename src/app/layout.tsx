@@ -166,14 +166,15 @@ export default function RootLayout({
                 window.dataLayer.push({event:'engaged_view_60s'});
               }
             }, 60000);
-            document.addEventListener('submit', function(e){
-              var f=e.target;
-              if(!f || f.tagName!=='FORM') return;
-              var id=f.id || f.getAttribute('name') || 'unknown';
-              if(window.gtag){
-                window.gtag('event','generate_lead',{event_category:'conversion',form_id:id});
-              }
-              window.dataLayer.push({event:'generate_lead', form_id:id});
+            // 2026-11-19 generate_lead 는 실제 접수가 끝난 화면(견적 요청)에서만 보낸다. 여기서는 전화·메일 누름과 견적 요청 이동만 기록(개인정보 없음)
+            document.addEventListener('click', function(e){
+              var a=e.target && e.target.closest ? e.target.closest('a[href]') : null;
+              if(!a || !window.gtag) return;
+              var h=a.getAttribute('href')||'';
+              if(h.indexOf('tel:')===0){ window.gtag('event','contact_click',{method:'tel',page:location.pathname}); }
+              else if(h.indexOf('mailto:')===0){ window.gtag('event','contact_click',{method:'email',page:location.pathname}); }
+              else if(h.indexOf('/request')===0){ window.gtag('event','begin_checkout',{lead_type:h.indexOf('mode=consult')>-1?'consult':'quote',page:location.pathname}); }
+              else if(/^\\/services\\/[a-z-]+\\/?$/.test(h) && location.pathname.indexOf('/blog/')===0){ window.gtag('event','blog_service_click',{service_id:h.split('/')[2],page:location.pathname}); }
             }, true);
           })();
         `}

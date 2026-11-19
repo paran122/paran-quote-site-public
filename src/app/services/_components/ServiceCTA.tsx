@@ -48,7 +48,7 @@ export default function ServiceCTA({ title, relatedServices, bgImage }: Props) {
             보내드립니다.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md sm:max-w-none mx-auto">
-            <Link href="/?scrollTo=contact" className="w-full sm:w-auto">
+            <Link href="/request?mode=consult" className="w-full sm:w-auto">
               <PulsatingButton className="w-full px-8 py-3.5 text-sm font-semibold rounded-xl">
                 무료 견적 요청하기
               </PulsatingButton>

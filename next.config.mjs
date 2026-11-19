@@ -70,6 +70,12 @@ const nextConfig = {
       // 2026-11-17 옛 페이지 → 새 사이트(자주 묻는 질문은 홈 FAQ 칸, 회사 소개는 파란 소개)
       { source: "/faq", destination: "/guide/#faq", permanent: true },
       { source: "/company", destination: "/about/", permanent: true },
+      // 2026-11-19 방문 자료 점검: 블로그 본문에 남은 옛 .html 링크가 404 였다(운영 포함). 같은 글·맞는 서비스로 넘긴다
+      { source: "/blog/:slug([^/]+)\\.html", destination: "/blog/:slug", permanent: true },
+      { source: "/services/:id(poster|banner|leaflet|card-news|booklet|ppt|photo-wall)\\.html", destination: "/services/:id", permanent: true },
+      { source: "/services/editorial.html", destination: "/services/booklet", permanent: true },
+      { source: "/services/:id([^/]+)\\.html", destination: "/services/", permanent: true },
+      { source: "/estimate.html", destination: "/services/", permanent: true },
     ];
   },
   async headers() {

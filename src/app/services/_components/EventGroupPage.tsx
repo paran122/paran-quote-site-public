@@ -164,7 +164,7 @@ export default function EventGroupPage({ service }: { service: EventService }) {
           </div>
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
             <p className="text-sm text-slate-500">비슷한 행사를 준비 중이신가요?</p>
-            <Link href="/?scrollTo=estimate" className="text-sm font-bold text-blue-600 hover:underline">예상 비용 바로 확인하기 →</Link>
+            <Link href="/services/" className="text-sm font-bold text-blue-600 hover:underline">예상 비용 바로 확인하기 →</Link>
           </div>
         </div>
       </section>
