@@ -1769,4 +1769,4 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .request-form .field-hint{margin:6px 0 14px}
 @media (max-width:760px){body[data-page=detail] .toast{bottom:96px}}
 /* 2026-11-20 3차 채점: 휴대폰 옵션 시트가 열려 있으면 알림은 위쪽에(아래 버튼을 가리지 않게) */
-@media (max-width:1099px){html:has(.bq-open) .toast{bottom:auto;top:14px}}
+@media (max-width:1099px){html.bq-open .toast{bottom:auto;top:14px}}
