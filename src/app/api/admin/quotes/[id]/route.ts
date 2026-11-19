@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod/v4";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isAuthenticated } from "@/lib/admin-auth";
+import { isProductionHost, isQuoteAdminRequest, preflight, withCors } from "@/lib/intranet-auth";
 import { quoteLinkUrl, siteUrlFromRequest } from "@/lib/quote/link";
 import {
   computeTotals,
@@ -14,16 +15,20 @@ import { sendEmail, RESEND_API_KEY, FROM_EMAIL } from "@/lib/email/resend";
 import { quoteUpdatedHtml, quoteUpdatedSubject } from "@/lib/email/templates/quote-updated";
 import { sendQuoteUpdatedAlimtalk } from "@/lib/alimtalk";
 
+export function OPTIONS(request: NextRequest) {
+  return preflight(request);
+}
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const authed = await isAuthenticated();
+  const authed = await isQuoteAdminRequest(request);
   if (!authed) {
-    return NextResponse.json({ error: "인증이 필요합니다" }, { status: 401 });
+    return withCors(request, NextResponse.json({ error: "인증이 필요합니다" }, { status: 401 }));
   }
   if (!supabaseAdmin) {
-    return NextResponse.json({ error: "DB 미설정" }, { status: 500 });
+    return withCors(request, NextResponse.json({ error: "DB 미설정" }, { status: 500 }));
   }
 
   const { id } = await params;
@@ -32,7 +37,7 @@ export async function PATCH(
 
   const VALID_STATUSES = ["접수대기", "진행중", "완료", "취소"];
   if (!VALID_STATUSES.includes(status)) {
-    return NextResponse.json({ error: "유효하지 않은 상태입니다" }, { status: 400 });
+    return withCors(request, NextResponse.json({ error: "유효하지 않은 상태입니다" }, { status: 400 }));
   }
 
   const { error } = await supabaseAdmin
@@ -41,10 +46,10 @@ export async function PATCH(
     .eq("id", id);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return withCors(request, NextResponse.json({ error: error.message }, { status: 500 }));
   }
 
-  return NextResponse.json({ success: true });
+  return withCors(request, NextResponse.json({ success: true }));
 }
 
 /* ── 견적 수정: 새 차수를 이력에 덧붙인다 ── */
@@ -81,12 +86,12 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const authed = await isAuthenticated();
+  const authed = await isQuoteAdminRequest(request);
   if (!authed) {
-    return NextResponse.json({ error: "인증이 필요합니다" }, { status: 401 });
+    return withCors(request, NextResponse.json({ error: "인증이 필요합니다" }, { status: 401 }));
   }
   if (!supabaseAdmin) {
-    return NextResponse.json({ error: "DB 미설정" }, { status: 500 });
+    return withCors(request, NextResponse.json({ error: "DB 미설정" }, { status: 500 }));
   }
 
   const { id } = await params;
@@ -94,7 +99,7 @@ export async function PUT(
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "요청 형식이 올바르지 않습니다" }, { status: 400 });
+    return withCors(request, NextResponse.json({ error: "요청 형식이 올바르지 않습니다" }, { status: 400 }));
   }
   const parsed = RevisionSchema.safeParse(body);
   if (!parsed.success) {
@@ -111,12 +116,15 @@ export async function PUT(
       unitPrice: "단가(원 단위 정수)",
     };
     const key = String(issue?.path[issue.path.length - 1] ?? "");
-    return NextResponse.json(
+    return withCors(request, NextResponse.json(
       { error: `입력값을 확인해 주세요: ${where}${field[key] ?? key}` },
       { status: 400 }
-    );
+    ));
   }
   const input = parsed.data;
+
+  const notifyBlocked = (eventName: string) =>
+    input.notify && !isProductionHost(request) && !eventName.trim().toUpperCase().startsWith("[TEST]");
 
   const { data: found, error: loadError } = await supabaseAdmin
     .from("quotes")
@@ -124,23 +132,29 @@ export async function PUT(
     .eq("id", id)
     .limit(1);
   if (loadError) {
-    return NextResponse.json({ error: loadError.message }, { status: 500 });
+    return withCors(request, NextResponse.json({ error: loadError.message }, { status: 500 }));
   }
   const row = (found?.[0] ?? null) as (QuoteRow & { phone: string; email: string }) | null;
   if (!row) {
-    return NextResponse.json({ error: "견적을 찾을 수 없습니다" }, { status: 404 });
+    return withCors(request, NextResponse.json({ error: "견적을 찾을 수 없습니다" }, { status: 404 }));
+  }
+  if (notifyBlocked(row.event_name || "")) {
+    return withCors(request, NextResponse.json(
+      { error: "개발 주소에서는 [TEST] 시험 접수에만 고객 알림을 보낼 수 있습니다. 알림을 끄고 저장하거나 운영 주소에서 진행해 주세요." },
+      { status: 409 }
+    ));
   }
   if (!("revisions" in row)) {
-    return NextResponse.json({ error: MISSING_COLUMN_MESSAGE }, { status: 409 });
+    return withCors(request, NextResponse.json({ error: MISSING_COLUMN_MESSAGE }, { status: 409 }));
   }
 
   const history = readRevisions(row);
   const totals = computeTotals(input.lines, input.ship);
   if (totals.total < 0) {
-    return NextResponse.json({ error: "합계가 0원보다 작을 수 없습니다" }, { status: 400 });
+    return withCors(request, NextResponse.json({ error: "합계가 0원보다 작을 수 없습니다" }, { status: 400 }));
   }
   if (totals.total > MAX_TOTAL) {
-    return NextResponse.json({ error: "합계가 20억 원을 넘으면 저장할 수 없습니다" }, { status: 400 });
+    return withCors(request, NextResponse.json({ error: "합계가 20억 원을 넘으면 저장할 수 없습니다" }, { status: 400 }));
   }
   const now = new Date().toISOString();
   const revision: QuoteRevision = {
@@ -165,10 +179,10 @@ export async function PUT(
     .eq("id", id);
   if (saveError) {
     const missing = /revisions/i.test(saveError.message);
-    return NextResponse.json(
+    return withCors(request, NextResponse.json(
       { error: missing ? MISSING_COLUMN_MESSAGE : saveError.message },
       { status: missing ? 409 : 500 }
-    );
+    ));
   }
 
   const link = quoteLinkUrl(siteUrlFromRequest(request), row.quote_number);
@@ -209,12 +223,12 @@ export async function PUT(
     notified.alimtalk = talk.status === "fulfilled" && talk.value.success;
   }
 
-  return NextResponse.json({
+  return withCors(request, NextResponse.json({
     success: true,
     revision,
     total_amount: totals.total,
     notified,
-  });
+  }));
 }
 
 /* ── 견적 삭제: 시험 접수·잘못 들어온 접수를 지운다. 되돌릴 수 없다. ── */

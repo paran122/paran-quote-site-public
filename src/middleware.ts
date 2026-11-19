@@ -127,6 +127,18 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
+    // 견적 관리 API는 인트라넷에서도 부른다. 브라우저의 확인 요청(OPTIONS)과
+    // 로그인 토큰(Authorization: Bearer)이 붙은 요청은 여기서 막지 않고 넘기며,
+    // 토큰이 진짜인지·총괄관리자인지는 각 API가 직접 확인한다(src/lib/intranet-auth.ts).
+    if (
+      pathname.startsWith("/api/admin/quotes") &&
+      (request.method === "OPTIONS" ||
+        ((request.method === "GET" || request.method === "PATCH" || request.method === "PUT") &&
+          (request.headers.get("authorization") || "").startsWith("Bearer ")))
+    ) {
+      return NextResponse.next();
+    }
+
     const token = request.cookies.get(COOKIE_NAME)?.value;
     if (!token || !(await verifyToken(token))) {
       if (pathname.startsWith("/api/")) {

@@ -1,17 +1,21 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabase, supabaseAdmin } from "@/lib/supabase";
-import { isAuthenticated } from "@/lib/admin-auth";
+import { isQuoteAdminRequest, preflight, withCors } from "@/lib/intranet-auth";
 import { quoteLinkKey } from "@/lib/quote/link";
 
-export async function GET() {
-  const authed = await isAuthenticated();
+export function OPTIONS(request: NextRequest) {
+  return preflight(request);
+}
+
+export async function GET(request: NextRequest) {
+  const authed = await isQuoteAdminRequest(request);
   if (!authed) {
-    return NextResponse.json({ error: "인증이 필요합니다" }, { status: 401 });
+    return withCors(request, NextResponse.json({ error: "인증이 필요합니다" }, { status: 401 }));
   }
   // 관리자 조회는 서버 전용 키로 읽는다. 공개 키의 읽기 권한을 나중에 막아도 이 화면은 그대로 동작한다.
   const db = supabaseAdmin ?? supabase;
   if (!db) {
-    return NextResponse.json([]);
+    return withCors(request, NextResponse.json([]));
   }
 
   const { data, error } = await db
@@ -20,7 +24,7 @@ export async function GET() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return withCors(request, NextResponse.json({ error: error.message }, { status: 500 }));
   }
 
   // 고객에게 보내는 견적 바로보기 주소(사이트 주소를 뺀 경로)
@@ -35,5 +39,5 @@ export async function GET() {
     return { ...row, link_path: linkKey ? `/q/${linkKey}` : null };
   });
 
-  return NextResponse.json(rows);
+  return withCors(request, NextResponse.json(rows));
 }
