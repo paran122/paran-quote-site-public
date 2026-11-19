@@ -34,11 +34,13 @@
   const panel=host.querySelector('.sc-54142215-1');if(!panel||stage==='closed')return;
   // Continue from an interrupted opening, so repeated taps never jump the panel.
   const left=getComputedStyle(panel).left;cancel();const token=revision;
+  try{if(history.state&&history.state.nav)history.back()}catch{}
   const finish=()=>{if(token!==revision)return;render('closed',false);host.querySelector('.open')?.focus({preventScroll:true})};
   if(reduced.matches){finish();return}
   panel.inert=true;animation=panel.animate([{left},{left:'100%'}],{duration:300,easing:'ease-in-out',fill:'forwards'});animation.finished.then(finish,()=>{});
  }
- host.addEventListener('click',e=>{if(!states)return;const t=e.target;const ln=t.closest('a[href*="#"]');if(ln&&mobile&&stage!=='closed'){const u=new URL(ln.href,location.href);if(u.pathname===location.pathname&&u.hash){e.preventDefault();render('closed',false);history.pushState(null,'',u.hash);const el=document.querySelector(u.hash);setTimeout(()=>el?.scrollIntoView({behavior:'instant',block:'start'}),0);return}}/* 2026-11-17 같은 페이지 안 링크(예: 자주 묻는 질문)는 메뉴를 닫고 이동 */if(t.closest('.open')){render('root');focusPanel();return}if(t.closest('.close')){close();return}if(t.closest('.sc-96a8d10a-1')){render(stage==='services'?'root':'services');focusPanel();return}const arrow=t.closest('.nav-item > span');if(arrow?.querySelector('svg')){const key=arrow.closest('[data-nav-group]')?.dataset.navGroup||(stage==='root'?'services':null);if(key&&states[key]){render(key);focusPanel()}}});
+ host.addEventListener('click',e=>{if(!states)return;const t=e.target;const ln=t.closest('a[href*="#"]');if(ln&&mobile&&stage!=='closed'){const u=new URL(ln.href,location.href);if(u.pathname===location.pathname&&u.hash){e.preventDefault();render('closed',false);if(history.state&&history.state.nav)history.replaceState(null,'',u.hash);else history.pushState(null,'',u.hash);const el=document.querySelector(u.hash);setTimeout(()=>el?.scrollIntoView({behavior:'instant',block:'start'}),0);return}}/* 2026-11-17 같은 페이지 안 링크(예: 자주 묻는 질문)는 메뉴를 닫고 이동 */if(t.closest('.open')){render('root');try{history.pushState({nav:1},'')}catch{}focusPanel();return}if(t.closest('.close')){close();return}if(t.closest('.sc-96a8d10a-1')){render(stage==='services'?'root':'services');focusPanel();return}const arrow=t.closest('.nav-item > span');if(arrow?.querySelector('svg')){const key=arrow.closest('[data-nav-group]')?.dataset.navGroup||(stage==='root'?'services':null);if(key&&states[key]){render(key);focusPanel()}}});
+ addEventListener('popstate',()=>{if(mobile&&stage!=='closed')close()});
  host.addEventListener('keydown',e=>{
   if(e.key==='Escape'){e.preventDefault();if(mobile&&stage!=='closed')close();else if(desktopToggle){desktopToggle(false);suppressFocus=true;host.querySelector('.has_sub_menu>a')?.focus();suppressFocus=false}}
   if(['Enter',' '].includes(e.key)&&e.target.matches('[role=button]')){e.preventDefault();e.target.click()}

@@ -182,3 +182,14 @@
     }
   });
 })();
+
+// 2026-11-20 '잘 모르겠어요'를 고르면 문의 내용 안내도 그에 맞게
+(() => {
+  const hint = document.getElementById('hqi-brief-hint');
+  if (!hint) return;
+  const base = hint.textContent;
+  const unsure = '어떤 행사인지, 지금 정해진 것(일정·장소·인원)을 아는 만큼만 적어 주세요. 무엇을 맡기면 좋을지 함께 정리해 드립니다. 주민등록번호 등 민감정보는 적지 마세요.';
+  const sync = () => { const u = document.getElementById('hqi-need-unsure'); hint.textContent = u && u.checked ? unsure : base; };
+  document.querySelectorAll('input[name="hqi-need"]').forEach(r => r.addEventListener('change', sync));
+  sync();
+})();
