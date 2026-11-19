@@ -244,3 +244,5 @@ html.sv-lock{overflow:hidden}
 #booklet-scope.sa-scope .sa-price{grid-area:pr;margin:12px 0 10px;text-align:left!important}
 #booklet-scope.sa-scope .sb-card .ref-button{grid-area:bt;align-self:end;padding:10px 16px;min-height:0;font-size:15px}
 @media(max-width:420px){#booklet-scope.sa-scope .sb-card{grid-template-columns:112px 1fr}#booklet-scope.sa-scope .ref-package-photo.sv-media{width:112px!important}}
+/* 2026-11-20 휴대폰 사진 보기: 넘김 버튼을 누르기 쉬운 크기(44px)로 */
+@media (max-width:760px){.sv-lb .sv-nav,dialog .sv-nav{width:44px;height:44px}}
