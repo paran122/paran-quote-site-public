@@ -124,12 +124,16 @@ function setOff(el,off){el.classList.toggle('is-off',off);if(off)el.setAttribute
 function mountRail(d){
  const box=document.querySelector('[data-case-view]')||document.body;
  // 글 맨 위(제목)부터 따라다니게 글 전체를 왼쪽 칸으로 감쌈
- const art=document.querySelector('[data-case-view] article.post');if(!d||!art||document.querySelector('.post-layout'))return;
- const lay=document.createElement('div');lay.className='post-layout';art.before(lay);lay.append(art);
- const aside=document.createElement('aside');aside.className='case-rail';aside.setAttribute('aria-labelledby','case-rail-h');
+ const art=document.querySelector('[data-case-view] article.post');if(!d||!art)return;
+ // 서버가 틀(.post-layout)과 빈 칸을 미리 보냈으면 그 칸을 채운다(나중에 끼워 넣으면 글이 밀림). 없으면 예전처럼 만든다
+ let lay=document.querySelector('.post-layout'),aside=lay&&lay.querySelector('.case-rail[data-rail-empty]');
+ if(lay&&!aside)return;
+ if(!lay){lay=document.createElement('div');lay.className='post-layout';art.before(lay);lay.append(art)}
+ if(aside){aside.removeAttribute('data-rail-empty');aside.removeAttribute('aria-hidden')}else aside=document.createElement('aside');
+ aside.className='case-rail';aside.setAttribute('aria-labelledby','case-rail-h');
  // 짧게: 서비스·수량, 사양 한 줄, 버튼. 실제 사례 규격·긴 설명은 글 끝 큰 칸에
  aside.innerHTML=`<h2 class="case-rail-h" id="case-rail-h">이 사례 구성</h2><ul>${d.lines.map(l=>`<li><p class="case-rail-row"><b>${esc(l.p.name)}</b><span>${esc(qtyText(l))}</span></p><small>${esc(l.short)}</small></li>`).join('')}</ul><a class="button primary" href="${esc(d.href)}">장바구니 담기</a><p class="case-rail-note">${d.show&&d.total?`참고 금액 ${d.total.toLocaleString('ko-KR')}원`:'담은 뒤 금액이 바로 나옵니다.'}</p>${CONSULT}`;
- lay.append(aside);
+ if(!aside.parentNode)lay.append(aside);
  const bar=document.createElement('aside');bar.className='case-bar';bar.setAttribute('aria-label','이 사례 구성 담기');
  const first=d.lines[0],sub=['이 사례처럼',d.lines.length>1?`${d.lines.length}개 구성`:'',qtyText(first)].filter(Boolean).join(' · ');
  bar.innerHTML=`<span><b>${esc(first.p.name)}${d.lines.length>1?` 외 ${d.lines.length-1}개`:''}</b><small>${esc(sub)}</small></span><a class="button primary" href="${esc(d.href)}">장바구니 담기</a>`;

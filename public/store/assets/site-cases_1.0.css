@@ -212,3 +212,5 @@
 @media (max-width:700px){.case-more.is-cards ul.cm-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px}.case-more.is-cards .cm-grid b{font-size:15px}}
 /* 2026-11-20 대표 사진이 늦게 뜨면서 아래 글이 밀리던 것: 사진 비율(--ar)로 자리를 먼저 잡는다 */
 .case-hero[style*="--ar"] img{aspect-ratio:var(--ar);width:min(100%,calc(80vh * var(--ar)));height:auto;max-height:none}
+/* 2026-11-20 서버가 미리 보낸 빈 견적 구성 칸: 자리만 잡고 보이지 않게 */
+.case-rail[data-rail-empty]{visibility:hidden;min-height:260px}
