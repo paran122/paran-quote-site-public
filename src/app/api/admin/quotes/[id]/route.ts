@@ -214,7 +214,7 @@ export async function PUT(
   if (input.notify && link) {
     notified = await sendRevisionNotice(row, revision, link);
     // 실제로 나간 알림만 그 차수에 기록한다(내부용)
-    sent = await markRevisionSent(supabaseAdmin, id, revision.rev, notified);
+    sent = await markRevisionSent(id, revision.rev, notified);
   }
 
   return withCors(request, NextResponse.json({

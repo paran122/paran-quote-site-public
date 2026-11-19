@@ -55,6 +55,6 @@ export async function POST(
   }
 
   const notified = await sendRevisionNotice(row, revision, link);
-  const sent = await markRevisionSent(supabaseAdmin, id, revision.rev, notified);
+  const sent = await markRevisionSent(id, revision.rev, notified);
   return json({ success: notified.email || notified.alimtalk, rev: revision.rev, notified, sent });
 }

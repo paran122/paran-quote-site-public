@@ -1,4 +1,4 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
+import { supabaseAdmin } from "@/lib/supabase";
 import { manFromWon, readRevisions, type QuoteRevision, type QuoteRow } from "@/lib/quote/view";
 import { sendEmail, RESEND_API_KEY, FROM_EMAIL } from "@/lib/email/resend";
 import { quoteUpdatedHtml, quoteUpdatedSubject } from "@/lib/email/templates/quote-updated";
@@ -62,13 +62,14 @@ export async function sendRevisionNotice(
  * 기록에 실패해도 알림은 이미 나갔으므로 오류로 올리지 않는다.
  */
 export async function markRevisionSent(
-  db: SupabaseClient<any, any, any>,
   id: string,
   rev: number,
   notified: { email: boolean; alimtalk: boolean }
 ): Promise<RevisionSent | null> {
   if (!notified.email && !notified.alimtalk) return null;
+  const db = supabaseAdmin;
   const sent: RevisionSent = { at: new Date().toISOString(), ...notified };
+  if (!db) return sent;
   try {
     const { data } = await db.from("quotes").select("revisions").eq("id", id).limit(1);
     const history = readRevisions((data?.[0] ?? { revisions: null }) as Pick<QuoteRow, "revisions">);
