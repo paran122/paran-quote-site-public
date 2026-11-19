@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ko" data-astryx-theme="neutral">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>장바구니 · Astryx 시험판</title>
+<!-- 2026-11-19 시험판: 지금 장바구니와 같은 데이터(catalog.json)·같은 계산(quote-core.js)·같은 저장 칸을 쓰고, 화면 부품만 Astryx로 바꿈 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@astryxdesign/core@0.7.16/src/reset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@astryxdesign/core@0.7.16/dist/astryx.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@astryxdesign/theme-neutral@0.7.16/dist/theme.css">
+<script type="importmap">
+{"imports":{
+ "react":"https://esm.sh/react@19.2.0",
+ "react/jsx-runtime":"https://esm.sh/react@19.2.0/jsx-runtime",
+ "react-dom":"https://esm.sh/react-dom@19.2.0",
+ "react-dom/client":"https://esm.sh/react-dom@19.2.0/client",
+ "@astryxdesign/core":"https://esm.sh/@astryxdesign/core@0.7.16?external=react,react-dom"
+}}
+</script>
+<style>
+body{margin:0;font-family:Pretendard,"Pretendard Variable",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;word-break:keep-all;background:var(--color-background-body,#f6f6f7)}
+.ax-top{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid rgba(0,0,0,.1);background:#fff}
+.ax-top b{font-size:17px}.ax-top span{font-size:13px;color:#666}
+.ax-top a{margin-left:auto;font-size:14px;color:inherit}
+.ax-wrap{max-width:1180px;margin:0 auto;padding:24px 20px 120px}
+.ax-cols{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+.ax-side{position:sticky;top:16px}
+.ax-ck{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.ax-row{display:flex;justify-content:space-between;gap:12px;font-size:15px}
+.ax-total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:700;font-size:20px}
+.ax-line{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.6fr) auto auto;gap:16px;align-items:center;padding:14px 0;border-top:1px solid rgba(0,0,0,.08)}
+.ax-line:first-child{border-top:0}
+.ax-line .am{text-align:right;font-weight:700;white-space:nowrap}
+.ax-line .ac{display:flex;gap:6px}
+.ax-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ax-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+#boot{padding:40px 20px;text-align:center;color:#555}
+@media (max-width:820px){
+ .ax-cols{grid-template-columns:1fr}.ax-side{position:static}
+ .ax-ck{grid-template-columns:1fr;gap:12px}
+ .ax-line{grid-template-columns:1fr auto;gap:8px 12px}
+ .ax-line .sp{grid-column:1/-1;order:3}.ax-line .ac{grid-column:1/-1;order:4}
+ .ax-opts{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="ax-top"><b>장바구니</b><span>Astryx 시험판</span><a href="/cart/">지금 장바구니 보기</a></div>
+<div id="root"><p id="boot">불러오는 중…</p></div>
+<script src="/assets/quote-core.js"></script>
+<script type="module">
+import * as React from 'react';
+import {createRoot} from 'react-dom/client';
+import * as AX from '@astryxdesign/core';
+const {Card,VStack,HStack,Heading,Text,Button,CheckboxInput,NumberInput,TextInput,RadioList,RadioListItem,Dialog,DialogHeader,EmptyState,Badge,Divider,useToast,LayerProvider}=AX;
+const h=React.createElement,{useState,useEffect,useMemo,useRef}=React;
+window.__AX=AX;
+const Q=window.ParanQuote,{man,isMake,estimate,docTotals,specProblem,snapQty}=Q;
+const CART_KEY='paran.services.cart.v1';
+const won=n=>Math.round(n).toLocaleString('ko-KR')+'원';
+const uid=()=>crypto.randomUUID?crypto.randomUUID():'l'+Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+const josa=n=>{const c=String(n||'').trim().slice(-1).charCodeAt(0);return c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28?'을':'를'};
+const CK_GROUPS=[['공간·전시',['photo-wall','booth-graphic','booth-operation']],['디자인·인쇄',['poster','banner','leaflet','booklet']],['디지털 콘텐츠',['ppt','card-news']]];
+const OPT_SHORT={scope:'범위',kind:'종류',size:'크기',bigSize:'크기',delivery:'받는 방법',install:'설치·철거',fold:'접는 방식',stand:'거치대',pages:'분량'};
+const CUSTOM='__custom__';
+
+function makeStore(products){
+ const byId=id=>products.find(p=>p.id===id);
+ const isDigital=(p,o)=>Boolean(p.digitalScope&&o.scope===p.digitalScope);
+ const hiddenOpt=(p,o,key)=>{const q=p.prices&&p.quote;if(isDigital(p,o)&&p.printOnlyOptions?.includes(key))return true;const c=q?.hide?.[key];return Boolean(c&&Object.entries(c).some(([k,v])=>Array.isArray(v)?v.includes(o[k]):o[k]===v))};
+ const defaultItem=p=>{const o={};for(const k of p.options)o[k.key]=k.defaultValue??k.values?.[0]??'';if(isDigital(p,o))for(const k of p.printOnlyOptions||[])o[k]='해당 없음';const q=p.prices&&p.quote;return {id:uid(),serviceId:p.id,options:o,design:1,qty:q?.print&&isMake(p,o)?q.print.base:1}};
+ const refPrice=(p,item)=>{const e=estimate(p,item.options||{},item.design||1,item.qty||1);if(e)return {price:e.total,label:won(e.total)};if(!p?.prices||p.quote)return null;const all=Object.values(p.prices);return p.prices[item.options?.scope]||all.reduce((a,b)=>b.price<a.price?b:a,all[0])||null};
+ const optPairs=(p,item)=>{const q=p.prices&&p.quote,a=p.options.filter(o=>o.key!=='scope'&&item.options[o.key]&&item.options[o.key]!=='해당 없음'&&!hiddenOpt(p,item.options,o.key)).map(o=>[OPT_SHORT[o.key]||o.label,item.options[o.key]]);if(q?.count)a.push([q.count.label,`${item.design}${q.count.unit}`]);if(q?.print&&isMake(p,item.options))a.push(['수량',`${item.qty}${q.print.unit}`]);return a};
+ const amount=(p,item)=>{const r=refPrice(p,item);return r&&(p.quote||!p.prices)?r.label:'상담 후 확정'};
+ return {byId,isDigital,hiddenOpt,defaultItem,refPrice,optPairs,amount};
+}
+const readCart=S=>{try{const d=JSON.parse(localStorage.getItem(CART_KEY)||'[]');return Array.isArray(d)?d.filter(x=>x&&S.byId(x.serviceId)&&x.options&&typeof x.options==='object'):[]}catch{return []}};
+
+function OptionDialog({S,item,onClose,onSave}){
+ const p=S.byId(item.serviceId),q=p.prices&&p.quote;
+ const [v,setV]=useState({...item.options}),[design,setDesign]=useState(item.design||1),[qty,setQty]=useState(item.qty||1);
+ const set=(key,val)=>setV(o=>{const n={...o,[key]:val};
+  if(S.isDigital(p,n))for(const k of p.printOnlyOptions||[])n[k]='해당 없음';
+  else for(const k of p.printOnlyOptions||[])if(n[k]==='해당 없음'){const op=p.options.find(x=>x.key===k);if(op)n[k]=op.defaultValue??op.values?.[0]??''}
+  return n});
+ const make=q?.print&&isMake(p,v);
+ useEffect(()=>{if(make&&qty<q.print.base)setQty(q.print.base)},[make]);
+ const hid=k=>S.hiddenOpt(p,v,k),problem=specProblem(p,v,hid);
+ const e=estimate(p,v,design,qty),now=problem?'입력 확인 필요':e?won(e.total):'상담 후 확정';
+ const before=S.refPrice(p,item),diff=e&&before&&!problem?e.total-before.price:null;
+ const dirty=JSON.stringify([v,design,qty])!==JSON.stringify([item.options,item.design||1,item.qty||1]);
+ return h(Dialog,{isOpen:true,onOpenChange:o=>{if(!o)onClose()},width:560,purpose:'form'},
+  h(DialogHeader,{title:`${p.name} 옵션 변경`,onOpenChange:()=>onClose()}),
+  h('div',{style:{padding:'16px 20px',overflow:'auto'}},h(VStack,{gap:5},
+   p.options.filter(o=>!hid(o.key)&&o.values?.length).map(o=>{
+    const isCustom=o.allowCustom&&!o.values.includes(v[o.key]);
+    return h(VStack,{gap:2,key:o.key},
+     h(RadioList,{label:o.label,value:isCustom?CUSTOM:v[o.key],onChange:val=>set(o.key,val===CUSTOM?'':val)},
+      h('div',{className:'ax-opts'},
+       o.values.map(val=>{const i=val.indexOf(' · ');return h(RadioListItem,{key:val,value:val,label:i<0?val:val.slice(0,i),description:i<0?undefined:val.slice(i+3)})}),
+       o.allowCustom&&h(RadioListItem,{value:CUSTOM,label:'직접 입력'}))),
+     isCustom&&h(TextInput,{label:o.label+' 직접 입력',isLabelHidden:true,value:v[o.key],onChange:val=>setV(x=>({...x,[o.key]:typeof val==='string'?val:val?.target?.value??''})),placeholder:'예: 400 × 300mm',status:problem?{type:'error',message:problem}:undefined}))}),
+   (q?.count||make)&&h(HStack,{gap:4},
+    q?.count&&h(NumberInput,{label:`${q.count.label} (${q.count.unit})`,value:design,onChange:setDesign,min:1,max:100,isIntegerOnly:true,hasNumberSteppers:true}),
+    make&&h(NumberInput,{label:`${q.print.label} (${q.print.unit})`,value:qty,onChange:n=>setQty(snapQty(q,n)),min:q.print.base,max:100000,step:q.print.step,isIntegerOnly:true,hasNumberSteppers:true,description:`${q.print.base.toLocaleString('ko-KR')}${q.print.unit}부터 ${q.print.step.toLocaleString('ko-KR')}${q.print.unit} 단위`})))),
+  h('div',{style:{padding:'14px 20px',borderTop:'1px solid rgba(0,0,0,.1)'}},h('div',{className:'ax-foot'},
+   h(VStack,{gap:0.5},h(Text,{size:'sm',color:'secondary'},'변경 후 금액 · 부가세 포함'),
+    h(HStack,{gap:2,align:'center'},h(Text,{weight:'bold',size:'lg'},now),diff?h(Badge,{label:(diff>0?'+':'−')+won(Math.abs(diff)),variant:diff>0?'orange':'green'}):null)),
+   h(HStack,{gap:2},h(Button,{label:'취소',variant:'ghost',onClick:onClose}),
+    h(Button,{label:'변경하기',variant:'primary',isDisabled:!dirty||!!problem,onClick:()=>{if(dirty&&!problem)onSave({...item,options:v,design,qty})}})))));
+}
+
+function App({products}){
+ const S=useMemo(()=>makeStore(products),[products]);
+ const [cart,setCart]=useState(()=>readCart(S)),[editing,setEditing]=useState(null);
+ const toast=useToast();
+ useEffect(()=>{try{localStorage.setItem(CART_KEY,JSON.stringify(cart))}catch{}},[cart]);
+ const say=(body,undo)=>toast({body,uniqueID:'cart',endContent:undo?h(Button,{label:'되돌리기',size:'sm',variant:'ghost',onClick:undo}):undefined});
+ const has=id=>cart.some(x=>x.serviceId===id);
+ const ids=CK_GROUPS.flatMap(g=>g[1]).filter(S.byId),n=ids.filter(has).length;
+ const toggle=(p,on)=>{if(on){setCart(c=>[...c,S.defaultItem(p)]);say(p.name+josa(p.name)+' 담았습니다.')}else{const prev=cart;setCart(c=>c.filter(x=>x.serviceId!==p.id));say(p.name+josa(p.name)+' 뺐습니다.',()=>setCart(prev))}};
+ const remove=item=>{const prev=cart,p=S.byId(item.serviceId);setCart(c=>c.filter(x=>x.id!==item.id));say(p.name+josa(p.name)+' 삭제했습니다.',()=>setCart(prev))};
+ const T=docTotals(cart,S.byId);
+ return h('div',{className:'ax-wrap'},h(VStack,{gap:5},
+  h(Card,{padding:5},h(VStack,{gap:4},
+   h(VStack,{gap:1},h(Heading,{level:2},'행사에 필요한 것을 체크하세요'),h(Text,{color:'secondary'},`체크하면 기본 구성으로 담기고, 아래 목록에서 크기·수량을 바꿀 수 있습니다. ${n} / ${ids.length}개 선택`)),
+   h('div',{className:'ax-ck'},CK_GROUPS.map(([g,list])=>h(VStack,{gap:3,key:g},h(Text,{weight:'bold',size:'sm',color:'secondary'},g),
+    list.map(S.byId).filter(Boolean).map(p=>{const r=S.refPrice(p,S.defaultItem(p));return h(CheckboxInput,{key:p.id,label:p.name,description:r&&p.prices&&p.quote?'기본 '+man(r.price):(p.priceLabel||''),value:has(p.id),onChange:on=>toggle(p,on)})})))))),
+  h('div',{className:'ax-cols'},
+   h(Card,{padding:5},h(VStack,{gap:3},
+    h(HStack,{gap:2,align:'center'},h(Heading,{level:2},'담은 서비스'),h(Badge,{label:cart.length+'개'})),
+    cart.length?h('div',null,cart.map(item=>{const p=S.byId(item.serviceId),pairs=S.optPairs(p,item);return h('div',{className:'ax-line',key:item.id},
+      h(VStack,{gap:0.5},h(Text,{weight:'bold'},p.name),h(Text,{size:'sm',color:'secondary'},item.options.scope||'')),
+      h('div',{className:'sp'},h(Text,{size:'sm',color:'secondary'},pairs.length?pairs.map(([l,val])=>`${l}: ${val}`).join(' / '):'기본 사양')),
+      h('div',{className:'am'},S.amount(p,item)),
+      h('div',{className:'ac'},h(Button,{label:'옵션 변경',size:'sm',onClick:()=>setEditing(item.id)}),h(Button,{label:'삭제',size:'sm',variant:'ghost',onClick:()=>remove(item)})))}))
+     :h(EmptyState,{title:'아직 담은 서비스가 없습니다.',description:'위 체크리스트에서 필요한 서비스를 체크해 보세요.'}))),
+   cart.length?h('div',{className:'ax-side'},h(Card,{padding:5},h(VStack,{gap:3},
+    h('div',{className:'ax-row'},h('span',null,'공급가'),h('b',null,won(T.sub))),
+    h('div',{className:'ax-row'},h('span',null,'부가세 10%'),h('b',null,won(T.vat))),
+    T.ship?h('div',{className:'ax-row'},h('span',null,'배송비 (택배)'),h('b',null,won(T.ship))):null,
+    h(Divider,null),
+    h('div',{className:'ax-total'},h('span',null,T.unpriced?'합계 (금액 나온 항목)':'합계'),h('span',null,T.unpriced&&!T.sub?'상담 후 안내':won(T.total))),
+    h(Text,{size:'sm',color:'secondary'},'부가세 포함'+(T.unpriced?` · 가격 미정 ${T.unpriced}건 제외`:'')),
+    h(Button,{label:'견적 요청하기',variant:'primary',size:'lg',width:'100%',href:'/request/'}),
+    h(Text,{size:'sm',color:'secondary'},'시험판에는 견적서 PDF 받기를 넣지 않았습니다.')))):null)),
+  editing&&cart.find(x=>x.id===editing)?h(OptionDialog,{S,item:cart.find(x=>x.id===editing),onClose:()=>setEditing(null),onSave:next=>{setCart(c=>c.map(x=>x.id===next.id?next:x));setEditing(null);say('옵션을 바꿨습니다.')}}):null);
+}
+
+const root=createRoot(document.getElementById('root'));
+try{
+ const missing=['Card','VStack','HStack','Heading','Text','Button','CheckboxInput','NumberInput','TextInput','RadioList','RadioListItem','Dialog','DialogHeader','EmptyState','Badge','Divider','useToast'].filter(k=>!AX[k]);
+ if(missing.length)throw new Error('없는 부품: '+missing.join(', '));
+ const res=await fetch('/assets/catalog.json',{cache:'no-cache'});if(!res.ok)throw new Error('catalog');
+ const products=await res.json();
+ root.render(LayerProvider?h(LayerProvider,null,h(App,{products})):h(App,{products}));
+}catch(err){document.getElementById('root').innerHTML='<p id="boot">시험판을 불러오지 못했습니다. '+String(err.message||err)+'</p>';console.error(err)}
+</script>
+</body>
+</html>
