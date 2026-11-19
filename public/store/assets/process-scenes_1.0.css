@@ -9,21 +9,21 @@
 .pk-blank{position:absolute;inset:0;background:#fff;box-shadow:0 1px 2px rgba(20,20,30,.08),0 30px 50px -30px rgba(30,35,60,.35)}
 /* 1 대지: 영역 이름·규격선 */
 .pk-zone{position:absolute;display:grid;place-items:center;border:1.5px dashed #9fb0e8;border-radius:3px;background:rgba(47,91,234,.03);opacity:0}
-.pk-zone em{font:700 1.3cqw/1.2 Pretendard,sans-serif;letter-spacing:.04em;color:#5f6680;text-align:center;white-space:nowrap}
+.pk-zone em{font:700 1.3cqw/1.2 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.04em;color:#5f6680;text-align:center;white-space:nowrap}
 .pk-dimx{position:absolute;left:0;right:0;top:calc(100% + 2.2cqw);height:0;border-top:1.5px solid #2f5bea;transform:scaleX(0)}
 .pk-dimy{position:absolute;top:0;bottom:0;left:calc(100% + 2cqw);width:0;border-left:1.5px solid #2f5bea;transform:scaleY(0)}
 .pk-dimx::before,.pk-dimx::after,.pk-dimy::before,.pk-dimy::after{content:"";position:absolute;background:#2f5bea}
 .pk-dimx::before,.pk-dimx::after{top:-6px;width:1.5px;height:12px}.pk-dimx::before{left:0}.pk-dimx::after{right:0}
 .pk-dimy::before,.pk-dimy::after{left:-6px;height:1.5px;width:12px}.pk-dimy::before{top:0}.pk-dimy::after{bottom:0}
-.pk-dimx em,.pk-dimy em{position:absolute;font:700 1.3cqw/1 Pretendard,sans-serif;color:#2f5bea;white-space:nowrap;opacity:0}
+.pk-dimx em,.pk-dimy em{position:absolute;font:700 1.3cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#2f5bea;white-space:nowrap;opacity:0}
 .pk-dimx em{left:50%;top:10px;translate:-50% 0}.pk-dimy em{left:12px;top:50%;translate:0 -50%}
 /* 원고 파일 아이콘(리플렛과 같은 모양) */
 .pk-files{position:absolute;inset:0;pointer-events:none;z-index:6}
 .pk-file{position:absolute;left:3cqw;top:4cqw;display:flex;flex-direction:column;align-items:center;gap:.6cqw;opacity:0;will-change:transform,opacity}
-.pk-file em{font:600 1.35cqw/1 Pretendard,sans-serif;color:#3d3a46;white-space:nowrap;padding:.35cqw .6cqw;border-radius:.5cqw;background:rgba(255,255,255,.92)}
+.pk-file em{font:600 1.35cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#3d3a46;white-space:nowrap;padding:.35cqw .6cqw;border-radius:.5cqw;background:rgba(255,255,255,.92)}
 .pk-doc{position:relative;display:block;width:9.5cqw;aspect-ratio:3/4;border-radius:.5cqw .9cqw .5cqw .5cqw;background:#fff;box-shadow:0 1px 2px rgba(20,20,30,.12),0 10px 18px -10px rgba(30,35,60,.4);overflow:hidden}
 .pk-doc::after{content:"";position:absolute;right:0;top:0;width:28%;height:20%;background:linear-gradient(225deg,transparent 50%,#dfe2ea 50%)}
-.pk-doc b{position:absolute;left:0;right:0;bottom:0;padding:.6cqw 0;text-align:center;color:#fff;font:800 1.3cqw/1 Pretendard,sans-serif;letter-spacing:.06em}
+.pk-doc b{position:absolute;left:0;right:0;bottom:0;padding:.6cqw 0;text-align:center;color:#fff;font:800 1.3cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.06em}
 .pk-lines{position:absolute;inset:16% 14% 30% 14%;display:flex;flex-direction:column;gap:9%}
 .pk-lines u{display:block;height:7%;border-radius:2px;background:#d9dce6}.pk-lines u:nth-child(1){width:70%;background:#b9bfd0}.pk-lines u:nth-child(3){width:85%}.pk-lines u:nth-child(5){width:55%}
 .pk-photo{position:absolute;inset:10% 10% 30% 10%;border-radius:.3cqw;background-size:cover;background-position:50% 30%}
@@ -137,7 +137,7 @@ section[data-ps] .ps-stage.s3 .pk~.ps-badge,section[data-ps] .ps-stage:has(.pk).
 .pb-more.m2{--ry:24deg}.pb-more.m3{--ry:-24deg}
 /* 완성 모습으로 마무리(2026-11-11): 그림으로 완성한 뒤 실제로 걸리고 쓰이는 모습(목업·현장 사진)으로 넘어감.
    장면마다 --f1(첫 사진)·--fp(위치)·--fl(오른쪽 아래 글), 두 번째 사진은 --f2·--fp2·--fl2. 변수가 없으면 아무것도 안 나옴 */
-.pk::before,.pk::after,.lx::before,section[data-ps=booth] .ps-stage::before{position:absolute;inset:0;z-index:8;background-size:100% 100%,cover;background-repeat:no-repeat;opacity:0;pointer-events:none;display:flex;align-items:flex-end;justify-content:flex-end;padding:1.8cqw 2.2cqw;color:#fff;font:700 max(1.5cqw,10px)/1 Pretendard,sans-serif;letter-spacing:.02em}
+.pk::before,.pk::after,.lx::before,section[data-ps=booth] .ps-stage::before{position:absolute;inset:0;z-index:8;background-size:100% 100%,cover;background-repeat:no-repeat;opacity:0;pointer-events:none;display:flex;align-items:flex-end;justify-content:flex-end;padding:1.8cqw 2.2cqw;color:#fff;font:700 max(1.5cqw,10px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.02em}
 .pk::before,.lx::before,section[data-ps=booth] .ps-stage::before{content:var(--fl);background-image:linear-gradient(transparent 82%,rgba(15,16,24,.5)),var(--f1);background-position:0 0,var(--fp,50% 50%)}
 .pk::after{content:var(--fl2);background-image:linear-gradient(transparent 82%,rgba(15,16,24,.5)),var(--f2);background-position:0 0,var(--fp2,50% 50%)}
 .s3 .pk::before{animation:pk-fin 1s 6.4s cubic-bezier(.65,0,.2,1) both}
@@ -163,7 +163,7 @@ section[data-ps=booth] .ps-stage{--f1:url(/assets/service-photos/booth-graphic/k
 .pt-win{position:absolute;left:12cqw;top:3cqw;width:76cqw;height:46cqw;border-radius:1.2cqw;background:#fff;box-shadow:0 1px 2px rgba(20,20,30,.08),0 30px 60px -30px rgba(30,35,60,.4);overflow:hidden}
 .pt-bar{position:absolute;left:0;right:0;top:0;height:3.2cqw;display:flex;align-items:center;gap:.6cqw;padding:0 1.2cqw;background:#e8eaf1}
 .pt-bar u{width:.9cqw;height:.9cqw;border-radius:50%;background:#ff5f57}.pt-bar u:nth-child(2){background:#febc2e}.pt-bar u:nth-child(3){background:#28c840}
-.pt-bar em{flex:1;text-align:center;font:700 1.15cqw/1 Pretendard,sans-serif;color:#5f5d6b;margin-right:3cqw}
+.pt-bar em{flex:1;text-align:center;font:700 1.15cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#5f5d6b;margin-right:3cqw}
 .pt-thumbs{position:absolute;left:1.2cqw;top:4.6cqw;width:9cqw;display:flex;flex-direction:column;gap:.8cqw}
 .pt-th{position:relative;display:block;aspect-ratio:16/10;border-radius:.3cqw;background:#eef0f5;outline:1.5px solid transparent}
 .pt-th b{position:absolute;inset:0;border-radius:.3cqw;background-size:cover;opacity:0}
@@ -178,7 +178,7 @@ section[data-ps=booth] .ps-stage{--f1:url(/assets/service-photos/booth-graphic/k
 .pt-s.s0{opacity:1}
 .pt-glow{position:absolute;left:10%;right:10%;bottom:-8%;height:20%;border-radius:50%;background:#b9c4ff;filter:blur(24px);opacity:.35}
 .pt-leg{position:absolute;top:100%;width:.6cqw;height:7cqw;background:linear-gradient(#3a3d4a,#8a8f9e)}.pt-leg.l{left:22%}.pt-leg.r{right:22%}
-.pt-play{position:absolute;left:2cqw;bottom:2cqw;padding:.7cqw 1.2cqw;border-radius:999px;background:rgba(21,20,26,.82);color:#d1ff39;font:700 1.2cqw/1 Pretendard,sans-serif;letter-spacing:.02em;opacity:0}
+.pt-play{position:absolute;left:2cqw;bottom:2cqw;padding:.7cqw 1.2cqw;border-radius:999px;background:rgba(21,20,26,.82);color:#d1ff39;font:700 1.2cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.02em;opacity:0}
 .s3 .pt-win{animation:pt-away .7s 2.4s cubic-bezier(.4,0,.2,1) forwards}
 .s3 .pt-show{animation:pt-in .8s 2.9s cubic-bezier(.2,.8,.2,1) forwards}
 .s3 .pt-play{animation:ps-fade .4s 3.8s forwards}
@@ -264,7 +264,7 @@ section[data-ps=booth] .ps-stage{--f1:url(/assets/service-photos/booth-graphic/k
 .pz-shot{position:absolute;left:50%;top:calc(100% + 5.6cqw);width:5cqw;margin-left:-2.5cqw;display:flex;flex-direction:column;align-items:center;gap:.5cqw;opacity:0}
 .pz-shot i{width:0;height:4cqw;border-left:2px dashed #2f5bea}
 .ps-stage .pk .pz-shot svg{width:4.6cqw;height:auto}
-.pz-shot em{font:700 1.5cqw/1 Pretendard,sans-serif;color:#2f5bea;white-space:nowrap}
+.pz-shot em{font:700 1.5cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#2f5bea;white-space:nowrap}
 .s1 .pz-shot{animation:pz-rise .45s 2.5s cubic-bezier(.2,.8,.2,1) forwards,ps-out .3s 4.5s forwards}
 @keyframes pz-rise{from{opacity:0;transform:translateY(1.4cqw)}to{opacity:1;transform:none}}
 /* 단체 인원: 앞줄 5명 진하게, 뒷줄 4명 연하게. 나타나는 동안 '포즈 공간' 글씨는 잠깐 물러남 */
@@ -321,18 +321,18 @@ section[data-ps=booth] .ps-stage{--f1:url(/assets/service-photos/booth-graphic/k
 
 /* ━━ 홍보부스 운영 ━━ */
 .po-chat{position:absolute;left:8cqw;top:7cqw;width:46cqw;display:flex;flex-direction:column;gap:1.6cqw}
-.po-b{display:block;max-width:80%;padding:1.3cqw 1.8cqw;border-radius:1.6cqw 1.6cqw 1.6cqw .4cqw;background:#fff;box-shadow:0 12px 24px -16px rgba(30,35,60,.45);font:600 1.55cqw/1.35 Pretendard,sans-serif;color:#15141a;opacity:0}
+.po-b{display:block;max-width:80%;padding:1.3cqw 1.8cqw;border-radius:1.6cqw 1.6cqw 1.6cqw .4cqw;background:#fff;box-shadow:0 12px 24px -16px rgba(30,35,60,.45);font:600 1.55cqw/1.35 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#15141a;opacity:0}
 .po-b.a{align-self:flex-end;border-radius:1.6cqw 1.6cqw .4cqw 1.6cqw;background:#15141a;color:#fff}
 .po-list,.po-scope{position:absolute;padding:1.8cqw 2cqw;border-radius:1.4cqw;background:#fff;box-shadow:0 20px 40px -26px rgba(30,35,60,.45);display:flex;flex-direction:column;gap:1.3cqw;opacity:0}
 .po-list{left:60cqw;top:9cqw;width:30cqw}
-.po-list>b,.po-scope>b,.po-plan>b{font:800 1.4cqw/1 Pretendard,sans-serif;color:#5f6680;letter-spacing:.04em}
-.po-li{display:flex;align-items:center;gap:1cqw;font:700 1.6cqw/1 Pretendard,sans-serif}
+.po-list>b,.po-scope>b,.po-plan>b{font:800 1.4cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#5f6680;letter-spacing:.04em}
+.po-li{display:flex;align-items:center;gap:1cqw;font:700 1.6cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif}
 .po-li i{display:grid;place-items:center;width:2.2cqw;height:2.2cqw;border-radius:.5cqw;border:2px solid #cfd3de;color:#fff;font-size:1.3cqw}
 .po-li i::after{content:"✓";opacity:0}
 .po-plan{position:absolute;left:8cqw;top:7cqw;width:54cqw;padding:2cqw 2.2cqw;border-radius:1.4cqw;background:#fff;box-shadow:0 20px 40px -26px rgba(30,35,60,.45);display:flex;flex-direction:column;gap:1.6cqw;opacity:0}
-.po-axis{display:flex;margin-left:11cqw;border-bottom:1.5px solid #e3e6ee;padding-bottom:.8cqw}.po-axis em{flex:1;font:700 1.2cqw/1 Pretendard,sans-serif;color:#5f6680;text-align:center}
+.po-axis{display:flex;margin-left:11cqw;border-bottom:1.5px solid #e3e6ee;padding-bottom:.8cqw}.po-axis em{flex:1;font:700 1.2cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#5f6680;text-align:center}
 .po-row{position:relative;display:block;height:3cqw}
-.po-row em{position:absolute;left:0;top:50%;translate:0 -50%;font:700 1.45cqw/1 Pretendard,sans-serif}
+.po-row em{position:absolute;left:0;top:50%;translate:0 -50%;font:700 1.45cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif}
 .po-row i{position:absolute;top:.4cqw;bottom:.4cqw;border-radius:.6cqw;background:#2f5bea;transform:scaleX(0);transform-origin:left}
 .po-row.k1 i{background:#15141a}.po-row.k2 i{background:#d1ff39}
 .po-scope{left:66cqw;top:7cqw;width:26cqw}
@@ -354,7 +354,7 @@ section[data-ps=booth] .ps-stage{--f1:url(/assets/service-photos/booth-graphic/k
 .ps-stage .pk .po-line{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .po-line path{fill:none;stroke:#2f5bea;stroke-width:2;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1}
 .po-z{position:absolute;top:3%;bottom:16%;display:block;border-radius:.8cqw;opacity:0}
-.po-z em{position:absolute;left:0;right:0;bottom:7%;text-align:center;font:800 1.45cqw/1 Pretendard,sans-serif;letter-spacing:.02em;color:#3d3a46}
+.po-z em{position:absolute;left:0;right:0;bottom:7%;text-align:center;font:800 1.45cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.02em;color:#3d3a46}
 .po-z.z0{left:2%;width:28%;background:#eef3ff}.po-z.z1{left:32%;width:36%;background:#f1f2f6}.po-z.z2{left:70%;width:28%;background:#f4fbdd}
 .po-desk{position:absolute;left:14%;right:14%;top:30%;height:16%;border-radius:.5cqw;background:#fff;box-shadow:0 .5cqw 0 #dfe2ea,0 10px 16px -10px rgba(30,35,60,.4)}
 .po-ic{position:absolute;opacity:0;z-index:2}
@@ -364,9 +364,9 @@ section[data-ps=booth] .ps-stage{--f1:url(/assets/service-photos/booth-graphic/k
 .po-st.s0{left:16%}.po-st.s1{left:50%}.po-st.s2{left:84%}
 .po-v{position:absolute;left:12%;top:108%;width:1.9cqw;height:1.9cqw;margin:-.95cqw;border-radius:50%;background:#7d8db8;opacity:0;z-index:4;box-shadow:0 4px 8px -3px rgba(30,35,60,.5)}
 .po-v.v1,.po-v.v5{background:#c9a27a}.po-v.v2,.po-v.v6{background:#5f7d6e}.po-v.v3{background:#2f5bea}.po-v.v7{background:#a7adbd}
-.po-door{position:absolute;top:101%;font:700 1.25cqw/1 Pretendard,sans-serif;color:#2f5bea;opacity:0}.po-door.in{left:10%}.po-door.out{left:83%}
+.po-door{position:absolute;top:101%;font:700 1.25cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#2f5bea;opacity:0}.po-door.in{left:10%}.po-door.out{left:83%}
 .po-door::before{content:"↑ "}.po-door.out::before{content:"↓ "}
-.po-pop{position:absolute;padding:.8cqw 1.3cqw;border-radius:999px;background:#fff;box-shadow:0 12px 22px -12px rgba(30,35,60,.5);font:700 1.35cqw/1 Pretendard,sans-serif;white-space:nowrap;opacity:0;z-index:6}
+.po-pop{position:absolute;padding:.8cqw 1.3cqw;border-radius:999px;background:#fff;box-shadow:0 12px 22px -12px rgba(30,35,60,.5);font:700 1.35cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap;opacity:0;z-index:6}
 .po-pop::before{content:"✓ ";color:#2f5bea}
 .po-pop.c0{left:38%;top:-6%}.po-pop.c1{left:74%;top:-6%}.po-pop.c2{left:76%;top:62%}
 .s3 .po-line path{animation:ps-dash 1s .4s ease forwards}
@@ -376,7 +376,7 @@ section[data-ps=booth] .ps-stage{--f1:url(/assets/service-photos/booth-graphic/k
 .s3 .po-door,.s3 .po-route,.s3 .po-legend{animation:ps-fade .4s 2.4s forwards}
 .ps-stage .pk .po-route{position:absolute;inset:0;width:100%;height:100%;overflow:visible;opacity:0;z-index:1}
 .po-route path{fill:none;stroke:#9fb0e8;stroke-width:2;stroke-dasharray:5 6;vector-effect:non-scaling-stroke;stroke-linejoin:round}
-.po-legend{position:absolute;left:50%;translate:-50% 0;top:106%;display:flex;align-items:center;gap:.6cqw;font:600 1.2cqw/1 Pretendard,sans-serif;color:#5f5d6b;opacity:0}
+.po-legend{position:absolute;left:50%;translate:-50% 0;top:106%;display:flex;align-items:center;gap:.6cqw;font:600 1.2cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#5f5d6b;opacity:0}
 .po-legend i{width:1.3cqw;height:1.3cqw;border-radius:50%;background:#7d8db8}.po-legend i.st{background:#15141a;box-shadow:0 0 0 .3cqw #d1ff39}.po-legend i.vi{margin-left:1cqw}
 .ps-stage.s4 .pk .po-route,.s4 .po-legend{opacity:1}
 .s3 .po-v{animation:po-flow 6.4s linear infinite}

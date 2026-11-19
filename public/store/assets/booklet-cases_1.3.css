@@ -27,14 +27,14 @@
 .case-cover img{display:block;width:100%;height:100%;object-fit:cover;margin:0;max-width:none}
 /* 책등 쪽 음영으로 낱장이 아닌 책처럼 보이게 */
 .case-cover::before{content:"";position:absolute;inset:0 auto 0 0;width:9%;background:linear-gradient(90deg,rgba(0,0,0,.22),rgba(255,255,255,.14) 45%,rgba(0,0,0,.06) 70%,transparent);pointer-events:none;z-index:1}
-.case-open{position:absolute;left:50%;bottom:12px;transform:translate(-50%,6px);z-index:2;padding:7px 12px;border-radius:999px;background:#15141a;color:#d1ff39;font:600 12px/1 Pretendard,sans-serif;white-space:nowrap;opacity:0;transition:opacity .25s,transform .25s}
+.case-open{position:absolute;left:50%;bottom:12px;transform:translate(-50%,6px);z-index:2;padding:7px 12px;border-radius:999px;background:#15141a;color:#d1ff39;font:600 12px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap;opacity:0;transition:opacity .25s,transform .25s}
 .case-meta{display:flex;flex-direction:column;gap:4px;padding:0 2px;font-family:Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif}
 .case-meta strong{font-size:15px;font-weight:700;line-height:1.35;color:#15141a;word-break:keep-all}
 .case-meta span{font-size:13px;line-height:1.4;color:#6b707c}
 @media(hover:hover){.case-card:hover .case-cover{transform:translateY(-6px) rotate(-.6deg);box-shadow:0 2px 4px rgba(20,20,30,.12),0 22px 34px -12px rgba(20,20,30,.38)}.case-card:hover .case-open{opacity:1;transform:translate(-50%,0)}}
 .case-card:focus-visible .case-cover{outline:3px solid #173eb8;outline-offset:4px}
 .case-card:focus-visible .case-open{opacity:1;transform:translate(-50%,0)}
-.case-hint{margin:6px 0 0;text-align:center;font:400 14px/1.6 Pretendard,sans-serif;color:#6b707c}
+.case-hint{margin:6px 0 0;text-align:center;font:400 14px/1.6 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#6b707c}
 @container (max-width:720px){#booklet-cases{--w:56cqi}.case-arrow{display:none}.case-meta strong{font-size:14px}}
 @media(hover:none){.case-open{opacity:1;transform:translate(-50%,0);bottom:8px;padding:6px 10px;font-size:11px}}
 
@@ -92,7 +92,7 @@ html.cv-lock{overflow:hidden}
 .cv-thumbs button[aria-current=true]{opacity:1;border-color:#d1ff39}
 .cv-thumbs img{display:block;width:26px;height:37px;object-fit:cover;margin:0;max-width:none;background:#fff}
 .cv-books{display:flex;gap:8px}
-.cv-books button{padding:9px 13px;border:1px solid #34323d;border-radius:999px;background:transparent;color:#d9d7e2;font:500 13px Pretendard,sans-serif;cursor:pointer;white-space:nowrap}
+.cv-books button{padding:9px 13px;border:1px solid #34323d;border-radius:999px;background:transparent;color:#d9d7e2;font:500 13px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;cursor:pointer;white-space:nowrap}
 .cv-books button:hover{border-color:#d1ff39;color:#d1ff39}
 .case-viewer button:focus-visible,.cv-book:focus-visible{outline:3px solid #d1ff39;outline-offset:2px}
 /* 좁은 화면은 한 쪽씩 */

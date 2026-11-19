@@ -146,7 +146,7 @@
 .booklet-sales .b-copy .hl-chip span{padding:3px 8px;border-radius:5px;background:#ccff30;color:#15141a;font-size:12px}
 .booklet-sales .b-copy .hl-checks{display:grid;gap:12px;margin:40px 0 0}
 .booklet-sales .b-copy .hl-check{display:flex;align-items:center;gap:10px}
-.booklet-sales .b-copy .hl-check p{margin:0;color:#f1f1f4;font:600 16px/1.4 Pretendard,sans-serif;word-break:keep-all}
+.booklet-sales .b-copy .hl-check p{margin:0;color:#f1f1f4;font:600 16px/1.4 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;word-break:keep-all}
 .booklet-sales .b-copy .hl-check svg{width:24px;height:24px;flex:none}
 .booklet-sales .b-copy .hl-check .bd{fill:none;stroke:#ccff30;stroke-width:1.7;stroke-linejoin:round}
 .booklet-sales .b-copy .hl-check .ck{fill:none;stroke:#ccff30;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}

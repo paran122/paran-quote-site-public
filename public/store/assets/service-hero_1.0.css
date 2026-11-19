@@ -5,10 +5,10 @@
 .sv-scene:focus-visible{outline:2px solid #829bff;outline-offset:4px}
 .sv-scene img{display:block;max-width:none;margin:0}
 .sv-scene .sv-ghost{position:absolute;left:8%;top:14%;width:82%;height:62%;border-radius:14px;background:#25262e}
-.sv-scene .sc-label{position:absolute;z-index:8;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#15141aee;color:#fff;font:700 clamp(10px,2.6cqw,12px)/1 Pretendard,sans-serif;white-space:nowrap;box-shadow:0 6px 16px -6px #000c}
+.sv-scene .sc-label{position:absolute;z-index:8;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#15141aee;color:#fff;font:700 clamp(10px,2.6cqw,12px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap;box-shadow:0 6px 16px -6px #000c}
 .sv-scene .sc-label::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--lime)}
-.sv-scene .sc-note{position:absolute;z-index:8;margin:0;color:var(--lime);font:800 clamp(14px,4.1cqw,22px)/1.08 Pretendard,sans-serif;letter-spacing:-.03em;white-space:nowrap}
-.sv-scene .sc-dim{position:absolute;z-index:7;color:var(--lime);font:700 clamp(9px,2.3cqw,12px)/1 Pretendard,sans-serif;white-space:nowrap}
+.sv-scene .sc-note{position:absolute;z-index:8;margin:0;color:var(--lime);font:800 clamp(14px,4.1cqw,22px)/1.08 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:-.03em;white-space:nowrap}
+.sv-scene .sc-dim{position:absolute;z-index:7;color:var(--lime);font:700 clamp(9px,2.3cqw,12px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap}
 .sv-scene.is-paused *,.sv-scene.is-paused *::before,.sv-scene.is-paused *::after{animation-play-state:paused!important}
 @media(prefers-reduced-motion:reduce){.sv-scene *,.sv-scene *::before,.sv-scene *::after{animation:none!important;transition:none!important}}
 
@@ -155,7 +155,7 @@
 .sc-ppt .pp-slide:nth-child(2){animation-delay:calc(var(--loop) * .2)}.sc-ppt .pp-slide:nth-child(3){animation-delay:calc(var(--loop) * .4)}.sc-ppt .pp-slide:nth-child(4){animation-delay:calc(var(--loop) * .6)}.sc-ppt .pp-slide:nth-child(5){animation-delay:calc(var(--loop) * .8)}
 @keyframes pp-slide{0%{opacity:0;scale:1.04}3%,19%{opacity:1;scale:1}22%,100%{opacity:0}}
 .sc-ppt .pp-step{position:absolute;left:15%;top:62%;width:70%;display:flex;justify-content:space-between;gap:4px;z-index:3}
-.sc-ppt .pp-step span{flex:1;padding:6px 0;border-radius:6px;background:#2a2833;color:#9a98a6;text-align:center;font:700 clamp(8px,2.2cqw,11px)/1 Pretendard,sans-serif;white-space:nowrap;animation:pp-step var(--loop) infinite}
+.sc-ppt .pp-step span{flex:1;padding:6px 0;border-radius:6px;background:#2a2833;color:#9a98a6;text-align:center;font:700 clamp(8px,2.2cqw,11px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap;animation:pp-step var(--loop) infinite}
 .sc-ppt .pp-step span:nth-child(2){animation-delay:calc(var(--loop) * .2)}.sc-ppt .pp-step span:nth-child(3){animation-delay:calc(var(--loop) * .4)}.sc-ppt .pp-step span:nth-child(4){animation-delay:calc(var(--loop) * .6)}.sc-ppt .pp-step span:nth-child(5){animation-delay:calc(var(--loop) * .8)}
 @keyframes pp-step{0%,19%{background:var(--lime);color:var(--ink)}22%,100%{background:#2a2833;color:#9a98a6}}
 .sc-ppt .pp-podium{position:absolute;left:66%;top:68%;width:10%;height:15%;border-radius:4px 4px 0 0;background:linear-gradient(#3a3747,#24222c);z-index:2}
@@ -171,9 +171,9 @@
 .sc-cardc .ppc-phone::before{content:"";position:absolute;right:-2px;top:24%;width:2px;height:12%;border-radius:0 2px 2px 0;background:#4a4956}  /* 전원 버튼 */
 .sc-cardc .ppc-phone::after{content:"";position:absolute;left:-2px;top:18%;width:2px;height:7%;border-radius:2px 0 0 2px;background:#4a4956;box-shadow:0 calc(var(--ph,1) * 2.6cqw) 0 #4a4956}  /* 음량 버튼 */
 .sc-cardc .ppc-screen{position:relative;display:flex;flex-direction:column;width:100%;height:100%;border-radius:3.6cqw;overflow:hidden;background:#fff;padding-top:3.4cqw}
-.sc-cardc .ppc-screen::before{content:"9:41";position:absolute;left:2.6cqw;top:1.05cqw;font:700 1.25cqw/1 Pretendard,sans-serif;color:#111}  /* 상태 표시줄 */
+.sc-cardc .ppc-screen::before{content:"9:41";position:absolute;left:2.6cqw;top:1.05cqw;font:700 1.25cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#111}  /* 상태 표시줄 */
 .sc-cardc .ppc-screen::after{content:"";position:absolute;left:50%;top:.8cqw;width:32%;height:1.7cqw;translate:-50% 0;border-radius:1cqw;background:#0b0b0f}  /* 카메라 섬 */
-.sc-cardc .ppc-bar{display:flex;align-items:center;gap:1.2cqw;padding:2cqw 2cqw 1.4cqw;font:700 1.9cqw/1 Pretendard,sans-serif;color:#222;white-space:nowrap;overflow:hidden}
+.sc-cardc .ppc-bar{display:flex;align-items:center;gap:1.2cqw;padding:2cqw 2cqw 1.4cqw;font:700 1.9cqw/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#222;white-space:nowrap;overflow:hidden}
 .sc-cardc .ppc-bar i{flex:none;width:3.8cqw;height:3.8cqw;border-radius:50%;background:linear-gradient(135deg,#a98bff,#ff8fcf)}
 .sc-cardc .ppc-view{position:relative;flex:none;width:100%;aspect-ratio:var(--ar);overflow:hidden;background:#eee}
 .sc-cardc .ppc-track{position:absolute;inset:0;display:flex;animation:var(--track) var(--loop) infinite backwards}
@@ -384,7 +384,7 @@
 .sc-panel2 .pw-ul path{fill:none;stroke:var(--lime);stroke-width:3.4;stroke-linecap:round;stroke-dasharray:260;stroke-dashoffset:260;animation:pw-draw var(--loop) cubic-bezier(.5,0,.2,1) infinite}
 /* 패널 번호가 일어서는 순서대로 뜨고, 완성 뒤 빛이 지나가며, 한 장을 크게 뽑아 보여 줌 */
 .sc-panel2 .pn-nums{position:absolute;left:0;right:0;top:-11%;height:10%;pointer-events:none}
-.sc-panel2 .pn-nums em{position:absolute;translate:-50% 0;font:800 clamp(9px,2.4cqw,12px)/1 Pretendard,sans-serif;font-style:normal;color:var(--ink);background:var(--lime);padding:3px 6px;border-radius:999px;opacity:0;animation:pn-num var(--loop) infinite;animation-delay:calc(var(--k) * .12s)}
+.sc-panel2 .pn-nums em{position:absolute;translate:-50% 0;font:800 clamp(9px,2.4cqw,12px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;font-style:normal;color:var(--ink);background:var(--lime);padding:3px 6px;border-radius:999px;opacity:0;animation:pn-num var(--loop) infinite;animation-delay:calc(var(--k) * .12s)}
 @keyframes pn-num{0%,4%{opacity:0;translate:-50% 6px}9%,30%{opacity:1;translate:-50% 0}36%,100%{opacity:0;translate:-50% 0}}
 .sc-panel2 .pn-glint{position:absolute;inset:0;overflow:hidden;border-radius:8px;pointer-events:none}
 .sc-panel2 .pn-glint::after{content:"";position:absolute;top:-10%;bottom:-10%;width:22%;left:-30%;background:linear-gradient(100deg,transparent,#ffffff55,transparent);rotate:12deg;animation:pn-glint var(--loop) ease-in-out infinite}
@@ -392,12 +392,12 @@
 .sc-panel2 .pn-card{position:absolute;right:3%;top:40%;z-index:6;width:25%;aspect-ratio:3/4;background:#fff;border-radius:6px;rotate:5deg;box-shadow:0 22px 36px -12px #000e;animation:pn-card var(--loop) cubic-bezier(.22,1,.36,1) infinite}
 .sc-panel2 .pn-zoom{position:absolute;inset:6%;display:none;border-radius:3px;background-repeat:no-repeat;background-size:500% auto;background-position:25% 46%}
 .sc-panel2[data-set="0"] .pn-zoom.ws0,.sc-panel2[data-set="1"] .pn-zoom.ws1,.sc-panel2[data-set="2"] .pn-zoom.ws2{display:block}
-.sc-panel2 .pn-tag{position:absolute;left:0;right:0;bottom:4%;text-align:center;color:var(--ink);font:700 clamp(8px,2.1cqw,11px)/1 Pretendard,sans-serif;white-space:nowrap}
+.sc-panel2 .pn-tag{position:absolute;left:0;right:0;bottom:4%;text-align:center;color:var(--ink);font:700 clamp(8px,2.1cqw,11px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap}
 @keyframes pn-card{0%,30%{opacity:0;translate:-60% -20%;scale:.5;rotate:0deg}40%,92%{opacity:1;translate:0 0;scale:1;rotate:5deg}100%{opacity:0}}
 
 /* 7-3 전시 패널(확정): 백월 한 장으로 '흩어진 원고 -> 읽히는 벽' 전후 이야기 (자료집 첫 화면과 같은 주석 방식) */
 .sc-panel3{--loop:10s}
-.sc-panel3 .pn-src{position:absolute;z-index:6;display:flex;align-items:center;gap:6px;padding:6px 10px 6px 6px;border-radius:8px;background:#fff;color:var(--ink);font:700 clamp(9px,2.5cqw,12px)/1 Pretendard,sans-serif;white-space:nowrap;rotate:var(--r);box-shadow:0 12px 22px -10px #000c;animation:pn-src var(--loop) cubic-bezier(.5,0,.3,1) infinite}
+.sc-panel3 .pn-src{position:absolute;z-index:6;display:flex;align-items:center;gap:6px;padding:6px 10px 6px 6px;border-radius:8px;background:#fff;color:var(--ink);font:700 clamp(9px,2.5cqw,12px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap;rotate:var(--r);box-shadow:0 12px 22px -10px #000c;animation:pn-src var(--loop) cubic-bezier(.5,0,.3,1) infinite}
 .sc-panel3 .pn-src b{padding:4px 5px;border-radius:4px;color:#fff;font-size:.82em;font-weight:900}
 .sc-panel3 .pn-src .hwp{background:#2a7bd8}.sc-panel3 .pn-src .xls{background:#1f8a4c}.sc-panel3 .pn-src .doc{background:#2b5bd7}.sc-panel3 .pn-src .num{background:#e5322d}
 @keyframes pn-src{0%{opacity:0;translate:0 10px}5%,14%{opacity:1;translate:0 0;scale:1}22%{opacity:0;translate:var(--tx) var(--ty);scale:.4}100%{opacity:0;translate:var(--tx) var(--ty);scale:.4}}
@@ -413,7 +413,7 @@
 .sc-panel3 .pn-brace{position:absolute;z-index:3;left:27%;top:29.5%;width:62.5%;height:3%;border:2.5px solid var(--lime);border-bottom:0;border-radius:6px 6px 0 0;transform-origin:0 50%;scale:0 1;animation:pn-brace var(--loop) cubic-bezier(.5,0,.2,1) infinite}
 .sc-panel3 .pn-brace::after{content:"";position:absolute;left:50%;top:-9px;width:2.5px;height:8px;background:var(--lime)}
 @keyframes pn-brace{0%,46%{scale:0 1}54%,93%{scale:1 1;opacity:1}100%{opacity:0}}
-.sc-panel3 .pn-say{position:absolute;z-index:4;color:var(--lime);font:800 clamp(12px,3.4cqw,18px)/1 Pretendard,sans-serif;font-style:normal;letter-spacing:-.03em;white-space:nowrap;text-shadow:0 2px 8px #000c;opacity:0}
+.sc-panel3 .pn-say{position:absolute;z-index:4;color:var(--lime);font:800 clamp(12px,3.4cqw,18px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;font-style:normal;letter-spacing:-.03em;white-space:nowrap;text-shadow:0 2px 8px #000c;opacity:0}
 .sc-panel3 .s1{left:15%;top:60%;animation:pn-s1 var(--loop) infinite}.sc-panel3 .s2{left:58%;top:-12%;translate:-50% 0;animation:pn-s2 var(--loop) infinite}
 @keyframes pn-s1{0%,41%{opacity:0;translate:0 6px}46%,93%{opacity:1;translate:0 0}100%{opacity:0}}
 @keyframes pn-s2{0%,51%{opacity:0}56%,93%{opacity:1}100%{opacity:0}}

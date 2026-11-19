@@ -2,7 +2,7 @@
 section[data-ps] .ps-wrap{max-width:1040px;margin:0 auto 36px}
 section[data-ps] .ps-stage{position:relative;border-radius:28px;overflow:hidden;background:radial-gradient(120% 90% at 50% 20%,#fff 0%,#eef0f6 60%,#e6e9f2 100%)}
 section[data-ps] .ps-stage svg{display:block;width:100%;height:auto}
-section[data-ps] .ps-badge{position:absolute;right:20px;top:18px;padding:8px 14px;border-radius:999px;background:#15141a;color:#d1ff39;font:800 13px/1 Pretendard,sans-serif;opacity:0;translate:0 -8px;transition:opacity .5s,translate .5s}
+section[data-ps] .ps-badge{position:absolute;right:20px;top:18px;padding:8px 14px;border-radius:999px;background:#15141a;color:#d1ff39;font:800 13px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;opacity:0;translate:0 -8px;transition:opacity .5s,translate .5s}
 section[data-ps] .ps-stage.s4 .ps-badge{opacity:1;translate:0 0}
 /* 단계 카드: 사진 대신 장면이 있으니 사진은 숨기고, 지금 단계 카드를 강조 + 남은 시간 막대 */
 section[data-ps] .ref-process-image,section[data-ps] .ref-process-image+.spacing-large{display:none}
@@ -21,7 +21,7 @@ section[data-ps] .pdd-steps.ps-done .ps-bar i{width:100%;background:#d1ff39}
 .ps-stage .bp{fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;opacity:.9}
 .ps-stage .grid{fill:none;stroke:var(--blue);stroke-width:1;stroke-dasharray:1;stroke-dashoffset:1;opacity:.35}
 .ps-stage .dim{fill:none;stroke:var(--blue);stroke-width:1.6;stroke-dasharray:1;stroke-dashoffset:1}
-.ps-stage .dimt{fill:var(--blue);font:700 14px Pretendard,sans-serif;opacity:0}
+.ps-stage .dimt{fill:var(--blue);font:700 14px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;opacity:0}
 .ps-stage .pencil,.ps-stage .wall,.ps-stage .gfx,.ps-stage .seam,.ps-stage .post,.ps-stage .beam,.ps-stage .counter,.ps-stage .mon,.ps-stage .lamp,.ps-stage .cone,.ps-stage .ppl,.ps-stage .spark,.ps-stage .shade{opacity:0}
 .ps-stage .wall,.ps-stage .post,.ps-stage .counter,.ps-stage .mon{transform-box:fill-box;transform-origin:bottom}
 .ps-stage .ppl,.ps-stage .spark{transform-box:fill-box;transform-origin:center bottom}

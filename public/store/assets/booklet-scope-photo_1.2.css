@@ -1,7 +1,7 @@
 /* 의뢰 범위: 실제 자료집 이미지 (미리보기 전용) */
-.sx-bar{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:10px 20px;background:#15141a;color:#fff;font:500 13px Pretendard,sans-serif}
+.sx-bar{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:10px 20px;background:#15141a;color:#fff;font:500 13px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif}
 .sx-bar div{display:flex;flex-wrap:wrap;gap:6px}
-.sx-bar button{min-height:38px;padding:8px 14px;border:1px solid #3a3844;border-radius:999px;background:transparent;color:#d9d7e2;font:600 13px Pretendard,sans-serif;cursor:pointer}
+.sx-bar button{min-height:38px;padding:8px 14px;border:1px solid #3a3844;border-radius:999px;background:transparent;color:#d9d7e2;font:600 13px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;cursor:pointer}
 .sx-bar button[aria-pressed=true]{background:#d1ff39;border-color:#d1ff39;color:#15141a}
 
 .booklet-sales #booklet-scope .ref-package-photo.sx-media{position:relative;display:block;padding:0;border:0;background:#eeeef3}
@@ -11,7 +11,7 @@
 .sx-laptop{position:absolute;left:50%;top:12%;width:72%;transform:translateX(-54%)}
 .sx-lid{display:block;padding:2.4%;border-radius:10px 10px 4px 4px;background:#26242c;box-shadow:0 18px 30px -14px rgba(20,20,30,.5)}
 .sx-viewer{display:flex;flex-direction:column;aspect-ratio:16/10;overflow:hidden;border-radius:3px;background:#55535e}
-.sx-vbar{display:flex;align-items:center;gap:3px;height:11%;padding:0 4%;background:#3b3943;color:#e9e7f0;font:600 clamp(7px,1.6cqi,10px)/1 Pretendard,sans-serif;white-space:nowrap}
+.sx-vbar{display:flex;align-items:center;gap:3px;height:11%;padding:0 4%;background:#3b3943;color:#e9e7f0;font:600 clamp(7px,1.6cqi,10px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap}
 .sx-vbar i{width:5px;height:5px;border-radius:50%;background:#77747f}
 .sx-vbar b{margin-left:6px;font-weight:600;overflow:hidden;text-overflow:ellipsis}
 .sx-vbody{flex:1;display:flex;min-height:0}

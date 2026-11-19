@@ -2,7 +2,7 @@
 section[data-ps] .ps-wrap{max-width:1040px;margin:0 auto 36px}
 section[data-ps] .ps-stage{position:relative;border-radius:28px;overflow:hidden;background:#f3f4f8;border:1px solid #e4e6ec}
 section[data-ps] .ps-stage svg{display:block;width:100%;height:auto}
-section[data-ps] .ps-badge{position:absolute;right:20px;top:18px;padding:9px 15px;border-radius:999px;background:#15141a;border:0;color:#fff;font:700 13px/1 Pretendard,sans-serif;letter-spacing:.02em;backdrop-filter:blur(8px);opacity:0;translate:0 -8px;transition:opacity .6s,translate .6s}
+section[data-ps] .ps-badge{position:absolute;right:20px;top:18px;padding:9px 15px;border-radius:999px;background:#15141a;border:0;color:#fff;font:700 13px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.02em;backdrop-filter:blur(8px);opacity:0;translate:0 -8px;transition:opacity .6s,translate .6s}
 section[data-ps] .ps-badge::before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:#d1ff39;vertical-align:1px}
 section[data-ps] .ps-stage.s3 .ps-badge,.ps-stage.s4 .ps-badge{opacity:1;translate:0 0}
 /* 단계 카드: 사진 대신 장면 → 사진 숨김, 지금 단계 강조 + 남은 시간 막대 */
@@ -16,7 +16,7 @@ section[data-ps] .pdd-steps.ps-on{border-color:#15141a!important;box-shadow:0 18
 .ps-stage .grid{fill:none;stroke:#8a93ad;stroke-opacity:.35;stroke-width:1;stroke-dasharray:1;stroke-dashoffset:1}
 .ps-stage .bp{fill:none;stroke:#2f5bea;stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
 .ps-stage .dim{fill:none;stroke:#2f5bea;stroke-width:1.2;stroke-dasharray:1;stroke-dashoffset:1}
-.ps-stage .dimt{fill:#2f5bea;font:700 12px Pretendard,sans-serif;letter-spacing:.04em;opacity:0}
+.ps-stage .dimt{fill:#2f5bea;font:700 12px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.04em;opacity:0}
 .ps-stage .pencil,.ps-stage .wall,.ps-stage .gfx,.ps-stage .shade,.ps-stage .rim,.ps-stage .post,.ps-stage .beam,.ps-stage .counter,.ps-stage .mon,.ps-stage .lamp,.ps-stage .cone,.ps-stage .ppl,.ps-stage .spark,.ps-stage .win,.ps-stage .wf,.ps-stage .art,.ps-stage .sel,.ps-stage .note,.ps-stage .cursor{opacity:0}
 .ps-stage .wall,.ps-stage .post,.ps-stage .counter,.ps-stage .mon{transform-box:fill-box;transform-origin:bottom}
 .ps-stage .ppl,.ps-stage .spark{transform-box:fill-box;transform-origin:center bottom}
@@ -81,8 +81,8 @@ section[data-ps] .pdd-steps.ps-on{border-color:#15141a!important;box-shadow:0 18
 /* ── 리플렛 장면(lf-*): 1 접지 계획 → 2 디자인 창 → 3 인쇄된 펼침면 + 접힌 묶음 ── */
 .ps-stage .lf-bp,.ps-stage .lf-fold,.ps-stage .lf-dim{fill:none;stroke:#2f5bea;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
 .ps-stage .lf-bp{stroke-width:1.6}.ps-stage .lf-fold{stroke-width:1.4}.ps-stage .lf-dim{stroke-width:1.2}
-.ps-stage .lf-dimt{fill:#2f5bea;font:700 12px Pretendard,sans-serif;letter-spacing:.04em;opacity:0}
-.ps-stage .lf-tag{fill:#8a93ad;font:700 13px Pretendard,sans-serif;letter-spacing:.06em;opacity:0}
+.ps-stage .lf-dimt{fill:#2f5bea;font:700 12px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.04em;opacity:0}
+.ps-stage .lf-tag{fill:#8a93ad;font:700 13px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.06em;opacity:0}
 .ps-stage .lf-paper,.ps-stage .lf-print,.ps-stage .lf-crease,.ps-stage .lf-stack,.ps-stage .lf-sheen,.ps-stage .lf-win,.ps-stage .lf-wf,.ps-stage .lf-art,.ps-stage .lf-sel,.ps-stage .lf-cursor{opacity:0}
 .ps-stage .lf-guide{stroke-dashoffset:1;opacity:0}
 .ps-stage .lf-win{transform-box:view-box;transform-origin:510px 210px}
@@ -121,7 +121,7 @@ section[data-ps] .pdd-steps.ps-on{border-color:#15141a!important;box-shadow:0 18
 /* 2026-11-04: 움직일 때는 단계 카드를 숨기고 장면 위에 지금 단계 제목만 */
 section[data-ps].ps-live .pdd-steps-grid{display:none!important}  /* 모바일 #process 규칙보다 우선 */
 section[data-ps] .ps-head{display:grid;justify-items:center;margin:0 0 22px}
-section[data-ps] .ps-title{grid-area:1/1;display:flex;align-items:center;gap:12px;margin:0;font:800 clamp(20px,2.4vw,28px)/1.3 Pretendard,sans-serif;color:#15141a;letter-spacing:-.02em;opacity:0;translate:0 10px;transition:opacity .45s,translate .45s}
-section[data-ps] .ps-title b{display:grid;place-items:center;min-width:38px;height:28px;padding:0 10px;border-radius:999px;background:#15141a;color:#d1ff39;font:800 13px/1 Pretendard,sans-serif;letter-spacing:.04em}
+section[data-ps] .ps-title{grid-area:1/1;display:flex;align-items:center;gap:12px;margin:0;font:800 clamp(20px,2.4vw,28px)/1.3 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#15141a;letter-spacing:-.02em;opacity:0;translate:0 10px;transition:opacity .45s,translate .45s}
+section[data-ps] .ps-title b{display:grid;place-items:center;min-width:38px;height:28px;padding:0 10px;border-radius:999px;background:#15141a;color:#d1ff39;font:800 13px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.04em}
 section[data-ps] .ps-title.on{opacity:1;translate:0 0}
 @media(max-width:699px){section[data-ps] .ps-head{margin-bottom:14px}section[data-ps] .ps-title{gap:9px}}

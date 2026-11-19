@@ -2,7 +2,7 @@
 section[data-ps] .ps-wrap{max-width:1040px;margin:0 auto 36px}
 section[data-ps] .ps-stage{position:relative;border-radius:28px;overflow:hidden;background:#0b0e1c;box-shadow:0 40px 80px -48px rgba(11,14,28,.8)}
 section[data-ps] .ps-stage svg{display:block;width:100%;height:auto}
-section[data-ps] .ps-badge{position:absolute;right:20px;top:18px;padding:9px 15px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;font:700 13px/1 Pretendard,sans-serif;letter-spacing:.02em;backdrop-filter:blur(8px);opacity:0;translate:0 -8px;transition:opacity .6s,translate .6s}
+section[data-ps] .ps-badge{position:absolute;right:20px;top:18px;padding:9px 15px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;font:700 13px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.02em;backdrop-filter:blur(8px);opacity:0;translate:0 -8px;transition:opacity .6s,translate .6s}
 section[data-ps] .ps-badge::before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:#d1ff39;box-shadow:0 0 10px #d1ff39;vertical-align:1px}
 section[data-ps] .ps-stage.s4 .ps-badge{opacity:1;translate:0 0}
 /* 단계 카드: 사진 대신 장면 → 사진 숨김, 지금 단계 강조 + 남은 시간 막대 */
@@ -20,7 +20,7 @@ section[data-ps] .pdd-steps.ps-done .ps-bar i{width:100%;background:#d1ff39}
 .ps-stage .grid{fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1;stroke-dasharray:1;stroke-dashoffset:1}
 .ps-stage .bp{fill:none;stroke:#8fb3ff;stroke-width:1.8;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
 .ps-stage .dim{fill:none;stroke:#8fb3ff;stroke-width:1.4;stroke-dasharray:1;stroke-dashoffset:1}
-.ps-stage .dimt{fill:#cfe0ff;font:700 13px Pretendard,sans-serif;letter-spacing:.04em;opacity:0}
+.ps-stage .dimt{fill:#cfe0ff;font:700 13px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.04em;opacity:0}
 .ps-stage .pencil,.ps-stage .wall,.ps-stage .gfx,.ps-stage .shade,.ps-stage .rim,.ps-stage .post,.ps-stage .beam,.ps-stage .counter,.ps-stage .mon,.ps-stage .lamp,.ps-stage .cone,.ps-stage .ppl,.ps-stage .spark,.ps-stage .win,.ps-stage .wf,.ps-stage .art,.ps-stage .sel,.ps-stage .note,.ps-stage .cursor{opacity:0}
 .ps-stage .wall,.ps-stage .post,.ps-stage .counter,.ps-stage .mon{transform-box:fill-box;transform-origin:bottom}
 .ps-stage .ppl,.ps-stage .spark{transform-box:fill-box;transform-origin:center bottom}

@@ -1,7 +1,7 @@
 /* 제작 옵션: 실제 자료집 이미지 3안 비교 (미리보기 전용) */
-.cx-bar{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:10px 20px;background:#15141a;color:#fff;font:500 13px Pretendard,sans-serif}
+.cx-bar{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:10px 20px;background:#15141a;color:#fff;font:500 13px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif}
 .cx-bar div{display:flex;flex-wrap:wrap;gap:6px}
-.cx-bar button{min-height:38px;padding:8px 14px;border:1px solid #3a3844;border-radius:999px;background:transparent;color:#d9d7e2;font:600 13px Pretendard,sans-serif;cursor:pointer}
+.cx-bar button{min-height:38px;padding:8px 14px;border:1px solid #3a3844;border-radius:999px;background:transparent;color:#d9d7e2;font:600 13px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;cursor:pointer}
 .cx-bar button[aria-pressed=true]{background:#d1ff39;border-color:#d1ff39;color:#15141a}
 
 /* 공통: 그림 상자 */
@@ -32,7 +32,7 @@
 .choice-review[data-cx=b] [role=tabpanel]{display:block!important}
 .choice-review[data-cx=b] .choice-group{display:grid;grid-template-columns:120px minmax(0,1fr);gap:20px;align-items:start;padding:22px 0;border-top:1px solid #e1dde8}
 .choice-review[data-cx=b] [role=tabpanel]:last-of-type .choice-group{border-bottom:1px solid #e1dde8}
-.choice-review[data-cx=b] .choice-group>h3{display:block!important;margin:6px 0 0;font:700 16px/1.4 Pretendard,sans-serif;text-align:left}
+.choice-review[data-cx=b] .choice-group>h3{display:block!important;margin:6px 0 0;font:700 16px/1.4 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;text-align:left}
 .choice-review[data-cx=b] .choice-pair{gap:14px}
 .choice-review[data-cx=b] .choice-item{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 14px;align-items:start;text-align:left;padding:12px;border:1px solid #e1dde8;border-radius:14px;background:#fff}
 .choice-review[data-cx=b] .cx-media{grid-row:span 3;aspect-ratio:1/1;border-radius:10px}
@@ -41,7 +41,7 @@
 .choice-review[data-cx=b] .cx-file{width:30%}
 .choice-review[data-cx=b] h4{margin:2px 0 0!important;font-size:16px!important}
 .choice-review[data-cx=b] .choice-item p{display:none}
-.choice-review[data-cx=b] .cx-notes{display:block;margin:6px 0 0;padding:0;list-style:none;font:400 13px/1.6 Pretendard,sans-serif;color:#60596c}
+.choice-review[data-cx=b] .cx-notes{display:block;margin:6px 0 0;padding:0;list-style:none;font:400 13px/1.6 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#60596c}
 .choice-review[data-cx=b] .cx-notes li{position:relative;padding-left:12px;word-break:keep-all}
 .choice-review[data-cx=b] .cx-notes li::before{content:"";position:absolute;left:0;top:.7em;width:5px;height:5px;border-radius:50%;background:#15141a}
 
@@ -49,13 +49,13 @@
 .choice-review[data-cx=c] .choice-item{position:relative;display:flex;flex-direction:column;align-items:center;padding:14px 14px 18px;border:2px solid transparent;border-radius:20px;background:#fff;transition:border-color .2s,box-shadow .2s}
 .choice-review[data-cx=c] .choice-item:hover{box-shadow:0 10px 26px -14px rgba(20,20,30,.35)}
 .choice-review[data-cx=c] .choice-item.is-picked{border-color:#15141a}
-.choice-review[data-cx=c] .cx-pick{display:inline-flex;align-items:center;gap:8px;margin-top:14px;min-height:44px;padding:10px 18px;border:1px solid #c9c4d3;border-radius:999px;background:#fff;color:#15141a;font:600 14px Pretendard,sans-serif;cursor:pointer}
+.choice-review[data-cx=c] .cx-pick{display:inline-flex;align-items:center;gap:8px;margin-top:14px;min-height:44px;padding:10px 18px;border:1px solid #c9c4d3;border-radius:999px;background:#fff;color:#15141a;font:600 14px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;cursor:pointer}
 .choice-review[data-cx=c] .cx-pick::after{content:"";position:absolute;inset:0;border-radius:20px}
 .cx-check{width:18px;height:18px;border:1.5px solid #9c97a6;border-radius:50%;display:grid;place-items:center}
 .choice-review[data-cx=c] .is-picked .cx-pick{background:#15141a;border-color:#15141a;color:#d1ff39}
 .choice-review[data-cx=c] .is-picked .cx-check{border-color:#d1ff39;background:#d1ff39}
 .choice-review[data-cx=c] .is-picked .cx-check::after{content:"";width:5px;height:9px;border:solid #15141a;border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
-.cx-toast{margin:18px 0 0;min-height:22px;text-align:center;font:500 13px Pretendard,sans-serif;color:#2b6b00}
+.cx-toast{margin:18px 0 0;min-height:22px;text-align:center;font:500 13px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#2b6b00}
 
 @container choices (max-width:650px){
  .choice-review[data-cx=b] .choice-group{grid-template-columns:1fr;gap:10px}

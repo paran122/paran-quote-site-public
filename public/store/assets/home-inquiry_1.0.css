@@ -1,6 +1,6 @@
 /* 홈 '견적·문의' 칸 (2026-11-19). 차분하게: 흰 바탕, 옅은 회색 카드, 연두는 주 버튼과 선택 체크에만.
    먼저 필요한 일을 고르면 오른쪽이 바뀐다: 디자인·제작물 → 서비스 고르기(금액 바로), 그 외 → 짧은 문의 양식. */
-.hqi{background:#fff;color:#15141a;padding:96px 20px;font-family:'__Poppins_9808a3',Pretendard,sans-serif;word-break:keep-all;scroll-margin-top:90px;border-top:1px solid #ececf0}
+.hqi{background:#fff;color:#15141a;padding:96px 20px;font-family:'__Poppins_9808a3',Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;word-break:keep-all;scroll-margin-top:90px;border-top:1px solid #ececf0}
 .hqi-wrap{max-width:1210px;margin:0 auto;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);grid-template-areas:"copy side" "direct side";grid-template-rows:auto 1fr;column-gap:56px;row-gap:0;align-items:start}
 .hqi-copy{grid-area:copy}.hqi-side{grid-area:side;min-width:0}.hqi-direct{grid-area:direct}
 .hqi-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

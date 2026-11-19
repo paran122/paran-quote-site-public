@@ -6,7 +6,7 @@
 .booklet-sales .b-copy .hl-chip span{padding:3px 8px;border-radius:5px;background:#ccff30;color:#15141a;font-size:12px}
 .booklet-sales .b-copy .hl-checks{display:grid;gap:12px;margin:40px 0 0}
 .booklet-sales .b-copy .hl-check{display:flex;align-items:center;gap:10px}
-.booklet-sales .b-copy .hl-check p{margin:0;color:#f1f1f4;font:600 16px/1.4 Pretendard,sans-serif;word-break:keep-all}
+.booklet-sales .b-copy .hl-check p{margin:0;color:#f1f1f4;font:600 16px/1.4 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;word-break:keep-all}
 .booklet-sales .b-copy .hl-check svg{width:24px;height:24px;flex:none}
 .booklet-sales .b-copy .hl-check .bd{fill:none;stroke:#ccff30;stroke-width:1.7;stroke-linejoin:round}
 .booklet-sales .b-copy .hl-check .ck{fill:none;stroke:#ccff30;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -24,9 +24,9 @@
 .sv-ph.is-paper>img{height:auto;object-fit:initial;border-radius:4px}
 .sv-ph.is-frame{height:auto!important}
 .sv-ph.is-frame>img{height:auto;object-fit:initial;border:4px solid #2d2e36;border-radius:8px}
-.sv-tag{position:absolute;z-index:6;left:var(--tx,8px);top:var(--ty,8px);display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#15141aee;color:#fff;font:700 12px/1 Pretendard,sans-serif;white-space:nowrap;box-shadow:0 6px 16px -6px #000c}
+.sv-tag{position:absolute;z-index:6;left:var(--tx,8px);top:var(--ty,8px);display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#15141aee;color:#fff;font:700 12px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap;box-shadow:0 6px 16px -6px #000c}
 .sv-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--lime)}
-.sv-anno{position:absolute;z-index:7;margin:0;color:var(--lime);font:800 clamp(15px,2.3cqi,22px)/1.05 Pretendard,sans-serif;letter-spacing:-.03em;white-space:nowrap;animation:sv-in .7s ease both;animation-delay:var(--in,1.2s)}
+.sv-anno{position:absolute;z-index:7;margin:0;color:var(--lime);font:800 clamp(15px,2.3cqi,22px)/1.05 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:-.03em;white-space:nowrap;animation:sv-in .7s ease both;animation-delay:var(--in,1.2s)}
 .sv-anno svg{position:absolute;width:56px;height:40px;fill:none;stroke:var(--lime);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
 .sv-anno.to-up svg{left:30%;bottom:100%}
 .sv-anno.to-down svg{left:30%;top:100%;transform:scaleY(-1)}
@@ -74,8 +74,8 @@
 .sv-cover img{display:block;width:100%;height:100%;object-fit:cover;margin:0;max-width:none;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
 .sv-cover.is-paper{background:#eceef3}
 .sv-cover.is-paper img{object-fit:contain;padding:7%;box-sizing:border-box;filter:drop-shadow(0 10px 14px rgba(20,20,30,.22))}
-.sv-count{position:absolute;right:10px;top:10px;padding:5px 9px;border-radius:999px;background:#15141add;color:#fff;font:600 12px/1 Pretendard,sans-serif}
-.sv-open{position:absolute;left:50%;bottom:12px;transform:translate(-50%,6px);padding:7px 12px;border-radius:999px;background:#15141a;color:#d1ff39;font:600 12px/1 Pretendard,sans-serif;white-space:nowrap;opacity:0;transition:opacity .25s,transform .25s}
+.sv-count{position:absolute;right:10px;top:10px;padding:5px 9px;border-radius:999px;background:#15141add;color:#fff;font:600 12px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif}
+.sv-open{position:absolute;left:50%;bottom:12px;transform:translate(-50%,6px);padding:7px 12px;border-radius:999px;background:#15141a;color:#d1ff39;font:600 12px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap;opacity:0;transition:opacity .25s,transform .25s}
 .sv-meta{display:flex;flex-direction:column;gap:4px;padding:0 2px;font-family:Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif}
 .sv-meta strong{font-size:16px;font-weight:700;line-height:1.4;color:#15141a;word-break:keep-all}
 .sv-meta span{font-size:13px;line-height:1.45;color:#6b707c;word-break:keep-all}
@@ -91,9 +91,9 @@
 .sv-arrow:focus-visible{outline:3px solid #173eb8;outline-offset:2px}
 .sv-arrow[data-dir="-1"]{left:-8px}.sv-arrow[data-dir="1"]{right:-8px}
 .sv-cases .sv-arrow{top:calc(10px + var(--w-cover,200px)/2);z-index:12}.sv-cases .sv-arrow[data-dir="-1"]{left:max(4px,calc(50% - var(--w)/2 - 70px))}.sv-cases .sv-arrow[data-dir="1"]{right:max(4px,calc(50% - var(--w)/2 - 70px))}  /* 가운데 카드 양옆 */
-.sv-hint{margin:6px 0 0;text-align:center;font:400 14px/1.6 Pretendard,sans-serif;color:#6b707c}
+.sv-hint{margin:6px 0 0;text-align:center;font:400 14px/1.6 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#6b707c}
 .sv-proof{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 26px;padding:0;list-style:none}
-.sv-proof li{padding:7px 13px;border:1px solid #d9dbe2;border-radius:999px;background:#fff;font:600 13px/1.3 Pretendard,sans-serif;color:#3d3a46;word-break:keep-all}
+.sv-proof li{padding:7px 13px;border:1px solid #d9dbe2;border-radius:999px;background:#fff;font:600 13px/1.3 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#3d3a46;word-break:keep-all}
 @container (max-width:720px){
  .sv-cases{--w:78cqi}
  .sv-cases[data-shape=tall],.sv-cases[data-shape=square]{--w:62cqi}
@@ -110,7 +110,7 @@ html.sv-lock{overflow:hidden}
 .sv-panel{position:relative;box-sizing:border-box;width:min(1080px,calc(100vw - 32px));height:min(860px,calc(100dvh - 32px));max-height:calc(100dvh - 32px);display:flex;flex-direction:column;gap:16px;padding:24px 28px 22px;border-radius:20px;background:#1a1920;box-shadow:0 30px 80px rgba(0,0,0,.45)}
 .sv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
 .sv-kind{margin:0 0 6px;color:#d1ff39;font-size:13px;font-weight:600}
-.sv-viewer #sv-viewer-title{margin:0;font:700 22px/1.35 Pretendard,sans-serif;color:#fff;letter-spacing:-.02em;word-break:keep-all}
+.sv-viewer #sv-viewer-title{margin:0;font:700 22px/1.35 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#fff;letter-spacing:-.02em;word-break:keep-all}
 .sv-facts{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
 .sv-facts div{display:flex;gap:6px;align-items:center;padding:6px 11px;border:1px solid #34323d;border-radius:999px;font-size:13px}
 .sv-facts dt{color:#9a98a6}.sv-facts dd{margin:0;color:#f3f2f7;font-weight:600}
@@ -135,7 +135,7 @@ html.sv-lock{overflow:hidden}
 .sv-thumbs button[aria-current=true]{opacity:1;border-color:#d1ff39}
 .sv-thumbs img{display:block;width:52px;height:38px;object-fit:cover;margin:0;max-width:none;border-radius:3px;background:#2a2832}
 .sv-books{display:flex;gap:8px}
-.sv-books button{padding:9px 13px;border:1px solid #34323d;border-radius:999px;background:transparent;color:#d9d7e2;font:500 13px Pretendard,sans-serif;cursor:pointer;white-space:nowrap}
+.sv-books button{padding:9px 13px;border:1px solid #34323d;border-radius:999px;background:transparent;color:#d9d7e2;font:500 13px Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;cursor:pointer;white-space:nowrap}
 .sv-books button:hover{border-color:#d1ff39;color:#d1ff39}
 .sv-viewer button:focus-visible{outline:3px solid #d1ff39;outline-offset:2px}
 .sv-stage:focus{outline:none}
@@ -165,7 +165,7 @@ html.sv-lock{overflow:hidden}
 .booklet-sales #booklet-scope .sv-media img,.booklet-sales #process .sv-media img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;margin:0;max-width:none;min-width:0}
 .booklet-sales #booklet-scope .sv-media.is-paper img,.booklet-sales #process .sv-media.is-paper img{object-fit:contain;padding:6%;box-sizing:border-box;filter:drop-shadow(0 10px 14px rgba(20,20,30,.22))}
 .booklet-sales #process .ref-photo.sv-media{border-radius:12px}
-.booklet-sales .sv-media .sv-badge{position:absolute;right:8px;bottom:8px;padding:5px 8px;border-radius:6px;background:#15141a;color:#fff;font:700 11px/1 Pretendard,sans-serif}
+.booklet-sales .sv-media .sv-badge{position:absolute;right:8px;bottom:8px;padding:5px 8px;border-radius:6px;background:#15141a;color:#fff;font:700 11px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif}
 
 /* ── 제작 옵션: 서비스 옵션별 그림 (크기 비례·용지·접지·마감·비율·일정) ── */
 .booklet-sales .sv-opt-grid{grid-template-columns:repeat(min(var(--n),3),minmax(0,1fr));gap:18px}
@@ -176,12 +176,12 @@ html.sv-lock{overflow:hidden}
 .booklet-sales .sv-opt-media img{display:block;max-width:none;margin:0}
 .booklet-sales .sv-opt-photo img{width:100%;height:100%;object-fit:cover}
 .booklet-sales .sv-opt-photo.is-paper img{object-fit:contain;padding:7%;box-sizing:border-box;filter:drop-shadow(0 10px 14px rgba(20,20,30,.22))}
-.booklet-sales .sv-opt-note{margin:14px 0 0;text-align:center;font:400 13px/1.6 Pretendard,sans-serif;color:#6b6676;word-break:keep-all}
+.booklet-sales .sv-opt-note{margin:14px 0 0;text-align:center;font:400 13px/1.6 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#6b6676;word-break:keep-all}
 /* 크기 비례: 가장 큰 규격이 상자 높이의 72% */
 .booklet-sales .sv-opt-scale{place-items:end center;padding-bottom:16%;box-sizing:border-box;background:linear-gradient(#eeeef3 0 84%,#e2e2ea 84%)}
 .booklet-sales .sv-scale-item{position:absolute;left:50%;bottom:16%;translate:-50% 0;display:block;height:calc(var(--h) * .72);aspect-ratio:var(--ar);box-shadow:0 2px 4px rgba(20,20,30,.12),0 12px 20px -10px rgba(20,20,30,.4)}
 .booklet-sales .sv-scale-item img{width:100%;height:100%;object-fit:cover}
-.booklet-sales .sv-scale-dim{position:absolute;left:50%;bottom:4%;translate:-50% 0;padding:4px 9px;border-radius:999px;background:#15141a;color:#d1ff39;font:700 11px/1.2 Pretendard,sans-serif;white-space:nowrap}
+.booklet-sales .sv-scale-dim{position:absolute;left:50%;bottom:4%;translate:-50% 0;padding:4px 9px;border-radius:999px;background:#15141a;color:#d1ff39;font:700 11px/1.2 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap}
 /* 비율 화면·휴대폰 */
 .booklet-sales .sv-opt-ratio{background:#1d1c24}
 .booklet-sales .sv-opt-screen{display:block;width:78%;max-height:64%;aspect-ratio:var(--ar);border:4px solid #0d0d12;border-radius:6px;overflow:hidden;background:#0d0d12;position:relative;margin-bottom:8%}
@@ -209,7 +209,7 @@ html.sv-lock{overflow:hidden}
 .booklet-sales .sw-pomax .sw-sheet{background:#fafafa;box-shadow:0 0 0 1px #c8c6cf,4px 4px 0 #d9d8de,0 14px 22px -12px rgba(20,20,30,.4)}
 .booklet-sales .sw-sticker .sw-sheet{background:linear-gradient(135deg,#fff 0 82%,#e7e6ec 82%)}
 .booklet-sales .sw-props{position:absolute;left:0;right:0;bottom:9%;display:flex;justify-content:center;gap:5px;flex-wrap:wrap;padding:0 8px}
-.booklet-sales .sw-props i{font:600 11px/1 Pretendard,sans-serif;font-style:normal;padding:5px 8px;border-radius:999px;background:#15141a;color:#fff;white-space:nowrap}
+.booklet-sales .sw-props i{font:600 11px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;font-style:normal;padding:5px 8px;border-radius:999px;background:#15141a;color:#fff;white-space:nowrap}
 /* 접지·마감·구조 그림 */
 .booklet-sales .sv-opt-diagram svg{width:72%;height:auto;color:#15141a}
 /* 운영 일정 */
@@ -218,8 +218,8 @@ html.sv-lock{overflow:hidden}
 .booklet-sales .sv-opt-timeline ol::before{content:"";position:absolute;left:12%;right:12%;top:6px;height:2px;background:#3a3844}
 .booklet-sales .sv-opt-timeline li{position:relative;padding-top:24px;text-align:center}
 .booklet-sales .sv-opt-timeline li::before{content:"";position:absolute;left:50%;top:0;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:#d1ff39}
-.booklet-sales .sv-opt-timeline b{display:block;font:700 15px/1.3 Pretendard,sans-serif;color:#d1ff39}
-.booklet-sales .sv-opt-timeline span{display:block;margin-top:4px;font:500 13px/1.5 Pretendard,sans-serif;color:#dddce4;word-break:keep-all}
+.booklet-sales .sv-opt-timeline b{display:block;font:700 15px/1.3 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#d1ff39}
+.booklet-sales .sv-opt-timeline span{display:block;margin-top:4px;font:500 13px/1.5 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#dddce4;word-break:keep-all}
 @media(max-width:767px){
  .booklet-sales .sv-opt-grid,.booklet-sales .sv-opt-grid:has(> :nth-child(4)),.booklet-sales .sv-opt-grid:has(> :nth-child(5)){grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
  .booklet-sales .sv-opt-grid:has(> :only-child){grid-template-columns:1fr}

@@ -3,7 +3,7 @@
 /* 그림 상자 공통: 기존 사진 자리 크기를 그대로 쓰고 안을 채운다 */
 .booklet-sales #process .ref-photo.px-media{position:relative;display:block;padding:0;border:0;border-radius:12px;background:#eceef3;overflow:hidden;container-type:inline-size}
 .booklet-sales #process .px-media img{display:block;margin:0;max-width:none;min-width:0;width:100%;height:100%;object-fit:cover}
-.px-badge{position:absolute;padding:.35em .55em;border-radius:5px;background:var(--c);color:#fff;font:800 clamp(7px,6cqi,13px)/1 Pretendard,sans-serif;letter-spacing:.02em;box-shadow:0 4px 10px -3px rgba(0,0,0,.35)}
+.px-badge{position:absolute;padding:.35em .55em;border-radius:5px;background:var(--c);color:#fff;font:800 clamp(7px,6cqi,13px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.02em;box-shadow:0 4px 10px -3px rgba(0,0,0,.35)}
 /* 1 자료 전달: 정리 안 된 원고 더미 (출력물·빨간펜 초안·휴대폰 사진·파일들) */
 .px-pile{position:absolute;inset:0;background:#e7e5ec}
 .px-pile>span{position:absolute;box-shadow:0 2px 4px rgba(20,20,30,.12),0 10px 18px -8px rgba(20,20,30,.4)}
@@ -20,7 +20,7 @@
 .px-draft svg{position:absolute;inset:0;width:100%;height:100%}
 .px-snap{right:8%;top:26%;width:28%;aspect-ratio:3/4;padding:3%;background:#fff;transform:rotate(-6deg)}
 .booklet-sales #process .px-snap img{filter:brightness(.82) saturate(.75) blur(.3px)}
-.px-file{z-index:2;display:flex;align-items:center;gap:.4em;padding:.35em .55em .35em .35em;border-radius:6px;background:#fff;transform:rotate(var(--r));font:600 clamp(6px,3.5cqi,10px)/1 Pretendard,sans-serif;color:#3a3742;white-space:nowrap}
+.px-file{z-index:2;display:flex;align-items:center;gap:.4em;padding:.35em .55em .35em .35em;border-radius:6px;background:#fff;transform:rotate(var(--r));font:600 clamp(6px,3.5cqi,10px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#3a3742;white-space:nowrap}
 .px-file b{padding:.35em .4em;border-radius:3px;background:var(--c);color:#fff;font-weight:800;font-size:.9em}
 .px-file em{font-style:normal}
 /* 2 구성·시안 확인: 컬러 내지 펼침면 */
@@ -28,7 +28,7 @@
 .px-spread{position:absolute;left:12%;right:12%;top:10%;display:flex;gap:1px;filter:drop-shadow(0 12px 16px rgba(20,20,30,.3))}
 .booklet-sales #process .px-spread img{width:50%;height:auto;aspect-ratio:1/1.414}
 .px-cover{position:absolute;left:7%;top:24%;z-index:1;width:30%;aspect-ratio:1/1.414;border-radius:2px 4px 4px 2px;overflow:hidden;transform:rotate(-5deg);box-shadow:0 2px 4px rgba(20,20,30,.15),0 16px 26px -10px rgba(20,20,30,.5)}
-.px-note{position:absolute;right:4%;bottom:6%;z-index:2;padding:.45em .7em;border-radius:8px;background:#15141a;color:#fff;font:600 clamp(7px,5.4cqi,12px)/1 Pretendard,sans-serif;white-space:nowrap}
+.px-note{position:absolute;right:4%;bottom:6%;z-index:2;padding:.45em .7em;border-radius:8px;background:#15141a;color:#fff;font:600 clamp(7px,5.4cqi,12px)/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;white-space:nowrap}
 /* 3 최종 납품: 인쇄된 책자 세 권 + PDF */
 .px-final{position:absolute;inset:0;background:linear-gradient(160deg,#eceaf3,#dcd9e6)}
 .px-book{position:absolute;top:16%;width:31%;aspect-ratio:1/1.414;border-radius:2px 4px 4px 2px;overflow:hidden;box-shadow:0 2px 4px rgba(20,20,30,.15),0 18px 28px -10px rgba(20,20,30,.5)}
@@ -43,7 +43,7 @@
  #process[data-px=b] .pdd-steps-heading .w-embed{display:none}
  #process[data-px=b] .pdd-steps-grid{counter-reset:px;gap:20px!important}
  #process[data-px=b] .pdd-steps{position:relative;display:flex;flex-direction:column;padding:22px 22px 26px;border-radius:18px;background:#fff;border:1px solid #e3e1ea;counter-increment:px}
- #process[data-px=b] .pdd-steps::before{content:"STEP 0" counter(px);align-self:flex-start;margin-bottom:12px;padding:6px 11px;border-radius:999px;background:#15141a;color:#d1ff39;font:800 12px/1 Pretendard,sans-serif;letter-spacing:.04em}
+ #process[data-px=b] .pdd-steps::before{content:"STEP 0" counter(px);align-self:flex-start;margin-bottom:12px;padding:6px 11px;border-radius:999px;background:#15141a;color:#d1ff39;font:800 12px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;letter-spacing:.04em}
  #process[data-px=b] .ref-process-image{position:relative;overflow:visible}
  #process[data-px=b] .pdd-steps:not(:last-child) .ref-process-image::after{content:"";position:absolute;right:-47px;top:50%;z-index:2;width:28px;height:28px;border-radius:50%;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12h13m-5-5 5 5-5 5' fill='none' stroke='%2315141a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat;border:1px solid #e3e1ea;box-shadow:0 4px 10px -4px rgba(20,20,30,.3);transform:translateY(-50%)}
  #process[data-px=b] .pdd-steps-heading h3{text-align:left!important;font-size:21px!important}
