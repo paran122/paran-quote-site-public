@@ -76,6 +76,9 @@ const nextConfig = {
       { source: "/services/editorial.html", destination: "/services/booklet", permanent: true },
       { source: "/services/:id([^/]+)\\.html", destination: "/services/", permanent: true },
       { source: "/estimate.html", destination: "/services/", permanent: true },
+      // 2026-11-20 전체 링크 검사: 옛 블로그 글 본문이 가리키는 없는 주소(운영에서도 404)
+      { source: "/portfolio.html", destination: "/work/", permanent: true },
+      { source: "/work/:slug(siavs-2026|2026-ybnl)", destination: "/work/", permanent: true },
     ];
   },
   async headers() {
