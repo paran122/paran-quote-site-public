@@ -1198,7 +1198,7 @@ html{scroll-padding-top:0}
 
 #paran-header.fj-header-light .website-links>a,#paran-header.fj-header-light .has_sub_menu>a,#paran-header.fj-header-light .paran-cart{color:#15141a}
 #paran-header.fj-header-light .sc-5fb22693-0>a[href='/requests/']{color:#15141a;border-color:#15141a;background:transparent}
-#paran-header.fj-header-light .sc-5fb22693-0>a[href='/request/?mode=consult']{background:#173eb8;color:white}
+#paran-header.fj-header-light .sc-5fb22693-0>a[href^='/request/?mode=consult']{background:#173eb8;color:white}
 #paran-header.fj-header-light .open svg path{stroke:#15141a}
 .paran-fj-hero h1{font-size:60px!important;line-height:1.2!important;letter-spacing:-.02em}
 .fj-hero-secondary{border:1px solid white;border-radius:100px;padding:15px 28px;margin-left:16px;color:white;background:transparent;font-size:14px;font-weight:600}
@@ -1763,3 +1763,5 @@ body[data-page=home] .fj-cta h2{margin-bottom:28px!important}
 }
 /* 2026-11-20 속도 측정 반영: 장바구니·견적 요청·내 요청은 내용이 스크립트로 채워지는 동안 하단(footer)이 화면 안에서 밀리지 않게 한 화면 높이를 먼저 잡는다(밀림 점수 0.14~0.28 → 0 목표) */
 body[data-page=cart] .paran-content,body[data-page=request] .paran-content,body[data-page=requests] .paran-content{min-height:100vh}
+/* 2026-11-20 견적 요청 양식: 칸·버튼에 붙어 있던 안내 글에 간격 */
+.request-form .fine{margin:8px 0 0}.request-form .consent+.fine{margin:10px 0 16px}.request-form button[type=submit]+.fine{margin-top:14px}.request-form input[type=file]+.fine{margin-top:8px}

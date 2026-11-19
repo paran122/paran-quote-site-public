@@ -451,7 +451,7 @@ export function fillTemplate(tpl: string, post: CasePost | null, opts: { preview
     : "";
   return html.replace(
     /<div data-case-view>[\s\S]*?<\/noscript>/,
-    `<div data-case-view data-ssr="${esc(post.slug)}">${bar}${(post.quote || []).length ? `<div class="post-layout">${renderPostHtml(post)}<aside class="case-rail" data-rail-empty aria-hidden="true"></aside></div>` : renderPostHtml(post)}<script type="application/json" id="case-data">${data}</script></div>`
+    `<div data-case-view data-ssr="${esc(post.slug)}">${bar}${(post.quote || []).length ? renderPostHtml(post).replace(/^([\s\S]*?<\/article>)/, `<div class="post-layout">$1<aside class="case-rail" data-rail-empty aria-hidden="true"></aside></div>`) : renderPostHtml(post)}<script type="application/json" id="case-data">${data}</script></div>`
   );
 }
 
