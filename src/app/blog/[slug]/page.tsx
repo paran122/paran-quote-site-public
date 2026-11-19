@@ -482,8 +482,8 @@ export default async function BlogDetailPage({ params }: Props) {
                 </div>
                 <div className="mt-3 flex items-center gap-1.5 text-[13px] text-slate-500">
                   <span>문의</span>
-                  <a href="mailto:info@parancompany.co.kr" className="text-primary hover:underline">
-                    info@parancompany.co.kr
+                  <a href="mailto:cs@parancompany.co.kr" className="text-primary hover:underline">
+                    cs@parancompany.co.kr
                   </a>
                   <span>·</span>
                   <Link href="/authors/kim-mikyung" className="font-medium text-primary hover:underline">

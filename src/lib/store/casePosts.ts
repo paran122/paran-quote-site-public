@@ -397,7 +397,7 @@ export function postMarkdown(post: CasePost) {
   }
   const ids = postServiceIds(post).filter((id) => LIVE_SERVICES.has(id));
   if (ids.length) lines.push("## 관련 서비스", "", ...ids.map((id) => `- [${serviceName(id)}](${SITE_URL}/services/${id})`), "");
-  lines.push(`문의: 파란컴퍼니 02-6342-2800 · info@parancompany.co.kr · ${SITE_URL}/request/?mode=consult`, "");
+  lines.push(`문의: 파란컴퍼니 02-6342-2800 · cs@parancompany.co.kr · ${SITE_URL}/request/?mode=consult`, "");
   return lines.join("\n");
 }
 

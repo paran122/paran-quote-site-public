@@ -158,8 +158,8 @@ export default function AuthorPage() {
             <ul className="space-y-1.5 text-[15px] text-slate-600">
               <li>
                 이메일 —{" "}
-                <a href="mailto:info@parancompany.co.kr" className="text-primary hover:underline">
-                  info@parancompany.co.kr
+                <a href="mailto:cs@parancompany.co.kr" className="text-primary hover:underline">
+                  cs@parancompany.co.kr
                 </a>
               </li>
               <li>

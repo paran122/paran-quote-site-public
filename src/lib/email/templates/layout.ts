@@ -29,7 +29,7 @@ export function mailShell(corner: string, rows: string[]): string {
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
 <tr><td style="padding:36px 0 18px;border-bottom:2px solid ${INK}"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="font-size:17px;font-weight:800;letter-spacing:-0.02em;color:${INK}">파란컴퍼니</td><td style="font-size:13px;color:${MUTED};text-align:right">${escapeHtml(corner)}</td></tr></table></td></tr>
 ${rows.filter(Boolean).join("\n")}
-<tr><td style="padding:44px 0 40px"><div style="border-top:1px solid ${LINE};padding-top:18px;font-size:13px;line-height:1.8;color:${MUTED}">파란컴퍼니 주식회사 · 02-6342-2800 (평일 09:00~18:00) · info@parancompany.co.kr</div></td></tr>
+<tr><td style="padding:44px 0 40px"><div style="border-top:1px solid ${LINE};padding-top:18px;font-size:13px;line-height:1.8;color:${MUTED}">파란컴퍼니 주식회사 · 02-6342-2800 (평일 09:00~18:00) · cs@parancompany.co.kr</div></td></tr>
 </table></td></tr></table>
 </body>
 </html>`;

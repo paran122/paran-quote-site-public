@@ -250,7 +250,7 @@ export default function Contact() {
                     <Mail className="h-3.5 w-3.5 text-blue-500 md:h-[18px] md:w-[18px]" />
                   </div>
                   <div className="min-w-0 md:self-center">
-                    <div className="whitespace-nowrap text-[12px] font-bold leading-snug text-gray-800 md:text-[clamp(11px,0.95vw,13px)]">info@parancompany.co.kr</div>
+                    <div className="whitespace-nowrap text-[12px] font-bold leading-snug text-gray-800 md:text-[clamp(11px,0.95vw,13px)]">cs@parancompany.co.kr</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5 rounded-lg border border-gray-100 bg-gray-50/60 px-3 py-2.5 md:items-start md:gap-4 md:rounded-xl md:px-5 md:py-4">

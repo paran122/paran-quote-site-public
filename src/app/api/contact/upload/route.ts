@@ -120,7 +120,7 @@ export async function POST(request: Request) {
       }
       if (file.size > MAX_FILE_SIZE) {
         return NextResponse.json(
-          { error: `${file.name}: 파일 크기는 50MB 이하여야 합니다. 더 큰 파일은 info@parancompany.co.kr로 보내주세요.` },
+          { error: `${file.name}: 파일 크기는 50MB 이하여야 합니다. 더 큰 파일은 cs@parancompany.co.kr로 보내주세요.` },
           { status: 400 }
         );
       }

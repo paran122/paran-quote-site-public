@@ -10,7 +10,7 @@ export const BASE = `# 파란컴퍼니 (PARAN Company)
 - 설립: 2015년
 - 본사: 경기도 수원시 팔달구 효원로 278, 6층 603호
 - 전화: 02-6342-2800
-- 이메일: info@parancompany.co.kr
+- 이메일: cs@parancompany.co.kr
 - 인증: 여성기업확인서, 직접생산확인증명서
 
 ## 서비스

@@ -112,7 +112,7 @@ export default function Footer() {
                   TEL <a href="tel:02-6342-2800" className="transition-colors hover:text-white">02-6342-2800</a>
                 </p>
                 <p>
-                  <a href="mailto:info@parancompany.co.kr" className="transition-colors hover:text-white">info@parancompany.co.kr</a>
+                  <a href="mailto:cs@parancompany.co.kr" className="transition-colors hover:text-white">cs@parancompany.co.kr</a>
                 </p>
                 <p>FAX 0504-482-1305</p>
                 <p>평일 09:00 ~ 18:00</p>
@@ -162,7 +162,7 @@ export default function Footer() {
                 <p>파란컴퍼니 주식회사 | 대표 김미경 | 사업자등록번호 291-86-02802</p>
                 <p>경기도 수원시 팔달구 효원로 278, 6층 603호</p>
                 <p>
-                  TEL <a href="tel:02-6342-2800" className="transition-colors hover:text-white">02-6342-2800</a> | FAX 0504-482-1305 | <a href="mailto:info@parancompany.co.kr" className="transition-colors hover:text-white">info@parancompany.co.kr</a>
+                  TEL <a href="tel:02-6342-2800" className="transition-colors hover:text-white">02-6342-2800</a> | FAX 0504-482-1305 | <a href="mailto:cs@parancompany.co.kr" className="transition-colors hover:text-white">cs@parancompany.co.kr</a>
                 </p>
                 <p>평일 09:00 ~ 18:00 (주말·공휴일 휴무)</p>
               </div>

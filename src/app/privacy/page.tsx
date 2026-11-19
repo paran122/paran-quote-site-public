@@ -84,7 +84,7 @@ const SECTIONS = [
       ["성명", "김미경"],
       ["직위", "대표이사"],
       ["연락처", "02-6342-2800"],
-      ["이메일", "info@parancompany.co.kr"],
+      ["이메일", "cs@parancompany.co.kr"],
     ],
   },
   {
