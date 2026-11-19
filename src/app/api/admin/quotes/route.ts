@@ -64,6 +64,8 @@ export async function GET(request: NextRequest) {
       view,
       original,
       view_error,
+      // 2 = 이 응답에 계산값(total_won·editable·view·original)이 있고, PUT 이 dryRun 을 안다
+      api_version: 2,
     };
   });
 
