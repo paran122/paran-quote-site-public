@@ -21,6 +21,38 @@
   document.querySelectorAll('input[name="hqi-need"]').forEach(r => r.addEventListener('change', syncNeed));
   syncNeed();
 
+  // 첨부: 끌어다 놓거나 눌러서 고른다. 규칙(개수·크기·종류)과 올리기는 견적 요청 화면과 같은 함수를 쓴다.
+  const drop = document.getElementById('hqi-drop'), fileInput = document.getElementById('hqi-file');
+  const fileList = document.getElementById('hqi-filelist'), fileNote = document.getElementById('hqi-file-note');
+  let picked = [], uploaded = null, uploadedSig = '';
+  const sig = () => picked.map(f => f.name + ':' + f.size + ':' + f.lastModified).join('|');
+  const sizeText = n => (n >= 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.max(1, Math.round(n / 1024)) + 'KB');
+  const fileProblem = () => { const s = window.ParanStore; return s && s.fileProblem ? s.fileProblem(picked) : (picked.length > 5 ? '첨부는 최대 5개까지 가능합니다.' : ''); };
+  function renderFiles() {
+    fileList.textContent = '';
+    picked.forEach((f, i) => {
+      const li = document.createElement('li');
+      const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = f.name;
+      const sz = document.createElement('span'); sz.className = 'sz'; sz.textContent = sizeText(f.size);
+      const rm = document.createElement('button'); rm.type = 'button'; rm.textContent = '빼기'; rm.setAttribute('aria-label', f.name + ' 빼기');
+      rm.addEventListener('click', () => { picked.splice(i, 1); renderFiles(); (fileList.querySelector('button') || fileInput).focus(); });
+      li.append(nm, sz, rm); fileList.append(li);
+    });
+    const p = fileProblem(); fileNote.textContent = p || ''; fileNote.hidden = !p;
+  }
+  function addFiles(list) {
+    for (const f of list) if (!picked.some(x => x.name === f.name && x.size === f.size && x.lastModified === f.lastModified)) picked.push(f);
+    renderFiles();
+  }
+  if (drop && fileInput) {
+    fileInput.addEventListener('change', () => { addFiles([...fileInput.files]); fileInput.value = ''; });
+    for (const t of ['dragenter', 'dragover']) drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('is-over'); });
+    for (const t of ['dragleave', 'dragend']) drop.addEventListener(t, () => drop.classList.remove('is-over'));
+    drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('is-over'); if (e.dataTransfer && e.dataTransfer.files.length) addFiles([...e.dataTransfer.files]); });
+    // 칸 밖에 놓쳤을 때 브라우저가 파일을 열어 페이지를 떠나지 않게
+    for (const t of ['dragover', 'drop']) form.addEventListener(t, e => { if (e.dataTransfer && [...e.dataTransfer.types].includes('Files')) e.preventDefault(); });
+  }
+
   // 칸 바로 아래에 이유를 적는다(알림창 대신)
   function note(el) {
     const box = el.closest('.hqi-consent') || el;
@@ -58,18 +90,25 @@
     if (submitting) return;
     const bad = fields.filter(el => !check(el, true));
     if (bad.length) { bad[0].focus(); bad[0].scrollIntoView({ block: 'center' }); return; }
+    if (fileProblem()) { renderFiles(); fileInput.focus(); drop.scrollIntoView({ block: 'center' }); return; }
     const store = window.ParanStore;
     if (!store || typeof store.api !== 'function') { location.assign('/request/?mode=consult'); return; }
     const data = Object.fromEntries(new FormData(form));
     submitting = true;
     errorBox.hidden = true;
     button.disabled = true;
-    button.textContent = '접수하고 있습니다…';
+    button.textContent = picked.length && (!uploaded || uploadedSig !== sig()) ? '파일을 올리고 있습니다…' : '접수하고 있습니다…';
     try {
+      if (picked.length && (!uploaded || uploadedSig !== sig())) {
+        if (!store.uploadFiles) throw new Error('첨부를 올릴 수 없습니다. 파일을 빼고 접수하거나 자세히 적기 화면을 이용해 주세요.');
+        uploaded = await store.uploadFiles(picked); uploadedSig = sig();
+      }
+      if (!picked.length) { uploaded = null; uploadedSig = ''; }
+      button.textContent = '접수하고 있습니다…';
       let done;
       const send = async () => {
         done = await store.api('submit', {
-          attachments: [], id: requestId, token, mode: 'consult', topic: topic(),
+          attachments: uploaded || [], id: requestId, token, mode: 'consult', topic: topic(),
           customer: { name: data.name, organization: data.organization, email: data.email, phone: data.phone },
           event: { title: data.title, date: '', due: '', location: '', budget: '미정', brief: data.brief },
           items: [], consent: data.consent === 'on', website: data.website || '',

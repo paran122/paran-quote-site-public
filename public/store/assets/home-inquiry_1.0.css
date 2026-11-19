@@ -71,3 +71,22 @@
  .hqi-direct{order:3}
 }
 @media (prefers-reduced-motion:reduce){.hqi-go,.hqi-submit,.hqi-opt-box,.hqi-ck{transition:none}}
+/* 첨부: 끌어다 놓거나 눌러서 고름. 파일 고르기 입력을 칸 전체에 투명하게 덮어 키보드·화면낭독기로도 그대로 쓴다 */
+.hqi-drop{position:relative;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:16px 18px;border:1.5px dashed #b5b5bf;border-radius:12px;background:#fafafb;transition:border-color .15s,background .15s}
+.hqi-drop input{position:absolute;inset:0;width:100%;height:100%;min-height:0;opacity:0;cursor:pointer;padding:0;border:0}
+.hqi-drop svg{width:28px;height:28px;fill:none;stroke:#15141a;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.hqi-drop p{margin:0;display:grid;gap:2px}
+.hqi-drop b{font-size:15px;font-weight:600;line-height:1.5}
+.hqi-drop p span{font-size:13px;line-height:1.5;color:#5c5b66}
+.hqi-drop:hover{border-color:#15141a}
+.hqi-drop.is-over{border-color:#15141a;border-style:solid;background:#f3ffd1}
+.hqi-drop:has(input:focus-visible){outline:3px solid #15141a;outline-offset:2px}
+.hqi-filelist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.hqi-filelist:empty{display:none}
+.hqi-filelist li{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:8px 8px 8px 12px;border:1px solid #e3e3e8;border-radius:10px;font-size:14px;line-height:1.4}
+.hqi-filelist .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hqi-filelist .sz{color:#6b6a75;font-size:13px;white-space:nowrap}
+.hqi-filelist button{appearance:none;border:0;background:none;font:inherit;font-size:13px;font-weight:600;color:#15141a;min-width:44px;min-height:36px;border-radius:8px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.hqi-filelist button:hover{background:#f0f0f3}
+.hqi-filelist button:focus-visible{outline:3px solid #15141a;outline-offset:1px}
+@media (prefers-reduced-motion:reduce){.hqi-drop{transition:none}}
