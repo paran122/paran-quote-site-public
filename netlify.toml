@@ -102,6 +102,11 @@
   status = 200
   force = true
 [[redirects]]
+  from = "/services/event-agency"
+  to = "/store/services/event-agency/index.html"
+  status = 200
+  force = true
+[[redirects]]
   from = "/services/leaflet"
   to = "/store/services/leaflet/index.html"
   status = 200
