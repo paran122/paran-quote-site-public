@@ -126,3 +126,4 @@
 .hqi-fine a,.hqi-fine .hqi-link{display:inline-block;padding:9px 2px;margin:-9px 0}
 .hqi-only-agency{display:none}
 .hqi:has(#hqi-need-agency:checked) .hqi-only-agency{display:block}
+.hqi-panel a{font-size:inherit}

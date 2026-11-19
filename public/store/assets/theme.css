@@ -1755,3 +1755,9 @@ body[data-page=home] .fj-cta h2{margin-bottom:28px!important}
  .booklet-sales .booklet-story #process[data-px=b]:has(img[src*="/event-agency/"]) .pdd-steps img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
 }
 .paran-content .consult-guide a{font-size:inherit}
+/* 2026-11-20 행사 대행 재검토 반영: 사례 카드 제목 아래 한 줄(종류·규모), 진행 과정 카드 높이 맞춤 */
+.sv-meta small{font-size:13px;line-height:1.45;color:#5c5b66;font-weight:500}
+@media (min-width:768px){
+ .booklet-sales .booklet-story #process[data-px=b]:has(img[src*="/event-agency/"]) .pdd-steps-grid{align-items:stretch!important}
+ .booklet-sales .booklet-story #process[data-px=b]:has(img[src*="/event-agency/"]) .pdd-steps{height:100%;box-sizing:border-box}
+}
