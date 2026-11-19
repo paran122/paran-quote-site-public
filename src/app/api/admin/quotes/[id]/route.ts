@@ -79,6 +79,8 @@ const RevisionSchema = z.object({
   ship: z.number().int().min(0).max(100_000_000),
   notice: z.string().trim().max(2000),
   notify: z.boolean(),
+  /** 내부용 수정 이유(선택). 고객에게는 보이지 않는다. */
+  reason: z.string().trim().max(200).optional(),
   /** true 면 저장도 알림도 하지 않고, 같은 검사와 계산 결과만 돌려준다(수정 중 합계 미리보기) */
   dryRun: z.boolean().optional(),
 });
@@ -172,6 +174,7 @@ export async function PUT(
     lines: input.lines,
     ship: input.ship,
     notice: input.notice,
+    ...(input.reason ? { reason: input.reason } : {}),
     supply: totals.supply,
     vat: totals.vat,
     total: totals.total,

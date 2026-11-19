@@ -24,6 +24,8 @@ export interface QuoteRevision {
   ship: number;
   /** 고객에게 보이는 안내 글 */
   notice: string;
+  /** 내부용 수정 이유. 고객 화면·메일·알림톡에는 내보내지 않는다. */
+  reason?: string;
   supply: number;
   vat: number;
   total: number;
