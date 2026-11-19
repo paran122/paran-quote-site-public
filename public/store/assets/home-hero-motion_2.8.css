@@ -1,5 +1,5 @@
 /* 메인 첫 화면 모션 후보 1.0 — 자료집 상세 첫 화면(booklet-hero-layer)과 같은 톤: 어두운 판, 실제 결과물, 커서 클릭, 라임 손글씨 주석 */
-.hm{background:#15141a;color:#fff;font-family:Pretendard,sans-serif;padding:56px 0 72px;overflow:hidden}
+.hm{background:#15141a;color:#fff;font-family:Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;padding:56px 0 72px;overflow:hidden}
 .hm *{box-sizing:border-box}
 .hm-wrap{max-width:1250px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:42fr 58fr;gap:24px;align-items:center}
 .hm-chip{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:8px;background:#26252c;font-size:14px;font-weight:700}

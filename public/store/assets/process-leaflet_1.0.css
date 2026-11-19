@@ -1,5 +1,5 @@
 /* 제작과정 장면: 리플렛(ui/process-leaflet_1.0.js). 3D 종이가 디자인 → 뒤집기 → 교정 → 인쇄 → 3단 접기 */
-.lx{position:relative;aspect-ratio:770/470;container-type:inline-size;overflow:hidden;background:radial-gradient(120% 90% at 50% 25%,#fff 0%,#f3f4f8 60%,#e9ebf2 100%);font-family:Pretendard,sans-serif}
+.lx{position:relative;aspect-ratio:770/470;container-type:inline-size;overflow:hidden;background:radial-gradient(120% 90% at 50% 25%,#fff 0%,#f3f4f8 60%,#e9ebf2 100%);font-family:Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif}
 .lx *{box-sizing:border-box}
 .lx-desk{position:absolute;left:18%;right:18%;top:78%;height:14%;border-radius:50%;background:#aab1c4;opacity:.28;filter:blur(18px)}
 .lx-stage3d,.lx-out3d{position:absolute;inset:0;perspective:1800px;perspective-origin:50% 35%}

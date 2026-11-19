@@ -1,5 +1,5 @@
 /* 제작과정 장면 7종(ui/process-scenes_1.0.js). 리플렛 장면(process-leaflet_1.0.css)과 같은 밝은 무대·파란 규격선·라임 작업 표시·빨간 교정 */
-.pk{position:relative;aspect-ratio:770/470;container-type:inline-size;overflow:hidden;background:radial-gradient(120% 90% at 50% 25%,#fff 0%,#f3f4f8 60%,#e9ebf2 100%);font-family:Pretendard,sans-serif;color:#15141a}
+.pk{position:relative;aspect-ratio:770/470;container-type:inline-size;overflow:hidden;background:radial-gradient(120% 90% at 50% 25%,#fff 0%,#f3f4f8 60%,#e9ebf2 100%);font-family:Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#15141a}
 .pk *{box-sizing:border-box}
 .pk,.lx{-webkit-text-size-adjust:none;text-size-adjust:none}  /* 휴대폰 글자 자동 확대 끔: 장면 안 글자가 그림과 같은 비율로 */
 .pk i,.pk b,.pk u,.pk em{font-style:normal;text-decoration:none}
@@ -278,7 +278,7 @@ section[data-ps=booth] .ps-stage{--f1:url(/assets/service-photos/booth-graphic/k
 .s1 .pz-crowd{animation:pz-rise .45s 3.1s cubic-bezier(.2,.8,.2,1) forwards,ps-out .3s 4.5s forwards}
 .s1 .pk-wall .pk-zone~.pk-zone em{animation:ps-out .25s 3.05s forwards,ps-fade .25s 4.6s forwards}
 /* 확인 메모 */
-.pk-memo{position:absolute;left:60.5cqw;top:14cqw;width:34.5cqw;padding:2.4cqw 2.6cqw;border-radius:1.4cqw;background:#fff;box-shadow:0 1px 2px rgba(20,20,30,.08),0 24px 40px -22px rgba(30,35,60,.4);font-family:Pretendard,sans-serif;color:#15141a;opacity:0}
+.pk-memo{position:absolute;left:60.5cqw;top:14cqw;width:34.5cqw;padding:2.4cqw 2.6cqw;border-radius:1.4cqw;background:#fff;box-shadow:0 1px 2px rgba(20,20,30,.08),0 24px 40px -22px rgba(30,35,60,.4);font-family:Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;color:#15141a;opacity:0}
 /* 페이지 본문의 줄 높이(px 고정)가 물려 들어오면 작은 화면에서 칸이 세로로 늘어남 → 메모 안은 비율로 고정 */
 .pk-memo,.pk-memo p,.pk-memo b,.pk-memo li,.pk-memo span,.pk-memo u{line-height:1.25}
 .pk-mt{display:block;font-size:1.3cqw;font-weight:700;letter-spacing:.04em;color:#6b6975;margin-bottom:1.3cqw}

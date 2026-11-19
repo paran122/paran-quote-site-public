@@ -1,7 +1,7 @@
 /* 서비스별 첫 화면 장면 (책자 외 9개). 영역 크기 기준(cqw/cqh·%)이라 PC·모바일이 같은 구도.
    한 장면 = 한 서비스의 일하는 방식: 포스터 조립, 현수막 펼침, 리플렛 접지, 무대 화면 전환,
    카드뉴스 피드, 포토월 촬영, 패널 세우기, 부스 백월 접기, 부스 운영. */
-.sv-scene{--lime:#ccff30;--ink:#15141a;--loop:9s;position:relative;display:block;width:100%;height:100%;margin:0;container-type:size;isolation:isolate;outline:none;font-family:Pretendard,sans-serif;overflow:visible}
+.sv-scene{--lime:#ccff30;--ink:#15141a;--loop:9s;position:relative;display:block;width:100%;height:100%;margin:0;container-type:size;isolation:isolate;outline:none;font-family:Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;overflow:visible}
 .sv-scene:focus-visible{outline:2px solid #829bff;outline-offset:4px}
 .sv-scene img{display:block;max-width:none;margin:0}
 .sv-scene .sv-ghost{position:absolute;left:8%;top:14%;width:82%;height:62%;border-radius:14px;background:#25262e}
