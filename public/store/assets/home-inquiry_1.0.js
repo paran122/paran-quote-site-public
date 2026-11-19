@@ -14,6 +14,12 @@
   const uid = () => (crypto.randomUUID ? crypto.randomUUID() : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)));
   const newToken = () => Array.from(crypto.getRandomValues(new Uint8Array(32)), b => b.toString(16).padStart(2, '0')).join('');
   let requestId = uid(), token = newToken(), submitting = false;
+  const need = () => (document.querySelector('input[name="hqi-need"]:checked') || {}).value || 'unsure';
+  const topic = () => (need() === 'agency' ? 'event-agency' : '');
+  const full = form.querySelector('[data-hqi-full]');
+  const syncNeed = () => { if (full) full.href = '/request/?mode=consult' + (topic() ? '&service=' + topic() : ''); errorBox.hidden = true; };
+  document.querySelectorAll('input[name="hqi-need"]').forEach(r => r.addEventListener('change', syncNeed));
+  syncNeed();
 
   // 칸 바로 아래에 이유를 적는다(알림창 대신)
   function note(el) {
@@ -63,7 +69,7 @@
       let done;
       const send = async () => {
         done = await store.api('submit', {
-          attachments: [], id: requestId, token, mode: 'consult', topic: '',
+          attachments: [], id: requestId, token, mode: 'consult', topic: topic(),
           customer: { name: data.name, organization: data.organization, email: data.email, phone: data.phone },
           event: { title: data.title, date: '', due: '', location: '', budget: '미정', brief: data.brief },
           items: [], consent: data.consent === 'on', website: data.website || '',
@@ -79,7 +85,7 @@
         localStorage.setItem(HISTORY_KEY, JSON.stringify([entry, ...(Array.isArray(old) ? old : [])].slice(0, 30)));
       } catch (_) { /* 저장이 막힌 브라우저에서도 접수 화면으로는 넘어간다 */ }
       try {
-        if (window.gtag) window.gtag('event', 'generate_lead', { event_category: 'conversion', form_id: 'home-inquiry', lead_type: 'consult', items: 0 });
+        if (window.gtag) window.gtag('event', 'generate_lead', { event_category: 'conversion', form_id: 'home-inquiry', lead_type: 'consult', need: need(), items: 0 });
         (window.dataLayer = window.dataLayer || []).push({ event: 'generate_lead', form_id: 'home-inquiry' });
       } catch (_) {}
       location.assign('/requests/#' + requestId + '.' + token);
