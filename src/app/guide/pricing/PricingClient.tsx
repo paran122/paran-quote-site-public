@@ -20,6 +20,15 @@ export default function PricingClient() {
             아래 행사 대행 비용은 소규모 기준 최소 단가이며, 행사 규모·장소·세부 요구사항에 따라 달라집니다.
             정확한 견적은 상담 후 항목별로 투명하게 산출해 드립니다.
           </p>
+          <p className="mt-3 text-sm">
+            <Link href="/services/event-agency/" className="font-semibold text-slate-800 underline underline-offset-4">
+              행사 대행 서비스 보기
+            </Link>
+            <span className="mx-2 text-slate-300">·</span>
+            <Link href="/request/?mode=consult&service=event-agency" className="font-semibold text-slate-800 underline underline-offset-4">
+              행사 대행 상담 요청
+            </Link>
+          </p>
         </div>
 
         {/* 항목별 비용 */}
