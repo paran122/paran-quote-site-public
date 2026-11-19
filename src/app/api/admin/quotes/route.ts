@@ -3,6 +3,7 @@ import { supabase, supabaseAdmin } from "@/lib/supabase";
 import { STATUS_REASON_MARK, isQuoteAdminRequest, preflight, withCors } from "@/lib/intranet-auth";
 import { quoteLinkKey } from "@/lib/quote/link";
 import { editableQuote, originalQuote, toPublicQuote, totalWon, type QuoteRow } from "@/lib/quote/view";
+import { loadViewedMap } from "@/lib/quote/viewed";
 
 export function OPTIONS(request: NextRequest) {
   return preflight(request);
@@ -45,6 +46,9 @@ export async function GET(request: NextRequest) {
     /* 메모 표를 못 읽으면 이유 없이 준다 */
   }
 
+  // 고객이 견적 링크를 열어 본 기록
+  const viewedMap = await loadViewedMap();
+
   // 고객에게 보내는 견적 바로보기 주소(사이트 주소를 뺀 경로)
   const seen = new Map<string, number>();
   for (const row of (data ?? []) as Array<{ quote_number?: string }>) {
@@ -77,6 +81,7 @@ export async function GET(request: NextRequest) {
       ...row,
       link_path: linkKey ? `/q/${linkKey}` : null,
       status_reason: reasons.get((row as { id?: string }).id ?? "") ?? null,
+      viewed: viewedMap.get((row as { id?: string }).id ?? "") ?? null,
       total_won,
       editable,
       view,

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { verifyQuoteLinkKey } from "@/lib/quote/link";
 import { toPublicQuote, type QuoteRow } from "@/lib/quote/view";
+import { isBotAgent, recordQuoteView } from "@/lib/quote/viewed";
 
 // 견적 바로보기 링크(/q/<키>)가 부르는 조회.
 // 키의 서명이 맞을 때만 그 접수 한 건을, 연락처를 뺀 내용으로 돌려준다.
@@ -76,8 +77,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: NOT_FOUND }, { status: 404 });
   }
 
+  const quote = toPublicQuote(row);
+  // 고객이 열어 본 기록(내부용). 직원이 인트라넷에서 여는 것(staff)과 로봇은 세지 않는다.
+  const staff = (body as { staff?: unknown } | null)?.staff === true;
+  if (!staff && !isBotAgent(request.headers.get("user-agent"))) {
+    await recordQuoteView(row.id, quote.rev);
+  }
+
   return NextResponse.json(
-    { quote: toPublicQuote(row) },
+    { quote },
     { headers: { "Cache-Control": "no-store" } }
   );
 }
