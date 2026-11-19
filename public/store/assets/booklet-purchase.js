@@ -10,8 +10,9 @@
  {let n=0;const wrap=()=>{const f=panel.querySelector('form.config-form');if(!f)return false;if(f.querySelector('.config-foot'))return true;const pr=f.querySelector('.config-price'),cm=f.querySelector('.commit');if(!pr||!cm)return true;const d=document.createElement('div');d.className='config-foot';f.append(d);d.append(pr);for(const s of ['.config-basis','.config-error'])f.querySelectorAll(s).forEach(x=>d.append(x));d.append(cm);return true};const iv=setInterval(()=>{if(wrap()||++n>50)clearInterval(iv)},100);wrap()}
  let opener=null;
  const isOpen=()=>root.classList.contains('bq-open');
- function open(from){opener=from||null;panel.scrollTop=0;root.classList.add('bq-open');panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','요청할 구성 선택');closeBtn.focus({preventScroll:true})}
- function close(){if(!isOpen())return;root.classList.remove('bq-open');panel.removeAttribute('role');panel.removeAttribute('aria-modal');panel.removeAttribute('aria-label');opener?.focus?.({preventScroll:true});opener=null}
+ function open(from){opener=from||null;panel.scrollTop=0;root.classList.add('bq-open');try{history.pushState({bq:1},'')}catch{}panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','요청할 구성 선택');closeBtn.focus({preventScroll:true})}
+ addEventListener('popstate',()=>{if(isOpen())close()});
+ function close(){if(!isOpen())return;try{if(history.state&&history.state.bq)history.back()}catch{}root.classList.remove('bq-open');panel.removeAttribute('role');panel.removeAttribute('aria-modal');panel.removeAttribute('aria-label');opener?.focus?.({preventScroll:true});opener=null}
  backdrop.addEventListener('click',close);closeBtn.addEventListener('click',close);
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&isOpen()&&!e.defaultPrevented)close()});
  narrow.addEventListener('change',()=>{if(!narrow.matches)close()});

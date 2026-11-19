@@ -1765,3 +1765,6 @@ body[data-page=home] .fj-cta h2{margin-bottom:28px!important}
 body[data-page=cart] .paran-content,body[data-page=request] .paran-content,body[data-page=requests] .paran-content{min-height:100vh}
 /* 2026-11-20 견적 요청 양식: 칸·버튼에 붙어 있던 안내 글에 간격 */
 .request-form .fine{margin:8px 0 0}.request-form .consent+.fine{margin:10px 0 16px}.request-form button[type=submit]+.fine{margin-top:14px}.request-form input[type=file]+.fine{margin-top:8px}
+/* 2026-11-20 2차 채점: 납품일 안내 글 간격, 휴대폰 상세에서 알림이 하단 버튼을 가리지 않게 */
+.request-form .field-hint{margin:6px 0 14px}
+@media (max-width:760px){body[data-page=detail] .toast{bottom:96px}}
