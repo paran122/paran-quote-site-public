@@ -136,8 +136,8 @@ export async function middleware(request: NextRequest) {
         ((request.method === "GET" ||
           request.method === "PATCH" ||
           request.method === "PUT" ||
-          // 나중에 보내기(/send)만 POST 를 받는다
-          (request.method === "POST" && /^\/api\/admin\/quotes\/[^/]+\/send\/?$/.test(pathname))) &&
+          // 나중에 보내기(/send)와 첨부 열기(/attachments)만 POST 를 받는다
+          (request.method === "POST" && /^\/api\/admin\/quotes\/[^/]+\/(send|attachments)\/?$/.test(pathname))) &&
           (request.headers.get("authorization") || "").startsWith("Bearer ")))
     ) {
       return NextResponse.next();
