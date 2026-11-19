@@ -30,6 +30,9 @@
     if (full) full.href = '/request/?mode=consult' + (topic() ? '&service=' + topic() : '');
     errorBox.hidden = true;
     if (!fromUser) return;
+    tried = false;
+    form.querySelectorAll('.hqi-note').forEach(n => { if (n.id !== 'hqi-file-note') { n.hidden = true; n.textContent = ''; } });
+    form.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
     const n = need();
     if (live) live.textContent = n === 'design' ? '서비스 고르기 안내가 보입니다.' : (n === 'agency' ? '행사 대행 문의 양식이 보입니다.' : '문의 양식이 보입니다.');
     // 폰에서는 고른 결과가 화면 아래에 있어 그쪽으로 데려간다

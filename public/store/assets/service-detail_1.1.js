@@ -80,9 +80,10 @@
   show(0);
  }
  data=cards.map(c=>JSON.parse(c.dataset.case));
- all.forEach(c=>c.addEventListener('click',()=>{const i=+c.dataset.i;opener=cards[i];open(i);document.documentElement.classList.add('sv-lock');dialog.showModal();$('.sv-stage').focus()}));
+ all.forEach(c=>c.addEventListener('click',()=>{const i=+c.dataset.i;opener=cards[i];open(i);document.documentElement.classList.add('sv-lock');dialog.showModal();try{history.pushState({svLb:1},'')}catch{}$('.sv-stage').focus()}));
  const close=()=>dialog.close();
- dialog.addEventListener('close',()=>{document.documentElement.classList.remove('sv-lock');to(book);opener=cards[book];opener?.focus({preventScroll:true})});
+ addEventListener('popstate',()=>{if(dialog.open)dialog.close()});
+ dialog.addEventListener('close',()=>{try{if(history.state&&history.state.svLb)history.back()}catch{}document.documentElement.classList.remove('sv-lock');to(book);opener=cards[book];opener?.focus({preventScroll:true})});
  dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
  $('.sv-close').addEventListener('click',close);
  $('.sv-prev').addEventListener('click',()=>show(page-1,-1));

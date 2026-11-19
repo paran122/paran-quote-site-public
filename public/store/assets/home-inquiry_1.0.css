@@ -127,3 +127,5 @@
 .hqi-only-agency{display:none}
 .hqi:has(#hqi-need-agency:checked) .hqi-only-agency{display:block}
 .hqi-panel a{font-size:inherit}
+/* 2026-11-20 선택 체크는 전환 없이 바로 바뀐다(전환 도중이면 두 칸이 다 고른 것처럼 보였다) */
+.hqi-ck{transition:none}

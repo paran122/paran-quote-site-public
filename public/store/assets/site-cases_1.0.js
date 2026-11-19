@@ -201,7 +201,8 @@ function lightbox(){
   document.body.append(d);
   d.addEventListener('click',e=>{const b=e.target.closest('[data-lb]');if(b){const k=b.dataset.lb;if(k==='close')d.close();else if(k==='zoom')zoom();else show(i+(k==='next'?1:-1))}else if(e.target.matches('.post-lb-stage img'))zoom()});
   d.addEventListener('keydown',e=>{if(e.key==='ArrowRight')show(i+1);else if(e.key==='ArrowLeft')show(i-1)});
-  d.addEventListener('close',()=>{d.classList.remove('is-zoom');document.documentElement.style.overflow=''});
+  addEventListener('popstate',()=>{if(d.open)d.close()});
+  d.addEventListener('close',()=>{try{if(history.state&&history.state.postLb)history.back()}catch{}d.classList.remove('is-zoom');document.documentElement.style.overflow=''});
  }
  function zoom(){const on=!d.classList.contains('is-zoom');d.classList.toggle('is-zoom',on);d.querySelector('[data-lb="zoom"]').setAttribute('aria-pressed',on);d.querySelector('[data-lb="zoom"] span').textContent=on?'화면에 맞추기':'원본 크기'}
  function show(n){
@@ -215,7 +216,7 @@ function lightbox(){
  document.addEventListener('click',e=>{
   const a=e.target.closest('.post-photos a');if(!a||e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;
   e.preventDefault();list=items();if(!d)build();
-  show(list.findIndex(x=>x.src===a.getAttribute('href')));document.documentElement.style.overflow='hidden';d.showModal();
+  show(list.findIndex(x=>x.src===a.getAttribute('href')));document.documentElement.style.overflow='hidden';d.showModal();try{history.pushState({postLb:1},'')}catch{}
  });
 }
 
