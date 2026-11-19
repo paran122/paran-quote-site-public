@@ -14,7 +14,7 @@
   }
   document.body.style.overflow=mobile&&next!=='closed'?'hidden':'';
   // 2026-11-08 모바일 헤더에도 장바구니 아이콘과 개수(쇼핑몰 기본)
-  if(mobile&&next==='closed'){const o=host.querySelector('.open');if(o&&!host.querySelector('.paran-cart-m'))o.insertAdjacentHTML('beforebegin','<a class="paran-cart-m" href="/cart/" aria-label="장바구니"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.3a1 1 0 0 0 1-.8L20.5 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg><b data-cart-count>0</b></a>')}
+  if(mobile&&next==='closed'){const o=host.querySelector('.open');if(o&&!host.querySelector('.paran-cart-m'))o.insertAdjacentHTML('beforebegin','<a class="paran-cart-m" href="/cart/"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h9.3a1 1 0 0 0 1-.8L20.5 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17.5" cy="20" r="1.3"/></svg><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">장바구니 </span><b data-cart-count>0</b><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">개</span></a>')}
   if(next==='desktop'){
    const menu=host.querySelector('.has_sub_menu'),panel=menu.querySelector('.sub_menu'),trigger=menu.querySelector('a');
    trigger.setAttribute('aria-haspopup','true');
