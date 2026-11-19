@@ -119,3 +119,8 @@
 .hqi-opt input:checked+.hqi-opt-box b{color:#15141a}
 .hqi-opt input:checked+.hqi-opt-box .hqi-dot{border-color:#c3ff00}
 @media (prefers-reduced-motion:reduce){.hqi-dot{transition:none}}
+/* 2026-11-20 검토 반영: 어두운 바탕의 링크 초점은 연두로, 도착했을 때 머리 바로 아래에 붙게, 빈 동그라미를 한 단계 진하게, 작은 글 링크는 누르는 높이를 키움 */
+.hqi{scroll-margin-top:75px}
+.hqi .hqi-direct a:focus-visible{outline-color:#c3ff00}
+.hqi-dot{border-color:#6b6a75}
+.hqi-fine a,.hqi-fine .hqi-link{display:inline-block;padding:9px 2px;margin:-9px 0}
