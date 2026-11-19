@@ -1761,3 +1761,5 @@ body[data-page=home] .fj-cta h2{margin-bottom:28px!important}
  .booklet-sales .booklet-story #process[data-px=b]:has(img[src*="/event-agency/"]) .pdd-steps-grid{align-items:stretch!important}
  .booklet-sales .booklet-story #process[data-px=b]:has(img[src*="/event-agency/"]) .pdd-steps{height:100%;box-sizing:border-box}
 }
+/* 2026-11-20 속도 측정 반영: 장바구니·견적 요청·내 요청은 내용이 스크립트로 채워지는 동안 하단(footer)이 화면 안에서 밀리지 않게 한 화면 높이를 먼저 잡는다(밀림 점수 0.14~0.28 → 0 목표) */
+body[data-page=cart] .paran-content,body[data-page=request] .paran-content,body[data-page=requests] .paran-content{min-height:100vh}

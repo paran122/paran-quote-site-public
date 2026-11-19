@@ -280,7 +280,7 @@ export function renderPostHtml(post: CasePost) {
     post.summary ? `<p class="post-lead">${esc(post.summary)}</p>` : ""
   }
    ${facts.length ? `<dl class="case-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>` : ""}${dates}</header>
-  ${cover ? `<div class="wrap case-hero">${imgTag(cover.path, cover.alt, cover.w, cover.h, "(min-width: 1000px) 720px, 100vw", true)}</div>` : ""}
+  ${cover ? `<div class="wrap case-hero"${cover.w && cover.h ? ` style="--ar:${cover.w}/${cover.h}"` : ""}>${imgTag(cover.path, cover.alt, cover.w, cover.h, "(min-width: 1000px) 720px, 100vw", true)}</div>` : ""}
   <div class="wrap post-body">${overview}${body}${videos ? `<h2>현장 영상</h2>${videos}` : ""}${timeline}${faqs.length ? `<section class="post-faq" aria-labelledby="post-faq-h"><h2 id="post-faq-h">자주 묻는 질문</h2>${faqs.join("")}</section>` : ""}</div></article>
   <div data-case-quote></div>${
     (post.quote || []).length
