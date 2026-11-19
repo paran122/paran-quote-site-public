@@ -1748,3 +1748,10 @@ a.sc-89a4b8ea-0:focus-visible,button.sc-89a4b8ea-0:focus-visible{outline:3px sol
 @media (max-width:767px){body[data-page=home] .hs1 .cart .cart-top{display:none}}
 /* 2026-11-20 홈 맨 아래 안내 칸(줄인 모양): 2단계 상자를 뺀 자리만큼 제목과 버튼 사이를 띄움 */
 body[data-page=home] .fj-cta h2{margin-bottom:28px!important}
+/* 2026-11-20 행사 대행 검토 반영: PC 진행 과정은 사진 3장을 가로 3칸으로(전에는 세로로 쌓여 2,300px), 상담 화면 안내 줄의 링크는 문단과 같은 크기 */
+@media (min-width:768px){
+ .booklet-sales .booklet-story #process[data-px=b]:has(img[src*="/event-agency/"]) .pdd-steps-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:24px!important;align-items:start}
+ .booklet-sales .booklet-story #process[data-px=b]:has(img[src*="/event-agency/"]) .pdd-steps{min-width:0}
+ .booklet-sales .booklet-story #process[data-px=b]:has(img[src*="/event-agency/"]) .pdd-steps img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+}
+.paran-content .consult-guide a{font-size:inherit}
