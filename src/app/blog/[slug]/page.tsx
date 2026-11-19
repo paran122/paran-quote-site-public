@@ -106,13 +106,6 @@ const CTA_RULES: {
     description: "구성을 고르면 금액이 바로 보이고, 그대로 견적을 요청할 수 있습니다",
     label: "부스 그래픽 서비스",
   },
-  {
-    keywords: ["스노우지", "아트지", "용지", "종이", "인쇄", "cmyk", "사이즈", "규격"],
-    href: "/services/",
-    title: "인쇄물 디자인부터 제작까지 맡기고 싶다면",
-    description: "구성을 고르면 금액이 바로 보이고, 그대로 견적을 요청할 수 있습니다",
-    label: "서비스 보기",
-  },
   // ── 행사 유형별 (행사별 필터 deep-link) ──
   {
     keywords: ["포럼", "심포지엄"],
@@ -205,6 +198,16 @@ function getServiceCTA(
   }
 
   if (bestMatch) return bestMatch;
+
+  // 2-1) 종이·규격·인쇄 일반 글: 맞는 서비스가 하나로 정해지지 않으면 서비스 목록으로
+  if (["스노우지", "아트지", "용지", "종이", "인쇄", "cmyk", "사이즈", "규격"].some((kw) => text.includes(kw))) {
+    return {
+      href: "/services/",
+      title: "인쇄물 디자인부터 제작까지 맡기고 싶다면",
+      description: "구성을 고르면 금액이 바로 보이고, 그대로 견적을 요청할 수 있습니다",
+      label: "서비스 보기",
+    };
+  }
 
   // 3) 폴백 — 회사소개
   return {
