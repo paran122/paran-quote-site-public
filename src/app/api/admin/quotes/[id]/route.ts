@@ -177,11 +177,16 @@ export async function PUT(
     total: totals.total,
   };
 
+  // 응답에만 줄 금액을 붙인다(합계 계산과 같은 식). 저장되는 이력 모양은 그대로.
+  const revisionOut = {
+    ...revision,
+    lines: revision.lines.map((line) => ({ ...line, amount: Math.round(line.unitPrice * line.qty) })),
+  };
   if (input.dryRun) {
     return withCors(request, NextResponse.json({
       success: true,
       dryRun: true,
-      revision,
+      revision: revisionOut,
       total_amount: totals.total,
     }));
   }
@@ -243,7 +248,7 @@ export async function PUT(
 
   return withCors(request, NextResponse.json({
     success: true,
-    revision,
+    revision: revisionOut,
     total_amount: totals.total,
     notified,
   }));
