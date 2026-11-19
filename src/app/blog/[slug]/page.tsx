@@ -106,20 +106,20 @@ const CTA_RULES: {
     description: "구성을 고르면 금액이 바로 보이고, 그대로 견적을 요청할 수 있습니다",
     label: "부스 그래픽 서비스",
   },
-  // ── 행사 유형별 (행사별 필터 deep-link) ──
+  // ── 행사 유형별 → 행사 대행 서비스 (2026-11-19: 사례 목록 대신 새 행사 대행 페이지로. 규칙 자리·키워드는 그대로) ──
   {
     keywords: ["포럼", "심포지엄"],
-    href: "/work?view=event&category=컨퍼런스·세미나",
-    title: "포럼·심포지엄 대행 사례",
-    description: "국제 포럼·학술 행사 운영 실적을 확인하세요",
-    label: "포럼 사례",
+    href: "/services/event-agency",
+    title: "포럼·심포지엄을 기획부터 운영까지 맡기고 싶다면",
+    description: "행사 대행 사례를 보고 상담을 요청할 수 있습니다",
+    label: "행사 대행 서비스",
   },
   {
     keywords: ["세미나", "컨퍼런스", "학술"],
-    href: "/work?view=event&category=컨퍼런스·세미나",
-    title: "세미나·컨퍼런스 대행 사례",
-    description: "기업·공공기관 세미나 운영 사례를 확인하세요",
-    label: "세미나 사례",
+    href: "/services/event-agency",
+    title: "세미나·컨퍼런스를 기획부터 운영까지 맡기고 싶다면",
+    description: "행사 대행 사례를 보고 상담을 요청할 수 있습니다",
+    label: "행사 대행 서비스",
   },
   // ── 가이드/일반 ──
   {
@@ -163,6 +163,14 @@ const CTA_RULES: {
     title: "공공기관 행사 사례를 확인해보세요",
     description: "실적의 60% 이상이 공공기관 행사입니다",
     label: "포트폴리오",
+  },
+  // ── 행사 기획·대행 글 → 행사 대행 서비스 (2026-11-19). 맨 끝에 두어 위 규칙과 점수가 같으면 위 규칙이 먼저 ──
+  {
+    keywords: ["행사 기획", "행사기획", "행사 대행", "행사대행", "행사 운영", "행사운영"],
+    href: "/services/event-agency",
+    title: "행사를 기획부터 운영까지 맡기고 싶다면",
+    description: "행사 대행 사례를 보고 상담을 요청할 수 있습니다",
+    label: "행사 대행 서비스",
   },
 ];
 

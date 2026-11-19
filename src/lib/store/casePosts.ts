@@ -141,7 +141,7 @@ export function ymd(iso?: string | null) {
 
 type Catalog = { id: string; name: string }[];
 export const serviceName = (id: string) => (catalog as Catalog).find((p) => p.id === id)?.name ?? "";
-const LIVE_SERVICES = new Set(["banner", "booklet", "booth-graphic", "booth-operation", "card-news", "leaflet", "photo-wall", "poster", "ppt"]);
+const LIVE_SERVICES = new Set(["banner", "booklet", "booth-graphic", "booth-operation", "event-agency", "card-news", "leaflet", "photo-wall", "poster", "ppt"]);
 
 /** 사진 대체 문구: 사진마다 쓴 alt → 묶음 설명 → 제목 + 순번 */
 export function altOf(post: CasePost, f: PostFile | undefined, caption: string | undefined, n: number) {

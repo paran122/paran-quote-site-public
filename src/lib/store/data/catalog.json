@@ -2807,5 +2807,38 @@
     },
     "priceDate": "2026-11-08 21:39",
     "icon": "<circle cx=\"32\" cy=\"34\" r=\"22\"/><path fill=\"#d1ff39\" d=\"M32 34 32 12a22 22 0 0 1 15.6 6.4ZM32 34l22 0a22 22 0 0 1-6.4 15.6ZM32 34v22a22 22 0 0 1-15.6-6.4ZM32 34H10a22 22 0 0 1 6.4-15.6Z\"/><circle cx=\"32\" cy=\"34\" r=\"3\" fill=\"#fff\"/><path d=\"M28 4h8l-4 7Z\"/>"
+  },
+  {
+    "id": "event-agency",
+    "name": "행사 대행",
+    "category": "공간·전시",
+    "description": "세미나·포럼·교육 행사를 기획부터 현장 운영, 결과보고까지 맡는 행사 대행입니다. 금액은 상담 후 확정합니다.",
+    "image": "/assets/service-thumbs/event-agency.webp",
+    "options": [],
+    "includes": [
+      "행사 목적·대상에 맞춘 프로그램·운영 계획",
+      "합의한 범위의 현장 운영과 결과보고"
+    ],
+    "excludes": [
+      "대관·식음·출연자 비용 등 실비",
+      "선택하지 않은 디자인·제작·장비"
+    ],
+    "materials": [
+      "행사 목적과 예정일",
+      "장소·참석 인원·예산 범위"
+    ],
+    "unit": "건",
+    "type": "service",
+    "priceMode": "quote",
+    "priceLabel": "상담 후 확정",
+    "lead": "행사 일정과 맡길 범위 확인 후 안내",
+    "consultOnly": true,
+    "consultTitle": "행사 대행 상담",
+    "consultText": "행사 목적·일정·규모와 맡길 범위를 알려주세요. 금액은 상담 후 견적서로 확정합니다.",
+    "consultButton": "행사 상담 요청하기",
+    "consultBrief": "행사 유형·예상 인원: \n행사 일정·장소: \n맡길 범위(기획·디자인·현장 운영·결과보고): ",
+    "digitalScope": null,
+    "printOnlyOptions": [],
+    "listed": true
   }
 ]

@@ -81,6 +81,8 @@ export default function EventGroupPage({ service }: { service: EventService }) {
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link href="/guide/pricing" className="text-center px-6 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition-colors">비용·견적 안내 →</Link>
+                {/* 2026-11-19 새 사이트의 행사 대행 페이지(상담 전용)로 연결. 정적 페이지라 일반 링크 */}
+                <a href="/services/event-agency" className="text-center px-6 py-3.5 rounded-xl border border-white/30 bg-white/10 text-white font-bold text-sm hover:bg-white/20 transition-colors">행사 대행 상담 요청 →</a>
               </div>
             </div>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.6)]">

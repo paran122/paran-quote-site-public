@@ -22,6 +22,7 @@ export const BASE = `# 파란컴퍼니 (PARAN Company)
 - [포토월](https://parancompany.co.kr/services/photo-wall): 포토월 그래픽 디자인과 제작·설치
 - [부스·패널 디자인](https://parancompany.co.kr/services/booth-graphic): 전시 부스·패널 그래픽 디자인과 제작
 - [홍보부스 운영](https://parancompany.co.kr/services/booth-operation): 박람회·행사 홍보부스 현장 운영 인력
+- [행사 대행](https://parancompany.co.kr/services/event-agency): 세미나·포럼·교육 행사를 기획부터 현장 운영까지 함께 맡길 때. 금액은 상담 후 확정
 - [행사 진행 PPT](https://parancompany.co.kr/services/ppt): 개회식·발표·시상 등 행사 진행 화면 디자인
 - [카드뉴스](https://parancompany.co.kr/services/card-news): 행사 홍보용 SNS 카드뉴스 디자인
 - [전체 서비스와 견적](https://parancompany.co.kr/services): 사양과 수량을 고르면 견적 금액을 바로 확인
