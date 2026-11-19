@@ -19,6 +19,8 @@ function basisText(p,e){const q=p.quote,head=e.crew?`운영 ${e.crew.n}명 × ${
 function snapQty(q,n){const P=q&&q.print;if(!P||!(n>P.base))return P?Math.max(P.base,n):n;return P.base+Math.ceil((n-P.base)/P.step-1e-9)*P.step}
 // 직접 입력한 사양이 계산할 수 없는 값이면 안내 문구를 돌려줌('' = 문제 없음). 화면과 서버가 같이 씀. hid(key): 그 칸이 숨겨져 있는지
 const LIMIT_M=100,LIMIT_PAGES=2000;
+// 2026-11-20 제작 수량이 이 값 이상이면 자동 금액을 내지 않음 = 상담 후 확정(사용자 결정: 1천 개부터)
+const QTY_CONSULT=1000;
 function specProblem(p,v,hid=()=>false){const q=p.prices&&p.quote;if(!q)return '';const opt=k=>p.options.find(o=>o.key===k),typed=k=>{const o=opt(k);return o&&!hid(k)&&!(o.values||[]).includes(String(v[k]||''))?o:null};
  // 2026-11-17 직접 입력 크기가 비었거나 가로 × 세로가 아니면 안내
  for(const r of q.refs||[]){if(!r.ok)continue;const o=typed(r.opt);if(o&&sides(v[o.key],'mm').length<2)return `${o.label}를 가로 × 세로로 입력해 주세요. 예: 400 × 300mm`}
@@ -30,7 +32,7 @@ function specProblem(p,v,hid=()=>false){const q=p.prices&&p.quote;if(!q)return '
 function isMake(p,v){const s=p.prices?.[v.scope];return Boolean(s&&s.addon)}
 function estimateBase(p,v,count=1,qty=1,raw=false){const q=p.quote,pr=p.prices;if(!q||!pr)return null;
  // 2026-11-17 크기를 직접 입력하면(정해진 규격 밖) 금액을 내지 않음 = 상담 후 확정. 예전엔 A4 금액으로 계산돼 A3·더 큰 크기도 싸게 보였음
- if((q.refs||[]).some(r=>r.ok&&(!r.when||Object.entries(r.when).every(([k,x])=>v[k]===x))&&!r.ok.some(b=>String(v[r.opt]||'').startsWith(b))))return null;if(v.scope!==undefined&&!pr[v.scope])return null;const all=Object.values(pr),d=all[0],s=pr[v.scope]||d,make=Boolean(s.addon);
+ if((q.refs||[]).some(r=>r.ok&&(!r.when||Object.entries(r.when).every(([k,x])=>v[k]===x))&&!r.ok.some(b=>String(v[r.opt]||'').startsWith(b))))return null;if(v.scope!==undefined&&!pr[v.scope])return null;const all=Object.values(pr),d=all[0],s=pr[v.scope]||d,make=Boolean(s.addon);if(make&&qty>=QTY_CONSULT)return null;
  // raw=true: 공급가(견적서용, 부가세 별도) / false: 사이트 표시가(부가세 포함)
  const own=x=>raw?x.own_s:x.own,ex_=x=>(raw?x.own_extra_s:x.own_extra)||0,B=raw&&q.banner_s?q.banner_s:q.banner;let dU=own(d),mU=make?own(s):0,mX=make?ex_(s):0,crew=null;
  if(B){const x=v.kind==='X배너';dU=x?B.x.design:B.h.design;if(make){const g=v.kind==='대형 현수막'&&B.big;if(x)mU=B.x.make+(v.stand==='실내 거치대'?B.x.stand:0);else if(g){/* 폭 3m 통천: 두 변이 모두 폭 이내면 짧은 변이 길이, 아니면 긴 변 */const a=sides(v.bigSize),hi=a.length?Math.max(...a):g.tiers[0][0],L=a.length>1&&hi<=g.width+1e-9?Math.min(...a):hi,t=g.tiers,k=t.find(y=>L<=y[0]+1e-9),z=t[t.length-1];mU=k?k[1]:z[1]+Math.ceil((L-z[0])*2-1e-9)*g.overHalf}else mU=Math.ceil((meters(v.size,true)||1)-1e-9)*B.h.perM;mU*=qty}}
@@ -50,4 +52,4 @@ function estimate(p,v,count=1,qty=1,raw=false){const e=estimateBase(p,v,count,qt
 function docTotals(items,find){const lines=items.map(x=>{const p=find(x.serviceId);const e=p&&estimate(p,x.options||{},x.design||1,x.qty||1,true);return {x,p,e}});const priced=lines.filter(l=>l.e);
  const sub=priced.reduce((a,l)=>a+Math.round(l.e.dU+l.e.mU)*l.e.n,0),vat=Math.trunc(sub*0.1),ship=priced.reduce((a,l)=>a+l.e.ship,0),total=sub+vat+ship;
  return {lines,sub,vat,ship,total,unpriced:lines.length-priced.length}}
-return {man,num,sides,meters,isMake,estimate,docTotals,specProblem,snapQty,pagesOf,basisText}});
+return {man,num,sides,meters,isMake,estimate,docTotals,specProblem,snapQty,pagesOf,basisText,QTY_CONSULT}});
