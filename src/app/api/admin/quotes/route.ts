@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase, supabaseAdmin } from "@/lib/supabase";
 import { isQuoteAdminRequest, preflight, withCors } from "@/lib/intranet-auth";
 import { quoteLinkKey } from "@/lib/quote/link";
-import { editableQuote, toPublicQuote, totalWon, type QuoteRow } from "@/lib/quote/view";
+import { editableQuote, originalQuote, toPublicQuote, totalWon, type QuoteRow } from "@/lib/quote/view";
 
 export function OPTIONS(request: NextRequest) {
   return preflight(request);
@@ -42,15 +42,18 @@ export async function GET(request: NextRequest) {
     let total_won: number | null = null;
     let editable: ReturnType<typeof editableQuote> | null = null;
     let view: ReturnType<typeof toPublicQuote> | null = null;
+    let original: ReturnType<typeof originalQuote> | null = null;
     let view_error: string | null = null;
     try {
       const full = row as unknown as QuoteRow;
       total_won = totalWon(full);
       editable = editableQuote(full);
       view = toPublicQuote(full);
+      original = originalQuote(full);
     } catch (e) {
       editable = null;
       view = null;
+      original = null;
       view_error = e instanceof Error ? e.message : String(e);
     }
     return {
@@ -59,6 +62,7 @@ export async function GET(request: NextRequest) {
       total_won,
       editable,
       view,
+      original,
       view_error,
     };
   });

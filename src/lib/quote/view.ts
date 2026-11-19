@@ -178,6 +178,35 @@ export function editableQuote(row: QuoteRow): {
   };
 }
 
+/**
+ * 접수 당시 구성(담당자가 고치기 전). 차수 1과 비교해 달라진 점을 보여 줄 때 쓴다.
+ * 고친 뒤에는 total_amount 칸이 고친 합계로 바뀌므로, 부가세 포함으로 남은 예전 접수는 줄 금액을 더해 합계를 낸다.
+ */
+export function originalQuote(row: QuoteRow): {
+  lines: Array<QuoteLine & { amount: number }>;
+  ship: number;
+  vatIncluded: boolean;
+  totals: QuoteTotals | null;
+} {
+  const original = originalLines(row);
+  const lines = original.lines.map((line) => ({
+    ...line,
+    amount: Math.round(line.unitPrice * line.qty),
+  }));
+  let totals: QuoteTotals | null = null;
+  if (lines.length > 0) {
+    if (!original.vatIncluded) {
+      totals = computeTotals(original.lines, original.ship);
+    } else {
+      const revised = readRevisions(row).length > 0;
+      const total = revised ? lines.reduce((sum, line) => sum + line.amount, 0) : totalWon(row);
+      totals = { supply: 0, vat: 0, ship: 0, total };
+    }
+    if (totals.total <= 0) totals = null;
+  }
+  return { lines, ship: original.ship, vatIncluded: original.vatIncluded, totals };
+}
+
 export function toPublicQuote(row: QuoteRow): PublicQuote {
   const latest = latestRevision(row);
   const inquiry = row.event_name === "문의" || row.event_type === "문의";
