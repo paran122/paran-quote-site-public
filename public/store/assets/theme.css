@@ -1769,9 +1769,14 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .request-form .field-hint{margin:6px 0 14px}
 @media (max-width:760px){body[data-page=detail] .toast{bottom:96px}}
 /* 2026-11-20 3차 채점: 휴대폰 옵션 시트가 열려 있으면 알림은 위쪽에(아래 버튼을 가리지 않게) */
-@media (max-width:1099px){html.bq-open .toast{bottom:auto;top:84px}}
+@media (max-width:1099px){html.bq-open .toast{bottom:calc(92px + env(safe-area-inset-bottom));top:auto}}
 /* 2026-11-20 4차 채점 */
 .request-form .request-empty-top{margin:0 0 20px;padding:14px 16px;border:1px solid #e4c9a0;border-radius:10px;background:#fff8ec;color:#5a3d0b;font-size:14.5px;line-height:1.6}
 .request-form .request-empty-top a{color:#173eb8;font-weight:700;text-decoration:underline}
 /* 휴대폰 홈 예시 장바구니: 제목 줄이 숨겨져 '예시' 표시가 안 보이던 것 */
 @media (max-width:767px){.hs.lite .cart-sum>span:first-child::after{content:'예시';margin-left:8px;padding:2px 8px;border:1px solid #c9c8d2;border-radius:99px;font-size:12px;font-weight:600;color:#5b5866;vertical-align:middle}}
+/* 2026-11-20 5차 채점 */
+/* 빈 장바구니로 온 견적 요청: 접수할 수 없는 양식은 숨기고 위쪽 안내만 */
+.request-form.is-empty>:not(.request-empty-top){display:none}
+/* 휴대폰에서 누르는 영역 44px */
+@media (max-width:767px){.fj-source-footer a[href^='tel:'],.fj-source-footer a[href^='mailto:']{display:inline-flex;align-items:center;min-height:44px}.paran-content .config-info summary{min-height:44px;display:flex;align-items:center;flex-wrap:wrap}}

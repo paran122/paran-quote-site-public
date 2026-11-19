@@ -116,7 +116,7 @@ function quoteHtml(d){
    <ul>${lines.map(l=>`<li><b>${esc(l.p.name)}</b>${l.q.label?` <span>${esc(l.q.label)}</span>`:''}<small>담는 사양 · ${esc(putText(l))}</small>${show?`<em>${l.price?l.price.toLocaleString('ko-KR')+'원':'상담 후 확정'}</em>`:''}</li>`).join('')}</ul>
    ${d.caseSpec?`<p class="case-spec-note">실제 사례 규격은 <b>${esc(d.caseSpec)}</b>입니다. 같은 규격이 필요하면 담은 뒤 바꾸거나 상담 때 말씀해 주세요.</p>`:''}
    <p class="case-total">${priceLine(d)}</p></div>
-   <div class="case-actions"><a class="button primary" data-case-cart href="${esc(d.href)}">장바구니 담기</a>${CONSULT}</div></section>`;
+   <div class="case-actions"><a class="button primary" data-case-cart href="${esc(d.href)}">담고 장바구니로 가기</a>${CONSULT}</div></section>`;
 }
 // 서비스 상세의 '견적 구성하기' 칸처럼 늘 보이는 견적 칸: PC는 오른쪽 고정, 폰은 화면 아래 막대.
 // 글 끝 큰 견적 칸이 화면에 들어오거나 지나가면 둘 다 숨김(같은 버튼 두 번 X). 숨길 때는 inert 로 키보드 초점도 막음
@@ -132,11 +132,11 @@ function mountRail(d){
  if(aside){aside.removeAttribute('data-rail-empty');aside.removeAttribute('aria-hidden')}else aside=document.createElement('aside');
  aside.className='case-rail';aside.setAttribute('aria-labelledby','case-rail-h');
  // 짧게: 서비스·수량, 사양 한 줄, 버튼. 실제 사례 규격·긴 설명은 글 끝 큰 칸에
- aside.innerHTML=`<h2 class="case-rail-h" id="case-rail-h">이 사례 구성</h2><ul>${d.lines.map(l=>`<li><p class="case-rail-row"><b>${esc(l.p.name)}</b><span>${esc(qtyText(l))}</span></p><small>${esc(l.short)}</small></li>`).join('')}</ul><a class="button primary" href="${esc(d.href)}">장바구니 담기</a><p class="case-rail-note">${d.show&&d.total?`참고 금액 ${d.total.toLocaleString('ko-KR')}원`:'담은 뒤 금액이 바로 나옵니다.'}</p>${CONSULT}`;
+ aside.innerHTML=`<h2 class="case-rail-h" id="case-rail-h">이 사례 구성</h2><ul>${d.lines.map(l=>`<li><p class="case-rail-row"><b>${esc(l.p.name)}</b><span>${esc(qtyText(l))}</span></p><small>${esc(l.short)}</small></li>`).join('')}</ul><a class="button primary" href="${esc(d.href)}">담고 장바구니로 가기</a><p class="case-rail-note">${d.show&&d.total?`참고 금액 ${d.total.toLocaleString('ko-KR')}원`:'담은 뒤 금액이 바로 나옵니다.'}</p>${CONSULT}`;
  if(!aside.parentNode)lay.append(aside);
  const bar=document.createElement('aside');bar.className='case-bar';bar.setAttribute('aria-label','이 사례 구성 담기');
  const first=d.lines[0],sub=['이 사례처럼',d.lines.length>1?`${d.lines.length}개 구성`:'',qtyText(first)].filter(Boolean).join(' · ');
- bar.innerHTML=`<span><b>${esc(first.p.name)}${d.lines.length>1?` 외 ${d.lines.length-1}개`:''}</b><small>${esc(sub)}</small></span><a class="button primary" href="${esc(d.href)}">장바구니 담기</a>`;
+ bar.innerHTML=`<span><b>${esc(first.p.name)}${d.lines.length>1?` 외 ${d.lines.length-1}개`:''}</b><small>${esc(sub)}</small></span><a class="button primary" href="${esc(d.href)}">담고 장바구니로</a>`;
  // 사이트 버튼 모양이 .paran-content 안에서만 적용되므로 그 안에 붙임(position:fixed 라 위치는 화면 기준)
  (box.closest('.paran-content')||document.body).append(bar);document.body.classList.add('has-case-bar');
  const big=document.querySelector('[data-case-quote] .case-quote');
