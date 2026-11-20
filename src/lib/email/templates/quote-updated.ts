@@ -28,6 +28,7 @@ export function quoteUpdatedHtml(data: QuoteUpdatedEmailData): string {
   const r = data.revision;
   const parts: Array<[string, string]> = [
     ["공급가", won(r.supply)],
+    ...(typeof r.profit === "number" ? [["기업이윤 10%", won(r.profit)] as [string, string]] : []),
     ["부가세 10%", won(r.vat)],
   ];
   if (r.ship) parts.push(["배송비 (실비)", won(r.ship)]);

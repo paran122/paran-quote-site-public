@@ -12,6 +12,7 @@ import {
 import { quoteLinkUrl, siteUrlFromRequest } from "@/lib/quote/link";
 import {
   computeTotals,
+  PROFIT_RATE,
   readRevisions,
   type QuoteRevision,
   type QuoteRow,
@@ -181,7 +182,7 @@ export async function PUT(
   }
 
   const history = readRevisions(row);
-  const totals = computeTotals(input.lines, input.ship);
+  const totals = computeTotals(input.lines, input.ship, PROFIT_RATE);
   if (totals.total < 0) {
     return withCors(request, NextResponse.json({ error: "합계가 0원보다 작을 수 없습니다" }, { status: 400 }));
   }
@@ -197,6 +198,7 @@ export async function PUT(
     notice: input.notice,
     ...(input.reason ? { reason: input.reason } : {}),
     supply: totals.supply,
+    profit: totals.profit ?? 0,
     vat: totals.vat,
     total: totals.total,
   };

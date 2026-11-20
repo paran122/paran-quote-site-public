@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Plus, Trash2, Link2, ExternalLink, Pencil } from "lucide-react";
 import {
   computeTotals,
+  PROFIT_RATE,
   editableQuote,
   readRevisions,
   type QuoteLine,
@@ -172,7 +173,7 @@ function QuoteEditor({
     unitPrice: Math.round(toNumber(line.unitPrice)),
     ...(line.tbd && Math.round(toNumber(line.unitPrice)) === 0 ? { tbd: true } : {}),
   }));
-  const totals = computeTotals(parsedLines, Math.max(0, Math.round(toNumber(ship))));
+  const totals = computeTotals(parsedLines, Math.max(0, Math.round(toNumber(ship))), PROFIT_RATE);
 
   function update(index: number, patch: Partial<DraftLine>) {
     setLines((prev) => prev.map((line, i) => (i === index ? { ...line, ...patch } : line)));
@@ -303,6 +304,7 @@ function QuoteEditor({
         </label>
         <div className="text-sm space-y-0.5">
           <div className="flex justify-between text-slate-500"><span>공급가</span><span>{won(totals.supply)}</span></div>
+          <div className="flex justify-between text-slate-500"><span>기업이윤 10%</span><span>{won(totals.profit ?? 0)}</span></div>
           <div className="flex justify-between text-slate-500"><span>부가세 10%</span><span>{won(totals.vat)}</span></div>
           {totals.ship > 0 && (
             <div className="flex justify-between text-slate-500"><span>배송비</span><span>{won(totals.ship)}</span></div>

@@ -29,12 +29,16 @@ export interface QuoteRevision {
   /** 고객에게 실제로 나간 알림 기록(내부용). 알림이 안 나간 차수에는 없다. */
   sent?: { at: string; email: boolean; alimtalk: boolean };
   supply: number;
+  /** 기업이윤(원). 이윤을 넣기 전에 저장한 차수에는 없다. */
+  profit?: number;
   vat: number;
   total: number;
 }
 
 export interface QuoteTotals {
   supply: number;
+  /** 기업이윤(원). 담당자가 고친 견적에만 붙는다. */
+  profit?: number;
   vat: number;
   ship: number;
   total: number;
@@ -92,10 +96,24 @@ const text = (value: unknown): string => (typeof value === "string" ? value : ""
 const number = (value: unknown): number =>
   typeof value === "number" && Number.isFinite(value) ? value : 0;
 
-export function computeTotals(lines: QuoteLine[], ship: number): QuoteTotals {
+/** 기업이윤: 담당자가 쓰는 견적에서 공급가의 10% */
+export const PROFIT_RATE = 0.1;
+
+/**
+ * 합계. profitRate 를 주면 공급가 × 비율을 기업이윤으로 더하고, 부가세는 (공급가 + 기업이윤)의 10%.
+ * 고객이 장바구니로 접수한 원래 견적은 profitRate 없이 부른다(홈페이지 표시 가격 그대로).
+ */
+export function computeTotals(lines: QuoteLine[], ship: number, profitRate = 0): QuoteTotals {
   const supply = lines.reduce((sum, line) => sum + Math.round(line.unitPrice * line.qty), 0);
-  const vat = Math.trunc(supply * 0.1);
-  return { supply, vat, ship, total: supply + vat + ship };
+  const profit = profitRate ? Math.trunc(supply * profitRate) : 0;
+  const vat = Math.trunc((supply + profit) * 0.1);
+  return {
+    supply,
+    ...(profitRate ? { profit } : {}),
+    vat,
+    ship,
+    total: supply + profit + vat + ship,
+  };
 }
 
 export function readRevisions(row: Pick<QuoteRow, "revisions">): QuoteRevision[] {
@@ -238,6 +256,7 @@ export function toPublicQuote(row: QuoteRow): PublicQuote {
       vatIncluded: false,
       totals: {
         supply: latest.supply,
+        ...(typeof latest.profit === "number" ? { profit: latest.profit } : {}),
         vat: latest.vat,
         ship: latest.ship,
         total: latest.total,
