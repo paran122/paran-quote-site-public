@@ -4,6 +4,7 @@ import { STATUS_REASON_MARK, isQuoteAdminRequest, preflight, withCors } from "@/
 import { quoteLinkKey } from "@/lib/quote/link";
 import { editableQuote, originalQuote, toPublicQuote, totalWon, type QuoteRow } from "@/lib/quote/view";
 import { loadViewedMap } from "@/lib/quote/viewed";
+import { decide, loadAcceptedMap } from "@/lib/quote/accepted";
 
 export function OPTIONS(request: NextRequest) {
   return preflight(request);
@@ -48,6 +49,8 @@ export async function GET(request: NextRequest) {
 
   // 고객이 견적 링크를 열어 본 기록
   const viewedMap = await loadViewedMap();
+  // 고객이 '이 견적으로 진행'을 누른 기록(가장 최근 것)
+  const acceptedMap = await loadAcceptedMap();
 
   // 고객에게 보내는 견적 바로보기 주소(사이트 주소를 뺀 경로)
   const seen = new Map<string, number>();
@@ -65,12 +68,21 @@ export async function GET(request: NextRequest) {
     let view: ReturnType<typeof toPublicQuote> | null = null;
     let original: ReturnType<typeof originalQuote> | null = null;
     let view_error: string | null = null;
+    // 승인 기록 + 지금 차수에도 유효한지(견적을 고치면 지난 승인은 무효) + 유효기간
+    const acceptedRow = acceptedMap.get((row as { id?: string }).id ?? "") ?? null;
+    let accepted: (typeof acceptedRow & { current: boolean }) | null = null;
+    let valid_until: string | null = null;
+    let expired = false;
     try {
       const full = row as unknown as QuoteRow;
       total_won = totalWon(full);
       editable = editableQuote(full);
       view = toPublicQuote(full);
       original = originalQuote(full);
+      const decision = decide(full, view, acceptedRow);
+      accepted = acceptedRow ? { ...acceptedRow, current: !!decision.accepted } : null;
+      valid_until = decision.validUntil;
+      expired = decision.expired;
     } catch (e) {
       editable = null;
       view = null;
@@ -82,6 +94,9 @@ export async function GET(request: NextRequest) {
       link_path: linkKey ? `/q/${linkKey}` : null,
       status_reason: reasons.get((row as { id?: string }).id ?? "") ?? null,
       viewed: viewedMap.get((row as { id?: string }).id ?? "") ?? null,
+      accepted,
+      valid_until,
+      expired,
       total_won,
       editable,
       view,

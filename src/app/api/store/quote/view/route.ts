@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { verifyQuoteLinkKey } from "@/lib/quote/link";
+import { quoteLinkUrl, siteUrlFromRequest, verifyQuoteLinkKey } from "@/lib/quote/link";
 import { toPublicQuote, type QuoteRow } from "@/lib/quote/view";
 import { isBotAgent, recordQuoteView } from "@/lib/quote/viewed";
+import { decide, loadAccepted } from "@/lib/quote/accepted";
+import { notifyStaffFirstView } from "@/lib/quote/notify-staff";
 
 // 견적 바로보기 링크(/q/<키>)가 부르는 조회.
 // 키의 서명이 맞을 때만 그 접수 한 건을, 연락처를 뺀 내용으로 돌려준다.
@@ -77,11 +79,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: NOT_FOUND }, { status: 404 });
   }
 
-  const quote = toPublicQuote(row);
+  const base = toPublicQuote(row);
+  // 승인·유효기간 상태(화면의 버튼과 안내 띠가 이 값으로 정해진다)
+  const quote = { ...base, ...decide(row, base, await loadAccepted(row.id)) };
   // 고객이 열어 본 기록(내부용). 직원이 인트라넷에서 여는 것(staff)과 로봇은 세지 않는다.
   const staff = (body as { staff?: unknown } | null)?.staff === true;
   if (!staff && !isBotAgent(request.headers.get("user-agent"))) {
-    await recordQuoteView(row.id, quote.rev);
+    const first = await recordQuoteView(row.id, quote.rev);
+    // 처음 열어 본 때에만 담당자에게 알린다(실패해도 화면은 그대로)
+    if (first) {
+      await notifyStaffFirstView({
+        eventName: row.event_name,
+        quoteNumber: row.quote_number,
+        organization: row.organization,
+        contactName: row.contact_name,
+        rev: quote.rev,
+        total: quote.totals?.total ?? null,
+        linkUrl: quoteLinkUrl(siteUrlFromRequest(request), row.quote_number),
+      });
+    }
   }
 
   return NextResponse.json(

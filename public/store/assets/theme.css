@@ -1782,3 +1782,21 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 @media (max-width:767px){.fj-source-footer a[href^='tel:'],.fj-source-footer a[href^='mailto:']{display:inline-flex;align-items:center;min-height:44px}.paran-content .config-info summary{min-height:44px;display:flex;align-items:center;flex-wrap:wrap}}
 /* 2026-11-20 6차 채점: 견적 요청 화면의 글 속 링크가 링크로 보이게 */
 .request-summary>a[href="/cart/"],.request-form .consent a{text-decoration:underline;text-underline-offset:3px;color:#173eb8}.request-summary>a[href="/cart/"]{display:inline-flex;align-items:center;min-height:44px}
+/* 2026-11-22 견적 바로보기: 승인·유효기간 안내 띠, 승인 확인 칸 */
+.quote-view .qv-banner{margin:6px 0 22px;padding:16px 18px;border-radius:12px;background:#f4f3f8;color:#15141a;outline-offset:3px}
+.quote-view .qv-banner b{display:block;font-size:16px;margin-bottom:4px}
+.quote-view .qv-banner p{margin:0;line-height:1.7;color:#3a3942}
+.quote-view .qv-banner.ok{background:#e8eefc}
+.quote-view .qv-banner.ok b{color:#1f3f85}
+.quote-view .qv-banner.warn{background:#fdf1dc}
+.quote-view .qv-banner.warn b{color:#7a4a00}
+.quote-view .qv-accept{margin-top:18px;padding:20px;border-radius:12px;border:1px solid #d9d8e0;max-width:520px}
+.quote-view .qv-accept>b{display:block;font-size:17px}
+.quote-view .qv-accept>p{margin:8px 0 16px;line-height:1.7;color:#3a3942}
+.quote-view .qv-accept label{display:block;font-size:13px;color:#55535e;margin-bottom:6px}
+.quote-view .qv-accept input{width:100%;height:48px;padding:0 14px;border:1px solid #b9b8c2;border-radius:10px;font:inherit;font-size:16px;background:#fff;color:#15141a}
+.quote-view .qv-accept input:focus-visible{outline:2px solid #15141a;outline-offset:2px}
+.quote-view .qv-accept .qv-accept-err{margin:10px 0 0;color:#b3261e;font-size:14px}
+.quote-view .qv-accept .actions{margin-top:16px}
+.quote-view .qv-accept[hidden],.quote-view [data-accept-open][hidden]{display:none!important}
+@media print{.quote-view .qv-accept{display:none!important}}

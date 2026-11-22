@@ -40,10 +40,13 @@ export function isBotAgent(userAgent: string | null): boolean {
   );
 }
 
-/** 열람 한 번을 기록한다. 실패해도 견적 화면은 그대로 보여야 하므로 오류를 올리지 않는다. */
-export async function recordQuoteView(quoteId: string, rev: number): Promise<void> {
+/**
+ * 열람 한 번을 기록한다. 실패해도 견적 화면은 그대로 보여야 하므로 오류를 올리지 않는다.
+ * 이 견적을 처음 열어 본 것이면 true(담당자 알림용).
+ */
+export async function recordQuoteView(quoteId: string, rev: number): Promise<boolean> {
   const db = supabaseAdmin;
-  if (!db) return;
+  if (!db) return false;
   try {
     const now = new Date();
     const { data } = await db
@@ -63,14 +66,16 @@ export async function recordQuoteView(quoteId: string, rev: number): Promise<voi
         rev,
       };
       await db.from("quote_notes").update({ content: format(next) }).eq("id", rows[rows.length - 1].id);
-      return;
+      return false;
     }
     const iso = now.toISOString();
-    await db
+    const { error } = await db
       .from("quote_notes")
       .insert({ quote_id: quoteId, content: format({ first_at: iso, last_at: iso, count: 1, rev }) });
+    return !error;
   } catch (e) {
     console.error("[quote-view] 열람 기록 실패:", e);
+    return false;
   }
 }
 
