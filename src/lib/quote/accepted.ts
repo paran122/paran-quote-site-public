@@ -19,7 +19,7 @@ export interface QuoteAccepted {
   total: number;
 }
 
-/** 견적 유효기간(일). 접수일 또는 마지막으로 고친 날부터 센다. */
+/** 견적 유효기간(일) 기본값. 접수일 또는 마지막으로 고친 날부터 센다. 차수에 validDays 가 있으면 그 값을 쓴다. */
 export const VALID_DAYS = 30;
 
 const PATTERN = /^(\d+)차 · (.+) · (\S+) · 합계 ([\d,]+)원$/;
@@ -105,12 +105,17 @@ export async function loadAcceptedMap(): Promise<Map<string, QuoteAccepted>> {
 
 /** 유효기간 마지막 날(한국 날짜, YYYY-MM-DD). 기준일은 마지막으로 고친 날, 없으면 접수일. */
 export function validUntil(row: QuoteRow): string | null {
-  const base = latestRevision(row)?.at || row.created_at;
+  const latest = latestRevision(row);
+  const base = latest?.at || row.created_at;
+  const days =
+    latest && typeof latest.validDays === "number" && latest.validDays >= 1 && latest.validDays <= 365
+      ? Math.trunc(latest.validDays)
+      : VALID_DAYS;
   const start = new Date(base);
   if (Number.isNaN(start.getTime())) return null;
   // 한국 시각 기준 날짜로 센다
   const kst = new Date(start.getTime() + 9 * 3600 * 1000);
-  kst.setUTCDate(kst.getUTCDate() + VALID_DAYS);
+  kst.setUTCDate(kst.getUTCDate() + days);
   return kst.toISOString().slice(0, 10);
 }
 
@@ -126,6 +131,11 @@ export interface QuoteDecision {
   /** 지금 보이는 차수에 대한 승인. 지난 차수의 승인은 넣지 않는다 */
   accepted: { name: string; at: string } | null;
   canAccept: boolean;
+  /**
+   * 승인 버튼이 안 나오는 이유(담당자 화면용). 승인할 수 있으면 null.
+   * inquiry 문의 건 · status 완료/취소 · no_total 합계 없음 · tbd 상담 후 확정 줄 있음 · expired 유효기간 지남 · accepted 이미 승인됨
+   */
+  blocked: "inquiry" | "status" | "no_total" | "tbd" | "expired" | "accepted" | null;
 }
 
 const OPEN_STATUSES = new Set(["접수대기", "접수", "진행중"]);
@@ -150,10 +160,25 @@ export function decide(
   const current = accepted && accepted.rev === quote.rev ? accepted : null;
   const until = priced && (open || current) ? validUntil(row) : null;
   const expired = !!until && !current && todayKst(now) > until;
+  const blocked: QuoteDecision["blocked"] =
+    quote.kind !== "quote"
+      ? "inquiry"
+      : current
+        ? "accepted"
+        : !open
+          ? "status"
+          : quote.lines.some((line) => line.tbd)
+            ? "tbd"
+            : !priced
+              ? "no_total"
+              : expired
+                ? "expired"
+                : null;
   return {
     validUntil: until,
     expired,
     accepted: current ? { name: current.name, at: current.at } : null,
-    canAccept: open && priced && !expired && !current,
+    canAccept: blocked === null,
+    blocked,
   };
 }

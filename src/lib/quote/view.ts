@@ -26,6 +26,8 @@ export interface QuoteRevision {
   notice: string;
   /** 내부용 수정 이유. 고객 화면·메일·알림톡에는 내보내지 않는다. */
   reason?: string;
+  /** 이 차수의 견적 유효기간(일). 없으면 기본값(VALID_DAYS)을 쓴다. */
+  validDays?: number;
   /** 고객에게 실제로 나간 알림 기록(내부용). 알림이 안 나간 차수에는 없다. */
   sent?: { at: string; email: boolean; alimtalk: boolean };
   supply: number;

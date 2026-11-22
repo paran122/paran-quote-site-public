@@ -18,6 +18,7 @@ import {
   type QuoteRow,
 } from "@/lib/quote/view";
 import { markRevisionSent, sendRevisionNotice, type RevisionSent } from "@/lib/quote/notify-revision";
+import { loadAccepted, validUntil } from "@/lib/quote/accepted";
 import { sendEmail, RESEND_API_KEY, FROM_EMAIL } from "@/lib/email/resend";
 import { quoteDeclinedHtml, quoteDeclinedSubject } from "@/lib/email/templates/quote-declined";
 
@@ -142,6 +143,8 @@ const RevisionSchema = z.object({
     .min(1)
     .max(MAX_LINES),
   ship: z.number().int().min(0).max(100_000_000),
+  // 이 차수의 견적 유효기간(일). 안 주면 기본 30일.
+  valid_days: z.number().int().min(1).max(365).optional(),
   notice: z.string().trim().max(2000),
   notify: z.boolean(),
   /** 내부용 수정 이유(선택). 고객에게는 보이지 않는다. */
@@ -240,6 +243,7 @@ export async function PUT(
     ship: input.ship,
     notice: input.notice,
     ...(input.reason ? { reason: input.reason } : {}),
+    ...(input.valid_days ? { validDays: input.valid_days } : {}),
     supply: totals.supply,
     profit: totals.profit ?? 0,
     vat: totals.vat,
@@ -251,12 +255,20 @@ export async function PUT(
     ...revision,
     lines: revision.lines.map((line) => ({ ...line, amount: Math.round(line.unitPrice * line.qty) })),
   };
+  // 지금 차수에 고객 승인이 있으면 새 차수 저장으로 그 승인이 풀린다(승인은 차수마다 따로)
+  const acceptedBefore = await loadAccepted(id);
+  const prevRev = history.length ? history[history.length - 1].rev : 0;
+  const accepted_cleared = !!acceptedBefore && acceptedBefore.rev === prevRev;
+  // 이 차수를 저장하면 유효기간이 언제까지가 되는지
+  const valid_until = validUntil({ ...row, revisions: [...history, revision] });
   if (input.dryRun) {
     return withCors(request, NextResponse.json({
       success: true,
       dryRun: true,
       revision: revisionOut,
       total_amount: totals.total,
+      accepted_cleared,
+      valid_until,
     }));
   }
 
@@ -291,6 +303,8 @@ export async function PUT(
     revision: sent ? { ...revisionOut, sent } : revisionOut,
     total_amount: totals.total,
     notified,
+    accepted_cleared,
+    valid_until,
   }));
 }
 

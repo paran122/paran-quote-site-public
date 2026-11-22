@@ -73,6 +73,8 @@ export async function GET(request: NextRequest) {
     let accepted: (typeof acceptedRow & { current: boolean }) | null = null;
     let valid_until: string | null = null;
     let expired = false;
+    let can_accept = false;
+    let accept_blocked: ReturnType<typeof decide>["blocked"] = null;
     try {
       const full = row as unknown as QuoteRow;
       total_won = totalWon(full);
@@ -83,6 +85,8 @@ export async function GET(request: NextRequest) {
       accepted = acceptedRow ? { ...acceptedRow, current: !!decision.accepted } : null;
       valid_until = decision.validUntil;
       expired = decision.expired;
+      can_accept = decision.canAccept;
+      accept_blocked = decision.blocked;
     } catch (e) {
       editable = null;
       view = null;
@@ -97,6 +101,8 @@ export async function GET(request: NextRequest) {
       accepted,
       valid_until,
       expired,
+      can_accept,
+      accept_blocked,
       total_won,
       editable,
       view,
