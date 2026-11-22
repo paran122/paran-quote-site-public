@@ -1881,3 +1881,37 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .paran-content .cart-list .ci-edit::after{content:"";position:absolute;inset:-11px -8px}
 .paran-content .cart-list .ci-del{height:40px}
 @media (max-width:640px){.paran-content .cart-list .cart-item{padding:12px 0;gap:0 12px}.paran-content .cart-list .ci-del{margin-bottom:-6px}}
+
+/* 2026-11-22 장바구니: 목록에 없는 요청(글로 적어 두는 칸) */
+.paran-content .basket>.cart-ask{grid-column:1;margin:6px 0 0;min-width:0}
+.paran-content .cart-ask[hidden]{display:none}
+.paran-content .cart-ask h3{margin:0 0 4px;font-size:15px;font-weight:600;color:#55535e;text-align:left}
+.paran-content .cart-ask>p{margin:0 0 12px;font-size:14px;line-height:1.55;color:#55535e}
+.paran-content .cart-ask .ask-open{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px 0 14px;border:1px dashed #b9b8c2;border-radius:999px;background:#fff;font:inherit;color:#15141a;cursor:pointer}
+.paran-content .cart-ask .ask-open:hover{border-style:solid;border-color:#15141a}
+.paran-content .cart-ask .ask-open b{font-size:14.5px;font-weight:600}
+.paran-content .cart-ask .ask-open small{font-size:13px;color:#6b6975}
+.paran-content .cart-ask .ask-box{border:1px solid #dcdbe2;border-radius:14px;padding:16px;background:#fff}
+.paran-content .cart-ask label{display:block;margin:0 0 8px;font-size:14px;font-weight:700;color:#15141a}
+.paran-content .cart-ask textarea{display:block;width:100%;min-height:104px;padding:12px 14px;border:1px solid #dcdbe2;border-radius:10px;font:inherit;font-size:15px;line-height:1.55;color:#15141a;background:#fff;resize:vertical}
+.paran-content .cart-ask textarea:focus-visible,.paran-content .cart-ask button:focus-visible,.paran-content .cart-ask a:focus-visible{outline:2px solid #15141a;outline-offset:2px}
+.paran-content .cart-ask .ask-hint{margin:8px 0 0;font-size:13px;line-height:1.5;color:#55535e}
+.paran-content .cart-ask .ask-ex{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.paran-content .cart-ask .ask-ex button{min-height:36px;padding:0 12px;border:1px solid #dcdbe2;border-radius:999px;background:#f7f7f9;font:inherit;font-size:13px;color:#3b3a44;cursor:pointer}
+.paran-content .cart-ask .ask-ex button:hover{border-color:#8f8e98}
+.paran-content .cart-ask .ask-err{margin:10px 0 0;font-size:13px;color:#b42318}
+.paran-content .cart-ask .ask-actions{display:flex;gap:8px;margin:14px 0 0}
+.paran-content .cart-ask .ask-save{min-height:44px;padding:0 20px;border:0;border-radius:999px;background:#15141a;color:#fff;font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.paran-content .cart-ask .ask-cancel{min-height:44px;padding:0 16px;border:1px solid #dcdbe2;border-radius:999px;background:#fff;font:inherit;font-size:15px;color:#3b3a44;cursor:pointer}
+.paran-content .cart-list .cart-item.is-ask{align-items:flex-start}
+.paran-content .cart-list .cart-item.is-ask .ask-text{white-space:pre-line;overflow-wrap:anywhere}
+.paran-content .cart-list .cart-item.is-ask .ci-edit{margin-left:0}
+.paran-content .cart-list .cart-item.is-ask .am{font-size:14px;font-weight:600;color:#55535e;padding-top:3px}
+.paran-content .basket-total .cv-row.is-ask b{font-size:14px;font-weight:600;color:#d9d8e0}
+.paran-content .basket-total .cv-note{margin:10px 0 0;text-align:right;font-size:12.5px;line-height:1.5;color:#b9b8c4}
+.paran-content .cart-ask.is-empty{grid-column:1;margin-top:4px;padding:22px 20px;border:1px solid #e6e5ea;border-radius:16px;background:#fff}
+.paran-content .cart-ask.is-empty h3{font-size:17px;font-weight:800;color:#15141a}
+.paran-content .cart-ask.is-empty .ask-go{display:inline-flex;align-items:center;min-height:46px;padding:0 22px;border-radius:999px;background:#15141a;color:#fff;font-size:15px;font-weight:700;text-decoration:none}
+.paran-content .cart-ask.is-empty .ask-sub{margin:12px 0 0;font-size:13px;color:#55535e}
+.paran-content .request-summary .summary-line.is-ask .ask-text{white-space:pre-line;overflow-wrap:anywhere}
+@media (max-width:900px){.paran-content .basket>.cart-ask{order:9}.paran-content .basket-total .cv-note{text-align:left}}
