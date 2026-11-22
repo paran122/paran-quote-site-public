@@ -1915,3 +1915,7 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .paran-content .cart-ask.is-empty .ask-sub{margin:12px 0 0;font-size:13px;color:#55535e}
 .paran-content .request-summary .summary-line.is-ask .ask-text{white-space:pre-line;overflow-wrap:anywhere}
 @media (max-width:900px){.paran-content .basket>.cart-ask{order:9}.paran-content .basket-total .cv-note{text-align:left}}
+/* 2026-11-22 장바구니 소제목('더 담기', '목록에 없는 것이 있나요?')을 또렷하게: 본문 회색 글과 구분되게 검정·굵게 */
+.paran-content .pk.pk-more>h3,.paran-content .basket>.cart-ask:not(.is-empty) h3{margin:26px 0 10px;font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1.3;color:#15141a}
+.paran-content .basket>.cart-ask:not(.is-empty) h3{margin-top:8px;margin-bottom:6px}
+@media (max-width:640px){.paran-content .pk.pk-more>h3,.paran-content .basket>.cart-ask:not(.is-empty) h3{font-size:17px}}
