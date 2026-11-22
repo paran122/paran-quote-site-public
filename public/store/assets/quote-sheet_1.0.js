@@ -81,10 +81,37 @@
    list.forEach((r,i)=>{if(!i){const c=r.querySelector('td.g.cont');if(c){c.className='g';c.textContent=r.dataset.g}}b.append(r)});
    if(list.length)page.append(t);if(k===pages.length-2)page.append(foot);after.after(page);after=page})}
 
+ // 2026-11-22 견적 확인 화면(/q/…)용. 서버가 준 견적(접수 그대로 또는 담당자가 고친 차수)을 같은 양식에 담는다.
+ // 줄에 구분(디자인·제작물)이 없으므로 첫 칸은 번호. 금액은 서버 값 그대로 쓰고 여기서 다시 계산하지 않는다.
+ function viewSheet(q){
+  const t=q.totals,rev=Math.max(0,Math.trunc(Number(q.rev)||0)),inc=!!q.vatIncluded,lines=Array.isArray(q.lines)?q.lines:[],tbd=lines.some(l=>l&&l.tbd),day=v=>ymd(new Date(v));
+  const R='text-align:right',L='text-align:left',td=(v,st='')=>`<td style="${st}">${v}</td>`;let body='';
+  lines.forEach((l,i)=>{const no=!!l.tbd;body+=`<tr><td class="g">${i+1}</td>`+td(esc(l.name),L)+td(esc(l.detail||''),L)+td(esc(String(l.qty??1)),R)+td(esc(l.unit||''))+td(no?'-':n0(l.unitPrice),R)+td(1,R)+td(no?'-':n0(l.amount),R)+td(no?'상담 후 확정':'',L+';font-size:9pt;color:'+C.note)+'</tr>'});
+  const sum=(l,v,cls,note='')=>`<tr class="${cls}"><td colspan="7">${l}</td><td style="${R}">${v}</td><td style="${L};font-size:9pt">${note}</td></tr>`;
+  body+=inc?sum('합계금액',n0(t.total),'grand','부가세 포함'):sum('소계',n0(t.supply),'tot')+(typeof t.profit==='number'?sum('기업이윤 (10%)',n0(t.profit),'plain'):'')+sum('부가세 (10%)',n0(t.vat),'plain')+(t.ship?sum('배송비 (택배)',n0(t.ship),'plain','부가세 산정 제외'):'')+sum('합계금액',n0(t.total),'grand');
+  const meta=(l,v)=>`<tr><th>${l}</th><td colspan="8" style="${L}">${v}</td></tr>`;
+  return `<div class="qs"><h1>산 출 내 역 서</h1><table class="meta">
+   ${meta('수신',esc([q.organization,q.contactName?q.contactName+' 님':''].filter(Boolean).join(' ')||'귀하'))}${meta('견적명',esc(q.title||'행사 디자인 서비스'))}
+   <tr><th>접수번호</th><td colspan="2" style="${L}">${esc(q.number||'')}</td><th>구분</th><td colspan="5" style="${L}">${rev?rev+'차 견적':'접수 견적'}</td></tr>
+   <tr><th>작성일</th><td colspan="2" style="${L}">${day(q.updatedAt||q.createdAt||Date.now())}</td><th>유효기간</th><td colspan="5" style="${L}">${q.validUntil?day(q.validUntil)+'까지':'-'}</td></tr>
+   <tr><th>견적업체</th><td colspan="3" style="${L}">${SELLER.name}</td><th>연락처</th><td colspan="4" style="${L}">${SELLER.tel}</td></tr>
+   ${meta('담당자',SELLER.person)}
+   <tr class="amount"><th>견적금액</th><td colspan="8">금 ${hangul(t.total)}원정 (₩${n0(t.total)}) · 부가세 포함${tbd?' · 금액 나온 항목 기준':''}</td></tr></table>
+   <table class="body"><colgroup><col style="width:5%"><col style="width:16%"><col style="width:32%"><col style="width:5%"><col style="width:5%"><col style="width:10%"><col style="width:5%"><col style="width:11%"><col style="width:11%"></colgroup>
+   <thead><tr><th>번호</th><th>항목</th><th>세부항목</th><th>수량</th><th>단위</th><th>단가</th><th>횟수</th><th>금액</th><th>비고</th></tr></thead><tbody>${body}</tbody></table>
+   <div class="foot">${q.notice?`<p style="margin:0 0 6px;font-size:10pt;color:#000"><b>담당자 안내</b> ${esc(q.notice)}</p>`:''}${rev?'담당자가 상담 내용을 반영해 수정한 견적서입니다.':'접수하신 내용 그대로의 견적서입니다.'} 직인이 찍힌 견적서는 담당자에게 요청해 주세요.</div></div>`}
+
+ window.paranQuoteSheetView=async function(q){
+  if(!q||!q.totals||!Number.isFinite(Number(q.totals.total)))throw new Error('no total');
+  const rev=Math.max(0,Math.trunc(Number(q.rev)||0));
+  await save(viewSheet(q),`견적서_파란컴퍼니_${String(q.number||'').replace(/[^0-9A-Za-z_-]/g,'')}${rev?'_'+rev+'차':''}.pdf`)};
+
  window.paranQuoteSheet=async function(o){
-  const host=document.createElement('div');host.style.cssText='position:fixed;left:-10000px;top:0;z-index:-1';host.innerHTML=`<style>${CSS}</style><div class="qs-doc">`+sheet(o)+'</div>';document.body.append(host);paginate(host.querySelector('.qs'));
+  const d=new Date();await save(sheet(o),`견적서_파란컴퍼니_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}.pdf`)};
+
+ async function save(html,name){
+  const host=document.createElement('div');host.style.cssText='position:fixed;left:-10000px;top:0;z-index:-1';host.innerHTML=`<style>${CSS}</style><div class="qs-doc">`+html+'</div>';document.body.append(host);paginate(host.querySelector('.qs'));
   const img=host.querySelector('.seal');if(img&&!img.complete)await new Promise(r=>{img.onload=img.onerror=r});
-  const d=new Date(),name=`견적서_파란컴퍼니_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}.pdf`;
   try{await window.html2pdf().set({margin:[8,8,8,8],filename:name,image:{type:'jpeg',quality:0.96},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',scrollX:0,scrollY:0,logging:false},jsPDF:{unit:'mm',format:'a4',orientation:'landscape'},pagebreak:{mode:['css'],before:'.qs-cont'}}).from(host.querySelector('.qs-doc')).save()}
   finally{host.remove()}
  };
