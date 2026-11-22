@@ -14,16 +14,8 @@ import {
 
 /** 금액 표기. 값은 만 원 단위 */
 function formatKRW(amount: number): string {
-  // 천 원 미만 단위가 있으면(서비스 사이트 접수 금액) 원 단위로 정확히 적는다
-  const exactWon = Math.round(amount * 10000);
-  if (exactWon % 1000 !== 0) return `${exactWon.toLocaleString("ko-KR")}원`;
-  if (amount >= 10000) {
-    const eok = Math.floor(amount / 10000);
-    const man = amount % 10000;
-    if (man === 0) return `${eok}억원`;
-    return `${eok}억 ${man.toLocaleString("ko-KR")}만원`;
-  }
-  return `${amount.toLocaleString("ko-KR")}만원`;
+  // 2026-11-22 금액은 '610,000원' 꼴 하나로 적는다(값은 만 원 단위로 들어온다)
+  return `${Math.round(amount * 10000).toLocaleString("ko-KR")}원`;
 }
 
 const CONTACT_NOTE = [

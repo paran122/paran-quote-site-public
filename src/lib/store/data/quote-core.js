@@ -5,7 +5,7 @@
    금액 규칙·단가는 여기 없음: 카탈로그의 p.prices(가격표)와 p.quote(price_table.py RULES)에서 옴. */
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.ParanQuote=factory()})(typeof self!=='undefined'?self:this,function(){'use strict';
 // 견적 상자 계산: 가격표(p.prices) + 서비스별 규칙(p.quote). 화면은 부가세 포함, 견적 합계는 공급가 기준(docTotals)
-function man(n){n=Math.round(n);if(n<10000)return n.toLocaleString('ko-KR')+'원';if(n%1000===0)return (Number.isInteger(n/10000)?(n/10000).toLocaleString('ko-KR'):(n/10000).toFixed(1))+'만 원';return Math.floor(n/10000).toLocaleString('ko-KR')+'만 '+(n%10000).toLocaleString('ko-KR')+'원'}
+/* 2026-11-22 금액은 '610,000원' 꼴 하나로 적는다(전에는 '61만 원'·'61만 100원'이 섞여 있었다) */function man(n){return Math.round(n).toLocaleString('ko-KR')+'원'}
 function num(t){const m=String(t||'').normalize('NFKC').replace(/(\d),(?=\d{3})/g,'$1').match(/\d+(?:\.\d+)?/);return m?parseFloat(m[0]):0}
 // 길이 읽기: 숫자마다 단위(mm·cm·m)를 보고 미터로. 단위가 한 군데만 있으면 나머지도 같은 단위, 아예 없으면 1000 이상=mm, 20 초과=cm, 그 밖=m
 // 2026-11-13 단위가 아예 없으면 숫자 전체를 보고 단위 하나를 정함(예전엔 숫자마다 따로 추측해 '5000×900'이 5m×9m가 됐음):
