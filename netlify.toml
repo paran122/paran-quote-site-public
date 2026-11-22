@@ -146,4 +146,10 @@
   to = "https://aiarnrhftmuffmcninyl.supabase.co/storage/v1/render/image/public/site-cases/:splat"
   status = 200
   force = true
+[[headers]]
+  for = "/q/*"
+  [headers.values]
+    Referrer-Policy = "no-referrer"
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
 # <<< store-routes
