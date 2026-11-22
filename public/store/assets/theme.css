@@ -1805,13 +1805,13 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .paran-content .receipt dl.ref-total dd{font-variant-numeric:tabular-nums}
 /* 2026-11-22 장바구니 간소화(B안): 담은 목록 한 줄씩, 아래 '더 담기' */
 .paran-content .cart-list{list-style:none;margin:0;padding:6px 24px;border:1px solid #e3e2e8;border-radius:16px;background:#fff}
-.paran-content .cart-list .cart-item{display:flex;align-items:center;gap:14px;padding:16px 0;border-top:1px solid #eeedf2}
+.paran-content .cart-list .cart-item{display:flex;align-items:center;gap:14px;margin:0;padding:16px 0;border:0;border-top:1px solid #eeedf2;border-radius:0;background:none}
 .paran-content .cart-list .cart-item:first-child{border-top:0}
 .paran-content .cart-list .ct-ic{width:40px;height:40px;border-radius:10px}
 .paran-content .cart-list .ci-tx{flex:1;min-width:0}
 .paran-content .cart-list .ci-tx b{display:block;font-size:16.5px;font-weight:700;color:#15141a}
 .paran-content .cart-list .ci-tx p{margin:3px 0 0;font-size:14px;line-height:1.55;color:#55535e}
-.paran-content .cart-list .ci-edit{display:inline-flex;align-items:center;min-height:32px;margin:-6px 0 -6px 4px;padding:0 6px;border:0;background:none;font:inherit;color:#173eb8;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.paran-content .cart-list .ci-edit{display:inline-block;margin:-6px 0 -6px 0;padding:6px 6px 6px 4px;white-space:nowrap;border:0;background:none;font:inherit;color:#173eb8;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .paran-content .cart-list .am{font-size:17px;font-weight:700;color:#15141a;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums}
 .paran-content .cart-list .am small{display:block;font-size:12px;font-weight:500;color:#6b6975}
 .paran-content .cart-list .ci-del{flex:none;display:grid;place-items:center;width:44px;height:44px;margin-right:-10px;border:0;border-radius:10px;background:none;color:#8a8894;cursor:pointer}
