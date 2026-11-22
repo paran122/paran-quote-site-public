@@ -18,6 +18,8 @@ import {
   type QuoteRow,
 } from "@/lib/quote/view";
 import { markRevisionSent, sendRevisionNotice, type RevisionSent } from "@/lib/quote/notify-revision";
+import { sendEmail, RESEND_API_KEY, FROM_EMAIL } from "@/lib/email/resend";
+import { quoteDeclinedHtml, quoteDeclinedSubject } from "@/lib/email/templates/quote-declined";
 
 export function OPTIONS(request: NextRequest) {
   return preflight(request);
@@ -48,6 +50,45 @@ export async function PATCH(
     return withCors(request, NextResponse.json({ error: "유효하지 않은 상태입니다" }, { status: 400 }));
   }
 
+  // 거절 안내(선택): 종료(취소)로 옮기면서 고객에게 사과 메일을 보낸다. 메일이 안 나가면 종료하지 않는다.
+  const declineRaw = typeof body.decline_message === "string" ? body.decline_message.trim() : "";
+  let declined = false;
+  if (declineRaw) {
+    const fail = (error: string, code: number) =>
+      withCors(request, NextResponse.json({ error }, { status: code }));
+    if (status !== "취소") return fail("거절 안내는 종료로 옮길 때만 보낼 수 있습니다", 400);
+    if (declineRaw.length > 1000) return fail("안내 글은 1000자 이하로 적어 주세요", 400);
+    const { data: found, error: loadError } = await supabaseAdmin
+      .from("quotes")
+      .select("quote_number, contact_name, event_name, email")
+      .eq("id", id)
+      .limit(1);
+    if (loadError) return fail(loadError.message, 500);
+    const target = (found?.[0] ?? null) as
+      | { quote_number: string; contact_name: string; event_name: string; email: string | null }
+      | null;
+    if (!target) return fail("견적을 찾을 수 없습니다", 404);
+    if (!isProductionHost(request) && !(target.event_name || "").trim().toUpperCase().startsWith("[TEST]")) {
+      return fail("개발 주소에서는 [TEST] 시험 접수에만 고객 알림을 보낼 수 있습니다.", 409);
+    }
+    if (!target.email) return fail("고객 메일 주소가 없어 안내를 보낼 수 없습니다", 400);
+    if (!RESEND_API_KEY) return fail("메일 발송 설정이 없어 안내를 보낼 수 없습니다", 500);
+    const data = {
+      contactName: target.contact_name,
+      quoteNumber: target.quote_number,
+      eventName: target.event_name,
+      message: declineRaw,
+    };
+    const mail = await sendEmail({
+      from: FROM_EMAIL,
+      to: target.email,
+      subject: quoteDeclinedSubject(data),
+      html: quoteDeclinedHtml(data),
+    });
+    if (!mail.success) return fail("메일을 보내지 못해 종료하지 않았습니다. 잠시 뒤 다시 해 주세요.", 502);
+    declined = true;
+  }
+
   const { error } = await supabaseAdmin
     .from("quotes")
     .update({ status, updated_at: new Date().toISOString() })
@@ -61,17 +102,19 @@ export async function PATCH(
   let status_reason: string | null = null;
   try {
     await supabaseAdmin.from("quote_notes").delete().eq("quote_id", id).like("content", `${STATUS_REASON_MARK}%`);
-    if (reasonRaw) {
+    // 사과 메일을 보냈으면 이유 뒤에 적어 둔다(내부용)
+    const noteText = [reasonRaw, declined ? "고객에게 사과 메일 보냄" : ""].filter(Boolean).join(" · ");
+    if (noteText) {
       const { error: noteError } = await supabaseAdmin
         .from("quote_notes")
-        .insert({ quote_id: id, content: `${STATUS_REASON_MARK}${status}: ${reasonRaw}` });
-      if (!noteError) status_reason = reasonRaw;
+        .insert({ quote_id: id, content: `${STATUS_REASON_MARK}${status}: ${noteText}` });
+      if (!noteError) status_reason = noteText;
     }
   } catch (e) {
     console.error("[quote] 상태 이유 기록 실패:", e);
   }
 
-  return withCors(request, NextResponse.json({ success: true, status_reason }));
+  return withCors(request, NextResponse.json({ success: true, status_reason, declined }));
 }
 
 /* ── 견적 수정: 새 차수를 이력에 덧붙인다 ── */
