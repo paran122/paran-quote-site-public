@@ -1138,7 +1138,8 @@
     "quote": {
       "len": {
         "opt": "size",
-        "base": 3
+        "base": 3,
+        "min": 3
       },
       "install": {
         "opt": "install",
