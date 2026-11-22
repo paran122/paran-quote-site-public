@@ -1803,3 +1803,27 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 /* 2026-11-22 견적·접수 화면 합계표: 줄마다 글자 크기를 같게(합계만 굵게), 숫자는 자리 폭을 맞춤. 전에는 합계 16px·나머지 14px라 아래로 갈수록 작아 보였다 */
 .paran-content .receipt dl.ref-total,.paran-content .receipt dl.ref-total .grand{font-size:16px}
 .paran-content .receipt dl.ref-total dd{font-variant-numeric:tabular-nums}
+/* 2026-11-22 장바구니 간소화(B안): 담은 목록 한 줄씩, 아래 '더 담기' */
+.paran-content .cart-list{list-style:none;margin:0;padding:6px 24px;border:1px solid #e3e2e8;border-radius:16px;background:#fff}
+.paran-content .cart-list .cart-item{display:flex;align-items:center;gap:14px;padding:16px 0;border-top:1px solid #eeedf2}
+.paran-content .cart-list .cart-item:first-child{border-top:0}
+.paran-content .cart-list .ct-ic{width:40px;height:40px;border-radius:10px}
+.paran-content .cart-list .ci-tx{flex:1;min-width:0}
+.paran-content .cart-list .ci-tx b{display:block;font-size:16.5px;font-weight:700;color:#15141a}
+.paran-content .cart-list .ci-tx p{margin:3px 0 0;font-size:14px;line-height:1.55;color:#55535e}
+.paran-content .cart-list .ci-edit{display:inline-flex;align-items:center;min-height:32px;margin:-6px 0 -6px 4px;padding:0 6px;border:0;background:none;font:inherit;color:#173eb8;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.paran-content .cart-list .am{font-size:17px;font-weight:700;color:#15141a;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums}
+.paran-content .cart-list .am small{display:block;font-size:12px;font-weight:500;color:#6b6975}
+.paran-content .cart-list .ci-del{flex:none;display:grid;place-items:center;width:44px;height:44px;margin-right:-10px;border:0;border-radius:10px;background:none;color:#8a8894;cursor:pointer}
+.paran-content .cart-list .ci-del:hover{background:#f4f3f8;color:#b42318}
+.paran-content .cart-list .ci-edit:focus-visible,.paran-content .cart-list .ci-del:focus-visible,.paran-content .pk-adds button:focus-visible{outline:2px solid #15141a;outline-offset:2px}
+.paran-content .pk.pk-more{padding:0;border:0;background:none}
+.paran-content .pk.pk-more[hidden]{display:none}
+.paran-content .pk.pk-more>h3{margin:4px 0 10px;font-size:15px;font-weight:600;color:#55535e;text-align:left}
+.paran-content .pk-adds{display:flex;flex-wrap:wrap;gap:8px}
+.paran-content .pk-adds button{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 12px;border:1px dashed #b9b8c2;border-radius:999px;background:#fff;font:inherit;color:#15141a;cursor:pointer}
+.paran-content .pk-adds button:hover{border-style:solid;border-color:#15141a}
+.paran-content .pk-adds i{font-style:normal;font-size:18px;line-height:1;color:#55535e}
+.paran-content .pk-adds b{font-size:14.5px;font-weight:600}
+.paran-content .pk-adds small{font-size:13px;color:#6b6975}
+@media (max-width:640px){.paran-content .cart-list{padding:4px 16px}.paran-content .cart-list .cart-item{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:2px 12px;align-items:start;padding:14px 0}.paran-content .cart-list .ct-ic{width:36px;height:36px;grid-row:1/span 2}.paran-content .cart-list .ci-tx{grid-column:2;grid-row:1/span 2}.paran-content .cart-list .ci-tx b{font-size:15.5px}.paran-content .cart-list .am{grid-column:3;grid-row:1;font-size:15.5px}.paran-content .cart-list .ci-del{grid-column:3;grid-row:2;justify-self:end;margin:0 -10px -8px 0}.paran-content .pk-adds button{flex:1 1 auto;justify-content:flex-start}}
