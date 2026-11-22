@@ -1846,3 +1846,4 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .config-form .panel-see dd{margin:0;padding:0;font-weight:700;color:#15141a;font-variant-numeric:tabular-nums}
 .config-form .panel-see dd small{font-weight:500;color:#55535e;font-size:12.5px}
 @media (max-width:600px){.option-field.is-panel .option-chips{grid-template-columns:1fr}}
+.option-chips .chip[hidden]{display:none}
