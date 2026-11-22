@@ -1800,3 +1800,6 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .quote-view .qv-accept .actions{margin-top:16px}
 .quote-view .qv-accept[hidden],.quote-view [data-accept-open][hidden]{display:none!important}
 @media print{.quote-view .qv-accept{display:none!important}}
+/* 2026-11-22 견적·접수 화면 합계표: 줄마다 글자 크기를 같게(합계만 굵게), 숫자는 자리 폭을 맞춤. 전에는 합계 16px·나머지 14px라 아래로 갈수록 작아 보였다 */
+.paran-content .receipt dl.ref-total,.paran-content .receipt dl.ref-total .grand{font-size:16px}
+.paran-content .receipt dl.ref-total dd{font-variant-numeric:tabular-nums}
