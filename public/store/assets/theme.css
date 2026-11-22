@@ -1847,3 +1847,28 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .config-form .panel-see dd small{font-weight:500;color:#55535e;font-size:12.5px}
 @media (max-width:600px){.option-field.is-panel .option-chips{grid-template-columns:1fr}}
 .option-chips .chip[hidden]{display:none}
+/* 2026-11-22 장바구니 강조 1안: 합계 상자 검정 + 큰 합계, 목록은 견적서 머리 줄. 머리 문구는 뺌 */
+.paran-content[data-page=cart] .cart-layout{padding-top:56px}
+.paran-content .basket>h1.basket-h{grid-column:1/-1;margin:0 0 6px;text-align:left;font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.2}
+.paran-content .basket>h1.basket-h span{margin-left:6px;font-size:18px;font-weight:500;letter-spacing:0;color:#55535e}
+.paran-content .cart-head{display:flex;justify-content:space-between;padding:11px 46px 11px 0;border-top:2px solid #15141a;border-bottom:1px solid #e3e2e8;font-size:13px;font-weight:700;color:#55535e}
+.paran-content .cart-head small{font-weight:500}
+.paran-content .cart-list{padding:0;border:0;border-bottom:1px solid #15141a;border-radius:0;background:none}
+.paran-content .cart-list .cart-item{padding:18px 0}
+.paran-content .cart-list .ci-tx b{font-size:17px;font-weight:800}
+.paran-content .cart-list .ci-tx p{margin-top:4px}
+.paran-content .cart-list .am{font-size:18px;font-weight:800}
+.paran-content .cart-list .ci-del{margin-right:-12px}
+.paran-content .pk.pk-more>h3{margin-top:22px}
+.paran-content .basket-total{background:#15141a!important;color:#fff!important;border-color:#15141a;border-radius:20px;padding:28px!important}
+.paran-content .basket-total .cv-row span{color:#b9b8c4}
+.paran-content .basket-total .cv-row b{color:#fff}
+.paran-content .basket-total .cv-total{margin-top:14px;padding-top:20px;border-top-color:rgba(255,255,255,.18)}
+.paran-content .basket-total .cv-total span{font-size:15px;font-weight:700;color:#fff}
+.paran-content .basket-total .cv-total b{font-family:'__Poppins_9808a3',Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.1;color:#fff;font-variant-numeric:tabular-nums}
+.paran-content .basket-total .cv-total b i{margin-left:2px;font-family:Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;font-style:normal;font-size:18px;font-weight:700;letter-spacing:0}
+.paran-content .basket-total .cv-cut{color:#b9b8c4}
+.paran-content .basket-total .cv-go{min-height:58px;margin-top:22px;font-size:17px}
+.paran-content .basket-total .cv-pdf{color:#fff}
+.paran-content .basket-total .cv-pdf:focus-visible,.paran-content .basket-total .cv-go:focus-visible{outline:2px solid #c3ff00;outline-offset:3px}
+@media (max-width:640px){.paran-content[data-page=cart] .cart-layout{padding-top:28px}.paran-content .basket>h1.basket-h{font-size:26px}.paran-content .cart-head{padding-right:0}.paran-content .cart-head span:last-child{display:none}.paran-content .cart-list{padding:0}.paran-content .cart-list .ci-tx b{font-size:16px}.paran-content .cart-list .am{font-size:16px}.paran-content .basket-total{padding:22px 20px!important}.paran-content .basket-total .cv-total b{font-size:28px}}
