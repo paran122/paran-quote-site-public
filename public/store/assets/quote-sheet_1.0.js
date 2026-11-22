@@ -72,9 +72,12 @@
    if(g){label=g.textContent;g.removeAttribute('rowspan');tr.dataset.g=label}
    else if(tr.cells.length===8&&!tr.className){const td=document.createElement('td');td.className='g cont';tr.prepend(td);tr.dataset.g=label}}
   const top=qs.getBoundingClientRect().top,headH=table.tHead.getBoundingClientRect().height,rows=[...tb.rows],hs=rows.map(r=>r.getBoundingClientRect().height);
+  // 2026-11-22 끝의 합계 줄(소계·부가세·합계)과 안내 글은 한 덩어리. 쪽 사이에서 갈라지거나 글만 따로 넘어가지 않게 통째로 넘긴다.
+  const foot=qs.querySelector('.foot'),isSum=r=>/^(tot|plain|grand)$/.test(r.className);let cut=rows.length;while(cut>1&&isSum(rows[cut-1]))cut--;
   const pages=[[]];let used=tb.getBoundingClientRect().top-top;
-  rows.forEach((r,i)=>{if(used+hs[i]>PAGE_H&&pages.at(-1).length){pages.push([]);used=16+headH}pages.at(-1).push(r);used+=hs[i]});
-  const foot=qs.querySelector('.foot');if(used+foot.getBoundingClientRect().height+10>PAGE_H)pages.push([]);
+  rows.slice(0,cut).forEach((r,i)=>{if(used+hs[i]>PAGE_H&&pages.at(-1).length){pages.push([]);used=16+headH}pages.at(-1).push(r);used+=hs[i]});
+  const tailH=hs.slice(cut).reduce((a,h)=>a+h,0)+foot.getBoundingClientRect().height+10;if(used+tailH>PAGE_H&&pages.at(-1).length)pages.push([]);
+  pages.at(-1).push(...rows.slice(cut));
   let after=qs;
   pages.slice(1).forEach((list,k)=>{const page=document.createElement('div');page.className='qs qs-cont';
    const t=table.cloneNode(false);t.append(table.querySelector('colgroup').cloneNode(true),table.tHead.cloneNode(true));const b=document.createElement('tbody');t.append(b);
