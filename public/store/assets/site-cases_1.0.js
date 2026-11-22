@@ -189,34 +189,36 @@ function servicePosts(list){
 
 if(onWork)get('posts').then(list=>ready(()=>workList(list)));
 if(pageId)get('posts').then(list=>ready(()=>servicePosts(list)));
-// ---- 글 사진 크게 보기 ----
-const ICON={x:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',prev:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',next:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',zoom:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M11 8v6M8 11h6"/></svg>'};
+// ---- 사진 크게 보기: PhotoSwipe 5.4.4 (MIT, /assets/vendor) ----
+// 처음 누를 때만 불러온다. 사진 크기를 미리 알 수 없어, 누른 사진은 재고 나머지는 작은 사진 비율로 잡았다가 불러온 뒤 바로잡는다.
+const PSW={js:'/assets/vendor/photoswipe_5.4.4.umd.min.js',css:'/assets/vendor/photoswipe_5.4.4.css'};
+const ZOOM={busy:false,ignorePop:false,open:zoomOpen};
+let pswLoad=null;
+function loadPsw(){return pswLoad||(pswLoad=new Promise((ok,no)=>{const l=document.createElement('link');l.rel='stylesheet';l.href=PSW.css;document.head.append(l);
+ const st=document.createElement('style');st.textContent='.pswp{--pswp-bg:#0d0d10;font-family:inherit}.pswp img{max-width:none!important;max-height:none!important}.pswp__paran-cap{position:absolute;left:0;right:0;bottom:0;margin:0;padding:28px 16px calc(14px + env(safe-area-inset-bottom));text-align:center;font-size:14px;line-height:1.5;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.66));pointer-events:none;word-break:keep-all}.pswp__paran-cap[hidden]{display:none}.pswp__counter{font-variant-numeric:tabular-nums}';document.head.append(st);
+ const s=document.createElement('script');s.src=PSW.js;s.onload=()=>window.PhotoSwipe?ok(window.PhotoSwipe):no(new Error('PhotoSwipe'));s.onerror=()=>{pswLoad=null;l.remove();st.remove();s.remove();no(new Error('load'))};document.head.append(s)}))}
+function sizeOf(src){return new Promise(ok=>{const im=new Image();let done=false;const fin=v=>{if(!done){done=true;ok(v)}};im.onload=()=>fin(im.naturalWidth>1?[im.naturalWidth,im.naturalHeight]:null);im.onerror=()=>fin(null);setTimeout(()=>fin(null),2500);im.src=src})}
+// items: [{src, alt, cap, el(같은 사진의 작은 img)}]. appendTo: 열려 있는 dialog 안에서 쓸 때 그 dialog. onClose(마지막 번호)
+async function zoomOpen({items,index=0,appendTo,onClose}){
+ if(ZOOM.busy||!items||!items.length)return null;ZOOM.busy=true;
+ let PS,first;try{[PS,first]=await Promise.all([loadPsw(),sizeOf(items[index].src)])}catch(e){ZOOM.busy=false;throw e}
+ const data=items.map(it=>{const e=it.el,r=e&&e.naturalWidth>1?e.naturalHeight/e.naturalWidth:.75;return {src:it.src,width:1600,height:Math.round(1600*r),alt:it.alt||'',cap:it.cap||''}});
+ if(first){data[index].width=first[0];data[index].height=first[1];data[index].sized=true}
+ const p=new PS({dataSource:data,index,appendToEl:appendTo||document.body,bgOpacity:.94,showHideAnimationType:'fade',wheelToZoom:true,loop:data.length>2,closeTitle:'닫기',zoomTitle:'확대',arrowPrevTitle:'이전 사진',arrowNextTitle:'다음 사진',errorMsg:'사진을 불러오지 못했습니다.',indexIndicatorSep:' / ',paddingFn:vp=>({top:60,bottom:vp.x<600?84:72,left:0,right:0})});
+ p.on('uiRegister',()=>{p.ui.registerElement({name:'paran-cap',order:9,isButton:false,appendTo:'root',tagName:'p',onInit:(el,ps)=>{el.className='pswp__paran-cap';el.setAttribute('aria-live','polite');const up=()=>{const d=ps.currSlide&&ps.currSlide.data;el.textContent=d?(d.cap||d.alt||''):'';el.hidden=!el.textContent};ps.on('change',up);up()}})});
+ p.on('loadComplete',({content})=>{const e=content.element,d=content.data;if(!e||!(e.naturalWidth>1)||d.sized)return;d.sized=true;if(Math.abs(d.width-e.naturalWidth)>2||Math.abs(d.height-e.naturalHeight)>2){d.width=e.naturalWidth;d.height=e.naturalHeight;p.refreshSlideContent(content.index)}});
+ let popped=false;const onPop=()=>{popped=true;p.close()};addEventListener('popstate',onPop);
+ p.on('close',()=>{removeEventListener('popstate',onPop);if(!popped){try{if(history.state&&history.state.paranZoom){ZOOM.ignorePop=true;addEventListener('popstate',()=>setTimeout(()=>{ZOOM.ignorePop=false},0),{once:true});history.back()}}catch{}}});
+ p.on('destroy',()=>{const i=p.currIndex;ZOOM.busy=false;onClose&&onClose(i)});
+ p.init();try{history.pushState({paranZoom:1},'')}catch{}
+ return p}
+window.ParanZoom=ZOOM;
 function lightbox(){
- if(!window.HTMLDialogElement)return;
- let d=null,list=[],i=0;
- const items=()=>[...document.querySelectorAll('.post-photos a')].map(a=>{const img=a.querySelector('img'),fig=a.closest('figure');return{src:a.getAttribute('href'),alt:img?.alt||'',cap:fig?.querySelector('figcaption')?.textContent||''}});
- function build(){
-  d=document.createElement('dialog');d.className='post-lb';d.setAttribute('aria-label','사진 크게 보기');
-  d.innerHTML=`<div class="post-lb-bar"><span class="post-lb-n" aria-live="polite"></span><button type="button" data-lb="zoom" aria-pressed="false">${ICON.zoom}<span>원본 크기</span></button><button type="button" data-lb="close" aria-label="닫기">${ICON.x}</button></div><div class="post-lb-stage"><img alt=""></div><div class="post-lb-foot"><button type="button" data-lb="prev" aria-label="이전 사진">${ICON.prev}</button><p class="post-lb-cap"></p><button type="button" data-lb="next" aria-label="다음 사진">${ICON.next}</button></div>`;
-  document.body.append(d);
-  d.addEventListener('click',e=>{const b=e.target.closest('[data-lb]');if(b){const k=b.dataset.lb;if(k==='close')d.close();else if(k==='zoom')zoom();else show(i+(k==='next'?1:-1))}else if(e.target.matches('.post-lb-stage img'))zoom()});
-  d.addEventListener('keydown',e=>{if(e.key==='ArrowRight')show(i+1);else if(e.key==='ArrowLeft')show(i-1)});
-  addEventListener('popstate',()=>{if(d.open)d.close()});
-  d.addEventListener('close',()=>{try{if(history.state&&history.state.postLb)history.back()}catch{}d.classList.remove('is-zoom');document.documentElement.style.overflow=''});
- }
- function zoom(){const on=!d.classList.contains('is-zoom');d.classList.toggle('is-zoom',on);d.querySelector('[data-lb="zoom"]').setAttribute('aria-pressed',on);d.querySelector('[data-lb="zoom"] span').textContent=on?'화면에 맞추기':'원본 크기'}
- function show(n){
-  i=(n+list.length)%list.length;const it=list[i],img=d.querySelector('.post-lb-stage img');
-  d.classList.remove('is-zoom');d.querySelector('[data-lb="zoom"]').setAttribute('aria-pressed','false');d.querySelector('[data-lb="zoom"] span').textContent='원본 크기';
-  img.src=it.src;img.alt=it.alt;d.querySelector('.post-lb-cap').textContent=it.cap||it.alt;
-  d.querySelector('.post-lb-n').textContent=`${i+1} / ${list.length}`;
-  const many=list.length>1;d.querySelectorAll('[data-lb="prev"],[data-lb="next"]').forEach(b=>b.hidden=!many);
-  d.querySelector('.post-lb-stage').scrollTo(0,0);
- }
+ const items=()=>[...document.querySelectorAll('.post-photos a')].map(a=>{const img=a.querySelector('img'),fig=a.closest('figure');return{src:a.getAttribute('href'),alt:img?.alt||'',cap:fig?.querySelector('figcaption')?.textContent||'',el:img,a}});
  document.addEventListener('click',e=>{
   const a=e.target.closest('.post-photos a');if(!a||e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;
-  e.preventDefault();list=items();if(!d)build();
-  show(list.findIndex(x=>x.src===a.getAttribute('href')));document.documentElement.style.overflow='hidden';d.showModal();try{history.pushState({postLb:1},'')}catch{}
+  e.preventDefault();const list=items(),i=Math.max(0,list.findIndex(x=>x.a===a));
+  zoomOpen({items:list,index:i,onClose:n=>{(list[n]?.a||a).focus({preventScroll:true})}}).catch(()=>{location.href=a.href});
  });
 }
 

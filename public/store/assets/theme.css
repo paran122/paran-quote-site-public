@@ -1919,3 +1919,24 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .paran-content .pk.pk-more>h3,.paran-content .basket>.cart-ask:not(.is-empty) h3{margin:26px 0 10px;font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1.3;color:#15141a}
 .paran-content .basket>.cart-ask:not(.is-empty) h3{margin-top:8px;margin-bottom:6px}
 @media (max-width:640px){.paran-content .pk.pk-more>h3,.paran-content .basket>.cart-ask:not(.is-empty) h3{font-size:17px}}
+
+/* 2026-11-22 견적 요청 파일 첨부: 끌어다 놓는 칸 + 목록(홈 문의 칸과 같은 모양) */
+.paran-content .file-drop{position:relative;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;margin:0 0 8px;padding:16px 18px;border:1.5px dashed #9c9ba7;border-radius:12px;background:#fafafb}
+.paran-content .file-drop input[type=file]{position:absolute;inset:0;width:100%;height:100%;min-height:0;margin:0;padding:0;border:0;opacity:0;cursor:pointer}
+.paran-content .file-drop svg{width:28px;height:28px;fill:none;stroke:#15141a;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.paran-content .file-drop p{margin:0;display:grid;gap:2px}
+.paran-content .file-drop b{font-size:15px;font-weight:600;line-height:1.5;color:#15141a}
+.paran-content .file-drop p>span{font-size:13px;line-height:1.5;color:#5c5b66}
+.paran-content .file-drop .fd-fine{display:none}
+@media (hover:hover) and (pointer:fine){.paran-content .file-drop .fd-fine{display:inline}.paran-content .file-drop .fd-coarse{display:none}}
+.paran-content .file-drop:hover{border-color:#15141a}
+.paran-content .file-drop.is-over{border-color:#15141a;border-style:solid;background:#f3ffd1}
+.paran-content .file-drop:has(input:focus-visible){outline:3px solid #15141a;outline-offset:2px}
+.paran-content .file-list{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:6px}
+.paran-content .file-list:empty{display:none}
+.paran-content .file-list li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;margin:0;padding:6px 6px 6px 12px;border:1px solid #e3e3e8;border-radius:10px;background:#fff;font-size:14px;line-height:1.4}
+.paran-content .file-list .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.paran-content .file-list .sz{color:#5c5b66;font-size:13px;white-space:nowrap}
+.paran-content .file-list button{appearance:none;min-width:44px;min-height:44px;padding:0 8px;border:0;border-radius:8px;background:none;font:inherit;font-size:13px;font-weight:600;color:#15141a;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.paran-content .file-list button:hover{background:#f0f0f3}
+.paran-content .file-list button:focus-visible{outline:3px solid #15141a;outline-offset:1px}

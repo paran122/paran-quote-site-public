@@ -82,7 +82,9 @@
  data=cards.map(c=>JSON.parse(c.dataset.case));
  all.forEach(c=>c.addEventListener('click',()=>{const i=+c.dataset.i;opener=cards[i];open(i);document.documentElement.classList.add('sv-lock');dialog.showModal();try{history.pushState({svLb:1},'')}catch{}$('.sv-stage').focus()}));
  const close=()=>dialog.close();
- addEventListener('popstate',()=>{if(dialog.open)dialog.close()});
+ const Z=()=>window.ParanZoom||{};
+ addEventListener('popstate',()=>{if(Z().busy||Z().ignorePop)return;if(dialog.open)dialog.close()});
+ dialog.addEventListener('cancel',e=>{if(Z().busy)e.preventDefault()});
  dialog.addEventListener('close',()=>{try{if(history.state&&history.state.svLb)history.back()}catch{}document.documentElement.classList.remove('sv-lock');to(book);opener=cards[book];opener?.focus({preventScroll:true})});
  dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
  $('.sv-close').addEventListener('click',close);
@@ -90,8 +92,11 @@
  $('.sv-next').addEventListener('click',()=>show(page+1,1));
  dialog.querySelectorAll('.sv-books button').forEach(b=>b.addEventListener('click',()=>open(book+Number(b.dataset.step))));
  $('.sv-books').hidden=data.length<2;
- dialog.addEventListener('keydown',e=>{if(e.key==='ArrowRight')show(page+1,1);if(e.key==='ArrowLeft')show(page-1,-1)});
+ dialog.addEventListener('keydown',e=>{if(Z().busy)return;if(e.key==='ArrowRight')show(page+1,1);if(e.key==='ArrowLeft')show(page-1,-1)});
  let x0=null;const stage=$('.sv-stage');
- stage.addEventListener('pointerdown',e=>{x0=e.clientX});
- stage.addEventListener('pointerup',e=>{if(x0===null)return;const dx=e.clientX-x0;x0=null;if(Math.abs(dx)>40)dx<0?show(page+1,1):show(page-1,-1)});
+ // 2026-11-22 사진을 누르면 크게(두 손가락 확대·넘기기). 이 창 안에서 열려 제목·작은 사진은 그대로 남는다
+ const zoom=()=>{if(!window.ParanZoom||Z().busy)return;const items=data[book].items,ths=[...thumbs.querySelectorAll('img')];window.ParanZoom.open({items:items.map((it,k)=>({src:it.src,alt:it.alt||'',cap:it.caption||'',el:k===page?img:ths[k]})),index:page,appendTo:dialog,onClose:n=>{if(n!==page)show(n);(zb||stage).focus({preventScroll:true})}}).catch(()=>{})};
+ let zb=null;if(window.ParanZoom){zb=document.createElement('button');zb.type='button';zb.className='sv-zoom';zb.setAttribute('aria-label','사진 크게 보기');zb.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M11 8v6M8 11h6"/></svg><span>크게 보기</span>';zb.addEventListener('click',zoom);stage.append(zb);img.style.cursor='zoom-in'}
+ stage.addEventListener('pointerdown',e=>{if(Z().busy)return;x0=e.clientX});
+ stage.addEventListener('pointerup',e=>{if(x0===null)return;const dx=e.clientX-x0;x0=null;if(Z().busy)return;if(Math.abs(dx)>40)dx<0?show(page+1,1):show(page-1,-1);else if(Math.abs(dx)<6&&e.target===img)zoom()});
 });

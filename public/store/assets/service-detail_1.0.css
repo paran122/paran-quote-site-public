@@ -248,3 +248,8 @@ html.sv-lock{overflow:hidden}
 @media (max-width:760px){.sv-lb .sv-nav,dialog .sv-nav{width:44px;height:44px}}
 /* 2026-11-20 사진 보기 정보 칸: '제작'이 두 줄로 꺾이지 않게 */
 .sv-facts dt{white-space:nowrap}
+
+/* 2026-11-22 사진 크게 보기 버튼(PhotoSwipe로 확대) */
+.sv-stage .sv-zoom{position:absolute;right:66px;top:10px;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:rgba(13,13,16,.62);color:#fff;font:600 13px/1 Pretendard,"Pretendard FB Noto","Pretendard FB Malgun",sans-serif;cursor:pointer}
+.sv-stage .sv-zoom:hover{background:rgba(13,13,16,.85)}
+@media(max-width:760px){.sv-stage .sv-zoom{right:10px}.sv-stage .sv-zoom span{display:none}.sv-stage .sv-zoom{width:44px;padding:0;justify-content:center}}
