@@ -1826,4 +1826,24 @@ body[data-page=cart] .paran-content:not(.paran-toast),body[data-page=request] .p
 .paran-content .pk-adds i{font-style:normal;font-size:18px;line-height:1;color:#55535e}
 .paran-content .pk-adds b{font-size:14.5px;font-weight:600}
 .paran-content .pk-adds small{font-size:13px;color:#6b6975}
-@media (max-width:640px){.paran-content .cart-list{padding:4px 16px}.paran-content .cart-list .cart-item{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:2px 12px;align-items:start;padding:14px 0}.paran-content .cart-list .ct-ic{width:36px;height:36px;grid-row:1/span 2}.paran-content .cart-list .ci-tx{grid-column:2;grid-row:1/span 2}.paran-content .cart-list .ci-tx b{font-size:15.5px}.paran-content .cart-list .am{grid-column:3;grid-row:1;font-size:15.5px}.paran-content .cart-list .ci-del{grid-column:3;grid-row:2;justify-self:end;margin:0 -10px -8px 0}.paran-content .pk-adds button{flex:1 1 auto;justify-content:flex-start}}
+@media (max-width:640px){.paran-content .cart-list{padding:4px 16px}.paran-content .cart-list .cart-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:start;padding:14px 0}.paran-content .cart-list .ci-tx{grid-column:1;grid-row:1/span 2}.paran-content .cart-list .ci-tx b{font-size:15.5px}.paran-content .cart-list .am{grid-column:2;grid-row:1;font-size:15.5px}.paran-content .cart-list .ci-del{grid-column:2;grid-row:2;justify-self:end;margin:0 -10px -8px 0}.paran-content .pk-adds button{flex:1 1 auto;justify-content:flex-start}}
+
+/* 2026-11-22 리플렛: 접는 방식 그림 칩, 한 면 크기 칩(접은 크기 + 펼친 크기), 펼친 종이 그림 */
+.option-field.is-fold .option-chips{grid-template-columns:repeat(3,minmax(0,1fr))}
+.option-field.is-fold .option-chips .chip{display:grid;grid-template-columns:34px minmax(0,1fr);column-gap:8px;align-items:center;padding:8px 28px 8px 10px}
+.option-field.is-fold .chip svg{grid-row:1/3;width:34px;height:25px}
+.option-field.is-fold .chip .c-main{align-self:end;word-break:keep-all}
+.option-field.is-fold .chip .c-sub{align-self:start;font-size:12.5px;font-weight:500;color:#55535e}
+.option-field.is-fold .chip .c-sub i{display:none}
+.option-field.is-panel .option-chips .chip{flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;padding-top:9px;padding-bottom:9px}
+.option-field.is-panel .chip .c-main{font-weight:600;color:#15141a}
+.option-field.is-panel .chip .c-sub{font-size:12.5px;font-weight:500;color:#55535e;white-space:nowrap}
+.option-field.is-panel .chip .c-sub b{color:#15141a;font-weight:600}
+.config-form .panel-see{margin:-8px 0 22px;padding:14px 14px 12px;border-radius:12px;background:#f7f7f9}
+.config-form .panel-see svg{display:block;width:100%;height:auto;max-height:170px}
+.config-form .panel-see dl{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:10px 0 0;padding:0;border:0;font-size:14px}
+.config-form .panel-see dt{margin:0;padding:0;color:#55535e;font-weight:500}
+.config-form .panel-see dd{margin:0;padding:0;font-weight:700;color:#15141a;font-variant-numeric:tabular-nums}
+.config-form .panel-see dd small{font-weight:500;color:#55535e;font-size:12.5px}
+.config-form .panel-note{margin:10px 0 0;font-size:13px;line-height:1.5;color:#3b3a44}
+@media (max-width:600px){.option-field.is-fold .option-chips{grid-template-columns:repeat(2,minmax(0,1fr))}.option-field.is-panel .option-chips{grid-template-columns:1fr}}

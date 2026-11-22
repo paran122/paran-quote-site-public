@@ -24,23 +24,32 @@ const QTY_CONSULT=1000;
 function specProblem(p,v,hid=()=>false){const q=p.prices&&p.quote;if(!q)return '';const opt=k=>p.options.find(o=>o.key===k),typed=k=>{const o=opt(k);return o&&!hid(k)&&!(o.values||[]).includes(String(v[k]||''))?o:null};
  // 2026-11-17 직접 입력 크기가 비었거나 가로 × 세로가 아니면 안내
  for(const r of q.refs||[]){if(!r.ok)continue;const o=typed(r.opt);if(o&&sides(v[o.key],'mm').length<2)return `${o.label}를 가로 × 세로로 입력해 주세요. 예: 400 × 300mm`}
+ if(q.panel){const o=typed(q.panel.opt),pi=o&&panelInfo(q,v);if(pi&&pi.W&&pi.over)return `펼친 크기가 ${q.panel.max[0]} × ${q.panel.max[1]}mm를 넘습니다(지금 ${pi.W} × ${pi.H}mm). 더 큰 크기는 상담으로 문의해 주세요.`}
  if(q.maxSize){const o=typed(q.maxSize.opt);if(o){const a=sides(v[o.key],q.banner?'':'mm').map(x=>Math.round(x*1000)).sort((x,y)=>y-x);if(a.length>1&&(a[0]>q.maxSize.mm[0]||a[1]>q.maxSize.mm[1]))return q.maxSize.msg||`${o.label}는 ${q.maxSize.mm[0]} × ${q.maxSize.mm[1]}mm 이하로 입력해 주세요. 더 큰 크기는 상담으로 문의해 주세요.`}}
  for(const k of [q.len&&q.len.opt,q.banner&&'size',q.banner&&'bigSize',q.crew&&q.crew.wall.opt].filter(Boolean)){const o=typed(k);if(!o)continue;const a=sides(v[k]);if(!a.length||a.some(x=>!(x>0)))return `${o.label}를 숫자와 단위로 입력해 주세요. 예: ${q.crew?'9m':'5m × 0.9m'}`;if(Math.max(...a)>LIMIT_M)return `${o.label}는 ${LIMIT_M}m까지 입력할 수 있습니다. 더 큰 크기는 상담으로 문의해 주세요.`;if(q.len&&k===q.len.opt&&q.len.min&&Math.max(...a)<q.len.min-1e-9)return `${o.label}는 ${q.len.min}m부터 입력할 수 있습니다.`}
  if(q.crew){const c=q.crew,po=typed(c.people),dO=typed(c.days);if(po){const n=num(v[po.key]);if(!(n>=c.min))return `${po.label}은 ${c.min}명부터 선택할 수 있습니다.`;if(n>c.maxPeople)return `${po.label}이 ${c.maxPeople}명을 넘으면 상담으로 문의해 주세요.`}if(dO){const n=num(v[dO.key]);if(!(n>=1))return `${dO.label}를 1 이상의 숫자로 입력해 주세요.`;if(n>c.maxDays)return `${dO.label}가 ${c.maxDays}일을 넘으면 상담으로 문의해 주세요.`}}
  if(q.pages){const o=typed(q.pages.opt);if(o){const n=num(v[o.key]);if(!(n>=1))return `${o.label}를 1 이상의 숫자로 입력해 주세요.`;if(n>LIMIT_PAGES)return `${o.label}는 ${LIMIT_PAGES.toLocaleString('ko-KR')}까지 입력할 수 있습니다. 더 많으면 상담으로 문의해 주세요.`}}
  return ''}
 function isMake(p,v){const s=p.prices?.[v.scope];return Boolean(s&&s.addon)}
+// 2026-11-22 리플렛: 접었을 때 한 면 크기 × 접는 방식 = 펼친 크기. u = 펼친 종이가 A5의 몇 배인지, sheet = 인쇄 단가가 있는 펼친 규격(없으면 '')
+function panelInfo(q,v){const P=q&&q.panel;if(!P)return null;const fk=Object.keys(P.folds).find(k=>String(v[P.fold]||'').startsWith(k))||'',div=fk?P.folds[fk]:0,val=String(v[P.opt]||''),pk=Object.keys(P.sizes).sort((a,b)=>b.length-a.length).find(k=>val.startsWith(k));
+ let w=0,h=0,u=0;if(pk){[w,h,u]=P.sizes[pk]}else{const a=sides(val,'mm').map(x=>Math.round(x*1000));if(a.length>1){[w,h]=a;u=w*h/(148*210)}}
+ const W=w*div,H=h,hi=Math.max(W,H),lo=Math.min(W,H),sheet=W&&H?Object.keys(P.sheets).find(k=>Math.abs(P.sheets[k][0]-hi)<=4&&Math.abs(P.sheets[k][1]-lo)<=4)||'':'';
+ return {fold:fk,div,pages:fk?P.pages[fk]:0,gate:(P.gate||[]).includes(fk),name:pk||'',typed:!pk,w,h,W,H,u:u*div,sheet,over:hi>P.max[0]||lo>P.max[1]}}
 function estimateBase(p,v,count=1,qty=1,raw=false){const q=p.quote,pr=p.prices;if(!q||!pr)return null;
  // 2026-11-17 크기를 직접 입력하면(정해진 규격 밖) 금액을 내지 않음 = 상담 후 확정. 예전엔 A4 금액으로 계산돼 A3·더 큰 크기도 싸게 보였음
  if((q.refs||[]).some(r=>r.ok&&(!r.when||Object.entries(r.when).every(([k,x])=>v[k]===x))&&!r.ok.some(b=>String(v[r.opt]||'').startsWith(b))))return null;if(v.scope!==undefined&&!pr[v.scope])return null;const all=Object.values(pr),d=all[0],s=pr[v.scope]||d,make=Boolean(s.addon);if(make&&qty>=QTY_CONSULT)return null;
+ // 리플렛: 접는 방식·크기를 못 읽었거나, 펼친 크기가 상한을 넘거나, 인쇄 단가표에 없는 펼친 규격을 인쇄까지 맡기면 금액을 내지 않음(상담 후 확정)
+ const pi=q.panel?panelInfo(q,v):null;if(pi&&(!pi.div||!pi.W||pi.over||(make&&!pi.sheet)))return null;
  // raw=true: 공급가(견적서용, 부가세 별도) / false: 사이트 표시가(부가세 포함)
  const own=x=>raw?x.own_s:x.own,ex_=x=>(raw?x.own_extra_s:x.own_extra)||0,B=raw&&q.banner_s?q.banner_s:q.banner;let dU=own(d),mU=make?own(s):0,mX=make?ex_(s):0,crew=null;
  if(B){const x=v.kind==='X배너';dU=x?B.x.design:B.h.design;if(make){const g=v.kind==='대형 현수막'&&B.big;if(x)mU=B.x.make+(v.stand==='실내 거치대'?B.x.stand:0);else if(g){/* 폭 3m 통천: 두 변이 모두 폭 이내면 짧은 변이 길이, 아니면 긴 변 */const a=sides(v.bigSize),hi=a.length?Math.max(...a):g.tiers[0][0],L=a.length>1&&hi<=g.width+1e-9?Math.min(...a):hi,t=g.tiers,k=t.find(y=>L<=y[0]+1e-9),z=t[t.length-1];mU=k?k[1]:z[1]+Math.ceil((L-z[0])*2-1e-9)*g.overHalf}else mU=Math.ceil((meters(v.size,true)||1)-1e-9)*B.h.perM;mU*=qty}}
  else if(q.crew){/* 홍보부스 운영: 인원 × 일수 × 1명·1일 단가(첫 범위의 추가 단가). 부스 디자인은 벽면 기준 길이 초과분만 더함 */const c=q.crew;crew={n:Math.max(c.min||1,pagesOf(v[c.people])||c.min||1),days:Math.max(1,pagesOf(v[c.days])||1)};dU=ex_(d)*crew.n*crew.days;if(make){const ex=Math.max(0,Math.ceil(meters(v[c.wall.opt],true)-c.wall.base-1e-9));mU=own(s)+ex*ex_(s)}}
  else{if(q.len){const ex=Math.max(0,Math.ceil(meters(v[q.len.opt],true)-q.len.base-1e-9));dU+=ex*ex_(d);if(make)mU+=ex*ex_(s)}
   if(q.pages){const ex=Math.max(0,pagesOf(v[q.pages.opt])-q.pages.base);dU+=ex*ex_(d)}
-  if(q.scale){const k=Object.keys(q.scale.map).find(k=>String(v[q.scale.opt]||'').startsWith(k));dU*=k?q.scale.map[k]:1}
-  if(make){const k=q.sizes&&Object.keys(q.sizes.map).find(k=>String(v[q.sizes.opt]||'').startsWith(k)),z=k?q.sizes.map[k]:null;if(z){mU=raw?z.own_s:z.own;mX=raw?z.ex_s:z.ex}const pm=z&&z.pp_s!=null?z:(!z&&q.pmake)||null,pg=q.pages&&pagesOf(v[q.pages.opt]);if(pm&&pg>0){const dp=pg-q.pages.base;mU+=dp*(raw?pm.pp_s:pm.pp);mX+=dp*(raw?pm.ppx_s:pm.ppx);mU=Math.round(mU/1000)*1000;mX=Math.round(mX/1000)*1000}}
+  if(pi)dU=Math.round(dU*pi.u/2/1000)*1000; /* 기준 금액은 펼친 A4(= A5 두 면) */
+  else if(q.scale){const k=Object.keys(q.scale.map).find(k=>String(v[q.scale.opt]||'').startsWith(k));dU*=k?q.scale.map[k]:1}
+  if(make){const k=q.sizes&&Object.keys(q.sizes.map).find(k=>pi?k===pi.sheet:String(v[q.sizes.opt]||'').startsWith(k)),z=k?q.sizes.map[k]:null;if(z){mU=raw?z.own_s:z.own;mX=raw?z.ex_s:z.ex}const pm=z&&z.pp_s!=null?z:(!z&&q.pmake)||null,pg=q.pages&&pagesOf(v[q.pages.opt]);if(pm&&pg>0){const dp=pg-q.pages.base;mU+=dp*(raw?pm.pp_s:pm.pp);mX+=dp*(raw?pm.ppx_s:pm.ppx);mU=Math.round(mU/1000)*1000;mX=Math.round(mX/1000)*1000}}
   if(make)for(const a of q.adj||[])if(String(v[a.opt]||'').startsWith(a.val)){mU+=raw?a.own_s:a.own;mX+=raw?a.ex_s:a.ex}
   if(make&&q.print){mU+=Math.max(0,Math.ceil((qty-q.print.base)/q.print.step))*mX}}
  const ship=make&&q.parcel&&v.delivery!=='퀵 배송'?q.parcel:0;
@@ -52,4 +61,4 @@ function estimate(p,v,count=1,qty=1,raw=false){const e=estimateBase(p,v,count,qt
 function docTotals(items,find){const lines=items.map(x=>{const p=find(x.serviceId);const e=p&&estimate(p,x.options||{},x.design||1,x.qty||1,true);return {x,p,e}});const priced=lines.filter(l=>l.e);
  const sub=priced.reduce((a,l)=>a+Math.round(l.e.dU+l.e.mU)*l.e.n,0),vat=Math.trunc(sub*0.1),ship=priced.reduce((a,l)=>a+l.e.ship,0),total=sub+vat+ship;
  return {lines,sub,vat,ship,total,unpriced:lines.length-priced.length}}
-return {man,num,sides,meters,isMake,estimate,docTotals,specProblem,snapQty,pagesOf,basisText,QTY_CONSULT}});
+return {man,num,sides,meters,isMake,estimate,docTotals,specProblem,snapQty,pagesOf,basisText,panelInfo,QTY_CONSULT}});
